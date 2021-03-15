@@ -1,0 +1,14 @@
+C:\Anna\Netpincer\Netpincer\RestaurantClient\bin\Debug\RestaurantClient.exe.config
+C:\Anna\Netpincer\Netpincer\RestaurantClient\bin\Debug\RestaurantClient.exe
+C:\Anna\Netpincer\Netpincer\RestaurantClient\bin\Debug\RestaurantClient.pdb
+C:\Anna\Netpincer\Netpincer\RestaurantClient\obj\Debug\MainWindow.g.cs
+C:\Anna\Netpincer\Netpincer\RestaurantClient\obj\Debug\App.g.cs
+C:\Anna\Netpincer\Netpincer\RestaurantClient\obj\Debug\RestaurantClient_MarkupCompile.cache
+C:\Anna\Netpincer\Netpincer\RestaurantClient\obj\Debug\RestaurantClient_MarkupCompile.lref
+C:\Anna\Netpincer\Netpincer\RestaurantClient\obj\Debug\MainWindow.baml
+C:\Anna\Netpincer\Netpincer\RestaurantClient\obj\Debug\RestaurantClient.g.resources
+C:\Anna\Netpincer\Netpincer\RestaurantClient\obj\Debug\RestaurantClient.Properties.Resources.resources
+C:\Anna\Netpincer\Netpincer\RestaurantClient\obj\Debug\FoodOrderClient.csproj.GenerateResource.cache
+C:\Anna\Netpincer\Netpincer\RestaurantClient\obj\Debug\FoodOrderClient.csproj.CoreCompileInputs.cache
+C:\Anna\Netpincer\Netpincer\RestaurantClient\obj\Debug\RestaurantClient.exe
+C:\Anna\Netpincer\Netpincer\RestaurantClient\obj\Debug\RestaurantClient.pdb
