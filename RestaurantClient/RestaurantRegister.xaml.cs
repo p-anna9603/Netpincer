@@ -161,12 +161,12 @@ namespace FoodOrderClient
         {
             if (textBoxEmail.Text.Length == 0)
             {
-                errormessage.Text = "Enter an email.";
+                errormessage.Text = "Adja meg az e-mail címét!";
                 textBoxEmail.Focus();
             }
             else if (!Regex.IsMatch(textBoxEmail.Text, @"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$"))
             {
-                errormessage.Text = "Enter a valid email.";
+                errormessage.Text = "Az email-cím helytelen!";
                 textBoxEmail.Select(0, textBoxEmail.Text.Length);
                 textBoxEmail.Focus();
             }

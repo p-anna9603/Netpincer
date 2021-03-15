@@ -97,8 +97,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ResturantMain.xaml.cs">
-      <DependentUpon>ResturantMain.xaml</DependentUpon>
+    <Compile Include="RestaurantMain.xaml.cs">
+      <DependentUpon>RestaurantMain.xaml</DependentUpon>
     </Compile>
     <Page Include="RestaurantRegister.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -112,7 +112,7 @@
       <DependentUpon>RestaurantRegister.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ResturantMain.xaml">
+    <Page Include="RestaurantMain.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -155,6 +155,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\menutoggle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\img_background.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
