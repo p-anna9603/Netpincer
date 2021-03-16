@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-E:\Programozás\C#\Netpincer\RestaurantClient\obj\Debug\
+E:\Programozás\C#\Netpincer\RestaurantClient\obj\Release\
 RestaurantClient
 none
 false
-DEBUG;TRACE
+TRACE
 E:\Programozás\C#\Netpincer\RestaurantClient\App.xaml
 21965926173
 
-71461283242
+6-1991324687
 22594610355
 RestaurantRegister.xaml;RestaurantMain.xaml;
 
-False
+True
 
