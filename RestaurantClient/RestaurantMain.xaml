@@ -347,7 +347,7 @@
                                         Width="230">
 
                                 <Image Source="Assets/img_home.png"
-                                       Stretch="None"
+                                       Stretch="Fill"
                                        Margin="8,0,0,0" Height="42" Width="41"/>
 
                                 <TextBlock Text="Home"
@@ -378,7 +378,7 @@
                                         Width="230">
 
                                 <Image Source="Assets/menu.png"
-                                       Stretch="None"
+                                       Stretch="Fill"
                                        Margin="5,0,0,0" Width="42" Height="42" />
 
                                 <TextBlock Text="Menük"
@@ -409,8 +409,8 @@
                                         Width="230">
 
                                 <Image Source="Assets/img_message.png"
-                                       Stretch="None"
-                                       Margin="7,0,0,0"/>
+                                       Stretch="Fill"
+                                       Margin="7,0,0,0" Height="42" Width="41"/>
 
                                 <TextBlock Text="Messages"
                                            Margin="25,0,0,0"
@@ -440,8 +440,8 @@
                                         Width="230">
 
                                 <Image Source="Assets/img_map.png"
-                                       Stretch="None"
-                                       Margin="7,0,0,0"/>
+                                       Stretch="Fill"
+                                       Margin="7,0,0,0" Height="42" Width="41"/>
 
                                 <TextBlock Text="Maps"
                                            Margin="25,0,0,0"
@@ -471,8 +471,8 @@
                                         Width="230">
 
                                 <Image Name="settingImg" Source="Assets/img_setting.png"
-                                       Stretch="None"
-                                       Margin="7,0,0,0"/>
+                                       Stretch="Fill"
+                                       Margin="7,0,0,0" Height="42" Width="41"/>
 
                                 <TextBlock Text="Settings"
                                            Margin="25,0,0,0"
@@ -502,8 +502,8 @@
                                         Width="230">
 
                                 <Image Source="Assets/img_signout.png"
-                                       Stretch="None"
-                                       Margin="7,0,0,0"/>
+                                       Stretch="Fill"
+                                       Margin="7,0,0,0" Height="42" Width="41"/>
 
                                 <TextBlock Text="Sign Out"
                                            Margin="12,0,0,0"

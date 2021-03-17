@@ -94,9 +94,9 @@ namespace FoodOrderClient
                     //menus.Width = GridPrincipal.Width;
                     //menus.Height = GridPrincipal.Height;
 
-                    childWindow.Content = menus;
-                
+                    childWindow.Content = menus;                
                     child = menus;
+                    setChildSizeToWindow();
                     break;
                 default:
                     break;
@@ -118,13 +118,25 @@ namespace FoodOrderClient
         private void childWindow_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             ContentControl window = sender as ContentControl;
-          
+            Console.WriteLine(window.Name);
             if (child != null)
             {
-                child.Width = window.Width;
-                child.Height = window.Height-50;
+                child.Width = window.Width - 100;
+                child.Height = window.Height - 100;
                 Console.WriteLine("child. " + child.Width + ", " + child.Height);
                 Console.WriteLine("GridPrincipal. " + e.NewSize.Width + ", " + e.NewSize.Height);
+                Console.WriteLine("child. " + childWindow.Width + ", " + childWindow.Height);
+            }
+        }
+        private void setChildSizeToWindow()
+        {
+            if (child != null)
+            {
+                child.Width = childWindow.Width - 100;
+                child.Height = childWindow.Height - 100;
+                Console.WriteLine("child. " + child.Width + ", " + child.Height);
+                //Console.WriteLine("GridPrincipal. " + e.NewSize.Width + ", " + e.NewSize.Height);
+                Console.WriteLine("child. " + childWindow.Width + ", " + childWindow.Height);
             }
         }
     }

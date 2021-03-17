@@ -5,44 +5,58 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RestaurantClient"
         mc:Ignorable="d"
-        Title="Új kategória" Height="239.062" Width="413.75" WindowStartupLocation="CenterScreen" Closing="windowClosing">
+        Title="Új kategória" Height="373.062" Width="468.75" WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow" Closing="windowClosing">
     <Grid>
-        <Grid Margin="0,0,0,0">
+        <Grid Margin="0,0,0,0" Background="White">
 
-                <Grid.Background>
+            <!--<Grid.Background>
                     <LinearGradientBrush>
-                        <GradientStop Color="#FF8EB9E2" Offset="0.0"></GradientStop>
-                        <GradientStop Color="#FF5C9959" Offset="1"></GradientStop>
+                        <GradientStop Color="#FFE2B08E" Offset="0.0"></GradientStop>
+                        <GradientStop Color="#FF685999" Offset="1"></GradientStop>
                     </LinearGradientBrush>
-                </Grid.Background>
+                </Grid.Background>-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="35"/>
-                <RowDefinition Height="80"/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="50"/>
-                <RowDefinition Height="217*"/>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,5,0,0" >
-                    <TextBlock Name="errorText" Text="" FontFamily="Corbel" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Width="250" Height="25" Margin="4" Foreground="Red">
-                    </TextBlock>
+            <Grid Grid.Row="0">
+                <StackPanel Height="30">
+                    <TextBlock Height ="17" FontFamily="Helvetica" FontWeight="Light"  FontSize="14" Foreground="#FFDC1515" HorizontalAlignment="Left" 
+                           Margin="10,10,0,0" Name="errorMessage" Text="" VerticalAlignment="Top" Width="298" />
                 </StackPanel>
-                <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left"  Margin="5,5,0,0" >
-                    <TextBlock Text="Kategória neve: " FontFamily="Corbel" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Height="30" Margin="5,0,0,0" Foreground="#FFF7F6F6">
-                    </TextBlock>
-                    <TextBox Height="23" HorizontalAlignment="Left" Margin="0,4,0,0" Padding="1.5" Name="categoryNameTextBox" VerticalAlignment="Top" Width="222" />
+            </Grid>
+            <Grid Grid.Row="1">
+                <Border BorderBrush="#FF250A5F"  BorderThickness="0.7" CornerRadius="10" Margin="0,10,0,0" Width="410">
+                    <Border.Effect>
+                        <BlurEffect Radius="1.5"/>
+                    </Border.Effect>
+                </Border>
+                <StackPanel Width="400" HorizontalAlignment="Center" Margin="35,0,35,4">
+                    <StackPanel  Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,5,0,0" >
+                        <TextBlock Name="errorText" Text="" FontFamily="Corbel" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Width="250" Height="25" Margin="4" Foreground="Red">
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel  Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5,5,0,0" Height="39" >
+                        <TextBlock Text="Kategória neve: " FontFamily="Helvetica" TextAlignment="Center" FontSize="17" HorizontalAlignment="Left" 
+                                   VerticalAlignment="Center" Width="120" Height="25" Margin="5,10,0,10" Foreground="Black">
+                        </TextBlock>
+                        <TextBox Height="23" HorizontalAlignment="Left" Margin="5,8,0,8" Padding="1.5" Name="categoryNameTextBox" VerticalAlignment="Center" Width="254" />
+                    </StackPanel>
+                    <StackPanel  Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,25,0,25" Height="115" Width="385">
+                        <TextBlock Text="Kép feltöltése: " FontFamily="Helvetica" FontSize="17" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" Height="30" Margin="5,0,0,0" Foreground="Black">
+                        </TextBlock>
+                        <Button Content="+" FontSize="30"  FontStyle="Normal" Height="95" HorizontalAlignment="Left" Name="ImageButton" VerticalAlignment="Center" 
+                        Width="250" Click="imageUpButton_Click" Foreground="#FFF9F8F8" Background="#FFC7C6C6" BorderBrush="#FFFFFDFD"
+                        BorderThickness="2" Margin="7,10,0,10"></Button>
+                    </StackPanel>
                 </StackPanel>
-                <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,25">
-                    <TextBlock Text="Kép feltöltése: " FontFamily="Corbel" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Height="30" Margin="5,0,0,0" Foreground="#FFFFFDFD">
-                    </TextBlock>
-                    <Button Content="+" FontSize="17"  FontStyle="Normal" Height="53" HorizontalAlignment="Left" Name="ImageButton" VerticalAlignment="Center" 
-                    Width="227" Click="imageUpButton_Click" Foreground="#FFF9F8F8" Background="Transparent" BorderBrush="#FFFFFDFD"
-                    BorderThickness="2" Margin="0,-9,0,-14"></Button>
-                </StackPanel>
-            <StackPanel Grid.Row="3" HorizontalAlignment="Right">
-                <Button Content="Hozzáadás" FontSize="17"  FontStyle="Normal" Height="35" HorizontalAlignment="Left" Name="Submit" VerticalAlignment="Top" 
-                    Width="227" Click="addButton_Click" Foreground="#FFF9F8F8" Background="Gainsboro" BorderBrush="#FFFFFDFD" Margin="0,0,50,0"
+            </Grid>
+            <Grid Grid.Row="2">
+                <Button Content="HOZZÁAD" FontSize="17"  FontStyle="Normal" Height="35" HorizontalAlignment="Center" Name="Submit" VerticalAlignment="Top" 
+                    Width="227" Click="addButton_Click" Foreground="#FFF9F8F8" Background="#FF5A97D4" BorderBrush="#FFFFFDFD" Margin="0,5,0,0"
                     BorderThickness="2" MouseDown="addButton_Click"></Button>
-            </StackPanel>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

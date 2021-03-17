@@ -42,11 +42,11 @@ namespace RestaurantClient
         public bool IsSaved { get => isSaved; set => isSaved = value; }
         public double FoodPrice { get => foodPrice; set => foodPrice = value; }
         public string FoodName { get => foodName; set => foodName = value; }
+        public int FoodID { get => foodID; set => foodID = value; }
 
-        public RestNewFood(int foodid)
+        public RestNewFood()
         {
             InitializeComponent();
-            foodID = foodid;
         }
 
         private void selectedAllergene(object sender, SelectionChangedEventArgs e)
@@ -73,6 +73,7 @@ namespace RestaurantClient
                 setAllergens();
                 Food food = new Food(foodID, foodName, foodPrice, rating, pictureID);
                 //TODO add new food to database
+                //TODO get the latest foodID from db foodID = foodid;
                 savePictureToDatabase();
                 IsSaved = true;
                 this.Close();
@@ -125,12 +126,23 @@ namespace RestaurantClient
         public void setAllergens()
         {
             string allergName;
-            foreach(ListBoxItem i in allergeneListBox.Items)
+            Console.WriteLine("0 allergéneknél");
+            //foreach(ItemsControl i in allergeneListBox.Items)
+            //{
+            //    Console.WriteLine("1 allergéneknél");
+            ////    allergName = i.Content.ToString();
+            //    Console.WriteLine("2 allergéneknél");
+            //    //TODO get allergen id from database
+            //    // Upload foodID to database to the given allergenID
+            //    //  Allergen al = new Allergen(allergenID, allergName, foodID);
+            //}
+            for(int i = 0; i < allergeneListBox.Items.Count; ++i)
             {
-                allergName = i.Content.ToString();
-                //TODO get allergen id from database
-                // Upload foodID to database to the given allergenID
-               //  Allergen al = new Allergen(allergenID, allergName, foodID);
+                allergName = allergeneListBox.Items[i].ToString();
+                Console.WriteLine(allergName);
+                //  TODO get allergen id from database
+                //  Upload foodID to database to the given allergenID
+                //  Allergen al = new Allergen(allergenID, allergName, foodID);
             }
         }
 
@@ -152,7 +164,7 @@ namespace RestaurantClient
         private void savePictureToDatabase()
         {
             //TODO
-            pictureID++;
+            // get inserted picture id
         }
     }
 }

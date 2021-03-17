@@ -21,6 +21,7 @@ namespace RestaurantClient
     public partial class newMenu : Window
     {
         private String categoryName;
+        int categoryID = 0;
         private bool isSaved = false;
         public newMenu()
         {
@@ -29,6 +30,7 @@ namespace RestaurantClient
 
         public bool IsSaved { get => isSaved; set => isSaved = value; }
         public string CategoryName { get => categoryName; set => categoryName = value; }
+        public int CategoryID { get => categoryID; set => categoryID = value; }
 
         private void addButton_Click(object sender, EventArgs e)
         {
@@ -42,6 +44,7 @@ namespace RestaurantClient
                 IsSaved = true;
                 categoryName = categoryNameTextBox.Text;
                 //TODO upload to DB the new category (and pic)
+                // and get the latest categoryID
                 this.Close();
             }
         }

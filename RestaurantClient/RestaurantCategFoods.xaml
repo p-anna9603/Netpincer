@@ -10,21 +10,23 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="15"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="170"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="15"/>
         </Grid.ColumnDefinitions>
-        <Button Content="Új felvitele" Grid.Row="0" Grid.Column="1" FontSize="13"  FontStyle="Normal" HorizontalAlignment="Right" Name="Submit" VerticalAlignment="Center" 
-                    Click="NewFood_Click" Foreground="Black" Background="Transparent" BorderBrush="#FFFFFDFD" Width="70" Height="30"
+        <Button Content="ÚJ ÉTEL" Grid.Row="0" Grid.Column="1" FontSize="13"  FontStyle="Normal" HorizontalAlignment="Right" Name="Submit" VerticalAlignment="Center" 
+                    Click="NewFood_Click" Foreground="White" Background="#bf4040" BorderBrush="#FFFFFDFD" Width="121" Height="40"
                     BorderThickness="2" Margin="0,0,10,0"/>
         <Grid Grid.RowSpan="2">
-            <TextBlock Text="Kategória név" Name="categName" HorizontalAlignment="Center" Margin="10" FontSize="28" TextWrapping="Wrap" TextAlignment="Center" Foreground="#FFE0D2D2"/>
+            <TextBlock Text="Kategória név" Name="categName" HorizontalAlignment="Center" Margin="10" FontSize="28" TextWrapping="Wrap" TextAlignment="Center" Foreground="white"/>
         </Grid>
-        <ScrollViewer Grid.Column="1" Grid.Row="1" Background="#FFF1F1F1" VerticalScrollBarVisibility="Auto">
-            <WrapPanel>
+        <ScrollViewer Name="scrollView" Grid.Column="1" Grid.Row="1" Background="#FFF1F1F1" VerticalScrollBarVisibility="Auto" >
+            <WrapPanel Name="FoodList"  Opacity="120" OpacityMask="Aqua">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
-                                        Width="330" Height="102">
+                                        Width="330" Height="102" Margin="5,5,0,0">
                     <!--<Border BorderBrush="AliceBlue" BorderThickness="1">-->
                     <StackPanel Orientation="Vertical" Width="263">
                         <TextBlock VerticalAlignment="Top" FontSize="16" FontFamily="Century" HorizontalAlignment="Left"  TextAlignment="Left"
@@ -34,9 +36,9 @@
                         <!--</Border>-->
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Width="76">
-                        <Image Source="Assets/menu.png" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                       Stretch="None"
-                                       Margin="0,18" Height="66" Width="52"/>
+                        <Image Source="Assets/meal.png" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Stretch="Fill"
+                                       Margin="0,18" Height="66" Width="64"/>
                     </StackPanel>
                     <StackPanel.Background>
                         <SolidColorBrush>

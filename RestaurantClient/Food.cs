@@ -21,5 +21,11 @@ namespace RestaurantClient
             rating = rate;
             pictureID = picID;
         }
+
+        public int FoodID { get => foodID; set => foodID = value; }
+        public string Name { get => name; set => name = value; }
+        public double Price { get => price; set => price = value; }
+        public double Rating { get => rating; set => rating = value; }
+        public int PictureID { get => pictureID; set => pictureID = value; }
     }
 }
