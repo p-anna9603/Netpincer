@@ -97,7 +97,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Allergen.cs" />
     <Compile Include="Food.cs" />
     <Compile Include="newMenu.xaml.cs">
       <DependentUpon>newMenu.xaml</DependentUpon>
