@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FoodOrderClient"
         mc:Ignorable="d"
-        Title="RestaurantMain" Height="600" Width="900" WindowStartupLocation="CenterScreen">
+        Title="RestaurantMain" Height="600" Width="900" WindowStartupLocation="CenterScreen" SizeChanged="window_sizeChanged">
     <Window.Resources>
 
         <!--// Toggle Button Style Template //-->
 
         <ImageBrush x:Key="tb_mouse_over"
-                    ImageSource="Assets/tgBtn_MouseOver.png"/>
+            ImageSource="Assets/tgBtn_MouseOver.png">
+            </ImageBrush>
 
         <!--// Text font style //-->
 
@@ -57,7 +58,10 @@
 
         <!--// App Close Button Style Template //-->
 
-        <ImageBrush x:Key="CloseBtn_MouseOver" ImageSource="Assets/closeBtn_MouseOver.png"/>
+        <ImageBrush x:Key="CloseBtn_MouseOver" >
+            
+        </ImageBrush>
+        <!--ImageSource="Assets/closeBtn_MouseOver.png"/>-->
 
         <Style x:Key="Close_btn" TargetType="{x:Type Button}">
 
@@ -187,7 +191,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Button x:Name="CloseBtn"
+                <!--<Button x:Name="CloseBtn"
                         Grid.Column="1"
                         Grid.Row="1"
                         Height="40"
@@ -201,10 +205,14 @@
 
                     </Button.Background>
 
-                </Button>
+                </Button>-->
 
+                <!--// Grid for the child elements-->
             </Grid>
-
+            <Grid Margin="80 55 0 0">
+                <!--<Grid x:Name="GridPrincipal" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
+                <ContentControl Name="childWindow" Content="{Binding}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" SizeChanged="childWindow_SizeChanged"></ContentControl>
+            </Grid>
 
             <!--// Navigation Panel //-->
 
@@ -326,7 +334,8 @@
                     <ListView  x:Name="LV"
                                Background="Transparent"
                                BorderBrush="Transparent"
-                               ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                               SelectionChanged="ListViewMenu_SelectionChanged" SelectedIndex="0">
 
                         <!--// Home //-->
 
@@ -339,7 +348,7 @@
 
                                 <Image Source="Assets/img_home.png"
                                        Stretch="None"
-                                       Margin="12,0,0,0"/>
+                                       Margin="8,0,0,0" Height="42" Width="41"/>
 
                                 <TextBlock Text="Home"
                                            Margin="25,0,0,0"
@@ -368,11 +377,11 @@
                             <StackPanel Orientation="Horizontal"
                                         Width="230">
 
-                                <Image Source="Assets/img_contact.png"
+                                <Image Source="Assets/menu.png"
                                        Stretch="None"
-                                       Margin="12,0,0,0"/>
+                                       Margin="5,0,0,0" Width="42" Height="42" />
 
-                                <TextBlock Text="Contacts"
+                                <TextBlock Text="Menük"
                                            Margin="25,0,0,0"
                                            Style="{StaticResource font_style}"/>
 
@@ -401,7 +410,7 @@
 
                                 <Image Source="Assets/img_message.png"
                                        Stretch="None"
-                                       Margin="12,0,0,0"/>
+                                       Margin="7,0,0,0"/>
 
                                 <TextBlock Text="Messages"
                                            Margin="25,0,0,0"
@@ -432,7 +441,7 @@
 
                                 <Image Source="Assets/img_map.png"
                                        Stretch="None"
-                                       Margin="12,0,0,0"/>
+                                       Margin="7,0,0,0"/>
 
                                 <TextBlock Text="Maps"
                                            Margin="25,0,0,0"
@@ -461,9 +470,9 @@
                             <StackPanel Orientation="Horizontal"
                                         Width="230">
 
-                                <Image Source="Assets/img_setting.png"
+                                <Image Name="settingImg" Source="Assets/img_setting.png"
                                        Stretch="None"
-                                       Margin="12,0,0,0"/>
+                                       Margin="7,0,0,0"/>
 
                                 <TextBlock Text="Settings"
                                            Margin="25,0,0,0"
@@ -494,10 +503,10 @@
 
                                 <Image Source="Assets/img_signout.png"
                                        Stretch="None"
-                                       Margin="12,0,0,0"/>
+                                       Margin="7,0,0,0"/>
 
                                 <TextBlock Text="Sign Out"
-                                           Margin="25,0,0,0"
+                                           Margin="12,0,0,0"
                                            Style="{StaticResource font_style}"/>
 
                             </StackPanel>

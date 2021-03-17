@@ -1,0 +1,48 @@
+﻿<Window x:Class="RestaurantClient.newMenu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RestaurantClient"
+        mc:Ignorable="d"
+        Title="Új kategória" Height="239.062" Width="413.75" WindowStartupLocation="CenterScreen" Closing="windowClosing">
+    <Grid>
+        <Grid Margin="0,0,0,0">
+
+                <Grid.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="#FF8EB9E2" Offset="0.0"></GradientStop>
+                        <GradientStop Color="#FF5C9959" Offset="1"></GradientStop>
+                    </LinearGradientBrush>
+                </Grid.Background>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="217*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,5,0,0" >
+                    <TextBlock Name="errorText" Text="" FontFamily="Corbel" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Width="250" Height="25" Margin="4" Foreground="Red">
+                    </TextBlock>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left"  Margin="5,5,0,0" >
+                    <TextBlock Text="Kategória neve: " FontFamily="Corbel" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Height="30" Margin="5,0,0,0" Foreground="#FFF7F6F6">
+                    </TextBlock>
+                    <TextBox Height="23" HorizontalAlignment="Left" Margin="0,4,0,0" Padding="1.5" Name="categoryNameTextBox" VerticalAlignment="Top" Width="222" />
+                </StackPanel>
+                <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,25">
+                    <TextBlock Text="Kép feltöltése: " FontFamily="Corbel" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Height="30" Margin="5,0,0,0" Foreground="#FFFFFDFD">
+                    </TextBlock>
+                    <Button Content="+" FontSize="17"  FontStyle="Normal" Height="53" HorizontalAlignment="Left" Name="ImageButton" VerticalAlignment="Center" 
+                    Width="227" Click="imageUpButton_Click" Foreground="#FFF9F8F8" Background="Transparent" BorderBrush="#FFFFFDFD"
+                    BorderThickness="2" Margin="0,-9,0,-14"></Button>
+                </StackPanel>
+            <StackPanel Grid.Row="3" HorizontalAlignment="Right">
+                <Button Content="Hozzáadás" FontSize="17"  FontStyle="Normal" Height="35" HorizontalAlignment="Left" Name="Submit" VerticalAlignment="Top" 
+                    Width="227" Click="addButton_Click" Foreground="#FFF9F8F8" Background="Gainsboro" BorderBrush="#FFFFFDFD" Margin="0,0,50,0"
+                    BorderThickness="2" MouseDown="addButton_Click"></Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

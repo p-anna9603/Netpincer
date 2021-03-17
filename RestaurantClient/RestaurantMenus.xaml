@@ -1,0 +1,131 @@
+﻿<UserControl x:Class="RestaurantClient.RestaurantMenus"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RestaurantClient"
+             mc:Ignorable="d" 
+             Height="400.469" Width="630.936" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Border BorderBrush="black" BorderThickness="2">
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="217*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="3"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" Height="30">
+                <!--<TextBlock Text="Menük" FontFamily="Cooper Black" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" Height="30">
+                </TextBlock>-->
+            </StackPanel>
+            <Button Content="Új felvitele" Grid.Row="0" Grid.Column="1" FontSize="13"  FontStyle="Normal" HorizontalAlignment="Center" Name="Submit" VerticalAlignment="Center" 
+                    Click="NewMenu_Click" Foreground="Black" Background="Transparent" BorderBrush="#FFFFFDFD" Width="70" Height="30"
+                    BorderThickness="2"/>
+            <Grid Grid.ColumnSpan="3" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="170"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.RowSpan="2">
+                    <TextBlock Text="Menük" HorizontalAlignment="Center" Margin="10" FontSize="28"/>
+                </Grid>
+                <ScrollViewer Grid.Column="1" Grid.Row="1" Background="#FFF1F1F1" VerticalScrollBarVisibility="Auto">
+                    <!--<ListView Grid.ColumnSpan="3" Grid.Row="1"  x:Name="MenuList"
+                                Background="Transparent"
+                                BorderBrush="Transparent"                      
+                                VerticalAlignment="Top"
+                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                SelectedIndex="0" Margin="0,35,0,0" Grid.RowSpan="2">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"></StackPanel>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListViewItem HorizontalAlignment="Left" Width="200" Height="128">-->
+                    <WrapPanel Name="menuList" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" MouseDown="categImg_MouseDown"
+                                        Width="200" Height="128">
+                            <Border BorderBrush="AliceBlue" BorderThickness="1">
+                                <TextBlock VerticalAlignment="Top" FontSize="16" FontFamily="Century" HorizontalAlignment="Center"  TextAlignment="Center"
+                                     Margin="0,0,0,0" Width="200" Height="50" Text="1. menü" TextWrapping="Wrap" Padding="2,10,2,0"/>
+                            </Border>
+                            <Image Source="Assets/menu.png"
+                                       Stretch="None"
+                                       Margin="20,5,20,0" Height="70" />
+                            <StackPanel.Background>
+                                <SolidColorBrush>
+                                    <SolidColorBrush.Color>
+                                        <Color A="50" R="255" G="204" B="153"></Color>
+                                    </SolidColorBrush.Color>
+                                </SolidColorBrush>
+                                <!--<LinearGradientBrush>
+                                    <GradientStop Color="#FFF2FAFB" Offset="0.0"></GradientStop>
+                                    <GradientStop Color="#FFA45877" Offset="1"></GradientStop>
+                                </LinearGradientBrush>-->
+                            </StackPanel.Background>
+                        </StackPanel>
+                        <!--</ListViewItem>
+                        <ListViewItem HorizontalAlignment="Left" Width="200" Height="128">-->
+
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center"
+                                        Width="200" Height="128">
+                            <Border BorderBrush="AliceBlue" BorderThickness="1">
+                                <TextBlock VerticalAlignment="Top" HorizontalAlignment="Center"  TextAlignment="Center"
+                                     Margin="0,0,0,0" Width="200" Height="50" Text="1. menü"/>
+                            </Border>
+                            <Image Source="Assets/menu.png"
+                                       Stretch="None"
+                                       Margin="20,5,20,0" Height="70"/>
+                        </StackPanel>
+                        <!--</ListViewItem>
+                    </ListView>-->
+                    </WrapPanel>
+                </ScrollViewer>
+            </Grid>
+            <!--<ListView Grid.ColumnSpan="3" Grid.Row="1"  x:Name="MenuList"
+                    Background="Transparent"
+                    BorderBrush="Transparent"                      
+                  VerticalAlignment="Top"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    SelectedIndex="0" Margin="0,35,0,0" Grid.RowSpan="2">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"></StackPanel>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            <ListViewItem HorizontalAlignment="Left" Width="200" Height="128">
+
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center"
+                                        Width="200" Height="300">
+                    <Border BorderBrush="AliceBlue" BorderThickness="1">
+                        <Label VerticalAlignment="Top" HorizontalAlignment="Center" HorizontalContentAlignment="Center"
+                               Margin="0,0,0,0" Width="200" Height="50" Content="1. kategória"/>
+                        -->
+            <!--<TextBlock VerticalAlignment="Top" HorizontalAlignment="Center"  TextAlignment="Center"
+                               Margin="0,0,0,0" Width="200" Height="50" Text="1. menü"/>-->
+            <!--
+                    </Border>
+                    <Image Source="Assets/img_home.png"
+                                       Stretch="None"
+                                       Margin="20,5,20,0" Height="70"/>
+                    -->
+            <!--<TextBlock VerticalAlignment="Top" Text="Főétel: " FontSize="12" Margin="5,15,2,2"></TextBlock>
+                    <TextBlock VerticalAlignment="Top" Text="Köret: " FontSize="12" Margin="5,5,2,2"></TextBlock>
+                    <TextBlock VerticalAlignment="Top" Text="Ital: " FontSize="12" Margin="5,5,2,2"></TextBlock>
+                    <TextBlock VerticalAlignment="Top" Text="Ára: " FontSize="12" Margin="5,5,2,2"></TextBlock>-->
+            <!--
+                </StackPanel>
+            </ListViewItem>
+
+            </ListView>-->
+
+        </Grid>
+    </Border>
+</UserControl>

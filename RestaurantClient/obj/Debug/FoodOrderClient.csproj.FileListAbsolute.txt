@@ -45,3 +45,11 @@ C:\Anna\Netpincer\Netpincer\RestaurantClient\obj\Debug\FoodOrderClient.csproj.Co
 C:\Anna\Netpincer\Netpincer\RestaurantClient\obj\Debug\RestaurantClient.exe
 C:\Anna\Netpincer\Netpincer\RestaurantClient\obj\Debug\RestaurantClient.pdb
 C:\Anna\Netpincer\Netpincer\RestaurantClient\obj\Debug\FoodOrderClient.csprojAssemblyReference.cache
+C:\Anna\Netpincer\Netpincer\RestaurantClient\obj\Debug\RestaurantMenus.g.cs
+C:\Anna\Netpincer\Netpincer\RestaurantClient\obj\Debug\RestaurantMenus.baml
+C:\Anna\Netpincer\Netpincer\RestaurantClient\obj\Debug\newMenu.g.cs
+C:\Anna\Netpincer\Netpincer\RestaurantClient\obj\Debug\newMenu.baml
+C:\Anna\Netpincer\Netpincer\RestaurantClient\obj\Debug\RestaurantCategFoods.g.cs
+C:\Anna\Netpincer\Netpincer\RestaurantClient\obj\Debug\RestaurantCategFoods.baml
+C:\Anna\Netpincer\Netpincer\RestaurantClient\obj\Debug\RestNewFood.g.cs
+C:\Anna\Netpincer\Netpincer\RestaurantClient\obj\Debug\RestNewFood.baml

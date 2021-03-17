@@ -97,9 +97,32 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Allergen.cs" />
+    <Compile Include="Food.cs" />
+    <Compile Include="newMenu.xaml.cs">
+      <DependentUpon>newMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RestaurantCategFoods.xaml.cs">
+      <DependentUpon>RestaurantCategFoods.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RestaurantMain.xaml.cs">
       <DependentUpon>RestaurantMain.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RestNewFood.xaml.cs">
+      <DependentUpon>RestNewFood.xaml</DependentUpon>
+    </Compile>
+    <Page Include="newMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RestaurantCategFoods.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RestaurantMenus.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="RestaurantRegister.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -108,11 +131,18 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="RestaurantMenus.xaml.cs">
+      <DependentUpon>RestaurantMenus.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RestaurantRegister.xaml.cs">
       <DependentUpon>RestaurantRegister.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Page Include="RestaurantMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RestNewFood.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -157,10 +187,32 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\menutoggle.png" />
+    <Resource Include="Assets\img_background.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\img_background.jpg" />
+    <Resource Include="Assets\img_contact.png" />
+    <Resource Include="Assets\img_map.png" />
+    <Resource Include="Assets\img_message.png" />
+    <Resource Include="Assets\img_setting.png" />
+    <Resource Include="Assets\img_signout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\tgBtn_default.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\closeBtn_default.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\tgBtn_MouseOver.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\menu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\img_home.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\meal.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
