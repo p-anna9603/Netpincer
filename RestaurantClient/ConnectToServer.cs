@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using RestaurantClient;
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using RestaurantClient;
 
 public class ConnectToServer
 {
