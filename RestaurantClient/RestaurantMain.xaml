@@ -211,7 +211,7 @@
             </Grid>
             <Grid Margin="80 55 0 0">
                 <!--<Grid x:Name="GridPrincipal" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
-                <ContentControl Name="childWindow" Content="{Binding}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" SizeChanged="childWindow_SizeChanged"></ContentControl>
+                <ContentControl Name="childWindow" PreviewMouseLeftButtonDown="BG_PreviewMouseLeftButtonDown" Content="{Binding}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" SizeChanged="childWindow_SizeChanged"></ContentControl>
             </Grid>
 
             <!--// Navigation Panel //-->
@@ -368,7 +368,7 @@
 
                         </ListViewItem>
 
-                        <!--// Contacts //-->
+                        <!--// Menus //-->
 
                         <ListViewItem HorizontalAlignment="Left"
                                       Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter"
@@ -392,7 +392,7 @@
                             <ListViewItem.ToolTip>
 
                                 <ToolTip x:Name="tt_contacts"
-                                         Content="Contacts"
+                                         Content="Menük"
                                          Style="{StaticResource tt_style}"/>
 
                             </ListViewItem.ToolTip>

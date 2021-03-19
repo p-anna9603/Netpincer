@@ -23,16 +23,17 @@ namespace RestaurantClient
     /// </summary>
     public partial class RestNewFood : Window
     {
+        Food food;
         Regex regex = new Regex("[^0-9]+");
-        int foodID;
-
+        int foodID = 0;
         string foodName;
         double foodPrice;
         double rating = 0;
         int pictureID = 0; // TODO get the last id
         int allergenID = 0;
-
+        int isAlwaysAvailable = 0; // 1 - always, 0 - only in a specific period
         Byte[] ImageByteArray;
+        int modifyingWindow = 0; // 0 - for new food, 1 - existing food just modifying
         
         string imgFilePath;
         List<String> allergenes = new List<String>();
@@ -43,40 +44,117 @@ namespace RestaurantClient
         public double FoodPrice { get => foodPrice; set => foodPrice = value; }
         public string FoodName { get => foodName; set => foodName = value; }
         public int FoodID { get => foodID; set => foodID = value; }
+        public List<string> Allergenes { get => allergenes; set => allergenes = value; }
+        internal Food Food { get => food; set => food = value; }
 
-        public RestNewFood()
+        public RestNewFood(Food f = null)
         {
             InitializeComponent();
+            if(f != null) // modifying open
+            {
+                food = f;
+                setElementsData();
+                modifyingWindow = 1;
+            }
         }
-
+        private void setElementsData()
+        {
+            textBoxName.Text = food.Name;
+            textBoxPrice.Text = food.Price.ToString();
+            //TODO set availability and img
+            Submit.Content = "MÓDOSÍTÁS";
+            mainPanel.IsEnabled = false;
+        }
         private void selectedAllergene(object sender, SelectionChangedEventArgs e)
         {
-            ComboBoxItem item = (ComboBoxItem)combo.SelectedItem;
-            Console.WriteLine(item.Content.ToString());
-            allergeneListBox.Items.Add(item.Content.ToString());
+            if (combo.SelectedItem != null)
+            {
+                ComboBoxItem item = (ComboBoxItem)combo.SelectedItem;
+                int index = combo.SelectedIndex;
+                Console.WriteLine(item.Content.ToString());
+                allergeneListBox.Items.Add(item.Content.ToString());
+                Console.WriteLine("item as hozzáadás után");
+                combo.Items.RemoveAt(index);
+            }
         }
 
         private void addButton_Click(object sender, EventArgs e)
         {
-            if(textBoxName.Text.Length == 0)
+            string startdate;
+            string enddate;
+            if (modifyingWindow == 1 && mainPanel.IsEnabled == false)
             {
-                errorMessage.Text = "Adja meg az étel nevét!";
+                mainPanel.IsEnabled = true;
+                Submit.Content = "MENTÉS";
             }
-            else if(textBoxPrice.Text.Length == 0)
+            else // adding new food / modified food
             {
-                errorMessage.Text = "Adja meg az étel árát!";
-            }
-            else
-            {
-                foodName = textBoxName.Text;
-                foodPrice = Double.Parse(textBoxPrice.Text);
-                setAllergens();
-                Food food = new Food(foodID, foodName, foodPrice, rating, pictureID);
-                //TODO add new food to database
-                //TODO get the latest foodID from db foodID = foodid;
-                savePictureToDatabase();
-                IsSaved = true;
-                this.Close();
+                if (textBoxName.Text.Length == 0)
+                {
+                    errorMessage.Text = "Adja meg az étel nevét!";
+                }
+                else if (textBoxPrice.Text.Length == 0)
+                {
+                    errorMessage.Text = "Adja meg az étel árát!";
+                }
+                else if (always_RadioButton.IsChecked == false && period_RadioButton.IsChecked == false)
+                {
+                    errorMessage.Text = "Adja meg az étel elérehtőségét!";
+                }
+                else if (period_RadioButton.IsChecked == true && (fromPeriod.SelectedDate == null || toPeriod.SelectedDate == null))
+                {
+                    if (fromPeriod.SelectedDate == null && toPeriod.SelectedDate == null)
+                    {
+                        errorMessage.Text = "Adja meg az étel elérehtőségének kezdő és záró dátumát!";
+                    }
+                    else if (fromPeriod.SelectedDate != null || toPeriod.SelectedDate == null)
+                    {
+                        errorMessage.Text = "Adja meg az étel elérehtőségének záró dátumát!";
+                    }
+                    else if (fromPeriod.SelectedDate == null || toPeriod.SelectedDate != null)
+                    {
+                        errorMessage.Text = "Adja meg az étel elérehtőségének kezdő dátumát!";
+                    }
+
+                }
+                else if (period_RadioButton.IsChecked == true && !(DateTime.Now.Date.ToShortDateString().Equals(fromPeriod.SelectedDate.Value.ToShortDateString()))
+                    && DateTime.Compare((DateTime)fromPeriod.SelectedDate.Value, DateTime.Now) < 0)
+                {
+                    errorMessage.Text = "Kezdő dátum nem lehet korábban mint a jelenlegi!";
+                }
+                else if (period_RadioButton.IsChecked == true && DateTime.Compare((DateTime)fromPeriod.SelectedDate, (DateTime)toPeriod.SelectedDate) > 0)
+                {
+                    errorMessage.Text = "Záró dátum kisebb mint a kezdő!";
+                }
+                else
+                {
+                    foodName = textBoxName.Text;
+                    foodPrice = Double.Parse(textBoxPrice.Text);
+                    setAllergens(); // TODO save to DB
+                    if (period_RadioButton.IsChecked == true)
+                    {
+                        startdate = fromPeriod.SelectedDate.Value.ToShortDateString();
+                        enddate = toPeriod.SelectedDate.Value.ToShortDateString();
+                    }
+                    else
+                    {
+                        isAlwaysAvailable = 1;
+                    }
+                    if (modifyingWindow == 1)
+                    {
+                        // TODO modify food / picture in database (with just the changed values)
+                    }
+                    else
+                    {
+                        food = new Food(foodID, foodName, foodPrice, rating, pictureID, Allergenes);
+                        //TODO add new food to database
+                        //TODO get the latest foodID from db foodID = foodid;
+                        // TODO upload availability to DB
+                        savePictureToDatabase(); // TODO save to DB                       
+                    }
+                    IsSaved = true;
+                    this.Close();
+                }
             }
         }
 
@@ -89,7 +167,11 @@ namespace RestaurantClient
             else if(allergeneListBox.SelectedIndex >= 0)
             {
                 int toDelete = allergeneListBox.SelectedIndex;
+                string cont = allergeneListBox.Items.GetItemAt(toDelete).ToString();
+                ComboBoxItem item = new ComboBoxItem();
+                item.Content = cont;
                 allergeneListBox.Items.RemoveAt(toDelete);
+                combo.Items.Add(item);
             }
         }
 
@@ -103,11 +185,11 @@ namespace RestaurantClient
         {
             if (IsSaved != true)
             {
-                string msg = "Data is not saved. Close without saving?";
+                string msg = "Bezárja mentés nélkül?";
                 MessageBoxResult result =
                     MessageBox.Show(
                     msg,
-                    "Closing",
+                    "Bezárás",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Warning);
                 if (result == MessageBoxResult.No)
@@ -127,15 +209,6 @@ namespace RestaurantClient
         {
             string allergName;
             Console.WriteLine("0 allergéneknél");
-            //foreach(ItemsControl i in allergeneListBox.Items)
-            //{
-            //    Console.WriteLine("1 allergéneknél");
-            ////    allergName = i.Content.ToString();
-            //    Console.WriteLine("2 allergéneknél");
-            //    //TODO get allergen id from database
-            //    // Upload foodID to database to the given allergenID
-            //    //  Allergen al = new Allergen(allergenID, allergName, foodID);
-            //}
             for(int i = 0; i < allergeneListBox.Items.Count; ++i)
             {
                 allergName = allergeneListBox.Items[i].ToString();
@@ -149,7 +222,7 @@ namespace RestaurantClient
         private void imgUpload_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog op = new OpenFileDialog();
-            op.Title = "Select a picture";
+            op.Title = "Válasszon képet";
             op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
               "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
               "Portable Network Graphic (*.png)|*.png";

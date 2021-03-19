@@ -6,20 +6,22 @@ using System.Threading.Tasks;
 
 namespace RestaurantClient
 {
-    class Food
+    public class Food
     {
         int foodID;
         string name;
         double price;
         double rating;
         int pictureID;
-        public Food(int fID, string nam, double prc, double rate, int picID)
+        List<string> allergenes;
+        public Food(int fID, string nam, double prc, double rate, int picID, List<String> allergs)
         {
             foodID = fID;
             name = nam;
             price = prc;
             rating = rate;
             pictureID = picID;
+            allergenes = allergs;
         }
 
         public int FoodID { get => foodID; set => foodID = value; }

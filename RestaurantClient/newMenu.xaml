@@ -32,7 +32,7 @@
                         <BlurEffect Radius="1.5"/>
                     </Border.Effect>
                 </Border>
-                <StackPanel Width="400" HorizontalAlignment="Center" Margin="35,0,35,4">
+                <StackPanel Name="mainPanel" Width="400" HorizontalAlignment="Center" Margin="35,0,35,4">
                     <StackPanel  Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,5,0,0" >
                         <TextBlock Name="errorText" Text="" FontFamily="Corbel" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Width="250" Height="25" Margin="4" Foreground="Red">
                         </TextBlock>
@@ -44,11 +44,11 @@
                         <TextBox Height="23" HorizontalAlignment="Left" Margin="5,8,0,8" Padding="1.5" Name="categoryNameTextBox" VerticalAlignment="Center" Width="254" />
                     </StackPanel>
                     <StackPanel  Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,25,0,25" Height="115" Width="385">
-                        <TextBlock Text="Kép feltöltése: " FontFamily="Helvetica" FontSize="17" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" Height="30" Margin="5,0,0,0" Foreground="Black">
+                        <TextBlock Text="Kép feltöltése: " FontFamily="Helvetica" FontSize="17" HorizontalAlignment="Left" VerticalAlignment="Center" Width="141" Height="30" Margin="5,42,0,43" Foreground="Black">
                         </TextBlock>
-                        <Button Content="+" FontSize="30"  FontStyle="Normal" Height="95" HorizontalAlignment="Left" Name="ImageButton" VerticalAlignment="Center" 
-                        Width="250" Click="imageUpButton_Click" Foreground="#FFF9F8F8" Background="#FFC7C6C6" BorderBrush="#FFFFFDFD"
-                        BorderThickness="2" Margin="7,10,0,10"></Button>
+                        <Border BorderBrush="Blue" BorderThickness="1">
+                            <Image Width="211" Name="imgFood"  Source="Assets/menu.png" Stretch="None" MouseDown="imgUpload_Click"/>
+                        </Border>
                     </StackPanel>
                 </StackPanel>
             </Grid>

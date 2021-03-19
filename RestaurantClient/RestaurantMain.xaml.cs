@@ -54,12 +54,14 @@ namespace FoodOrderClient
         private void Tg_Btn_Unchecked(object sender, RoutedEventArgs e) // menü összecsukása
         {
             img_bg.Opacity = 1;
+            childWindow.Opacity = 1;
             Console.WriteLine("tgbutn unchecked");
         }
 
         private void Tg_Btn_Checked(object sender, RoutedEventArgs e) // menü megnyitása
         {
-            img_bg.Opacity = 0.3;
+            img_bg.Opacity = 0.5;
+            childWindow.Opacity = 0.5;
             Console.WriteLine("tgbutn checked");
         }
 

@@ -6,6 +6,17 @@
              xmlns:local="clr-namespace:RestaurantClient"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <UserControl.Resources>
+        <Style x:Key="bckgStyle" TargetType="StackPanel">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="0.8">                        
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+                 
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -25,8 +36,9 @@
         </Grid>
         <ScrollViewer Name="scrollView" Grid.Column="1" Grid.Row="1" Background="#FFF1F1F1" VerticalScrollBarVisibility="Auto" >
             <WrapPanel Name="FoodList"  Opacity="120" OpacityMask="Aqua">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
-                                        Width="330" Height="102" Margin="5,5,0,0">
+                <Border BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <StackPanel Name="food" Orientation="Horizontal" HorizontalAlignment="Center"
+                                        Width="330" Height="102" Margin="5,5,0,0" Style="{StaticResource bckgStyle}">                    
                     <!--<Border BorderBrush="AliceBlue" BorderThickness="1">-->
                     <StackPanel Orientation="Vertical" Width="263">
                         <TextBlock VerticalAlignment="Top" FontSize="16" FontFamily="Century" HorizontalAlignment="Left"  TextAlignment="Left"
@@ -40,15 +52,28 @@
                                        Stretch="Fill"
                                        Margin="0,18" Height="66" Width="64"/>
                     </StackPanel>
-                    <StackPanel.Background>
-                        <SolidColorBrush>
-                            <SolidColorBrush.Color>
-                                <Color A="50" R="255" G="204" B="153"></Color>
-                            </SolidColorBrush.Color>
-                        </SolidColorBrush>
-                    </StackPanel.Background>
-                </StackPanel>
+                        <StackPanel.Background>
+                            <SolidColorBrush>
+                                <SolidColorBrush.Color>
+                                    <Color A="50" R="255" G="204" B="153"></Color>
+                                </SolidColorBrush.Color>
+                            </SolidColorBrush>
+                        </StackPanel.Background>
+                    </StackPanel>
+
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=IsMouseOver, ElementName=food}" Value="True">
+                                    <Setter Property="BorderBrush" Value="White"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    
+                </Border>
             </WrapPanel>
         </ScrollViewer>
     </Grid>
+
 </UserControl>

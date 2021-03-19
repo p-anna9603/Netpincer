@@ -52,14 +52,23 @@
                         <ListViewItem HorizontalAlignment="Left" Width="200" Height="128">-->
                     <WrapPanel Name="menuList" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" MouseDown="categImg_MouseDown"
-                                        Width="200" Height="128" Margin="5,5,0,0">
+                                        Width="200" Height="132" Margin="5,5,0,0">
                             <Border BorderBrush="AliceBlue" BorderThickness="1">
                                 <TextBlock VerticalAlignment="Top" FontSize="16" FontFamily="Century" HorizontalAlignment="Center"  TextAlignment="Center"
                                      Margin="0,0,0,0" Width="200" Height="50" Text="1. menü" TextWrapping="Wrap" Padding="2,10,2,0"/>
                             </Border>
-                            <Image Source="Assets/menu.png"
-                                       Stretch="None"
-                                       Margin="20,5,20,0" Height="70" />
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="200">
+                                <Image Source="Assets/menu.png" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Stretch="Fill"                                       
+                                       Margin="30,8,11,2" Height="70" Width="138" />
+                                <Button BorderBrush="DarkBlue" x:Name="settingButton" Height="20" Width="20" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                        Background="Transparent" Click="menuSetting_Click" Margin="0,0,0,0">
+                                    <Button.ToolTip>
+                                        <ToolTip Content="Módosítás"/>
+                                    </Button.ToolTip>
+                                    <Image x:Name="settingImg" Source="Assets/img_setting.png" Stretch="Fill"/>
+                                </Button>
+                            </StackPanel>
                             <StackPanel.Background>
                                 <SolidColorBrush>
                                     <SolidColorBrush.Color>
