@@ -53,6 +53,9 @@
     <Reference Include="DateTimeExtensions, Version=5.4.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\DateTimeExtensions.5.4.3\lib\net45\DateTimeExtensions.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Syncfusion.Licensing, Version=18.4460.0.47, Culture=neutral, PublicKeyToken=632609b4d040f6b4, processorArchitecture=MSIL">
       <HintPath>packages\Syncfusion.Licensing.18.4.0.47\lib\net46\Syncfusion.Licensing.dll</HintPath>
     </Reference>
@@ -97,6 +100,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ConnectToServer.cs" />
     <Compile Include="Food.cs" />
     <Compile Include="newMenu.xaml.cs">
       <DependentUpon>newMenu.xaml</DependentUpon>
@@ -110,6 +114,7 @@
     <Compile Include="RestNewFood.xaml.cs">
       <DependentUpon>RestNewFood.xaml</DependentUpon>
     </Compile>
+    <Compile Include="User.cs" />
     <Page Include="newMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

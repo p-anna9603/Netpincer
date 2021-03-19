@@ -22,10 +22,19 @@ namespace FoodOrderClient
     {
         RestaurantMenus menus;
         public UserControl child;
+        public ConnectToServer ServerConnection;
         public RestaurantMain()
         {
             InitializeComponent();
             Console.WriteLine(settingImg.Source.ToString());
+
+
+            //CONNECTING TO SERVER      --Not Gonna work without the database!
+            //ServerConnection = new ConnectToServer();
+            //Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword").toString());
+            //ServerConnection.StopClient();
+
+
         }
         private void ListViewItem_MouseEnter(object sender, MouseEventArgs e)
         {

@@ -163,7 +163,7 @@
 
             <!--// Background Image //-->
 
-            <Grid x:Name="BG" PreviewMouseLeftButtonDown="BG_PreviewMouseLeftButtonDown">
+            <Grid x:Name="BG" PreviewMouseLeftButtonDown="BG_PreviewMouseLeftButtonDown" Margin="12,0,-11.667,-0.333">
 
                 <Grid.Background>
 
@@ -191,21 +191,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <!--<Button x:Name="CloseBtn"
-                        Grid.Column="1"
-                        Grid.Row="1"
-                        Height="40"
-                        Width="40"
-                        BorderThickness="0"
-                        Style="{StaticResource Close_btn}" Click="CloseBtn_Click">
 
-                    <Button.Background>
-
-                        <ImageBrush ImageSource="Assets/closeBtn_default.png"/>
-
-                    </Button.Background>
-
-                </Button>-->
 
                 <!--// Grid for the child elements-->
             </Grid>
