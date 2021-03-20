@@ -34,5 +34,9 @@ namespace User_Client
         {
 
         }
+        private void TXTB_First_Name_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }

@@ -52,6 +52,8 @@ namespace RestaurantClient
             public string getLine2() { return line2; }
             //"I'm not gonna code in C++" they said.
             //"C# is way better" they said.
+            //"I Don't understand C++" I said
+            //"Orosz Ákos laughed" 
 
         }
  }
