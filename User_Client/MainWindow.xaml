@@ -17,11 +17,19 @@
 
         <TextBox x:Name="TXTB_First_Name" HorizontalAlignment="Left" Height="23" Margin="150,27,0,0" Grid.Row="1"  Grid.RowSpan="1" TextWrapping="Wrap" Text="Kiss" VerticalAlignment="Top" Width="243" TextChanged="TXTB_First_Name_TextChanged"/>
         <TextBox x:Name="TXTB_Last_Name" HorizontalAlignment="Left" Height="23" Margin="150,55,0,0" Grid.Row="1" TextWrapping="Wrap" Text="István" VerticalAlignment="Top" Width="243"/>
-        <TextBox x:Name="TXT_Phone" HorizontalAlignment="Left" Height="23" Margin="150,83,0,174" Grid.Row="1" TextWrapping="Wrap" Text="+36-" VerticalAlignment="Center" Width="243"/>
+        <TextBox x:Name="TXTB_Phone" HorizontalAlignment="Left" Height="23" Margin="150,83,0,174" Grid.Row="1" TextWrapping="Wrap" Text="+36-" VerticalAlignment="Center" Width="243"/>
         <TextBox x:Name="TXTB_City" HorizontalAlignment="Left" Height="23" Margin="150,111,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Veszprém" VerticalAlignment="Top" Width="243"/>
         <TextBox x:Name="TXT_Zip_Code" HorizontalAlignment="Left" Height="23" Margin="258,167,0,0" Grid.Row="1" TextWrapping="Wrap" Text="IR szám" VerticalAlignment="Top" Width="135"/>
         <TextBox x:Name="TXTB_Street_Name" HorizontalAlignment="Left" Height="23" Margin="150,139,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Utcanév" VerticalAlignment="Top" Width="243"/>
         <TextBox x:Name="TXTB_House_Number" HorizontalAlignment="Left" Height="23" Margin="150,167,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Házszám" VerticalAlignment="Top" Width="103"/>
+
+        <TextBox x:Name="TXTB_User_Name" HorizontalAlignment="Left" Height="23" Margin="507,27,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Xx_KissIstván_xX" VerticalAlignment="Top" Width="262"/>
+        <TextBox x:Name="TXTB_email" HorizontalAlignment="Left" Height="23" Margin="507,55,0,0" Grid.Row="1" TextWrapping="Wrap" Text="kissistvan@gmail.com" VerticalAlignment="Top" Width="262"/>
+        <TextBox x:Name="TXTB_Password" HorizontalAlignment="Left" Height="23" Margin="507,83,0,0" Grid.Row="1" TextWrapping="Wrap" Text="*********" VerticalAlignment="Top" Width="262"/>
+
+        <TextBox x:Name="TXTB_Line2" HorizontalAlignment="Left" Height="23" Margin="150,195,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Emelet, Ajtó" VerticalAlignment="Top" Width="243"/>
+
+
 
         <Label Content="Regisztráció" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Grid.Row="0"/>
         <Label Content="Vezetéknév" HorizontalAlignment="Left" Margin="52,23,0,0" Grid.Row="1" VerticalAlignment="Top"/>
@@ -30,11 +38,16 @@
         <Label Content="Város" HorizontalAlignment="Left" Margin="52,107,0,0" Grid.Row="1" VerticalAlignment="Top"/>
         <Label Content="Cím" HorizontalAlignment="Left" Margin="52,139,0,0" Grid.Row="1" VerticalAlignment="Top"/>
 
+        <Label Content="Felhasznónév" HorizontalAlignment="Left" Margin="398,23,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+
+        <Label Content="Email cím&#xD;&#xA;" HorizontalAlignment="Left" Margin="398,51,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <Label Content="Jelszó&#xD;&#xA;" HorizontalAlignment="Left" Margin="398,79,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.446,0.506"/>
+
+
+
         <Button x:Name="BTN_Register" Content="Regisztáció" HorizontalAlignment="Left" Margin="25,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="175" Click="BTN_Register_Click"/>
         <Button x:Name="BTN_Exit" Content="Kilépés" HorizontalAlignment="Right" Margin="0,25,25,25" Grid.Row="2" VerticalAlignment="Center" Width="175" Click="BTN_Exit_Click"/>
-
-
-
+        
 
 
 

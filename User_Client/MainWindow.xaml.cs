@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RestaurantClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,10 +24,23 @@ namespace User_Client
         public MainWindow()
         {
             InitializeComponent();
+
+
         }
 
         private void BTN_Register_Click(object sender, RoutedEventArgs e)
         {
+            if (KotelezoMezoEllenorzes())
+            {
+                // User(string _username, string _password, string _lastName, string _firstName, string _phoneNumber, string _city, string _zipcode, string _line1, string _line2)/
+                string line1 = TXTB_Street_Name.Text + " " + TXTB_House_Number.Text;
+                User adat = new User(TXTB_User_Name.Text, TXTB_Password.Text, TXTB_Last_Name.Text, TXTB_First_Name.Text, TXTB_Phone.Text, TXTB_City.Text, TXT_Zip_Code.Text, line1, TXTB_Line2.Text);
+
+            }
+            else
+            {
+
+            }
 
         }
 
@@ -37,6 +51,21 @@ namespace User_Client
         private void TXTB_First_Name_TextChanged(object sender, TextChangedEventArgs e)
         {
 
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private bool KotelezoMezoEllenorzes()
+        {
+            if (TXTB_First_Name.Text == "")
+            {
+                TXTB_First_Name.Focus();
+                return false;
+            }
+            return true;
         }
     }
 }
