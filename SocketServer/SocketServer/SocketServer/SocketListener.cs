@@ -24,6 +24,8 @@ namespace SocketServer
         private SqlConnection DatabaseConnection;
         private int clientID;
         private List<int> listOfConnectedClients;
+        private Socket listener;
+        Socket handler;
         public SocketListener() 
         {
             /*
@@ -52,7 +54,7 @@ namespace SocketServer
             {
 
                 // Create a Socket that will use Tcp protocol      
-                Socket listener = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+                listener = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                 // A Socket must be associated with an endpoint using the Bind method  
                 listener.Bind(localEndPoint);
                 // Specify how many requests a Socket can listen before it gives Server busy response.  
@@ -63,10 +65,11 @@ namespace SocketServer
                 //TEST JSON OBJECT
                 JObject jasonObjectTest = new JObject();
                 jasonObjectTest = JObject.Parse(
-                                    @"{    'type': '1',
+                                    @"{'type': '1',
                                     'clientID': '0',
                                     'username': 'testUser',
-                                     'password': 't3stpassword'
+                                     'password': 't3stpassword',
+                                      'userType': '1'
                               }");
                 //{
                 //    JObject header = getClientHeader(jasonObjectTest);  //1st JObj  --Header
@@ -86,8 +89,9 @@ namespace SocketServer
                 //    //handler.Send(Encoding.ASCII.GetBytes(header.ToString()));
                 //}
 
-                Console.WriteLine("Waiting for a connection...");
-                Socket handler = listener.Accept();
+                //Console.WriteLine("Waiting for a connection...");
+                //Socket handler = listener.Accept();
+                waitingForConnection();
 
                 // Incoming data from the client.    
                 string data = null;
@@ -98,6 +102,10 @@ namespace SocketServer
                 {
                     while (true)
                     {
+                        //if (handler.Poll(1000,SelectMode.SelectRead))
+                        {
+                        //    waitingForConnection();
+                        }
                         bytes = new byte[1024];
                         int bytesRec = handler.Receive(bytes);
                         //Console.WriteLine("bytes recieved {0}", bytesRec);
@@ -111,41 +119,40 @@ namespace SocketServer
                     //RECEIVED NEW BYTES
                     try
                     {
-
-                        
-
-                        JObject jasonObject = new JObject();
-                        jasonObject = JObject.Parse(data);
-                        Console.WriteLine("Received JSON: {0}", jasonObject.ToString());
-                        if (jasonObject["type"].ToString() == "0")  //First Connection From Client
+                        JObject receivedJSONObject = new JObject();
+                        receivedJSONObject = JObject.Parse(data);
+                        Console.WriteLine("Received JSON: {0}", receivedJSONObject.ToString());
+                        if (receivedJSONObject["type"].ToString() == "0")  //First Connection From Client
                         {
                             //Console.WriteLine("First message");
                             JObject sendJason = new JObject();
                             sendJason = sendFirstConnectionInfo();
                             handler.Send(Encoding.ASCII.GetBytes(sendJason.ToString()));  //Sending Client ID
-                            listOfConnectedClients.Add(clientID - 1); //Adding client to connected list
+                                                                                          // listOfConnectedClients.Add(clientID - 1); //Adding client to connected list
                         }
-                         else if (jasonObject["type"].ToString() == "1") //Get User Information
+                        else if (receivedJSONObject["type"].ToString() == "1") //Get User Information
                         {
-                            JObject header = getClientHeader(jasonObjectTest);  //1st JObj  --Header
-                            string userInfo=getUserInfo(jasonObjectTest["username"].ToString(), jasonObjectTest["password"].ToString());
+                            JObject header = getClientHeader(receivedJSONObject);  //1st JObj  --Header
+                            string userInfo = getUserInfo(receivedJSONObject["username"].ToString(), receivedJSONObject["password"].ToString(), receivedJSONObject["userType"].ToString());
                             userInfo = userInfo.Replace("[", "");
                             userInfo = userInfo.Replace("]", "");
-                            //Console.WriteLine("HEADER: {0}", userInfo);
-                            // string userInfo=getUserInfo("testUser", "t3stpassword");
                             JObject userJason = JObject.Parse(userInfo);    //2nd JObj  --Body
                             Console.WriteLine("BODY: {0}", userJason);
                             //JsonConvert.DeserializeObject(userInfo);
                             header.Merge(userJason);
-                            Console.WriteLine("MERGED JSON: {0}",header.ToString());
+                            Console.WriteLine("MERGED JSON: {0}", header.ToString());
                             handler.Send(Encoding.ASCII.GetBytes(header.ToString()));
                         }
-                        
+                        else if (receivedJSONObject["type"].ToString() == "4") //Get Register User
+                        {
+                            string register = registerUser(receivedJSONObject);
+                            handler.Send(Encoding.ASCII.GetBytes(register));
+                        }
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine(e.ToString());
-                       
+
                     }
                     
 
@@ -175,13 +182,58 @@ namespace SocketServer
             Console.ReadKey();
         }
 
+        private string registerUser(JObject o)
+        {
+            //should check if user already exists or not    --WIP
+            string query = "EXEC registerUser @username, @pass, @city, @zip, @line1, @line2, @lastName, @firstName, @phone, @userType";
+            try
+            {
+                SqlCommand command = new SqlCommand(query, DatabaseConnection);
+                command.Parameters.AddWithValue("@username", o["username"].ToString());
+                Console.WriteLine(o["username"].ToString());
+                command.Parameters.AddWithValue("@pass", o["password"].ToString());
+                Console.WriteLine(o["password"].ToString());
+                command.Parameters.AddWithValue("@city", o["city"].ToString());
+                Console.WriteLine(o["city"].ToString());
+                command.Parameters.AddWithValue("@zip", o["zipcode"].ToString());
+                Console.WriteLine(o["zipcode"].ToString());
+                command.Parameters.AddWithValue("@line1", o["line1"].ToString());
+                Console.WriteLine(o["line1"].ToString());
+                command.Parameters.AddWithValue("@line2", o["line2"].ToString());
+                Console.WriteLine(o["line2"].ToString());
+                command.Parameters.AddWithValue("@lastName", o["lastName"].ToString());
+                Console.WriteLine(o["lastName"].ToString());
+                command.Parameters.AddWithValue("@firstName", o["firstName"].ToString());
+                Console.WriteLine(o["firstName"].ToString());
+                command.Parameters.AddWithValue("@phone", o["phoneNumber"].ToString());
+                Console.WriteLine(o["phoneNumber"].ToString());
+                command.Parameters.AddWithValue("@userType", Int32.Parse(o["userType"].ToString()));
+                Console.WriteLine(o["userType"].ToString());
+                //SqlDataAdapter da = new SqlDataAdapter(command);
+                // Console.WriteLine("SQL COMMAND: {0}", command.Parameters.ToString());
+                int affectedRows=command.ExecuteNonQuery();
+                if (affectedRows == 0)
+                {
+                    return getErrorMessage(91);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return getErrorMessage(99);
+            }
+            JObject ok = new JObject();
+            ok.Add("type",4);
+            ok.Add("status","Successful");
+            return ok.ToString();
+        }
+
         public static SqlConnection ConnectToDatabase()
         {
             //                      localhost             DatabaseName     UserName     UserPassw
             String cnn = "Data Source=localhost;Initial Catalog=Netpincer;User ID=sa;Password=passw0rd";
             SqlConnection db = new SqlConnection(cnn);
             db.Open();
-            //Console.WriteLine("Conn State: {0}", db.State);
             return db;
         }
 
@@ -204,18 +256,28 @@ namespace SocketServer
         }
 
 
-        private string getUserInfo(string username, string pass)
+        private string getUserInfo(string username, string pass, string userType)
         {
-            //Getting user info from database
-            string query = "SELECT* FROM getUser(@username, @pass)";
+            //Getting user info from database 
+            Console.WriteLine("UserType wtf: {0}", userType);
+            //int user = Int32.Parse(userType);
+            string query = "SELECT* FROM getUser(@username, @pass, @userType)";
             DataTable dataTable = new DataTable();
             try
             {
                 SqlCommand command = new SqlCommand(query, DatabaseConnection);
                 command.Parameters.AddWithValue("@username", username);
                 command.Parameters.AddWithValue("@pass", pass);
+                command.Parameters.AddWithValue("@userType", userType);
                 SqlDataAdapter da = new SqlDataAdapter(command);
+                Console.WriteLine("USER type int: {0}", userType);
+               // Console.WriteLine("SQL COMMAND: {0}", command.Parameters.ToString());
                 da.Fill(dataTable);
+                if (dataTable.Rows.Count==0) 
+                {
+                    da.Dispose();
+                    return getErrorMessage(91);
+                }
                 //Console.WriteLine("rows: {0}", dataTable.ToString());
                 da.Dispose();
                 Console.WriteLine("TABLE: {0}", JsonConvert.SerializeObject(dataTable));
@@ -224,9 +286,45 @@ namespace SocketServer
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
-                return "";
+                return getErrorMessage(99);
             }   
         }
 
+
+        private string getErrorMessage(int errorNumber)
+        {
+            JObject errorObject = new JObject();
+            errorObject.Add("type", 99);
+            switch (errorNumber) 
+            {
+                case 91:
+                    errorObject.Add("error", "User not found");
+                    break;
+                case 92:
+                    errorObject.Add("error", "Restaurant not found");
+                    break;
+                case 93:
+                    errorObject.Add("error", "Menu not found");
+                    break;
+                case 94:
+                    errorObject.Add("error", "Category not found");
+                    break;
+                case 95:
+                    errorObject.Add("error", "attempt to register user failed");
+                    break;
+                default:
+                    errorObject.Add("error", "Unexpected error");
+                    break;
+
+            }
+            return errorObject.ToString();
+        }
+
+
+        private void waitingForConnection()
+        {
+            Console.WriteLine("Waiting for a connection...");
+            handler = listener.Accept();
+        }
     }
 }

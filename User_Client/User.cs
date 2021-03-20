@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace RestaurantClient
 {
+        public enum UserType { Customer, RestaurantOwner, DeliveryPerson };
         public class User
         {
             private string username;
@@ -17,11 +18,13 @@ namespace RestaurantClient
             private string zipcode;
             private string line1;
             private string line2;
+            UserType userType;
+            
 
             public User() { }
 
             public User(string _username, string _password, string _lastName, string _firstName, string _phoneNumber,
-                 string _city, string _zipcode, string _line1, string _line2)
+                 string _city, string _zipcode, string _line1, string _line2, int _userTypeId)
             {
                 username = _username;
                 password = _password;
@@ -32,14 +35,30 @@ namespace RestaurantClient
                 zipcode = _zipcode;
                 line1 = _line1;
                 line2 = _line2;
+                switch (_userTypeId)
+                {
+                    case 0:
+                        userType = UserType.Customer;
+                        break;
+                    case 1:
+                        userType = UserType.RestaurantOwner;
+                        break;
+                    case 2:
+                        userType = UserType.DeliveryPerson;
+                        break;
+                    default:
+                        Console.WriteLine("Undefined User type");
+                        break;
+                }
+
             }
 
             public string toString() 
             {
-            return "username: " + username + " \npassword: " + password + " \nlastName: " + lastName
+                return "username: " + username + " \npassword: " + password + " \nlastName: " + lastName
                 + "\nfirstName: " + firstName + "\nphoneNumber: " + phoneNumber + "\ncity: " + city+
-                "\nzipcode: " + zipcode+ "\nline1: " + line1+ "\nline2: " + line2;
-        }
+                "\nzipcode: " + zipcode+ "\nline1: " + line1+ "\nline2: " + line2 + "\nuserType:"+userType.ToString();
+            }
 
         public string getUsername() { return username; }
             public string getPassword() { return password; }

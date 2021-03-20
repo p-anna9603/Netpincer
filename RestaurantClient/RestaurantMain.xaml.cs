@@ -30,9 +30,14 @@ namespace FoodOrderClient
 
 
             //CONNECTING TO SERVER      --Not Gonna work without the database!
-            //ServerConnection = new ConnectToServer();
-            //Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword").toString());
-            //ServerConnection.StopClient();
+            ServerConnection = new ConnectToServer();
+            Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword",UserType.Customer).toString());           //OK
+//            ServerConnection.registerUser(ServerConnection.getUser("testUser", "t3stpassword", UserType.Customer));
+            ServerConnection.registerUser(new User("userFromClient","ass","Flex","Elek","+3699145825","Veszprem","8200","Ass utca 6","2/A",1));
+           // Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword", UserType.RestaurantOwner).toString());   //NOT FOUND RETURNS ERROR MESSAGE
+            //Console.WriteLine(ServerConnection.getUser("testRestaurantOwner", "r3staurant", UserType.RestaurantOwner).toString());  //OK
+
+            ServerConnection.StopClient();
 
 
         }

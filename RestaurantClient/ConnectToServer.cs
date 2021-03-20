@@ -1,9 +1,13 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RestaurantClient;
 using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 public class ConnectToServer
 {
@@ -111,7 +115,7 @@ public class ConnectToServer
     {
         try
         {
-            Console.WriteLine("JSONOBJECT:\n {0}", JsonSendObject);
+            //Console.WriteLine("JSONOBJECT:\n {0}", JsonSendObject);
             //string msgJSON = JsonConvert.SerializeObject(JsonSendObject.ToString());
             byte[] msg = Encoding.ASCII.GetBytes(JsonSendObject.ToString());
 
@@ -131,20 +135,37 @@ public class ConnectToServer
         return Encoding.ASCII.GetString(bytes, 0, bytesRec);
 
     }
-
-    public User getUser(string username, string password)   //Returns the User object for the given username ands password (if the parameters are wrong the server dies rip so don't do that)
+    public User getUser(string username, string password, UserType userType)   //Returns the User object for the given username ands password (if the parameters are wrong the server dies rip so don't do that)
     {
-        JObject jobc = new JObject();
-        jobc.Add("type", 1);    // 1 - User login
-        jobc.Add("clientID", clientID);
-        jobc.Add("username", username);
-        jobc.Add("password", password);
-        string recievedMsg = sendJSON(jobc);
-        Console.WriteLine("recievedMsg: {0}", recievedMsg);
         try
         {
-            JObject receivedJSonObject = new JObject();
-            receivedJSonObject = JObject.Parse(recievedMsg);
+            JObject jobc = new JObject();
+            jobc.Add("type", 1);    // 1 - User login
+            jobc.Add("clientID", clientID);
+            jobc.Add("username", username);
+            jobc.Add("password", password);
+            int userTypeNumber=4;
+            switch (userType)
+            {
+                case UserType.Customer:
+                    userTypeNumber = 0;
+                    break;
+                case UserType.RestaurantOwner:
+                    userTypeNumber = 1;
+                    break;
+                case UserType.DeliveryPerson:
+                    userTypeNumber = 2;
+                    break;
+                default:
+                    Console.WriteLine("Undefined User type");
+                    break;
+            }
+            jobc.Add("userType", userTypeNumber);
+            string recievedMsg = sendJSON(jobc);
+            Console.WriteLine("recievedMsg: {0}", recievedMsg);
+        
+                JObject receivedJSonObject = new JObject();
+                receivedJSonObject = JObject.Parse(recievedMsg);
             if (receivedJSonObject["type"].ToString() == "1")
             {
                 //var root = JObject.Parse(jsonString);
@@ -159,18 +180,63 @@ public class ConnectToServer
                     receivedJSonObject["city"].ToString(),
                     receivedJSonObject["zipcode"].ToString(),
                     receivedJSonObject["line1"].ToString(),
-                    receivedJSonObject["line2"].ToString()
+                    receivedJSonObject["line2"].ToString(),
+                    Int32.Parse(receivedJSonObject["userType"].ToString())
                     );
+            }
+            else if (receivedJSonObject["type"].ToString() == "99")
+            {
+                Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
             }
         }
         catch (Exception e)
         {
             Console.WriteLine(e.ToString());
-            
         }
         return new User();
 
     }
+
+    public void registerUser(User user)
+    {
+        //NOT WORKING:
+        //string userString = System.Text.Json.JsonSerializer.Serialize(user);  //not working
+        // Console.WriteLine("String user: {0}", userString);
+        //User registeredUser = System.Text.Json.JsonSerializer.Deserialize<User>(userString);
+        //Console.WriteLine("Registered user: {0}" , registeredUser.toString());
+
+        //THIS WORKS:
+        try 
+        { 
+            Console.WriteLine("Basic user: {0}", user.toString());
+            string userString = JsonConvert.SerializeObject(user);
+            Console.WriteLine("String user2: {0}", userString);
+            JObject header = new JObject();
+            header.Add("type", 4);
+            header.Add("clientID", clientID);
+            JObject body = new JObject();
+            body = JObject.Parse(userString);
+            header.Merge(body);
+            string recievedMsg = sendJSON(header);
+            Console.WriteLine("recievedMsg: {0}", recievedMsg);
+
+            JObject receivedJSonObject = new JObject();
+            receivedJSonObject = JObject.Parse(recievedMsg);
+            if (receivedJSonObject["type"].ToString() == "4")
+            {
+                Console.WriteLine("Server: {0}", receivedJSonObject["status"].ToString());
+            }
+            else if (receivedJSonObject["type"].ToString() == "99")
+            {
+                Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+        }
+ }
+
 
 
     private JObject sendFirstConnectionInfo()
