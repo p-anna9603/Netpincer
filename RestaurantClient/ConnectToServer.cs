@@ -21,7 +21,7 @@ public class ConnectToServer
     private IPAddress ipAddress;
     private IPEndPoint remoteEP;
     private Socket sender;
-    byte[] bytes = new byte[1024];
+    byte[] bytes = new byte[2048];
 
     public ConnectToServer()
     {
@@ -196,6 +196,42 @@ public class ConnectToServer
         return new User();
 
     }
+
+
+    public void registerRestaurant(Restaurant rest)
+    {
+        try
+        {
+            Console.WriteLine("Basic Restautant: {0}", rest.toString());
+            string restString = JsonConvert.SerializeObject(rest);
+            Console.WriteLine("String rest: {0}", restString);
+            JObject header = new JObject();
+            header.Add("type", 5);
+            header.Add("clientID", clientID);
+            JObject body = new JObject();
+            body = JObject.Parse(restString);
+            header.Merge(body);
+            string recievedMsg = sendJSON(header);
+            Console.WriteLine("recievedMsg: {0}", recievedMsg);
+
+            JObject receivedJSonObject = new JObject();
+            receivedJSonObject = JObject.Parse(recievedMsg);
+            if (receivedJSonObject["type"].ToString() == "5")
+            {
+                Console.WriteLine("Server: {0}", receivedJSonObject["status"].ToString());
+            }
+            else if (receivedJSonObject["type"].ToString() == "99")
+            {
+                Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+        }
+    }
+
+
 
     public void registerUser(User user)
     {

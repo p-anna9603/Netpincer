@@ -106,7 +106,7 @@ namespace SocketServer
                         {
                         //    waitingForConnection();
                         }
-                        bytes = new byte[1024];
+                        bytes = new byte[2048];
                         int bytesRec = handler.Receive(bytes);
                         //Console.WriteLine("bytes recieved {0}", bytesRec);
                         if (bytesRec != 0)
@@ -148,6 +148,12 @@ namespace SocketServer
                             string register = registerUser(receivedJSONObject);
                             handler.Send(Encoding.ASCII.GetBytes(register));
                         }
+                        else if (receivedJSONObject["type"].ToString() == "5") //Get Register Restaurant
+                        {
+                            string register = registerRestaurant(receivedJSONObject);
+                            handler.Send(Encoding.ASCII.GetBytes(register));
+                        }
+                        
                     }
                     catch (Exception e)
                     {
@@ -182,10 +188,71 @@ namespace SocketServer
             Console.ReadKey();
         }
 
+        private string registerRestaurant(JObject o)
+        {
+            string query = "EXEC registerRestaurant @username, @pass, @lastName, @firstName, @phone, @email, @name, @restaurantDescription, @style, @city, @zipcode, @line1, @line2, @fromHour ,@fromMinute, @toHour, @toMinute";
+            try
+            {
+                SqlCommand command = new SqlCommand(query, DatabaseConnection);
+                command.Parameters.AddWithValue("@username", o["username"].ToString());
+                Console.WriteLine(o["username"].ToString());
+                command.Parameters.AddWithValue("@pass", o["pass"].ToString());
+                Console.WriteLine(o["pass"].ToString());
+                command.Parameters.AddWithValue("@lastName", o["lastName"].ToString());
+                Console.WriteLine(o["lastName"].ToString());
+                command.Parameters.AddWithValue("@firstName", o["firstName"].ToString());
+                Console.WriteLine(o["firstName"].ToString());
+                command.Parameters.AddWithValue("@phone", o["phoneNumber"].ToString());
+                Console.WriteLine(o["phoneNumber"].ToString());
+                command.Parameters.AddWithValue("@email", o["email"].ToString());
+                Console.WriteLine(o["email"].ToString());
+                command.Parameters.AddWithValue("@name", o["name"].ToString());
+                Console.WriteLine(o["name"].ToString());
+                command.Parameters.AddWithValue("@restaurantDescription", o["restaurantDescription"].ToString());
+                Console.WriteLine(o["restaurantDescription"].ToString());
+                command.Parameters.AddWithValue("@style", o["style"].ToString());
+                Console.WriteLine(o["style"].ToString());
+                command.Parameters.AddWithValue("@city", o["city"].ToString());
+                Console.WriteLine(o["city"].ToString());
+                command.Parameters.AddWithValue("@zipcode", o["zipcode"].ToString());
+                Console.WriteLine(o["zipcode"].ToString());
+                command.Parameters.AddWithValue("@line1", o["line1"].ToString());
+                Console.WriteLine(o["line1"].ToString());
+                command.Parameters.AddWithValue("@line2", o["line2"].ToString());
+                Console.WriteLine(o["line2"].ToString());
+                command.Parameters.AddWithValue("@fromHour", Int32.Parse(o["fromHour"].ToString()));
+                Console.WriteLine(o["fromHour"].ToString());
+                command.Parameters.AddWithValue("@fromMinute", Int32.Parse(o["fromMinute"].ToString()));
+                Console.WriteLine(o["fromMinute"].ToString());
+                command.Parameters.AddWithValue("@toHour", Int32.Parse(o["toHour"].ToString()));
+                Console.WriteLine(o["toHour"].ToString());
+                command.Parameters.AddWithValue("@toMinute", Int32.Parse(o["toMinute"].ToString()));
+                Console.WriteLine(o["toMinute"].ToString());
+                //SqlDataAdapter da = new SqlDataAdapter(command);
+                // Console.WriteLine("SQL COMMAND: {0}", command.Parameters.ToString());
+                int affectedRows = command.ExecuteNonQuery();
+                if (affectedRows == 0)
+                {
+                    return getErrorMessage(91);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return getErrorMessage(99);
+            }
+            JObject ok = new JObject();
+            ok.Add("type", 5);
+            ok.Add("status", "Successful");
+            return ok.ToString();
+        }
+
+
+
         private string registerUser(JObject o)
         {
             //should check if user already exists or not    --WIP
-            string query = "EXEC registerUser @username, @pass, @city, @zip, @line1, @line2, @lastName, @firstName, @phone, @userType";
+            string query = "EXEC registerUser @username, @pass, @email, @city, @zip, @line1, @line2, @lastName, @firstName, @phone, @userType";
             try
             {
                 SqlCommand command = new SqlCommand(query, DatabaseConnection);
@@ -195,6 +262,8 @@ namespace SocketServer
                 Console.WriteLine(o["password"].ToString());
                 command.Parameters.AddWithValue("@city", o["city"].ToString());
                 Console.WriteLine(o["city"].ToString());
+                command.Parameters.AddWithValue("@email", o["email"].ToString());
+                Console.WriteLine(o["email"].ToString());
                 command.Parameters.AddWithValue("@zip", o["zipcode"].ToString());
                 Console.WriteLine(o["zipcode"].ToString());
                 command.Parameters.AddWithValue("@line1", o["line1"].ToString());
@@ -214,7 +283,7 @@ namespace SocketServer
                 int affectedRows=command.ExecuteNonQuery();
                 if (affectedRows == 0)
                 {
-                    return getErrorMessage(91);
+                    return getErrorMessage(96);
                 }
             }
             catch (Exception e)
@@ -311,6 +380,9 @@ namespace SocketServer
                     break;
                 case 95:
                     errorObject.Add("error", "attempt to register user failed");
+                    break;
+                case 96:
+                    errorObject.Add("error", "attempt to register restaurant failed");
                     break;
                 default:
                     errorObject.Add("error", "Unexpected error");

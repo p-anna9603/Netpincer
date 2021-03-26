@@ -30,14 +30,13 @@ namespace FoodOrderClient
 
 
             //CONNECTING TO SERVER      --Not Gonna work without the database!
-            ServerConnection = new ConnectToServer();
-            Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword",UserType.Customer).toString());           //OK
-//            ServerConnection.registerUser(ServerConnection.getUser("testUser", "t3stpassword", UserType.Customer));
-            ServerConnection.registerUser(new User("userFromClient","ass","Flex","Elek","+3699145825","Veszprem","8200","Ass utca 6","2/A",1));
-           // Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword", UserType.RestaurantOwner).toString());   //NOT FOUND RETURNS ERROR MESSAGE
+            //ServerConnection = new ConnectToServer();
+            //Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword",UserType.Customer).toString());           //OK
+            //ServerConnection.registerUser(new User("userFromClient","ass","Flex","Elek","+3699145825","Veszprem","8200","Ass utca 6","2/A",1,"imel@gmail.com"));
+            //Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword", UserType.RestaurantOwner).toString());   //NOT FOUND RETURNS ERROR MESSAGE
             //Console.WriteLine(ServerConnection.getUser("testRestaurantOwner", "r3staurant", UserType.RestaurantOwner).toString());  //OK
-
-            ServerConnection.StopClient();
+            //ServerConnection.registerRestaurant(new Restaurant("Veszprem", "8200", "Faradt vagyok utca v2.0", "3/A", 10, 00, 23, 00, "Utalom a C capat", "Hosszabb leiras arrol, mennyire utlaom a Csharpot", "C capa", "Hiiiii","Jelszoo","aasd@gmail.com","+36214563217","Pistavok","Tscoo"));
+            //ServerConnection.StopClient();
 
 
         }

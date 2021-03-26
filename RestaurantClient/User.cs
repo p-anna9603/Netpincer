@@ -29,12 +29,14 @@ namespace RestaurantClient
         private string line2;
         [Newtonsoft.Json.JsonProperty]
         UserType userType;
+        [Newtonsoft.Json.JsonProperty]
+        private string email;
 
 
         public User() { }
 
         public User(string _username, string _password, string _lastName, string _firstName, string _phoneNumber,
-             string _city, string _zipcode, string _line1, string _line2, int _userTypeId)
+             string _city, string _zipcode, string _line1, string _line2, int _userTypeId, string email_)
         {
             username = _username;
             password = _password;
@@ -44,6 +46,7 @@ namespace RestaurantClient
             city = _city;
             zipcode = _zipcode;
             line1 = _line1;
+            email = email_;
             if (_line2 == "null")
                 line2 = "";
             else
