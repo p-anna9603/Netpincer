@@ -110,3 +110,27 @@ ALTER TABLE Users.Users ADD userType int NOT NULL
 GO
 ALTER TABLE Users.UsersAddress ALTER COLUMN line2 nvarchar(20)
 
+
+--Restaurant
+--USE Netpincer
+--ALTER TABLE Restaurant.Restaurant DROP COLUMN [owner]
+ALTER TABLE Restaurant.Restaurant ADD [owner] nvarchar(50) 
+FOREIGN KEY REFERENCES Users.Users(username) ON DELETE SET NULL
+--ALTER TABLE Restaurant.Restaurant DROP COLUMN email
+ALTER TABLE Restaurant.Restaurant ADD email nvarchar(50)
+UPDATE Restaurant.Restaurant SET email='aaaaaa@aaaa.com'
+ALTER TABLE Restaurant.Restaurant ALTER COLUMN email nvarchar(50) NOT NULL
+
+ALTER TABLE Users.Users ADD email nvarchar(50)
+UPDATE Users.Users SET email='aaaaaa@aaaa.com'
+ALTER TABLE Users.Users ALTER COLUMN email nvarchar(50) NOT NULL
+
+
+ALTER TABLE Restaurant.Restaurant ADD phoneNumber nvarchar(20)
+UPDATE Restaurant.Restaurant SET phoneNumber='+362255440'
+ALTER TABLE Restaurant.Restaurant ALTER COLUMN phoneNumber nvarchar(20) NOT NULL
+
+ALTER TABLE Restaurant.RestaurantAddress ALTER COLUMN line1 NVARCHAR(50) NOT NULL
+ALTER TABLE Restaurant.RestaurantAddress ALTER COLUMN line2 NVARCHAR(50) 
+
+
