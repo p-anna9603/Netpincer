@@ -33,6 +33,7 @@ namespace RestaurantClient
         Dictionary<StackPanel, int> categPanels = new Dictionary<StackPanel, int>();
         int categoryId = 0;
         newMenu newMen;
+        public ConnectToServer ServerConnection;
         public RestaurantMenus(Window parent)
         {
             InitializeComponent();

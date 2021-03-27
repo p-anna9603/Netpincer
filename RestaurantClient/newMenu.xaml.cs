@@ -27,6 +27,8 @@ namespace RestaurantClient
         int categoryID = 0;
         string categoryImg = "";
         private bool isSaved = false;
+        public ConnectToServer ServerConnection;
+        List<string> categories = new List<string>();
         public newMenu(Category c = null)
         {
             InitializeComponent();
@@ -36,7 +38,24 @@ namespace RestaurantClient
                 setElementsData();
                 modifyingWindow = 1;
             }
-            
+
+            //CONNECTING TO SERVER      --Not Gonna work without the database!
+            ServerConnection = new ConnectToServer();
+            //Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword",UserType.Customer).toString());           //OK
+            //ServerConnection.registerUser(new User("userFromClient","ass","Flex","Elek","+3699145825","Veszprem","8200","Ass utca 6","2/A",1,"imel@gmail.com"));
+            //Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword", UserType.RestaurantOwner).toString());   //NOT FOUND RETURNS ERROR MESSAGE
+            //Console.WriteLine(ServerConnection.getUser("testRestaurantOwner", "r3staurant", UserType.RestaurantOwner).toString());  //OK
+            //   ServerConnection.registerRestaurant(new Restaurant("Veszprem", "8200", "Faradt vagyok utca v2.0", "3/A", 10, 00, 23, 00, "Utalom a C capat", "Hosszabb leiras arrol, mennyire utlaom a Csharpot", "C capa", "Hiiiii", "Jelszoo", "aasd@gmail.com", "+36214563217", "Pistavok", "Tscoo"));
+            //ServerConnection.StopClient();
+
+        /*    categories = ServerConnection.addCategory("Levesek", "Hiiiii", "Utalom a C capat", UserType.RestaurantOwner);
+            categories = ServerConnection.addCategory("Pizzak", "Hiiiii", "Utalom a C capat", UserType.RestaurantOwner);
+            categories = ServerConnection.addCategory("Sutemenyek", "Hiiiii", "Utalom a C capat", UserType.RestaurantOwner);
+            //categories = ServerConnection.addCategory("Test Category", "Hiiiii", "Utalom a C capat", UserType.RestaurantOwner);
+
+            for (int i = 0; i < categories.Count; ++i)
+                Console.WriteLine("CATEGORIES FOR UTALOM A C CAPAT: \n {0}", categories[i]);
+        */
         }
         private void setElementsData()
         {
@@ -76,7 +95,7 @@ namespace RestaurantClient
                     category = new Category(CategoryID, categoryName, categoryImg);
                     //TODO upload to DB the new category (and pic)
                     // and get the latest categoryID
-
+                    categories = ServerConnection.addCategory(categoryName, "pelda", "pelda", UserType.RestaurantOwner); // Change pelda to the current username, and second pelda to the current restaurant name
                 }
                 IsSaved = true;
                 this.Close();
