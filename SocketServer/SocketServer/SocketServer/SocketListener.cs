@@ -153,7 +153,11 @@ namespace SocketServer
                             string register = registerRestaurant(receivedJSONObject);
                             handler.Send(Encoding.ASCII.GetBytes(register));
                         }
-                        
+                        else if (receivedJSONObject["type"].ToString() == "8") //Add category
+                        {
+                            string register = addCategory(receivedJSONObject);
+                            handler.Send(Encoding.ASCII.GetBytes(register));
+                        }
                     }
                     catch (Exception e)
                     {
@@ -188,8 +192,101 @@ namespace SocketServer
             Console.ReadKey();
         }
 
+
+        private string addCategory(JObject o)
+        {
+            string query = "EXEC addCategoryToMenu @username, @userType, @restName, @categoryName ";
+            try
+            {
+                SqlCommand command = new SqlCommand(query, DatabaseConnection);
+                command.Parameters.AddWithValue("@username", o["username"].ToString());
+                Console.WriteLine(o["username"].ToString());
+                command.Parameters.AddWithValue("@userType", o["userType"].ToString());
+                Console.WriteLine(o["userType"].ToString());
+                command.Parameters.AddWithValue("@restName", o["restaurantName"].ToString());
+                Console.WriteLine(o["restaurantName"].ToString());
+                command.Parameters.AddWithValue("@categoryName", o["categoryName"].ToString());
+                Console.WriteLine(o["categoryName"].ToString());
+                int affectedRows = command.ExecuteNonQuery();
+                if (affectedRows == 0)
+                {
+                    return getErrorMessage(97);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return getErrorMessage(99);
+            }
+            List<string> catList= getCategories(o["restaurantName"].ToString());
+            if (catList.Count == 0)
+            {
+                return getErrorMessage(99);
+            }
+            Categories sendCat = new Categories(Int32.Parse(o["clientID"].ToString()),catList);
+            string sendCatJSON = JsonConvert.SerializeObject(sendCat);
+            Console.WriteLine("SendCatJSON: \n {0}", sendCatJSON);
+            return sendCatJSON;
+        }
+
+        private List<string> getCategories(string restaurantName)
+        {
+            string query = "SELECT [c].[name] FROM Restaurant.Category AS [c] JOIN Restaurant.Restaurant as [r] ON[r].restaurantID = [c].restaurantID WHERE[r].[name] = @restaurantName";
+            DataTable dataTable = new DataTable();
+            List<string> catList = new List<string>();
+            try
+            {
+                SqlCommand command = new SqlCommand(query, DatabaseConnection);
+                command.Parameters.AddWithValue("@restaurantName", restaurantName);
+                SqlDataAdapter da = new SqlDataAdapter(command);
+                da.Fill(dataTable);
+                for (int i = 0; i < dataTable.Rows.Count; i++)
+                {
+                    catList.Add(dataTable.Rows[i]["name"].ToString());
+                }
+                da.Dispose();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            return catList;
+        }
+
+        private string checkUsernameAvailable(string username, int userType)
+        {
+            //CHECK TO SEE IF USERNAME IS AVAILABLE
+            string query = "SELECT username FROM Users.Users WHERE username = @username AND userType=@userType";
+            DataTable dataTable = new DataTable();
+            try
+            {
+                SqlCommand command = new SqlCommand(query, DatabaseConnection);
+                command.Parameters.AddWithValue("@username", username);
+                command.Parameters.AddWithValue("@userType", userType);
+                SqlDataAdapter da = new SqlDataAdapter(command);
+                da.Fill(dataTable);
+                if (dataTable.Rows.Count != 0)
+                {
+                    da.Dispose();
+                    return getErrorMessage(90);
+                }
+                da.Dispose();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return getErrorMessage(99);
+            }
+            return "1";
+        }
+
         private string registerRestaurant(JObject o)
         {
+            //CHECK TO SEE IF USER IS AVAILABLE
+            string response = checkUsernameAvailable(o["username"].ToString(), Int32.Parse(o["userType"].ToString()));
+            if (response[0] != '1')
+                return response;
+
             string query = "EXEC registerRestaurant @username, @pass, @lastName, @firstName, @phone, @email, @name, @restaurantDescription, @style, @city, @zipcode, @line1, @line2, @fromHour ,@fromMinute, @toHour, @toMinute";
             try
             {
@@ -251,7 +348,12 @@ namespace SocketServer
 
         private string registerUser(JObject o)
         {
-            //should check if user already exists or not    --WIP
+            //CHECK TO SEE IF USERNAME IS AVAILABLE
+            string response = checkUsernameAvailable(o["username"].ToString(), Int32.Parse(o["userType"].ToString()));
+            if (response[0] != '1')
+                return response;
+
+            //IF USERNAME AVAILABLE
             string query = "EXEC registerUser @username, @pass, @email, @city, @zip, @line1, @line2, @lastName, @firstName, @phone, @userType";
             try
             {
@@ -327,9 +429,6 @@ namespace SocketServer
 
         private string getUserInfo(string username, string pass, string userType)
         {
-            //Getting user info from database 
-            Console.WriteLine("UserType wtf: {0}", userType);
-            //int user = Int32.Parse(userType);
             string query = "SELECT* FROM getUser(@username, @pass, @userType)";
             DataTable dataTable = new DataTable();
             try
@@ -366,6 +465,9 @@ namespace SocketServer
             errorObject.Add("type", 99);
             switch (errorNumber) 
             {
+                case 90:
+                    errorObject.Add("error", "Username not available found");
+                    break;
                 case 91:
                     errorObject.Add("error", "User not found");
                     break;
@@ -383,6 +485,9 @@ namespace SocketServer
                     break;
                 case 96:
                     errorObject.Add("error", "attempt to register restaurant failed");
+                    break;
+                case 97:
+                    errorObject.Add("error", "attempt to add category failed");
                     break;
                 default:
                     errorObject.Add("error", "Unexpected error");

@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using RestaurantClient;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -111,6 +112,63 @@ public class ConnectToServer
     }
 
 
+    public List<string> addCategory(string categoryName,string username, string restaurantName, UserType userType)
+    {
+        string recievedMsg = "";
+        List<string> list = new List<string>();
+        try
+        {
+            JObject jobc = new JObject();
+            jobc.Add("type", 8);    // 8 - Get specific Restaurant Menu (Category list)
+            jobc.Add("clientID", clientID);
+            jobc.Add("username", username);
+            jobc.Add("restaurantName", restaurantName);
+            jobc.Add("categoryName", categoryName);
+            int userTypeNumber = 4;
+            switch (userType)
+            {
+                case UserType.Customer:
+                    userTypeNumber = 0;
+                    break;
+                case UserType.RestaurantOwner:
+                    userTypeNumber = 1;
+                    break;
+                case UserType.DeliveryPerson:
+                    userTypeNumber = 2;
+                    break;
+                default:
+                    Console.WriteLine("Undefined User type");
+                    break;
+            }
+            jobc.Add("userType", userTypeNumber);
+            recievedMsg = sendJSON(jobc);
+            Console.WriteLine("recievedMsg: {0}", recievedMsg);
+            
+
+            //JObject receivedJSonObject = new JObject();
+            //receivedJSonObject = JObject.Parse(recievedMsg);
+            Categories cat = JsonConvert.DeserializeObject<Categories>(recievedMsg);
+            
+            if (cat.getType() == 8)
+            {
+                Console.WriteLine("Categories arrived");
+                return cat.getListOfCategories();
+            }
+            return list;
+        }
+        catch (Exception e)
+        {
+            JObject receivedJSonObject = new JObject();
+            receivedJSonObject = JObject.Parse(recievedMsg);
+            if (receivedJSonObject["type"].ToString() == "99")
+            {
+                Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+            }
+            Console.WriteLine(e.ToString());
+            return list;
+        }
+    }
+
     private string sendJSON(JObject JsonSendObject)     //Returns received string
     {
         try
@@ -181,7 +239,8 @@ public class ConnectToServer
                     receivedJSonObject["zipcode"].ToString(),
                     receivedJSonObject["line1"].ToString(),
                     receivedJSonObject["line2"].ToString(),
-                    Int32.Parse(receivedJSonObject["userType"].ToString())
+                    Int32.Parse(receivedJSonObject["userType"].ToString()),
+                    receivedJSonObject["email"].ToString()
                     );
             }
             else if (receivedJSonObject["type"].ToString() == "99")

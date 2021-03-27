@@ -58,12 +58,13 @@ CREATE TABLE Restaurant.Category
 	foodID INT FOREIGN KEY REFERENCES Restaurant.Food(foodID) ON DELETE CASCADE	
 );
 GO
-CREATE TABLE Restaurant.Menu	--CAN INSERT EMPTY MENU
+--BYE MENU TABLE	03.27.
+/*CREATE TABLE Restaurant.Menu	--CAN INSERT EMPTY MENU
 (
 	menuID INT IDENTITY PRIMARY KEY,
 	categoryID INT FOREIGN KEY REFERENCES Restaurant.Category(categoryID) ON DELETE CASCADE	
 	
-);
+);*/
 GO
 CREATE TABLE Restaurant.Restaurant
 (
@@ -106,7 +107,10 @@ GO
 
 --USERTYPE ADDED TO USER 03.20.
 --LINE2 CAN BE NULL
-ALTER TABLE Users.Users ADD userType int NOT NULL
+USE Netpincer
+ALTER TABLE Users.Users ADD userType int
+UPDATE Users.Users SET userType=0 
+ALTER TABLE Users.Users ALTER COLUMN userType int NOT NULL
 GO
 ALTER TABLE Users.UsersAddress ALTER COLUMN line2 nvarchar(20)
 
@@ -121,6 +125,7 @@ ALTER TABLE Restaurant.Restaurant ADD email nvarchar(50)
 UPDATE Restaurant.Restaurant SET email='aaaaaa@aaaa.com'
 ALTER TABLE Restaurant.Restaurant ALTER COLUMN email nvarchar(50) NOT NULL
 
+--ALTER TABLE Users.User DROP COLUMN email
 ALTER TABLE Users.Users ADD email nvarchar(50)
 UPDATE Users.Users SET email='aaaaaa@aaaa.com'
 ALTER TABLE Users.Users ALTER COLUMN email nvarchar(50) NOT NULL
@@ -132,5 +137,3 @@ ALTER TABLE Restaurant.Restaurant ALTER COLUMN phoneNumber nvarchar(20) NOT NULL
 
 ALTER TABLE Restaurant.RestaurantAddress ALTER COLUMN line1 NVARCHAR(50) NOT NULL
 ALTER TABLE Restaurant.RestaurantAddress ALTER COLUMN line2 NVARCHAR(50) 
-
-
