@@ -28,7 +28,7 @@ namespace FoodOrderClient
             InitializeComponent();
             Console.WriteLine(settingImg.Source.ToString());
 
-
+/*
             //CONNECTING TO SERVER      --Not Gonna work without the database!
             ServerConnection = new ConnectToServer();
             //Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword",UserType.Customer).toString());           //OK
@@ -45,7 +45,7 @@ namespace FoodOrderClient
 
             for (int i=0;i<categories.Count;++i)
                 Console.WriteLine("CATEGORIES FOR UTALOM A C CAPAT: \n {0}", categories[i]);
-
+*/
         }
         private void ListViewItem_MouseEnter(object sender, MouseEventArgs e)
         {
