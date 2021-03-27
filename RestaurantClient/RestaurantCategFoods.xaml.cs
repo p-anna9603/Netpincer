@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FoodOrderClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,6 +31,7 @@ namespace RestaurantClient
         Dictionary<int, String> foodNames = new Dictionary<int, string>(); // map[foodId] = food name
         Dictionary<int, Image> imgNames = new Dictionary<int, Image>(); //        map[foodId] = Image
         Dictionary<StackPanel, int> foodPanels = new Dictionary<StackPanel, int>(); // stackpanel - foodID
+        RestaurantMain restaurantMain;
 
         public ConnectToServer ServerConnection;
         public RestaurantCategFoods(int cID)

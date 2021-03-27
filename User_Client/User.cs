@@ -10,6 +10,7 @@ namespace RestaurantClient
         public class User
         {
             private string username;
+            private int userTypeId;
             private string password;
             private string lastName;
             private string firstName;
@@ -19,9 +20,11 @@ namespace RestaurantClient
             private string line1;
             private string line2;
             UserType userType;
-            
 
-            public User() { }
+        public UserType GetUserType { get => userType; set => userType = value; }
+        public int UserTypeId { get => userTypeId; set => userTypeId = value; }
+
+        public User() { }
 
             public User(string _username, string _password, string _lastName, string _firstName, string _phoneNumber,
                  string _city, string _zipcode, string _line1, string _line2, int _userTypeId)
@@ -35,6 +38,7 @@ namespace RestaurantClient
                 zipcode = _zipcode;
                 line1 = _line1;
                 line2 = _line2;
+                userTypeId = _userTypeId;
                 switch (_userTypeId)
                 {
                     case 0:

@@ -110,6 +110,9 @@
     <Compile Include="newMenu.xaml.cs">
       <DependentUpon>newMenu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="registerUser.xaml.cs">
+      <DependentUpon>registerUser.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Restaurant.cs" />
     <Compile Include="RestaurantCategFoods.xaml.cs">
       <DependentUpon>RestaurantCategFoods.xaml</DependentUpon>
@@ -125,6 +128,10 @@
     </Compile>
     <Compile Include="User.cs" />
     <Page Include="newMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="registerUser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

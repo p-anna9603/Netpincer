@@ -32,6 +32,7 @@ namespace RestaurantClient
         [Newtonsoft.Json.JsonProperty]
         private string email;
 
+        public UserType GetUserType { get => userType; set => userType = value; }
 
         public User() { }
 

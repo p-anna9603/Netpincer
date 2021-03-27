@@ -26,12 +26,13 @@ namespace FoodOrderClient
 
         public ConnectToServer ServerConnection { get => serverConnection; set => serverConnection = value; }
 
-        public RestaurantMain()
+        public RestaurantMain(ConnectToServer ServerCon)
         {
             InitializeComponent();
             Console.WriteLine(settingImg.Source.ToString());
-            //ServerConnection = new ConnectToServer();
-            
+            serverConnection = ServerCon;
+         //   ServerConnection = new ConnectToServer();
+
             /*
                         //CONNECTING TO SERVER      --Not Gonna work without the database!
 
