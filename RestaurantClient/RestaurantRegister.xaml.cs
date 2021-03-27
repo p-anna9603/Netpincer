@@ -1,4 +1,5 @@
 ﻿using System;
+using RestaurantClient;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,9 +28,39 @@ namespace FoodOrderClient
         int toMin = 0;
         Regex regex = new Regex("[^0-9]+");
         Regex regexChar = new Regex("[^a-zA-ZÀ-ÿ-ő-ű]+");
+
+        string restName; // restaurant name
+        string userName;
+        string email;
+        string password;
+        string phone;
+        string zipCode;
+        string citiName;
+        string street;
+        string streetNum;
+        string leiras;
+        string style;
+        public string line2 { get; set; }
+        public string lastName { get; set; }
+        public string firstName { get; set; }
+        public ConnectToServer ServerConnection;
         public RestaurantRegister()
         {
             InitializeComponent();
+            // CONNECTING TO SERVER--Not Gonna work without the database!
+            ServerConnection = new ConnectToServer();
+            Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword", UserType.Customer).toString());           //OK
+           //  ServerConnection.registerUser(new User("userFromClient", "ass", "Flex", "Elek", "+3699145825", "Veszprem", "8200", "Ass utca 6", "2/A", 1, "imel@gmail.com"));
+           //   Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword", UserType.RestaurantOwner).toString());   //NOT FOUND RETURNS ERROR MESSAGE
+            Console.WriteLine(ServerConnection.getUser("testRestaurantOwner", "r3staurant", UserType.RestaurantOwner).toString());  //OK
+          //   ServerConnection.registerRestaurant(new Restaurant("Veszprem", "8200", "Faradt vagyok utca v2.0", "3/A", 10, 00, 23, 00, "Utalom a C capat", "Hosszabb leiras arrol, mennyire utlaom a Csharpot", "C capa", "Hiiiii", "Jelszoo", "aasd@gmail.com", "+36214563217", "Pistavok", "Tscoo"));
+
+        }
+        public void registerRestaurant()
+        {
+            ServerConnection.registerRestaurant(new Restaurant(citiName, zipCode, street, streetNum, fromHour, fromMin, toHour, toMin, restName, leiras,
+               style, userName, password, email, phone, lastName, firstName));
+            ServerConnection.StopClient();
         }
 
         private void Login_Click(object sender, RoutedEventArgs e)
@@ -172,16 +203,19 @@ namespace FoodOrderClient
             }
             else
             {
-                string restName = textBoxRestName.Text; // restaurant name
-                string userName = textBoxUserName.Text;
-                string email = textBoxEmail.Text;
-                string password = passwordBox1.Password;
-                string phone = textBoxPhone.Text;
-                string zipCode = textBoxZip.Text;
-                string citiName = textBoxCity.Text;
-                string street = textBoxStreet.Text;
-                string streetNum = textBoxStreetNum.Text;
-                string leiras = textBoxDesc.Text;
+                restName = textBoxRestName.Text; // restaurant name
+                userName = textBoxUserName.Text;
+                email = textBoxEmail.Text;
+                password = passwordBox1.Password;
+                phone = textBoxPhone.Text;
+                zipCode = textBoxZip.Text;
+                citiName = textBoxCity.Text;
+                street = textBoxStreet.Text;
+                streetNum = textBoxStreetNum.Text;
+                leiras = textBoxDesc.Text;
+                style = textBoxStyle.Text;
+                lastName = lastNameText.Text;
+                firstName = firstNameText.Text;
                 if (passwordBox1.Password.Length == 0)
                 {
                     errormessage.Text = "Adja meg a jelszót!";
@@ -225,6 +259,7 @@ namespace FoodOrderClient
                     //cmd.CommandType = CommandType.Text;
                     //cmd.ExecuteNonQuery();
                     //con.Close();
+                    registerRestaurant();
                     errormessage.Text = "Regisztrácó sikeres";
                     Reset();
                 }

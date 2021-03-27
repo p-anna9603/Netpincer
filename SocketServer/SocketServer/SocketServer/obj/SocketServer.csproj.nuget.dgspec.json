@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Programozás\\C#\\Netpincér_Git\\SocketServer\\SocketServer\\SocketServer\\SocketServer.csproj": {}
+    "C:\\Anna\\Netpincer\\Netpincer\\SocketServer\\SocketServer\\SocketServer\\SocketServer.csproj": {}
   },
   "projects": {
-    "E:\\Programozás\\C#\\Netpincér_Git\\SocketServer\\SocketServer\\SocketServer\\SocketServer.csproj": {
+    "C:\\Anna\\Netpincer\\Netpincer\\SocketServer\\SocketServer\\SocketServer\\SocketServer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Programozás\\C#\\Netpincér_Git\\SocketServer\\SocketServer\\SocketServer\\SocketServer.csproj",
+        "projectUniqueName": "C:\\Anna\\Netpincer\\Netpincer\\SocketServer\\SocketServer\\SocketServer\\SocketServer.csproj",
         "projectName": "SocketServer",
-        "projectPath": "E:\\Programozás\\C#\\Netpincér_Git\\SocketServer\\SocketServer\\SocketServer\\SocketServer.csproj",
-        "packagesPath": "C:\\Users\\marce\\.nuget\\packages\\",
-        "outputPath": "E:\\Programozás\\C#\\Netpincér_Git\\SocketServer\\SocketServer\\SocketServer\\obj\\",
+        "projectPath": "C:\\Anna\\Netpincer\\Netpincer\\SocketServer\\SocketServer\\SocketServer\\SocketServer.csproj",
+        "packagesPath": "C:\\Users\\panna\\.nuget\\packages\\",
+        "outputPath": "C:\\Anna\\Netpincer\\Netpincer\\SocketServer\\SocketServer\\SocketServer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\marce\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\panna\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -64,7 +64,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.200\\RuntimeIdentifierGraph.json"
         }
       }
     }

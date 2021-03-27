@@ -283,10 +283,10 @@ namespace SocketServer
         private string registerRestaurant(JObject o)
         {
             //CHECK TO SEE IF USER IS AVAILABLE
-            string response = checkUsernameAvailable(o["username"].ToString(), Int32.Parse(o["userType"].ToString()));
-            if (response[0] != '1')
-                return response;
-
+            /*      string response = checkUsernameAvailable(o["username"].ToString(), Int32.Parse(o["userType"].ToString()));
+                if (response[0] != '1')
+                     return response;
+           */
             string query = "EXEC registerRestaurant @username, @pass, @lastName, @firstName, @phone, @email, @name, @restaurantDescription, @style, @city, @zipcode, @line1, @line2, @fromHour ,@fromMinute, @toHour, @toMinute";
             try
             {
