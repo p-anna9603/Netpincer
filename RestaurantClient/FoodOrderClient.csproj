@@ -120,6 +120,9 @@
     <Compile Include="RestNewFood.xaml.cs">
       <DependentUpon>RestNewFood.xaml</DependentUpon>
     </Compile>
+    <Compile Include="startupWindow.xaml.cs">
+      <DependentUpon>startupWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="User.cs" />
     <Page Include="newMenu.xaml">
       <SubType>Designer</SubType>
@@ -153,6 +156,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="RestNewFood.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="startupWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

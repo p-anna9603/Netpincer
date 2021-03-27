@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using RestaurantClient;
 
 namespace RestaurantClient
 {
@@ -51,7 +52,7 @@ namespace RestaurantClient
 
         private void NewMenu_Click(object sender, EventArgs e)
         {
-            newMen = new newMenu();
+            newMen = new newMenu(restaurantMain);
             newMen.ShowDialog();
             newMen.Closed += NewMen_Closed;
             if (newMen.IsSaved)
@@ -213,7 +214,7 @@ namespace RestaurantClient
             StackPanel p1 = (StackPanel)btn.Parent;
             StackPanel p2 = (StackPanel)p1.Parent;
             Category categ = categoryWindows.ElementAt(clickedCategID).Value;
-            newMenu m = new newMenu(categ);
+            newMenu m = new newMenu(restaurantMain, categ);
             m.ShowDialog();
             if (m.IsSaved)
             {

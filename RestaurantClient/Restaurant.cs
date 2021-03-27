@@ -8,6 +8,7 @@ namespace RestaurantClient
 {
 	public class Restaurant
 	{
+        public int restaurantID { get; set; }
 		public string city { get; set; }
 		public string zipcode { get; set; }
 		public string line1 { get; set; }
@@ -30,8 +31,9 @@ namespace RestaurantClient
 			int fromHour_, int fromMinute_, int toHour_, int toMinute_,
 			string name_, string restaurantDescription_, string style_, 
 			string username_, string pass_,string email_, string phoneNumber_,
-			string lastName, string firstName)
+			string lastName, string firstName, int restID = 0)
 		{
+            this.restaurantID = restID;
 			this.city = city_;
 			this.zipcode = zipcode_;
 			this.line1 = line1_;

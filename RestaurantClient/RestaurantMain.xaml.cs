@@ -22,30 +22,33 @@ namespace FoodOrderClient
     {
         RestaurantMenus menus;
         public UserControl child;
-        public ConnectToServer ServerConnection;
+        private ConnectToServer serverConnection;
+
+        public ConnectToServer ServerConnection { get => serverConnection; set => serverConnection = value; }
+
         public RestaurantMain()
         {
             InitializeComponent();
             Console.WriteLine(settingImg.Source.ToString());
-
-/*
-            //CONNECTING TO SERVER      --Not Gonna work without the database!
             ServerConnection = new ConnectToServer();
-            //Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword",UserType.Customer).toString());           //OK
-            //ServerConnection.registerUser(new User("userFromClient","ass","Flex","Elek","+3699145825","Veszprem","8200","Ass utca 6","2/A",1,"imel@gmail.com"));
-            //Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword", UserType.RestaurantOwner).toString());   //NOT FOUND RETURNS ERROR MESSAGE
-            //Console.WriteLine(ServerConnection.getUser("testRestaurantOwner", "r3staurant", UserType.RestaurantOwner).toString());  //OK
-            ServerConnection.registerRestaurant(new Restaurant("Veszprem", "8200", "Faradt vagyok utca v2.0", "3/A", 10, 00, 23, 00, "Utalom a C capat", "Hosszabb leiras arrol, mennyire utlaom a Csharpot", "C capa", "Hiiiii","Jelszoo","aasd@gmail.com","+36214563217","Pistavok","Tscoo"));
-            //ServerConnection.StopClient();
-            List<string> categories = new List<string>();
-            categories = ServerConnection.addCategory("Levesek", "Hiiiii", "Utalom a C capat", UserType.RestaurantOwner);
-            categories = ServerConnection.addCategory("Pizzak", "Hiiiii", "Utalom a C capat", UserType.RestaurantOwner);
-            categories = ServerConnection.addCategory("Sutemenyek", "Hiiiii", "Utalom a C capat", UserType.RestaurantOwner);
-            //categories = ServerConnection.addCategory("Test Category", "Hiiiii", "Utalom a C capat", UserType.RestaurantOwner);
+            /*
+                        //CONNECTING TO SERVER      --Not Gonna work without the database!
 
-            for (int i=0;i<categories.Count;++i)
-                Console.WriteLine("CATEGORIES FOR UTALOM A C CAPAT: \n {0}", categories[i]);
-*/
+                        //Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword",UserType.Customer).toString());           //OK
+                        //ServerConnection.registerUser(new User("userFromClient","ass","Flex","Elek","+3699145825","Veszprem","8200","Ass utca 6","2/A",1,"imel@gmail.com"));
+                        //Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword", UserType.RestaurantOwner).toString());   //NOT FOUND RETURNS ERROR MESSAGE
+                        //Console.WriteLine(ServerConnection.getUser("testRestaurantOwner", "r3staurant", UserType.RestaurantOwner).toString());  //OK
+                        ServerConnection.registerRestaurant(new Restaurant("Veszprem", "8200", "Faradt vagyok utca v2.0", "3/A", 10, 00, 23, 00, "Utalom a C capat", "Hosszabb leiras arrol, mennyire utlaom a Csharpot", "C capa", "Hiiiii","Jelszoo","aasd@gmail.com","+36214563217","Pistavok","Tscoo"));
+                        //ServerConnection.StopClient();
+                        List<string> categories = new List<string>();
+                        categories = ServerConnection.addCategory("Levesek", "Hiiiii", "Utalom a C capat", UserType.RestaurantOwner);
+                        categories = ServerConnection.addCategory("Pizzak", "Hiiiii", "Utalom a C capat", UserType.RestaurantOwner);
+                        categories = ServerConnection.addCategory("Sutemenyek", "Hiiiii", "Utalom a C capat", UserType.RestaurantOwner);
+                        //categories = ServerConnection.addCategory("Test Category", "Hiiiii", "Utalom a C capat", UserType.RestaurantOwner);
+
+                        for (int i=0;i<categories.Count;++i)
+                            Console.WriteLine("CATEGORIES FOR UTALOM A C CAPAT: \n {0}", categories[i]);
+            */
         }
         private void ListViewItem_MouseEnter(object sender, MouseEventArgs e)
         {

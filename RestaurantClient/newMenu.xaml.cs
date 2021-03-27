@@ -13,6 +13,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using RestaurantClient;
+using FoodOrderClient;
 
 namespace RestaurantClient
 {
@@ -29,7 +31,8 @@ namespace RestaurantClient
         private bool isSaved = false;
         public ConnectToServer ServerConnection;
         List<string> categories = new List<string>();
-        public newMenu(Category c = null)
+        RestaurantMain restaurantMain;
+        public newMenu(Window restrantMain, Category c = null)
         {
             InitializeComponent();
             if(c != null)
@@ -37,10 +40,11 @@ namespace RestaurantClient
                 category = c;
                 setElementsData();
                 modifyingWindow = 1;
-            }
 
+            }
+            restaurantMain = (RestaurantMain)restrantMain;
             //CONNECTING TO SERVER      --Not Gonna work without the database!
-            ServerConnection = new ConnectToServer();
+            //   ServerConnection = new ConnectToServer();
             //Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword",UserType.Customer).toString());           //OK
             //ServerConnection.registerUser(new User("userFromClient","ass","Flex","Elek","+3699145825","Veszprem","8200","Ass utca 6","2/A",1,"imel@gmail.com"));
             //Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword", UserType.RestaurantOwner).toString());   //NOT FOUND RETURNS ERROR MESSAGE
@@ -48,14 +52,14 @@ namespace RestaurantClient
             //   ServerConnection.registerRestaurant(new Restaurant("Veszprem", "8200", "Faradt vagyok utca v2.0", "3/A", 10, 00, 23, 00, "Utalom a C capat", "Hosszabb leiras arrol, mennyire utlaom a Csharpot", "C capa", "Hiiiii", "Jelszoo", "aasd@gmail.com", "+36214563217", "Pistavok", "Tscoo"));
             //ServerConnection.StopClient();
 
-        /*    categories = ServerConnection.addCategory("Levesek", "Hiiiii", "Utalom a C capat", UserType.RestaurantOwner);
-            categories = ServerConnection.addCategory("Pizzak", "Hiiiii", "Utalom a C capat", UserType.RestaurantOwner);
-            categories = ServerConnection.addCategory("Sutemenyek", "Hiiiii", "Utalom a C capat", UserType.RestaurantOwner);
-            //categories = ServerConnection.addCategory("Test Category", "Hiiiii", "Utalom a C capat", UserType.RestaurantOwner);
+            /*    categories = ServerConnection.addCategory("Levesek", "Hiiiii", "Utalom a C capat", UserType.RestaurantOwner);
+                categories = ServerConnection.addCategory("Pizzak", "Hiiiii", "Utalom a C capat", UserType.RestaurantOwner);
+                categories = ServerConnection.addCategory("Sutemenyek", "Hiiiii", "Utalom a C capat", UserType.RestaurantOwner);
+                //categories = ServerConnection.addCategory("Test Category", "Hiiiii", "Utalom a C capat", UserType.RestaurantOwner);
 
-            for (int i = 0; i < categories.Count; ++i)
-                Console.WriteLine("CATEGORIES FOR UTALOM A C CAPAT: \n {0}", categories[i]);
-        */
+                for (int i = 0; i < categories.Count; ++i)
+                    Console.WriteLine("CATEGORIES FOR UTALOM A C CAPAT: \n {0}", categories[i]);
+            */
         }
         private void setElementsData()
         {
@@ -95,7 +99,8 @@ namespace RestaurantClient
                     category = new Category(CategoryID, categoryName, categoryImg);
                     //TODO upload to DB the new category (and pic)
                     // and get the latest categoryID
-                    categories = ServerConnection.addCategory(categoryName, "pelda", "pelda", UserType.RestaurantOwner); // Change pelda to the current username, and second pelda to the current restaurant name
+                   categories = restaurantMain.ServerConnection.addCategory(categoryName, "pelda", "pelda", UserType.RestaurantOwner); // Change pelda to the current username, and second pelda to the current restaurant name
+                 //   ServerConnection.StopClient();
                 }
                 IsSaved = true;
                 this.Close();

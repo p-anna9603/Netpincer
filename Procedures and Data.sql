@@ -142,6 +142,8 @@ SELECT * FROM Restaurant.Restaurant
 ALTER TABLE Restaurant.Restaurant 
 DROP CONSTRAINT IF EXISTS FK__Restauran__menuI__75A278F
 ALTER TABLE Restaurant.Restaurant 
+DROP CONSTRAINT IF EXISTS FK__Restauran__menuI__31EC6D26
+ALTER TABLE Restaurant.Restaurant 
 DROP CONSTRAINT IF EXISTS  FK__Restauran__menuI__75A278F5
 ALTER TABLE Restaurant.Restaurant DROP COLUMN IF EXISTS menuID
 DROP TABLE IF EXISTS Restaurant.Menu 
@@ -217,3 +219,36 @@ JOIN Restaurant.Restaurant ON Restaurant.restaurantID = [c].restaurantID
 SELECT [c].[name] FROM Restaurant.Category AS [c]
 JOIN Restaurant.Restaurant as [r] ON [r].restaurantID = [c].restaurantID
 WHERE [r].[name] = 'Teszt Étterem' --@restaurantName--
+
+
+-- 2020.03.27. 19:28
+--ALLERGENS AND CATEGORY
+USE Netpincer
+DROP TABLE IF EXISTS Restaurant.Category
+CREATE TABLE Restaurant.CategoryName
+(
+    categoryID INT IDENTITY PRIMARY KEY,
+    categoryName nvarchar(20)
+);
+GO
+SELECT * FROM Restaurant.Food
+ALTER TABLE Restaurant.Food ADD categoryID INT 
+FOREIGN KEY REFERENCES Restaurant.CategoryName(categoryID)
+
+--EXEC sp_rename 'Restaurant.Food.CategoryID', 'categoryID', 'COLUMN';
+ALTER TABLE Restaurant.Food ADD restaurantID INT 
+FOREIGN KEY REFERENCES Restaurant.Restaurant(restaurantID)
+
+DROP TABLE IF EXISTS Restaurant.Allergens
+CREATE TABLE Restaurant.AllergenNames
+(
+    allergenID INT IDENTITY PRIMARY KEY,
+    name NVARCHAR(20)
+)
+GO
+CREATE TABLE Restaurant.Allergens
+(
+    allergenID INT FOREIGN KEY REFERENCES Restaurant.AllergenNames(allergenID),
+    foodID INT FOREIGN KEY REFERENCES Restaurant.Food(foodID)
+)
+GO
