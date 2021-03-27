@@ -5,43 +5,56 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RestaurantClient"
         mc:Ignorable="d"
-        Title="registerUser" Height="432.692" Width="819.344">
-    <Grid Height="auto">
+        Title="registerUser" Height="432.692" Width="865.158" SizeChanged="window_sizeChanged">
+    
+    <Grid Height="400">
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
             <RowDefinition Height="200*"/>
             <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250*"></ColumnDefinition>
+            <ColumnDefinition Width="220*"></ColumnDefinition>
             <ColumnDefinition Width="200*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
+        <Border Name="backgroundBorder" CornerRadius="10" Grid.RowSpan="3" Grid.ColumnSpan="2" Margin="0,0,0,0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Border.Background>
+                <LinearGradientBrush>
+                    <GradientStop Color="#7be9f6" Offset="0.0"></GradientStop>
+                    <GradientStop Color="#f083da" Offset="1"></GradientStop>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
         <Grid Grid.Row="0" Grid.ColumnSpan="2">
             <StackPanel  Orientation="Vertical">
-                <Label Content="Regisztráció" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Grid.Row="0"/>
+                <TextBlock Text="Regisztráció" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Center" Grid.Row="0"
+                           FontFamily="Helvetica" FontWeight="Bold" FontSize="20" Foreground="White"/>
                 <TextBlock Text="" Name="errormessage" Foreground="red" Margin="20,0,0,0"></TextBlock>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">
             <StackPanel Orientation="Vertical">
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Vezetéknév" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="1" VerticalAlignment="Top" Height="23" Width="169"/>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <TextBlock Text="Vezetéknév" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="1" VerticalAlignment="Top" Height="30" Width="169"
+                           FontFamily="Helvetica" FontWeight="Light" FontSize="20" Foreground="White"/>
                     <TextBox x:Name="lastNameText" HorizontalAlignment="Left" Height="23" Margin="0,0,0,0" Grid.Row="1"  Grid.RowSpan="1" TextWrapping="Wrap" 
                          Text="" VerticalAlignment="Top" Width="243" TabIndex="0"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                    <Label Content="Keresztnév" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="1" VerticalAlignment="Top" Height="23" Width="169"/>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Height="30">
+                    <TextBlock Text="Keresztnév" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="1" VerticalAlignment="Top" Height="23" Width="169"
+                           FontFamily="Helvetica" FontWeight="Light" FontSize="20" Foreground="White"/>
                     <TextBox x:Name="firstNameText" HorizontalAlignment="Left" Height="23" Margin="0,0,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" 
                              VerticalAlignment="Top" Width="243" TabIndex="2"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                    <Label Content="Telefonszám" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="1" VerticalAlignment="Top" Height="23" Width="169"/>
+                    <TextBlock Text="Telefonszám" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="1" VerticalAlignment="Top" Height="23" Width="169"
+                           FontFamily="Helvetica" FontWeight="Light" FontSize="20" Foreground="White"/>
                     <TextBox x:Name="textBoxPhone" HorizontalAlignment="Left" Height="23" Margin="0,0,0,0" Grid.Row="1" TextWrapping="Wrap" 
                              Text="36-" VerticalAlignment="Center" Width="243" TabIndex="3" PreviewTextInput="phone_KeyDown"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Height="40">
-                    <TextBlock FontFamily="Helvetica" FontWeight="Light" FontSize="15" Foreground="Black" HorizontalAlignment="Left" Margin="20,15,0,0" Name="textBlockAddress" 
-                               Text="Cím:" VerticalAlignment="Top" Height="23" Width="119" />
+                    <TextBlock HorizontalAlignment="Left" Margin="20,15,0,0" Name="textBlockAddress" Text="Cím:" VerticalAlignment="Top" Height="23" Width="119"                              
+                           FontFamily="Helvetica" FontWeight="Light" FontSize="20" Foreground="White"/>
                     <TextBox Height="23" Text="Irsz." TextAlignment="Center" HorizontalAlignment="Left" Margin="50,15,0,0" Name="textBoxZip" 
                              VerticalAlignment="Top" Width="65" Padding="1.5" TabIndex="4"
                              PreviewTextInput="zipCode_KeyDown" GotFocus="addressGotFocus" LostFocus="addressLostFocus"/>
@@ -67,21 +80,25 @@
         <Grid Grid.Row="1" Grid.Column="1">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="Felhasznónév" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="169" Height="23"/>
+                    <TextBlock Text="Felhasznónév" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="179" Height="23"
+                           FontFamily="Helvetica" FontWeight="Light" FontSize="20" Foreground="White"/>
                     <TextBox x:Name="textBoxUserName" HorizontalAlignment="Left" Height="23" Margin="0,0,0,0" Grid.Row="1" TextWrapping="Wrap" 
                              Text="" VerticalAlignment="Top" Width="175" TabIndex="9" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                    <Label Content="Email cím&#xD;&#xA;" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="169" Height="23"/>
+                    <TextBlock Text="Email cím&#xD;&#xA;" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="179" Height="23"
+                           FontFamily="Helvetica" FontWeight="Light" FontSize="20" Foreground="White"/>
                     <TextBox x:Name="textBoxEmail" HorizontalAlignment="Left" Height="23" Margin="0,0,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" 
                              VerticalAlignment="Top" Width="175" TabIndex="10"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                    <Label Content="Jelszó&#xD;&#xA;" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="169" Height="23" RenderTransformOrigin="0.446,0.506"/>
+                    <TextBlock Text="Jelszó&#xD;&#xA;" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="179" Height="23" 
+                               RenderTransformOrigin="0.446,0.506" FontFamily="Helvetica" FontWeight="Light" FontSize="20" Foreground="White"/>
                     <PasswordBox x:Name="passwordBox1" HorizontalAlignment="Left" Height="23" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="175" TabIndex="11"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                    <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Jelszó megerősítése" VerticalAlignment="Top" Height="23" Width="169"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Jelszó megerősítése" VerticalAlignment="Top" Height="23" 
+                               Width="179" FontFamily="Helvetica" FontWeight="Light" FontSize="20" Foreground="White"/>
                     <PasswordBox x:Name="passwordBoxConfirm" HorizontalAlignment="Left" Height="23" Margin="0,0,0,0" Grid.Row="1" 
                                  VerticalAlignment="Top" Width="175" TabIndex="12"/>
                 </StackPanel>
@@ -95,9 +112,12 @@
             </StackPanel>
         </Grid>
         <Grid Grid.Row="2" Grid.ColumnSpan="2">
-            <Button x:Name="submitButton" Content="Regisztáció" HorizontalAlignment="Left" Margin="25,0,0,0" Grid.Row="2" VerticalAlignment="Center" 
-                    Width="175" Click="Submit_Click" TabIndex="13"/>
-            <Button x:Name="BTN_Exit" Content="Kilépés" HorizontalAlignment="Right" Margin="0,25,25,25" Grid.Row="2" VerticalAlignment="Center" Width="175" TabIndex="14"/>
+            <Button x:Name="submitButton" Content="Regisztáció" Click="Submit_Click" TabIndex="13" FontSize="17"  FontStyle="Normal"
+                    Height="35" HorizontalAlignment="Left" Margin="50,0,0,0" VerticalAlignment="Top" Width="227"  RenderTransformOrigin="0.535,1.691"
+                    Foreground="#FFF9F8F8" Background="Transparent" BorderBrush="#FFFFFDFD" BorderThickness="2"/>
+            <Button x:Name="BTN_Exit" Content="Kilépés" FontSize="17"  FontStyle="Normal" TabIndex="14"
+                    Height="35" HorizontalAlignment="Right" Margin="300,0,50,0" VerticalAlignment="Top" Width="227"  RenderTransformOrigin="0.535,1.691"
+                    Foreground="#FFF9F8F8" Background="Transparent" BorderBrush="#FFFFFDFD" BorderThickness="2"/>
         </Grid>
     </Grid>
 </Window>

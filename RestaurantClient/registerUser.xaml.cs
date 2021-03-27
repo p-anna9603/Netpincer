@@ -281,5 +281,21 @@ namespace RestaurantClient
             }
             return retval;
         }
+
+        private void window_sizeChanged(object sender, SizeChangedEventArgs e)
+        {
+
+            Window w = sender as Window;
+            backgroundBorder.Width = e.NewSize.Width;
+            backgroundBorder.Height = e.NewSize.Height;
+            //LinearGradientBrush myVerticalGradient = new LinearGradientBrush();
+            //myVerticalGradient.GradientStops.Add(
+            //     new GradientStop(Colors.Yellow, 0.0));
+            //myVerticalGradient.GradientStops.Add(
+            //    new GradientStop(Colors.Red, 0.25));
+            //backgroundBorder.Child = myVerticalGradient;
+            Console.WriteLine("resiize: " + e.NewSize.Width + ", " + e.NewSize.Height);
+            Console.WriteLine("back: " + backgroundBorder.Width + ", " + backgroundBorder.Height);
+        }
     }
 }
