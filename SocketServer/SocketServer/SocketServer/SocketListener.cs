@@ -63,14 +63,14 @@ namespace SocketServer
 
                 //TESTING
                 //TEST JSON OBJECT
-                JObject jasonObjectTest = new JObject();
+               /* JObject jasonObjectTest = new JObject();
                 jasonObjectTest = JObject.Parse(
                                     @"{'type': '1',
                                     'clientID': '0',
                                     'username': 'testUser',
                                      'password': 't3stpassword',
                                       'userType': '1'
-                              }");
+                              }");*/
                 //{
                 //    JObject header = getClientHeader(jasonObjectTest);  //1st JObj  --Header
                 //    Console.WriteLine("0 {0}", header.ToString());
@@ -91,6 +91,11 @@ namespace SocketServer
 
                 //Console.WriteLine("Waiting for a connection...");
                 //Socket handler = listener.Accept();
+                //TEST
+                /*JObject o = new JObject();
+                o.Add("categoryName", "Teszta");
+                addCategory(o);
+                //TEST ENDS HERE*/
                 waitingForConnection();
 
                 // Incoming data from the client.    
@@ -195,38 +200,43 @@ namespace SocketServer
 
         private string addCategory(JObject o)
         {
-            string query = "EXEC addCategoryToMenu @username, @userType, @restName, @categoryName ";
+            string query = "DECLARE @returnID INT EXEC @returnID = addCategoryToMenu @categoryName SELECT  'categoryID' = @returnID";
+            DataTable dataTable = new DataTable();
             try
             {
                 SqlCommand command = new SqlCommand(query, DatabaseConnection);
-                command.Parameters.AddWithValue("@username", o["username"].ToString());
-                Console.WriteLine(o["username"].ToString());
-                command.Parameters.AddWithValue("@userType", o["userType"].ToString());
-                Console.WriteLine(o["userType"].ToString());
-                command.Parameters.AddWithValue("@restName", o["restaurantName"].ToString());
-                Console.WriteLine(o["restaurantName"].ToString());
                 command.Parameters.AddWithValue("@categoryName", o["categoryName"].ToString());
                 Console.WriteLine(o["categoryName"].ToString());
-                int affectedRows = command.ExecuteNonQuery();
-                if (affectedRows == 0)
+                SqlDataAdapter da = new SqlDataAdapter(command);
+                da.Fill(dataTable);
+                if (dataTable.Rows.Count == 0)
                 {
+                    da.Dispose();
                     return getErrorMessage(97);
                 }
+                da.Dispose();
+                string categoryID = dataTable.Rows[0][0].ToString();
+                JObject ok = new JObject();
+                ok.Add("type", 8);
+                ok.Add("status", "Successful");
+                ok.Add("categoryID", categoryID);
+                return ok.ToString();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
                 return getErrorMessage(99);
             }
-            List<string> catList= getCategories(o["restaurantName"].ToString());
-            if (catList.Count == 0)
-            {
-                return getErrorMessage(99);
-            }
-            Categories sendCat = new Categories(Int32.Parse(o["clientID"].ToString()),catList);
-            string sendCatJSON = JsonConvert.SerializeObject(sendCat);
-            Console.WriteLine("SendCatJSON: \n {0}", sendCatJSON);
-            return sendCatJSON;
+            //List<string> catList= getCategories(o["restaurantName"].ToString());
+            //if (catList.Count == 0)
+            //{
+            //    return getErrorMessage(99);
+            //}
+            
+            //Categories sendCat = new Categories(Int32.Parse(o["clientID"].ToString()),catList);
+            //string sendCatJSON = JsonConvert.SerializeObject(sendCat);
+            //Console.WriteLine("SendCatJSON: \n {0}", sendCatJSON);
+            //return sendCatJSON;
         }
 
         private List<string> getCategories(string restaurantName)
@@ -283,10 +293,10 @@ namespace SocketServer
         private string registerRestaurant(JObject o)
         {
             //CHECK TO SEE IF USER IS AVAILABLE
-            /*      string response = checkUsernameAvailable(o["username"].ToString(), Int32.Parse(o["userType"].ToString()));
-                if (response[0] != '1')
-                     return response;
-           */
+            string response = checkUsernameAvailable(o["username"].ToString(), 1);
+            if (response[0] != '1')
+                return response;
+           
             string query = "EXEC registerRestaurant @username, @pass, @lastName, @firstName, @phone, @email, @name, @restaurantDescription, @style, @city, @zipcode, @line1, @line2, @fromHour ,@fromMinute, @toHour, @toMinute";
             try
             {

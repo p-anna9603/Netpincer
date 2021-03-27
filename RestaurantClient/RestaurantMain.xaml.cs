@@ -30,7 +30,8 @@ namespace FoodOrderClient
         {
             InitializeComponent();
             Console.WriteLine(settingImg.Source.ToString());
-            ServerConnection = new ConnectToServer();
+            //ServerConnection = new ConnectToServer();
+            
             /*
                         //CONNECTING TO SERVER      --Not Gonna work without the database!
 

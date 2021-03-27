@@ -112,60 +112,33 @@ public class ConnectToServer
     }
 
 
-    public List<string> addCategory(string categoryName,string username, string restaurantName, UserType userType)
+    public int addCategory(string categoryName)
     {
         string recievedMsg = "";
-        List<string> list = new List<string>();
         try
         {
             JObject jobc = new JObject();
-            jobc.Add("type", 8);    // 8 - Get specific Restaurant Menu (Category list)
+            jobc.Add("type", 8);    // 8 - Add category
             jobc.Add("clientID", clientID);
-            jobc.Add("username", username);
-            jobc.Add("restaurantName", restaurantName);
             jobc.Add("categoryName", categoryName);
-            int userTypeNumber = 4;
-            switch (userType)
-            {
-                case UserType.Customer:
-                    userTypeNumber = 0;
-                    break;
-                case UserType.RestaurantOwner:
-                    userTypeNumber = 1;
-                    break;
-                case UserType.DeliveryPerson:
-                    userTypeNumber = 2;
-                    break;
-                default:
-                    Console.WriteLine("Undefined User type");
-                    break;
-            }
-            jobc.Add("userType", userTypeNumber);
             recievedMsg = sendJSON(jobc);
             Console.WriteLine("recievedMsg: {0}", recievedMsg);
             
 
-            //JObject receivedJSonObject = new JObject();
-            //receivedJSonObject = JObject.Parse(recievedMsg);
-            Categories cat = JsonConvert.DeserializeObject<Categories>(recievedMsg);
-            
-            if (cat.getType() == 8)
-            {
-                Console.WriteLine("Categories arrived");
-                return cat.getListOfCategories();
-            }
-            return list;
-        }
-        catch (Exception e)
-        {
             JObject receivedJSonObject = new JObject();
             receivedJSonObject = JObject.Parse(recievedMsg);
-            if (receivedJSonObject["type"].ToString() == "99")
+            if (receivedJSonObject["type"].ToString() == "8")
+                return Int32.Parse(receivedJSonObject["categoryID"].ToString());
+            else if (receivedJSonObject["type"].ToString() == "99")
             {
                 Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
             }
+            return -1;
+        }
+        catch (Exception e)
+        {
             Console.WriteLine(e.ToString());
-            return list;
+            return -1;
         }
     }
 

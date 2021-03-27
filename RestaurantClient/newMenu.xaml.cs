@@ -99,7 +99,7 @@ namespace RestaurantClient
                     category = new Category(CategoryID, categoryName, categoryImg);
                     //TODO upload to DB the new category (and pic)
                     // and get the latest categoryID
-                   categories = restaurantMain.ServerConnection.addCategory(categoryName, "pelda", "pelda", UserType.RestaurantOwner); // Change pelda to the current username, and second pelda to the current restaurant name
+                   //categories = restaurantMain.ServerConnection.addCategory(categoryName); // Change pelda to the current username, and second pelda to the current restaurant name
                  //   ServerConnection.StopClient();
                 }
                 IsSaved = true;

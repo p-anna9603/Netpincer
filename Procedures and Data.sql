@@ -142,8 +142,6 @@ SELECT * FROM Restaurant.Restaurant
 ALTER TABLE Restaurant.Restaurant 
 DROP CONSTRAINT IF EXISTS FK__Restauran__menuI__75A278F
 ALTER TABLE Restaurant.Restaurant 
-DROP CONSTRAINT IF EXISTS FK__Restauran__menuI__31EC6D26
-ALTER TABLE Restaurant.Restaurant 
 DROP CONSTRAINT IF EXISTS  FK__Restauran__menuI__75A278F5
 ALTER TABLE Restaurant.Restaurant DROP COLUMN IF EXISTS menuID
 DROP TABLE IF EXISTS Restaurant.Menu 
@@ -188,7 +186,7 @@ EXEC registerRestaurant 'AAAAA','a55tal','Vnev', 'Knev','+3640887799','test@emai
 
 
 
-
+/*
 DROP PROCEDURE IF EXISTS addCategoryToMenu
 GO
 CREATE PROCEDURE addCategoryToMenu @username nvarchar(50), @userType int, @name nvarchar(50),
@@ -201,7 +199,6 @@ JOIN Users.Users ON Users.username = [r].[owner]
 WHERE [r].[owner]=@username AND Users.userType=@userType AND r.name=@name
 DECLARE @restID INT
 SELECT  @restID = restID FROM @OutputTbl
-
 INSERT INTO Restaurant.Category(name,restaurantID)
 VALUES(@categoryName,@restID)
 GO
@@ -218,37 +215,69 @@ JOIN Restaurant.Restaurant ON Restaurant.restaurantID = [c].restaurantID
 
 SELECT [c].[name] FROM Restaurant.Category AS [c]
 JOIN Restaurant.Restaurant as [r] ON [r].restaurantID = [c].restaurantID
-WHERE [r].[name] = 'Teszt Étterem' --@restaurantName--
+WHERE [r].[name] = 'Teszt Étterem' --@restaurantName--*/
 
 
--- 2020.03.27. 19:28
+
 --ALLERGENS AND CATEGORY
 USE Netpincer
 DROP TABLE IF EXISTS Restaurant.Category
 CREATE TABLE Restaurant.CategoryName
 (
-    categoryID INT IDENTITY PRIMARY KEY,
-    categoryName nvarchar(20)
+	categoryID INT IDENTITY PRIMARY KEY,
+	categoryName nvarchar(20)
 );
 GO
 SELECT * FROM Restaurant.Food
 ALTER TABLE Restaurant.Food ADD categoryID INT 
 FOREIGN KEY REFERENCES Restaurant.CategoryName(categoryID)
-
+GO
 --EXEC sp_rename 'Restaurant.Food.CategoryID', 'categoryID', 'COLUMN';
 ALTER TABLE Restaurant.Food ADD restaurantID INT 
 FOREIGN KEY REFERENCES Restaurant.Restaurant(restaurantID)
-
+GO
 DROP TABLE IF EXISTS Restaurant.Allergens
 CREATE TABLE Restaurant.AllergenNames
 (
-    allergenID INT IDENTITY PRIMARY KEY,
-    name NVARCHAR(20)
+	allergenID INT IDENTITY PRIMARY KEY,
+	name NVARCHAR(20)
 )
 GO
 CREATE TABLE Restaurant.Allergens
 (
-    allergenID INT FOREIGN KEY REFERENCES Restaurant.AllergenNames(allergenID),
-    foodID INT FOREIGN KEY REFERENCES Restaurant.Food(foodID)
+	allergenID INT FOREIGN KEY REFERENCES Restaurant.AllergenNames(allergenID),
+	foodID INT FOREIGN KEY REFERENCES Restaurant.Food(foodID)
 )
 GO
+
+--register categoryID
+--registerfood foodId
+--catId ad, restId , food lista kap: 
+
+--RETURNS CATEGORY ID
+DROP PROCEDURE IF EXISTS addCategoryToMenu
+GO
+CREATE PROCEDURE addCategoryToMenu @categoryName nvarchar(30) 
+AS
+DECLARE @OutputTbl TABLE (ID INT)
+INSERT INTO Restaurant.CategoryName(categoryName)
+OUTPUT Inserted.categoryID	
+INTO @OutputTbl(ID)
+VALUES(@categoryName)
+DECLARE @outputClientID INT
+SELECT  @outputClientID = ID FROM @OutputTbl
+RETURN @outputClientID
+GO
+
+--HASZNÁLAT:
+DECLARE @returnID INT  
+EXEC @returnID = addCategoryToMenu 'Leves'
+SELECT  'categoryID' = @returnID 
+GO 
+
+--DELETE EVERYTHING AND RESET PRIMARY KEY TO 1
+--DELETE FROM Restaurant.CategoryName
+--DBCC CHECKIDENT ('Restaurant.CategoryName', RESEED, 0) 
+
+SELECT * FROM Restaurant.CategoryName
+

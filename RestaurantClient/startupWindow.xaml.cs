@@ -24,9 +24,12 @@ namespace RestaurantClient
 
         int registryType;
 
+
         public startupWindow()
         {
             InitializeComponent();
+            ConnectToServer ServerConnection = new ConnectToServer();
+            ServerConnection.addCategory("Pizza");
         }
     }
 }
