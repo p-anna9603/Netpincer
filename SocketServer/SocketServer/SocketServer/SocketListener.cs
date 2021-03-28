@@ -200,27 +200,144 @@ namespace SocketServer
 
         private string addCategory(JObject o)
         {
-            string query = "DECLARE @returnID INT EXEC @returnID = addCategoryToMenu @categoryName SELECT  'categoryID' = @returnID";
-            DataTable dataTable = new DataTable();
+            //CHECK IF CATEGORY ALREADY ADDED
+            string query = "SELECT categoryID FROM Restaurant.CategoryName WHERE categoryName = @_categoryName";
             try
             {
-                SqlCommand command = new SqlCommand(query, DatabaseConnection);
-                command.Parameters.AddWithValue("@categoryName", o["categoryName"].ToString());
+                DataTable dataTable = new DataTable();
+                SqlCommand command1 = new SqlCommand(query, DatabaseConnection);
+                command1.Parameters.AddWithValue("@_categoryName", o["categoryName"].ToString());
                 Console.WriteLine(o["categoryName"].ToString());
-                SqlDataAdapter da = new SqlDataAdapter(command);
+                string categoryID = "";
+                SqlDataAdapter da = new SqlDataAdapter(command1);
                 da.Fill(dataTable);
-                if (dataTable.Rows.Count == 0)
+                if (dataTable.Rows.Count != 0)  //IF CATEGORY ALREADY ADDED, ADD TO REST MENU
                 {
+                    categoryID = dataTable.Rows[0][0].ToString();
+                    dataTable.Clear();
+                    dataTable.Dispose();
                     da.Dispose();
-                    return getErrorMessage(97);
+                    //GETTING REST ID
+                    query = "SELECT restaurantID FROM Restaurant.Restaurant WHERE owner = @username";
+                    SqlCommand command2 = new SqlCommand(query, DatabaseConnection);
+                    command2.Parameters.AddWithValue("@username", o["owner"].ToString());
+                    Console.WriteLine(o["owner"].ToString());
+                    da = new SqlDataAdapter(command2);
+                    DataTable dataTable2 = new DataTable();
+                    da.Fill(dataTable2);
+                    if (dataTable2.Rows.Count == 0)
+                    {
+                        da.Dispose();
+                        dataTable2.Clear();
+                        dataTable2.Dispose();
+                        return getErrorMessage(92);
+                    }
+                    string restaurantID = "";
+                    restaurantID = dataTable2.Rows[0][0].ToString();
+                    Console.WriteLine("restaurantID: {0}", restaurantID);
+                    da.Dispose();
+                    dataTable2.Clear();
+                    dataTable2.Dispose();
+                    JObject ok = new JObject();
+                    //CHECKING IF MENU ALREADY CONTAINS THIS CATEGORY
+                    query = "SELECT menuID FROM Restaurant.Menu WHERE restaurantID=@restID AND categoryID=@catID";
+                    SqlCommand command3 = new SqlCommand(query, DatabaseConnection);
+                    command3.Parameters.AddWithValue("@restID", restaurantID);
+                    Console.WriteLine("restID: {0}", restaurantID);
+                    command3.Parameters.AddWithValue("@catID", categoryID);
+                    Console.WriteLine("categoryID: {0}", categoryID);
+                    da = new SqlDataAdapter(command3);
+                    DataTable dataTable3 = new DataTable();
+                    da.Fill(dataTable3);
+                    if (dataTable3.Rows.Count != 0)
+                    {
+                        da.Dispose();
+                        dataTable3.Clear();
+                        dataTable3.Dispose();
+                        ok.Add("type", 8);
+                        ok.Add("status", "Category already exists and is part of menu");
+                        ok.Add("categoryID", categoryID);
+                        return ok.ToString();
+                    }
+                    da.Dispose();
+                    dataTable3.Clear();
+                    dataTable3.Dispose();
+                    //NOW ADDING CATEGORY TO MENU
+                    query = "INSERT INTO Restaurant.Menu(restaurantID,categoryID) VALUES(@restID,@catID)";
+                    SqlCommand command4 = new SqlCommand(query, DatabaseConnection);
+                    command4.Parameters.AddWithValue("@restID", restaurantID);
+                    Console.WriteLine("restID: {0}", restaurantID);
+                    command4.Parameters.AddWithValue("@catID", categoryID);
+                    Console.WriteLine("categoryID: {0}", categoryID);
+                    int affectedRows = command4.ExecuteNonQuery();
+                    if (affectedRows == 0)
+                    {
+                        return getErrorMessage(93);
+                    }
+                    ok.Add("type", 8);
+                    ok.Add("status", "Category already exists but added to menu");
+                    ok.Add("categoryID", categoryID);
+                    return ok.ToString();
                 }
-                da.Dispose();
-                string categoryID = dataTable.Rows[0][0].ToString();
-                JObject ok = new JObject();
-                ok.Add("type", 8);
-                ok.Add("status", "Successful");
-                ok.Add("categoryID", categoryID);
-                return ok.ToString();
+                else
+                {
+                    //IF CATEGORY NOT ADDED THEN WE ADD IT
+                    query = "DECLARE @returnID INT EXEC @returnID = addCategoryToMenu @categoryName SELECT  'categoryID' = @returnID";
+                    SqlCommand command5 = new SqlCommand(query, DatabaseConnection);
+                    command5.Parameters.AddWithValue("@categoryName", o["categoryName"].ToString());
+                    Console.WriteLine(o["categoryName"].ToString());
+                    da.Dispose();
+                    da = new SqlDataAdapter(command5);
+                    DataTable dataTable4 = new DataTable();
+                    da.Fill(dataTable4);
+                    if (dataTable4.Rows.Count == 0)
+                    {
+                        da.Dispose();
+                        dataTable4.Dispose();
+                        return getErrorMessage(97);
+                    }
+                    categoryID = dataTable4.Rows[0][0].ToString();   //NOW WE HAVE THE CATEG ID
+                    da.Dispose();
+                    dataTable4.Clear();
+                    dataTable4.Dispose();
+                    //GETTING REST ID
+                    query = "SELECT restaurantID FROM Restaurant.Restaurant WHERE owner = @username";
+                    SqlCommand command6 = new SqlCommand(query, DatabaseConnection);
+                    command6.Parameters.AddWithValue("@username", o["owner"].ToString());
+                    Console.WriteLine(o["owner"].ToString());
+                    da = new SqlDataAdapter(command6);
+                    DataTable dataTable5 = new DataTable();
+                    da.Fill(dataTable5);
+                    if (dataTable5.Rows.Count == 0)
+                    {
+                        da.Dispose();
+                        dataTable5.Dispose();
+                        return getErrorMessage(92);
+                    }
+                    string restaurantID2 = "";
+                    restaurantID2 = dataTable5.Rows[0][0].ToString();
+                    Console.WriteLine("restaurantID2: {0}", restaurantID2);
+                    da.Dispose();
+                    dataTable5.Clear();
+                    dataTable5.Dispose();
+                    //NOW ADDING CATEGORY TO MENU
+                    query = "INSERT INTO Restaurant.Menu(restaurantID,categoryID) VALUES(@restID,@catID)";
+                    SqlCommand command7 = new SqlCommand(query, DatabaseConnection);
+                    command7.Parameters.AddWithValue("@restID", restaurantID2);
+                    Console.WriteLine("restID: {0}", restaurantID2);
+                    command7.Parameters.AddWithValue("@catID", categoryID);
+                    Console.WriteLine("categoryID: {0}", categoryID);
+                    int affectedRows = command7.ExecuteNonQuery();
+                    if (affectedRows == 0)
+                    {
+                        return getErrorMessage(93);
+                    }
+                    JObject ok2 = new JObject();
+                    ok2.Add("type", 8);
+                    ok2.Add("status", "Category didn't exist, now added to menu");
+                    ok2.Add("categoryID", categoryID);
+                    return ok2.ToString();
+                }
             }
             catch (Exception e)
             {

@@ -112,7 +112,7 @@ public class ConnectToServer
     }
 
 
-    public int addCategory(string categoryName)
+    public int addCategory(string categoryName, string owner)
     {
         string recievedMsg = "";
         try
@@ -121,6 +121,7 @@ public class ConnectToServer
             jobc.Add("type", 8);    // 8 - Add category
             jobc.Add("clientID", clientID);
             jobc.Add("categoryName", categoryName);
+            jobc.Add("owner", owner);
             recievedMsg = sendJSON(jobc);
             Console.WriteLine("recievedMsg: {0}", recievedMsg);
             

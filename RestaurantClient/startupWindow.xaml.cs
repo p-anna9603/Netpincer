@@ -30,7 +30,12 @@ namespace RestaurantClient
         public startupWindow()
         {
             InitializeComponent();
-           ServerConnection = new ConnectToServer();
+            ServerConnection = new ConnectToServer();
+            ServerConnection.addCategory("Leves", "Hiiiii");            //Category didn't exist, now added to menu
+            ServerConnection.addCategory("Leves", "Hiiiii");            //Category already exists and is part of menu
+            ServerConnection.addCategory("Leves", "AsztalVok1149");     //Category already exists but added to menu
+            ServerConnection.addCategory("Leves", "Teszto1");           //Restaurant not found
+            ServerConnection.addCategory("Alma", "Teszto11");           //Restaurant not found
         }
 
         private void signInBtn_Click(object sender, RoutedEventArgs e)

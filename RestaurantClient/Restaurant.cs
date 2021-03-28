@@ -20,7 +20,7 @@ namespace RestaurantClient
 		public string name { get; set; }
 		public string restaurantDescription { get; set; }
 		public string style { get; set; }
-		public string username { get; set; }
+		public string owner { get; set; }
 		public string pass { get; set; }
 		public string email { get; set; }
 		public string phoneNumber { get; set; }
@@ -45,7 +45,7 @@ namespace RestaurantClient
 			this.name = name_;
 			this.restaurantDescription = restaurantDescription_;
 			this.style = style_;
-			this.username = username_;
+			this.owner = username_;
 			this.pass = pass_;
 			this.phoneNumber = phoneNumber_;
 			this.email = email_;
@@ -55,7 +55,7 @@ namespace RestaurantClient
 
 		public string toString()
 		{
-			return "Owner: " + username +
+			return "Owner: " + owner +
 				"\nRestaurant Name: " + name + "\nDescription: " + restaurantDescription +
 				"\nStyle: " + style + "\nOpening Hours: " + fromHour
 				+ ":" + fromMinute + " - " + toHour + ":" + toMinute
