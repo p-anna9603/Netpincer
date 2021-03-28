@@ -33,6 +33,7 @@ namespace RestaurantClient
         private string email;
 
         public UserType GetUserType { get => userType; set => userType = value; }
+        public string Username { get => username; set => username = value; }
 
         public User() { }
 

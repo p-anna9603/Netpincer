@@ -23,12 +23,12 @@ namespace FoodOrderClient
         RestaurantMenus menus;
         public UserControl child;
         private ConnectToServer serverConnection;
-        User currUser;
+        Restaurant currUser;
 
         public ConnectToServer ServerConnection { get => serverConnection; set => serverConnection = value; }
-        public User CurrUser { get => currUser; set => currUser = value; }
+        public Restaurant CurrUser { get => currUser; set => currUser = value; }
 
-        public RestaurantMain(ConnectToServer ServerCon, User usr)
+        public RestaurantMain(ConnectToServer ServerCon, Restaurant usr)
         {
             InitializeComponent();
             Console.WriteLine(settingImg.Source.ToString());

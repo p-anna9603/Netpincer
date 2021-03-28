@@ -101,8 +101,7 @@ namespace RestaurantClient
                     // and get the latest categoryID
                     //categories = restaurantMain.ServerConnection.addCategory(categoryName); // Change pelda to the current username, and second pelda to the current restaurant name
                     //   ServerConnection.StopClient();
-                   // categoryID = restaurantMain.ServerConnection.addCategory(categoryName,/*USERNAME OF THE OWNER(RESTAURANT)*/); // Change pelda to the current username, and second pelda to the current restaurant name
-
+                    categoryID = restaurantMain.ServerConnection.addCategory(categoryName, restaurantMain.CurrUser.owner);
                 }
                 IsSaved = true;
                 this.Close();

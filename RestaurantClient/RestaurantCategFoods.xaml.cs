@@ -29,12 +29,12 @@ namespace RestaurantClient
         Dictionary<int, Food> newFoodWindows = new Dictionary<int, Food>(); // foodID - Food
         List<Food> foods = new List<Food>();
         Dictionary<int, String> foodNames = new Dictionary<int, string>(); // map[foodId] = food name
-        Dictionary<int, Image> imgNames = new Dictionary<int, Image>(); //        map[foodId] = Image
+        Dictionary<int, Image> imgNames = new Dictionary<int, Image>(); //    map[foodId] = Image
         Dictionary<StackPanel, int> foodPanels = new Dictionary<StackPanel, int>(); // stackpanel - foodID
         RestaurantMain restaurantMain;
 
         public ConnectToServer ServerConnection;
-        public RestaurantCategFoods(Window restrantMain, int cID)
+        public RestaurantCategFoods(Window restrantMain, int cID, string cName)
         {
             InitializeComponent();
             SolidColorBrush color = new SolidColorBrush();
@@ -45,6 +45,7 @@ namespace RestaurantClient
 
             Console.WriteLine("category: " + categID);
             //TODO get category name from db by id categoryName = categNameFromDb
+            categoryName = cName;
             categName.Text = categoryName;
             //TODO create new Food from existing ones from db
                     // Food f = new Food(..); -->  foods.Add(f);

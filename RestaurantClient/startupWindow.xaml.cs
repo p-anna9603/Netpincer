@@ -30,7 +30,7 @@ namespace RestaurantClient
         {
             InitializeComponent();
             ServerConnection = new ConnectToServer();
-            ServerConnection.getRestaurant("AsztalVok").toString();
+            ServerConnection.getRestaurant("egy").toString();
            /* ServerConnection.addCategory("Leves", "Hiiiii");            //Category didn't exist, now added to menu
             ServerConnection.addCategory("Leves", "Hiiiii");            //Category already exists and is part of menu
             ServerConnection.addCategory("Leves", "AsztalVok1149");     //Category already exists but added to menu
@@ -72,7 +72,9 @@ namespace RestaurantClient
                 User user = ServerConnection.getUser(userName, password, signInType);
                 if(user.GetUserType == UserType.RestaurantOwner)
                 {
-                    RestaurantMain restMain = new RestaurantMain(ServerConnection, user);
+                    Console.WriteLine("name: " + user.Username);
+                    Restaurant rest = ServerConnection.getRestaurant(user.Username);
+                    RestaurantMain restMain = new RestaurantMain(ServerConnection, rest);
                     restMain.Show();
                     restaurantSign.IsChecked = false;
                     this.Hide();

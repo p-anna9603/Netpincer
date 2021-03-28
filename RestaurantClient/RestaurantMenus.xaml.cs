@@ -58,7 +58,7 @@ namespace RestaurantClient
             if (newMen.IsSaved)
             {
                 newMenus.Add(newMen);
-
+                categoryNames[categoryId] = newMen.CategoryName;
                 categories.Add(newMen.Category);
                 categoryWindows[newMen.CategoryID] = newMen.Category;
                 addCategoryPanel(newMen.CategoryName, newMen.CategoryID);
@@ -81,7 +81,7 @@ namespace RestaurantClient
             if (newMen.IsSaved)
             {
                 newMenus.Add(newMen);
-                //   categoryNames[categoryId] = newMen.CategoryName;
+                categoryNames[categoryId] = newMen.CategoryName;
 
                 //        newMenus2.Add(new newMenuItem(newMen.CategoryName));
                 addCategoryPanel(newMen.CategoryName, newMen.CategoryID);           
@@ -197,7 +197,7 @@ namespace RestaurantClient
             Console.WriteLine("clicked onL " + clickedStackPanel);
             if (e.Source != settingButton)
             {
-                RestaurantCategFoods categFood = new RestaurantCategFoods(restaurantMain, categID);
+                RestaurantCategFoods categFood = new RestaurantCategFoods(restaurantMain, categID, categoryNames[categID]);
                 restaurantMain.childWindow.Content = null;
 
                 /* Set the content window to new child */
