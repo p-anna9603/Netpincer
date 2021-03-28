@@ -27,11 +27,14 @@ namespace RestaurantClient
 		public string lastName { get; set; }
 		public string firstName { get; set; }
 
+
+		public Restaurant() { }
+
 		public Restaurant(string city_, string zipcode_, string line1_, string line2_, 
 			int fromHour_, int fromMinute_, int toHour_, int toMinute_,
 			string name_, string restaurantDescription_, string style_, 
-			string username_, string pass_,string email_, string phoneNumber_,
-			string lastName, string firstName, int restID = 0)
+			string username_, string phoneNumber_, int restID = 0,
+			string lastName="", string firstName="", string pass_="", string email_="")
 		{
             this.restaurantID = restID;
 			this.city = city_;

@@ -111,6 +111,49 @@ public class ConnectToServer
         }
     }
 
+    public Restaurant getRestaurant(string username) 
+    {
+        try
+        {
+            JObject jobc = new JObject();
+            jobc.Add("type", 2);    // 2 - Get Restaurant login
+            jobc.Add("clientID", clientID);
+            jobc.Add("username", username);
+            string recievedMsg = sendJSON(jobc);
+            Console.WriteLine("recievedMsg: {0}", recievedMsg);
+
+            JObject receivedJSonObject = new JObject();
+            receivedJSonObject = JObject.Parse(recievedMsg);
+            if (receivedJSonObject["type"].ToString() == "2")
+            {
+                return new Restaurant(
+                    receivedJSonObject["city"].ToString(),
+                    receivedJSonObject["zipcode"].ToString(),
+                    receivedJSonObject["line1"].ToString(),
+                    receivedJSonObject["line2"].ToString(),
+                    Int32.Parse(receivedJSonObject["fromHour"].ToString()),
+                    Int32.Parse(receivedJSonObject["fromMinute"].ToString()),
+                    Int32.Parse(receivedJSonObject["toHour"].ToString()),
+                    Int32.Parse(receivedJSonObject["toMinute"].ToString()),
+                    receivedJSonObject["name"].ToString(),
+                    receivedJSonObject["restaurantDescription"].ToString(),
+                    receivedJSonObject["style"].ToString(),
+                    receivedJSonObject["owner"].ToString(),
+                    receivedJSonObject["phoneNumber"].ToString(),
+                    Int32.Parse(receivedJSonObject["restaurantID"].ToString())
+                    );
+            }
+            else if (receivedJSonObject["type"].ToString() == "99")
+            {
+                Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+        }
+        return new Restaurant();
+    }
 
     public int addCategory(string categoryName, string owner)
     {

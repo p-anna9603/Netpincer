@@ -148,6 +148,19 @@ namespace SocketServer
                             Console.WriteLine("MERGED JSON: {0}", header.ToString());
                             handler.Send(Encoding.ASCII.GetBytes(header.ToString()));
                         }
+                        else if (receivedJSONObject["type"].ToString() == "2") //Get Restaurant Information
+                        {
+                            JObject header = getClientHeader(receivedJSONObject);  //1st JObj  --Header
+                            string userInfo = getRestaurant(receivedJSONObject["username"].ToString());
+                            userInfo = userInfo.Replace("[", "");
+                            userInfo = userInfo.Replace("]", "");
+                            JObject userJason = JObject.Parse(userInfo);    //2nd JObj  --Body
+                            Console.WriteLine("BODY: {0}", userJason);
+                            //JsonConvert.DeserializeObject(userInfo);
+                            header.Merge(userJason);
+                            Console.WriteLine("MERGED JSON: {0}", header.ToString());
+                            handler.Send(Encoding.ASCII.GetBytes(header.ToString()));
+                        }
                         else if (receivedJSONObject["type"].ToString() == "4") //Get Register User
                         {
                             string register = registerUser(receivedJSONObject);
@@ -583,6 +596,32 @@ namespace SocketServer
                 Console.WriteLine(e.ToString());
                 return getErrorMessage(99);
             }   
+        }
+
+        private string getRestaurant(string username)
+        {
+            string query = "SELECT* FROM getRestaurant(@username)";
+            DataTable dataTable = new DataTable();
+            try
+            {
+                SqlCommand command = new SqlCommand(query, DatabaseConnection);
+                command.Parameters.AddWithValue("@username", username);
+                SqlDataAdapter da = new SqlDataAdapter(command);
+                da.Fill(dataTable);
+                if (dataTable.Rows.Count == 0)
+                {
+                    da.Dispose();
+                    return getErrorMessage(92);
+                }
+                da.Dispose();
+                Console.WriteLine("TABLE: {0}", JsonConvert.SerializeObject(dataTable));
+                return JsonConvert.SerializeObject(dataTable);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return getErrorMessage(99);
+            }
         }
 
 

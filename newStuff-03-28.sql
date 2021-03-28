@@ -1,0 +1,67 @@
+------------------------------------------------------------------------------
+----------------------AFTER YOU RUN THE GENERATING SCRIPT RUN THIS------------
+------------------------------------------------------------------------------
+
+----------------------------------03.28..-------------------------------------
+USE Netpincer
+DROP PROCEDURE IF EXISTS registerRestaurant
+GO
+CREATE PROCEDURE registerRestaurant @usernameParam nvarchar(50),@passParam nvarchar(30),
+			@lastName nvarchar(50),@fistName nvarchar(50), @phoneNumber nvarchar(20), @email nvarchar(50),
+			@nameParam nvarchar(50), @restaurantDescriptionParam nvarchar(200),@styleParam nvarchar(50),
+			@_city nvarchar(50),@_zipcode nvarchar(4),@_line1 nvarchar(50),@_line2 nvarchar(50),
+			@_fromHour INT, @_fromMinute INT, @_toHour INT, @_toMinute INT
+AS
+DECLARE @OutputTbl TABLE (addressID INT, OpeningID INT)
+--Register User
+EXEC registerUser @usernameParam,@passParam,@email,@_city,@_zipcode,@_line1,@_line2,@lastName,@fistName,@phoneNumber,'1'
+--Restaurant Address
+INSERT INTO Restaurant.RestaurantAddress(city,zipcode,line1,line2)
+OUTPUT Inserted.addressID
+INTO @OutputTbl(addressID)
+VALUES(@_city, @_zipcode,@_line1,@_line2)
+DECLARE @_addressID INT
+SELECT  @_addressID = addressID FROM @OutputTbl
+--Opening Hours
+INSERT INTO Restaurant.OpeningHours(fromHour,fromMinute,toHour,toMinute)
+OUTPUT Inserted.openingHoursID
+INTO @OutputTbl(OpeningID)
+VALUES(@_fromHour, @_fromMinute,@_toHour,@_toMinute)
+DECLARE @_openingHoursID INT
+SELECT  @_openingHoursID = OpeningID FROM @OutputTbl
+--Restaurant
+INSERT INTO Restaurant.Restaurant(owner,name,restaurantDescription,style,phoneNumber,addressID,openingHoursID)
+VALUES(@usernameParam,@nameParam, @restaurantDescriptionParam,@styleParam,@phoneNumber,@_addressID,@_openingHoursID)
+GO
+
+
+----ANNA INNEN---------------
+USE Netpincer
+SELECT * FROM Restaurant.Food
+ALTER TABLE Restaurant.Food DROP COLUMN restaurantID
+ALTER TABLE Restaurant.Food DROP CONSTRAINT FK__Food__restaurant__503BEA1C
+ALTER TABLE Restaurant.Food DROP COLUMN IF EXISTS restaurantID
+
+DROP TABLE IF EXISTS Restaurant.Menu
+CREATE TABLE Restaurant.Menu
+(
+	menuID INT IDENTITY(1,1) PRIMARY KEY,
+	restaurantID INT FOREIGN KEY REFERENCES Restaurant.Restaurant(restaurantID) ON DELETE SET NULL,
+	categoryID INT FOREIGN KEY REFERENCES Restaurant.CategoryName(categoryID) ON DELETE SET NULL
+)
+
+--DELETE EVERYTHING AND RESET PRIMARY KEY TO 1
+--DELETE FROM Restaurant.CategoryName
+--DBCC CHECKIDENT ('Restaurant.CategoryName', RESEED, 0) 
+
+--SOCKET SERVER: SELECT categoryID FROM Restaurant.CategoryName WHERE categoryName = @_categoryName
+--SERVER: INSERT INTO Restaurant.Menu(restaurantID,categoryID) VALUES(1,2)
+--SERVER: SELECT restaurantID FROM Restaurant.Restaurant WHERE owner=@username
+--SERVER: SELECT menuID FROM Restaurant.Menu WHERE restaurantID=@restID AND categoryID=@catID
+--USE Netpincer
+SELECT * FROM Restaurant.Menu
+SELECT * FROM Restaurant.CategoryName
+
+--DELETE EVERYTHING AND RESET PRIMARY KEY TO 1
+--DELETE FROM Restaurant.Menu
+--DBCC CHECKIDENT ('Restaurant.Menu', RESEED, 0) 

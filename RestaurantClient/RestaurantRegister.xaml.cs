@@ -54,9 +54,8 @@ namespace FoodOrderClient
         }
         public void registerRestaurant()
         {
-            newRestaurant = new Restaurant(citiName, zipCode, street, streetNum, fromHour, fromMin, toHour, toMin, restName, leiras,
-               style, userName, password, email, phone, lastName, firstName);
-            ServerConnection.registerRestaurant(newRestaurant);
+            ServerConnection.registerRestaurant(new Restaurant(citiName, zipCode, street, streetNum, fromHour, fromMin, toHour, toMin, restName, leiras,
+               style, userName, phone, -1, lastName, firstName, password, email)); 
            // ServerConnection.StopClient();
         }
 
