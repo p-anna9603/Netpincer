@@ -23,12 +23,13 @@ namespace RestaurantClient
         public UserControl child;
         private ConnectToServer serverConnection;
         User currUser;
-
-        public UserMain(ConnectToServer ServerCon, User usr)
+        startupWindow parent;
+        public UserMain(ConnectToServer ServerCon, User usr, Window start)
         {
             InitializeComponent();
             serverConnection = ServerCon;
             currUser = usr;
+            parent = (startupWindow)start;
         }
         private void ListViewItem_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -98,14 +99,33 @@ namespace RestaurantClient
                     //menus.Height = GridPrincipal.Height;
 
                     childWindow.Content = restaurants;
-
                     child = restaurants;
+                    break;
+                case 5:
+                    windowClosing();
                     break;
                 default:
                     break;
             }
         }
+        private void exit_Click(object sender, MouseEventArgs e)
+        {
+            windowClosing();
+        }
+        private void windowClosing()
+        {
+            string message = "Biztosan kiszeretne lépni?";
+            string caption = "Kilépés";
+            var result = MessageBox.Show(message, caption,
+                               MessageBoxButton.YesNo,
+                               MessageBoxImage.Question);
 
+            if (result == MessageBoxResult.Yes)
+            {
+                parent.Show();
+                this.Close();
+            }
+        }
         private void window_sizeChanged(object sender, SizeChangedEventArgs e)
         {
 

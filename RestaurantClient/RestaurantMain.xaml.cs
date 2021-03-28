@@ -24,16 +24,18 @@ namespace FoodOrderClient
         public UserControl child;
         private ConnectToServer serverConnection;
         Restaurant currUser;
+        startupWindow parent;
 
         public ConnectToServer ServerConnection { get => serverConnection; set => serverConnection = value; }
         public Restaurant CurrUser { get => currUser; set => currUser = value; }
 
-        public RestaurantMain(ConnectToServer ServerCon, Restaurant usr)
+        public RestaurantMain(ConnectToServer ServerCon, Restaurant usr, Window start)
         {
             InitializeComponent();
             Console.WriteLine(settingImg.Source.ToString());
             serverConnection = ServerCon;
             currUser = usr;
+            parent = (startupWindow)start;
          //   ServerConnection = new ConnectToServer();
 
             /*
@@ -126,11 +128,31 @@ namespace FoodOrderClient
 
                     child = menus;
                     break;
+                case 5:
+                    windowClosing();
+                    break;
                 default:
                     break;
             }
         }
+        private void exit_Click(object sender, MouseEventArgs e)
+        {
+            windowClosing();
+        }
+        private void windowClosing()
+        {
+            string message = "Biztosan kiszeretne lépni?";
+            string caption = "Kilépés";
+            var result = MessageBox.Show(message, caption,
+                               MessageBoxButton.YesNo,
+                               MessageBoxImage.Question);
 
+            if (result == MessageBoxResult.Yes)
+            {
+                parent.Show();
+                this.Close();
+            }
+        }
         private void window_sizeChanged(object sender, SizeChangedEventArgs e)
         {
 

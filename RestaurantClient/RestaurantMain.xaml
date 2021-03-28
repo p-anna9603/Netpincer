@@ -481,7 +481,7 @@
                         <!--// Sign Out //-->
 
                         <ListViewItem HorizontalAlignment="Left"
-                                      Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter"
+                                      Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter"  PreviewMouseDown="exit_Click"
                                       >
 
                             <StackPanel Orientation="Horizontal"

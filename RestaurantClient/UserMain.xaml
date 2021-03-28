@@ -481,7 +481,7 @@
                         <!--// Sign Out //-->
 
                         <ListViewItem HorizontalAlignment="Left"
-                                      Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter"
+                                      Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter" PreviewMouseDown="exit_Click"
                                       >
 
                             <StackPanel Orientation="Horizontal"
@@ -491,7 +491,7 @@
                                        Stretch="Fill"
                                        Margin="7,0,0,0" Height="42" Width="41"/>
 
-                                <TextBlock Text="Sign Out"
+                                <TextBlock Text="Kilépés"
                                            Margin="12,0,0,0"
                                            Style="{StaticResource font_style}"/>
 
@@ -502,7 +502,7 @@
                             <ListViewItem.ToolTip>
 
                                 <ToolTip x:Name="tt_signout"
-                                         Content="Sign Out"
+                                         Content="Kilépés"
                                          Style="{StaticResource tt_style}"/>
 
                             </ListViewItem.ToolTip>

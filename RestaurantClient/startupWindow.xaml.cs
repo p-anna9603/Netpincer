@@ -74,14 +74,14 @@ namespace RestaurantClient
                 {
                     Console.WriteLine("name: " + user.Username);
                     Restaurant rest = ServerConnection.getRestaurant(user.Username);
-                    RestaurantMain restMain = new RestaurantMain(ServerConnection, rest);
+                    RestaurantMain restMain = new RestaurantMain(ServerConnection, rest, this);
                     restMain.Show();
                     restaurantSign.IsChecked = false;
                     this.Hide();
                 }
                 else if(user.GetUserType == UserType.Customer)
                 {
-                    UserMain usrMain = new UserMain(ServerConnection, user);
+                    UserMain usrMain = new UserMain(ServerConnection, user, this);
                     usrMain.Show();
                     clientSign.IsChecked = false;
                     this.Hide();
@@ -91,6 +91,8 @@ namespace RestaurantClient
                     // TODO delivery person interface
                     //runningBoySign.IsChecked = false;
                 }
+                textBoxPassword.Password = "";
+                textBoxUserName.Text = "";
             }
         }
 

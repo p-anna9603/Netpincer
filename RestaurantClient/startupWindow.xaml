@@ -6,8 +6,107 @@
         xmlns:local="clr-namespace:RestaurantClient"
         mc:Ignorable="d"
         Title="Belépés | Regisztráció" Height="491.25" Width="800">
+    <Window.Resources>
+        <Style x:Key="RoundCorner" TargetType="{x:Type Button}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid x:Name="grid">
+                            <Border x:Name="border" CornerRadius="8" BorderBrush="White" BorderThickness="2">
+                                <!--<Border.Background>
+                                    <RadialGradientBrush GradientOrigin="0.496,1.052">
+                                        <RadialGradientBrush.RelativeTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform CenterX="0.5" CenterY="0.5" 
+                                                        ScaleX="1.5" ScaleY="1.5"/>
+                                                <TranslateTransform X="0.02" Y="0.3"/>
+                                            </TransformGroup>
+                                        </RadialGradientBrush.RelativeTransform>
+                                        <GradientStop Offset="1" Color="#00000000"/>
+                                        <GradientStop Offset="0.3" Color="#FFFFFFFF"/>
+                                    </RadialGradientBrush>
+                                </Border.Background>-->
+                                <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          TextElement.FontWeight="Bold">
+                                </ContentPresenter>
+                            </Border>
+
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" TargetName="border">
+                                    <Setter.Value>
+                                        <RadialGradientBrush GradientOrigin="0.496,1.052">
+                                            <RadialGradientBrush.RelativeTransform>
+                                                <TransformGroup>
+                                                    <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.5" ScaleY="1.5"/>
+                                                    <TranslateTransform X="0.02" Y="0.3"/>
+                                                </TransformGroup>
+                                            </RadialGradientBrush.RelativeTransform>
+                                            <GradientStop Color="#00000000" Offset="1"/>
+                                            <GradientStop Color="#FF303030" Offset="0.3"/>
+                                        </RadialGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" TargetName="border" Value="darkblue"/>
+                                <Setter Property="Background" Value="LightBlue"></Setter>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" TargetName="grid" Value="0.25"/>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <ControlTemplate x:Key="TextBoxBaseControlTemplate" TargetType="{x:Type TextBoxBase}">
+            <Border Background="{TemplateBinding Background}" 
+            x:Name="Bd" BorderBrush="White"
+            BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="10">
+                <ScrollViewer x:Name="PART_ContentHost"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" TargetName="Bd"/>
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                </Trigger>
+                <Trigger Property="Width" Value="Auto">
+                    <Setter Property="MinWidth" Value="100"/>
+                </Trigger>
+                <Trigger Property="Height" Value="Auto">
+                    <Setter Property="MinHeight" Value="20"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <ControlTemplate x:Key="passwordbox" TargetType="{x:Type PasswordBox}">
+            <Border Background="{TemplateBinding Background}" 
+        x:Name="Bd" BorderBrush="white"
+        BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="10">
+                <ScrollViewer Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" TargetName="Bd"/>
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                </Trigger>
+                <Trigger Property="Width" Value="Auto">
+                    <Setter Property="MinWidth" Value="100"/>
+                </Trigger>
+                <Trigger Property="Height" Value="Auto">
+                    <Setter Property="MinHeight" Value="20"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
     <Grid Margin="0,0,0,0" Height="500">
-        <Border CornerRadius="10" Height="auto" Margin="0,0,0,0" Grid.ColumnSpan="2">
+        <Border CornerRadius="10" Height="auto" Margin="0,0,0,0">
             <Border.Background>
                 <LinearGradientBrush>
                     <GradientStop Color="#7be9f6" Offset="0.0"></GradientStop>
@@ -30,7 +129,7 @@
             <StackPanel Grid.Row="0" Grid.Column="0" Margin="20,0,0,0">
                 <TextBlock Name="errorText" Text="" Foreground="Red"></TextBlock>
             </StackPanel>
-            <StackPanel Grid.Row="1" Grid.Column="0">
+            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,0,37">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                     <StackPanel>
                         <TextBlock Text="Belépés" TextAlignment="Center" FontFamily="Helvetica" FontWeight="Bold"  FontSize="20" Foreground="White"></TextBlock>
@@ -45,25 +144,29 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
                         <TextBlock Height="23" FontFamily="Helvetica" FontWeight="Light" FontSize="20" Foreground="White" HorizontalAlignment="Left" Margin="0,0,0,0" Text="Felhasználó név:" VerticalAlignment="Top" Width="158" />
-                        <TextBox Height="22" HorizontalAlignment="Left" Margin="0,2" Name="textBoxUserName" Text="" VerticalAlignment="Center" Width="184" Padding="1.5" TabIndex="1" />
+                        <TextBox Text="dgkl" Height="22" Margin="0,2" Name="textBoxUserName"   Template="{StaticResource TextBoxBaseControlTemplate}"
+                                 VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="184" Padding="2" TabIndex="1" Background="{x:Null}" BorderBrush="{x:Null}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <TextBlock Height="23" FontFamily="Helvetica" FontWeight="Light" FontSize="20" Foreground="White" HorizontalAlignment="Left" Margin="0,0,0,0" Text="Jelszó:" VerticalAlignment="Top" Width="158" />
-                        <PasswordBox Height="22" HorizontalAlignment="Left" Margin="0,1" Name="textBoxPassword" VerticalAlignment="Center" Width="185" Padding="1.5" TabIndex="2"/>
+                        <PasswordBox Height="22" HorizontalAlignment="Left" Margin="0,1" Name="textBoxPassword"  Template="{StaticResource passwordbox}" 
+                                         VerticalAlignment="Center" Width="185" Padding="1.5" TabIndex="2"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                                         Background="{x:Null}" BorderBrush="{x:Null}"/>
                     </StackPanel>
                     <StackPanel Margin="0,30,0,0" HorizontalAlignment="Center">
-                        <Button Content="Belépés" FontSize="17"  FontStyle="Normal" Height="35" HorizontalAlignment="Left" Margin="0,15,0,0" Name="SignInButton" VerticalAlignment="Top" 
+                        <Button Style="{DynamicResource RoundCorner}"  Content="Belépés" FontSize="17"  FontStyle="Normal" Height="35" HorizontalAlignment="Left" Margin="0,15,0,0" Name="SignInButton" VerticalAlignment="Top" 
                     Width="227" Click="signInBtn_Click" RenderTransformOrigin="0.535,1.691" Foreground="#FFF9F8F8" Background="Transparent" BorderBrush="#FFFFFDFD"
                     BorderThickness="2" TabIndex="3" ></Button>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
-            <StackPanel Grid.Row="1" Grid.Column="1">
-                <StackPanel Orientation="Vertical">
+            <GridSplitter Width="3" IsEnabled="false" Margin="387,0,0,65" Grid.RowSpan="2" HorizontalAlignment="Center"/>
+            <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,0,0,37">
+                <StackPanel Orientation="Vertical" Height="412">
                     <StackPanel>
                         <TextBlock Text="Regisztráció" TextAlignment="Center" FontFamily="Helvetica" FontWeight="Bold"  FontSize="20" Foreground="White"></TextBlock>
                     </StackPanel>
-                    <StackPanel Margin="0,50,0,0" HorizontalAlignment="Left">
+                    <StackPanel Margin="15,50,0,0" HorizontalAlignment="Left">
                         <TextBlock Text="Regisztrálás mint:" FontFamily="Helvetica" FontWeight="Light" FontSize="20" Foreground="White"/>
                     </StackPanel>
                     <StackPanel Margin="0,20,0,0" HorizontalAlignment="Center" >
