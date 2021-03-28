@@ -60,42 +60,6 @@ namespace SocketServer
                 // Specify how many requests a Socket can listen before it gives Server busy response.  
                 // We will listen 10 requests at a time  
                 listener.Listen(10);
-
-                //TESTING
-                //TEST JSON OBJECT
-               /* JObject jasonObjectTest = new JObject();
-                jasonObjectTest = JObject.Parse(
-                                    @"{'type': '1',
-                                    'clientID': '0',
-                                    'username': 'testUser',
-                                     'password': 't3stpassword',
-                                      'userType': '1'
-                              }");*/
-                //{
-                //    JObject header = getClientHeader(jasonObjectTest);  //1st JObj  --Header
-                //    Console.WriteLine("0 {0}", header.ToString());
-                //    string userInfo = getUserInfo(jasonObjectTest["username"].ToString(), jasonObjectTest["password"].ToString());
-                //    userInfo = userInfo.Replace("[", "");
-                //    userInfo = userInfo.Replace("]", "");
-                //    Console.WriteLine("1 {0}", userInfo);
-                //    JObject userJason = JObject.Parse(userInfo);    //2nd JObj  --Body
-                //    //JObject userJason = (JObject)JsonConvert.DeserializeObject(userInfo);
-                //    Console.WriteLine("1.1 {0}", userJason.ToString());
-                //    //JObject userJason = JObject.Parse(stringUser);
-                //    Console.WriteLine("2");                                               //JsonConvert.DeserializeObject(userInfo);
-                //    header.Merge(userJason);
-                //    Console.WriteLine("3");
-                //    Console.WriteLine("MERGED JSON: {0}", header.ToString());
-                //    //handler.Send(Encoding.ASCII.GetBytes(header.ToString()));
-                //}
-
-                //Console.WriteLine("Waiting for a connection...");
-                //Socket handler = listener.Accept();
-                //TEST
-                /*JObject o = new JObject();
-                o.Add("categoryName", "Teszta");
-                addCategory(o);
-                //TEST ENDS HERE*/
                 waitingForConnection();
 
                 // Incoming data from the client.    
@@ -161,14 +125,19 @@ namespace SocketServer
                             Console.WriteLine("MERGED JSON: {0}", header.ToString());
                             handler.Send(Encoding.ASCII.GetBytes(header.ToString()));
                         }
-                        else if (receivedJSONObject["type"].ToString() == "4") //Get Register User
+                        else if (receivedJSONObject["type"].ToString() == "4") // Register User
                         {
                             string register = registerUser(receivedJSONObject);
                             handler.Send(Encoding.ASCII.GetBytes(register));
                         }
-                        else if (receivedJSONObject["type"].ToString() == "5") //Get Register Restaurant
+                        else if (receivedJSONObject["type"].ToString() == "5") //Register Restaurant
                         {
                             string register = registerRestaurant(receivedJSONObject);
+                            handler.Send(Encoding.ASCII.GetBytes(register));
+                        }
+                        else if (receivedJSONObject["type"].ToString() == "7") //Get list of Categories
+                        {
+                            string register = getCategories(receivedJSONObject["restaurantID"].ToString());
                             handler.Send(Encoding.ASCII.GetBytes(register));
                         }
                         else if (receivedJSONObject["type"].ToString() == "8") //Add category
@@ -369,28 +338,34 @@ namespace SocketServer
             //return sendCatJSON;
         }
 
-        private List<string> getCategories(string restaurantName)
+        private string getCategories(string restaurantID)
         {
-            string query = "SELECT [c].[name] FROM Restaurant.Category AS [c] JOIN Restaurant.Restaurant as [r] ON[r].restaurantID = [c].restaurantID WHERE[r].[name] = @restaurantName";
+            string query = "SELECT Restaurant.Menu.categoryID,categoryName FROM Restaurant.CategoryName JOIN Restaurant.Menu ON Restaurant.Menu.categoryID = Restaurant.CategoryName.categoryID WHERE Restaurant.Menu.restaurantID = @restaurantID";
             DataTable dataTable = new DataTable();
             List<string> catList = new List<string>();
+            List<string> idList = new List<string>();
             try
             {
                 SqlCommand command = new SqlCommand(query, DatabaseConnection);
-                command.Parameters.AddWithValue("@restaurantName", restaurantName);
+                command.Parameters.AddWithValue("@restaurantID", restaurantID);
                 SqlDataAdapter da = new SqlDataAdapter(command);
                 da.Fill(dataTable);
+                if (dataTable.Rows.Count == 0)
+                    return getErrorMessage(70);
                 for (int i = 0; i < dataTable.Rows.Count; i++)
                 {
-                    catList.Add(dataTable.Rows[i]["name"].ToString());
+                    idList.Add(dataTable.Rows[i]["categoryID"].ToString());
+                    catList.Add(dataTable.Rows[i]["categoryName"].ToString());
                 }
                 da.Dispose();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
+                return getErrorMessage(71);
             }
-            return catList;
+            Categories cat = new Categories(idList, catList);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(cat);
         }
 
         private string checkUsernameAvailable(string username, int userType)
@@ -631,6 +606,12 @@ namespace SocketServer
             errorObject.Add("type", 99);
             switch (errorNumber) 
             {
+                case 70:
+                    errorObject.Add("error", "Category table empty");
+                    break;
+                case 71:
+                    errorObject.Add("error", "RestaurantID not found");
+                    break;
                 case 90:
                     errorObject.Add("error", "Username not available found");
                     break;
