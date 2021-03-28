@@ -118,9 +118,12 @@
                         </StackPanel>
                     </StackPanel>
                 </Grid>
-                <StackPanel Orientation="Horizontal" Height="50" Margin="0,0,0,0" Width="702">
-                    <Button Content="FIÓK LÉTREHOZÁSA" FontSize="17"  FontStyle="Normal" Height="35" HorizontalAlignment="Left" Margin="300,0,0,0" Name="Submit" VerticalAlignment="Top" 
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Content="FIÓK LÉTREHOZÁSA" FontSize="17"  FontStyle="Normal" Height="35" HorizontalAlignment="Left" Margin="50,0,0,0" Name="Submit" VerticalAlignment="Top" 
                     Width="227" Click="Submit_Click" RenderTransformOrigin="0.535,1.691" Foreground="#FFF9F8F8" Background="Transparent" BorderBrush="#FFFFFDFD"
+                    BorderThickness="2"/>
+                        <Button Content="KILÉPÉS" FontSize="17"  FontStyle="Normal" Height="35" HorizontalAlignment="Right" Margin="50,0,0,0" Name="ExitButton" VerticalAlignment="Top" 
+                    Width="227" Click="ExitBtn_Click" RenderTransformOrigin="0.535,1.691" Foreground="#FFF9F8F8" Background="Transparent" BorderBrush="#FFFFFDFD"
                     BorderThickness="2"/>
                 </StackPanel>
 

@@ -24,6 +24,7 @@ namespace RestaurantClient
         Regex regexChar = new Regex("[^a-zA-ZÀ-ÿ-ő-ű]+");
 
         public ConnectToServer ServerConnection;
+        startupWindow parent;
 
         string restName; // restaurant name
         string userName;
@@ -38,9 +39,11 @@ namespace RestaurantClient
         string lastName;
         string firstName;
 
-        public registerUser()
+        public registerUser(ConnectToServer ServerCon, startupWindow startupWin)
         {
             InitializeComponent();
+            ServerConnection = ServerCon;
+            parent = startupWin;
         }
 
         public void registerUserToServer()
@@ -48,7 +51,7 @@ namespace RestaurantClient
             //ServerConnection.registerRestaurant(new Restaurant(citiName, zipCode, street, streetNum, fromHour, fromMin, toHour, toMin, restName, leiras,
             //   style, userName, password, email, phone, lastName, firstName));
             //ServerConnection.StopClient();
-            ServerConnection = new ConnectToServer();
+         //   ServerConnection = new ConnectToServer();
             User usr = new User(userName, password, lastName, firstName, phone, citiName, zipCode, street + " " + streetNum, floor, 0, email);
             ServerConnection.registerUser(usr);
         }
@@ -296,6 +299,20 @@ namespace RestaurantClient
             //backgroundBorder.Child = myVerticalGradient;
             Console.WriteLine("resiize: " + e.NewSize.Width + ", " + e.NewSize.Height);
             Console.WriteLine("back: " + backgroundBorder.Width + ", " + backgroundBorder.Height);
+        }
+        private void exitButton_Click(object sender, RoutedEventArgs e)
+        {
+            string message = "Biztosan kiszeretne lépni a regisztrációból?";
+            string caption = "Kilépés";
+            var result = MessageBox.Show(message, caption,
+                               MessageBoxButton.YesNo,
+                               MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                parent.Show();
+                this.Close();
+            }
         }
     }
 }

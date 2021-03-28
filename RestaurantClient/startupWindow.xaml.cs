@@ -85,16 +85,16 @@ namespace RestaurantClient
                 if(clientReg.IsChecked == true)
                 {
                     registryType = 0;
-                    registerUser regUser = new registerUser();
+                    registerUser regUser = new registerUser(ServerConnection, this);
                     regUser.Show();
                     this.Hide();
                 }
                 else if (restaurantReg.IsChecked == true)
                 {
                     registryType = 1;
-                    RestaurantMain restMain = new RestaurantMain(ServerConnection);
+                    RestaurantRegister restMain = new RestaurantRegister(ServerConnection, this);
                     restMain.Show();
-                    this.Close();
+                    this.Hide();
                 }
                 else if (runningBoyReg.IsChecked == true)
                 {

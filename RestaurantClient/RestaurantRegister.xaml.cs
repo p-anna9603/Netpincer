@@ -44,15 +44,18 @@ namespace FoodOrderClient
         public string lastName { get; set; }
         public string firstName { get; set; }
         public ConnectToServer ServerConnection;
-        public RestaurantRegister()
+        startupWindow parent;
+        public RestaurantRegister(ConnectToServer server, startupWindow startup)
         {
             InitializeComponent();
+            ServerConnection = server;
+            parent = startup;
             // CONNECTING TO SERVER--Not Gonna work without the database!
-            ServerConnection = new ConnectToServer();
-            Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword", UserType.Customer).toString());           //OK
+            //ServerConnection = new ConnectToServer();
+       //     Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword", UserType.Customer).toString());           //OK
            //  ServerConnection.registerUser(new User("userFromClient", "ass", "Flex", "Elek", "+3699145825", "Veszprem", "8200", "Ass utca 6", "2/A", 1, "imel@gmail.com"));
            //   Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword", UserType.RestaurantOwner).toString());   //NOT FOUND RETURNS ERROR MESSAGE
-            Console.WriteLine(ServerConnection.getUser("testRestaurantOwner", "r3staurant", UserType.RestaurantOwner).toString());  //OK
+        //    Console.WriteLine(ServerConnection.getUser("testRestaurantOwner", "r3staurant", UserType.RestaurantOwner).toString());  //OK
           //   ServerConnection.registerRestaurant(new Restaurant("Veszprem", "8200", "Faradt vagyok utca v2.0", "3/A", 10, 00, 23, 00, "Utalom a C capat", "Hosszabb leiras arrol, mennyire utlaom a Csharpot", "C capa", "Hiiiii", "Jelszoo", "aasd@gmail.com", "+36214563217", "Pistavok", "Tscoo"));
 
         }
@@ -60,7 +63,7 @@ namespace FoodOrderClient
         {
             ServerConnection.registerRestaurant(new Restaurant(citiName, zipCode, street, streetNum, fromHour, fromMin, toHour, toMin, restName, leiras,
                style, userName, password, email, phone, lastName, firstName));
-            ServerConnection.StopClient();
+           // ServerConnection.StopClient();
         }
 
         private void Login_Click(object sender, RoutedEventArgs e)
@@ -262,6 +265,8 @@ namespace FoodOrderClient
                     registerRestaurant();
                     errormessage.Text = "Regisztrácó sikeres";
                     Reset();
+                    parent.Show();
+                    this.Close();
                 }
             }
         }
@@ -353,6 +358,20 @@ namespace FoodOrderClient
                 retval = 1;
             }
             return retval;
+        }
+        private void ExitBtn_Click(object sender, RoutedEventArgs e)
+        {
+            string message = "Biztosan kiszeretne lépni a regisztrációból?";
+            string caption = "Kilépés";
+            var result = MessageBox.Show(message, caption,
+                               MessageBoxButton.YesNo,
+                               MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                parent.Show();
+                this.Close();
+            }
         }
     }
 }

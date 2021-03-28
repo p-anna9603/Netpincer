@@ -115,9 +115,9 @@
             <Button x:Name="submitButton" Content="Regisztáció" Click="Submit_Click" TabIndex="13" FontSize="17"  FontStyle="Normal"
                     Height="35" HorizontalAlignment="Left" Margin="50,0,0,0" VerticalAlignment="Top" Width="227"  RenderTransformOrigin="0.535,1.691"
                     Foreground="#FFF9F8F8" Background="Transparent" BorderBrush="#FFFFFDFD" BorderThickness="2"/>
-            <Button x:Name="BTN_Exit" Content="Kilépés" FontSize="17"  FontStyle="Normal" TabIndex="14"
+            <Button x:Name="exitButton" Content="Kilépés" FontSize="17"  FontStyle="Normal" TabIndex="14"
                     Height="35" HorizontalAlignment="Right" Margin="300,0,50,0" VerticalAlignment="Top" Width="227"  RenderTransformOrigin="0.535,1.691"
-                    Foreground="#FFF9F8F8" Background="Transparent" BorderBrush="#FFFFFDFD" BorderThickness="2"/>
+                    Foreground="#FFF9F8F8" Background="Transparent" BorderBrush="#FFFFFDFD" BorderThickness="2" Click="exitButton_Click"/>
         </Grid>
     </Grid>
 </Window>
