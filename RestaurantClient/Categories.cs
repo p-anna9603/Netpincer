@@ -6,26 +6,22 @@ using System.Threading.Tasks;
 
 namespace RestaurantClient
 {
-    class Categories
+    public class Categories
     {
         [Newtonsoft.Json.JsonProperty]
-        private int type;
-        [Newtonsoft.Json.JsonProperty]
-        private int clientID;
-        [Newtonsoft.Json.JsonProperty]
-        private List<string> listOfCategories;
+        private List<string> listOfCategoryIDs;
+        [Newtonsoft.Json.JsonProperty] 
+        private List<string> listOfCategoryNames;
 
-        public Categories(int clientID_, List<string> cat)
+        public Categories() { }
+
+        public Categories(List<string> IDs, List<string> names)
         {
-            type = 8;
-            clientID = clientID_;
-            listOfCategories = cat;
+            listOfCategoryIDs = IDs;
+            listOfCategoryNames = names;
         }
 
-        public int getType() { return type; }
-
-        public List<string> getListOfCategories() { return listOfCategories; }
-
-
+        public List<string> ListOfCategoryIDs { get => listOfCategoryIDs; set => listOfCategoryIDs = value; }
+        public List<string> ListOfCategoryNames { get => listOfCategoryNames; set => listOfCategoryNames = value; }
     }
 }

@@ -34,8 +34,6 @@ INSERT INTO Restaurant.Restaurant(owner,name,restaurantDescription,style,phoneNu
 VALUES(@usernameParam,@nameParam, @restaurantDescriptionParam,@styleParam,@phoneNumber,@_addressID,@_openingHoursID)
 GO
 
-
-----ANNA INNEN---------------
 USE Netpincer
 SELECT * FROM Restaurant.Food
 ALTER TABLE Restaurant.Food DROP COLUMN restaurantID
@@ -59,9 +57,35 @@ CREATE TABLE Restaurant.Menu
 --SERVER: SELECT restaurantID FROM Restaurant.Restaurant WHERE owner=@username
 --SERVER: SELECT menuID FROM Restaurant.Menu WHERE restaurantID=@restID AND categoryID=@catID
 --USE Netpincer
-SELECT * FROM Restaurant.Menu
+SELECT * FROM Restaurant.Restaurant
 SELECT * FROM Restaurant.CategoryName
 
 --DELETE EVERYTHING AND RESET PRIMARY KEY TO 1
 --DELETE FROM Restaurant.Menu
 --DBCC CHECKIDENT ('Restaurant.Menu', RESEED, 0) 
+
+--SELECT * FROM Restaurant.OpeningHours
+
+GO
+CREATE FUNCTION getRestaurant(@username nvarchar(20))
+RETURNS TABLE AS
+RETURN SELECT restaurantID,name,restaurantDescription,style,owner,phoneNumber, city,zipcode,line1,line2, fromHour,fromMinute,toHour,toMinute
+FROM Restaurant.Restaurant
+JOIN Restaurant.RestaurantAddress ON Restaurant.RestaurantAddress.addressID = Restaurant.addressID
+JOIN Restaurant.OpeningHours ON Restaurant.OpeningHours.openingHoursID = Restaurant.openingHoursID
+WHERE Restaurant.owner=@username
+GO
+
+SELECT * FROM Restaurant.Menu
+----ANNA INNEN---------------
+Use Netpincer
+--SERVER:
+--SELECT Restaurant.Menu.categoryID,categoryName FROM Restaurant.CategoryName 
+--JOIN Restaurant.Menu ON Restaurant.Menu.categoryID = Restaurant.CategoryName.categoryID
+--WHERE Restaurant.Menu.restaurantID = @restaurantID
+
+/*SELECT * FROM Restaurant.Menu
+SELECT * FROM Restaurant.CategoryName
+INSERT INTO Restaurant.CategoryName(categoryName) VALUES('Pizza')
+INSERT INTO Restaurant.CategoryName(categoryName) VALUES('Teszta')
+INSERT INTO Restaurant.Menu(restaurantID,categoryID) VALUES(7,3)*/

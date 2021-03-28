@@ -307,16 +307,58 @@ public class ConnectToServer
         }
     }
 
+    public Categories getCategories(int restaurantID) 
+    {
+        string recievedMsg = "";
+        try
+        {
+            JObject jobc = new JObject();
+            jobc.Add("type", 7);        //7 - Get list of Categories
+            jobc.Add("clientID", clientID); 
+            jobc.Add("restaurantID", restaurantID);
+            recievedMsg = sendJSON(jobc);
+            Console.WriteLine("recievedMsg: {0}", recievedMsg);
+            Categories cat = Newtonsoft.Json.JsonConvert.DeserializeObject<Categories>(recievedMsg);
+            Console.WriteLine("GETCATEGORIES");
+            Console.WriteLine("ID   NAME");
+            if (cat.ListOfCategoryIDs == null)
+                throw new Exception();
+            for (int i = 0; i < cat.ListOfCategoryIDs.Count; ++i)
+            {
+                Console.Write(cat.ListOfCategoryIDs[i]);
+                Console.Write("   ");
+                Console.WriteLine(cat.ListOfCategoryNames[i]);
+            }
 
+            return cat;
+        }
+        catch (NullReferenceException e)
+        {
+            Console.WriteLine(e.ToString());
+            JObject receivedJSonObject = new JObject();
+            receivedJSonObject = JObject.Parse(recievedMsg);
+            if (receivedJSonObject["type"].ToString() == "99")
+            {
+                Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+                return new Categories(new List<string>(), new List<string>());  //Sends empty lists
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+            JObject receivedJSonObject = new JObject();
+            receivedJSonObject = JObject.Parse(recievedMsg);
+            if (receivedJSonObject["type"].ToString() == "99")
+            {
+                Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+                return new Categories(new List<string>(), new List<string>());  //Sends empty lists
+            }
+        }
+        return new Categories();
+    }
 
     public void registerUser(User user)
     {
-        //NOT WORKING:
-        //string userString = System.Text.Json.JsonSerializer.Serialize(user);  //not working
-        // Console.WriteLine("String user: {0}", userString);
-        //User registeredUser = System.Text.Json.JsonSerializer.Deserialize<User>(userString);
-        //Console.WriteLine("Registered user: {0}" , registeredUser.toString());
-
         //THIS WORKS:
         try 
         { 
