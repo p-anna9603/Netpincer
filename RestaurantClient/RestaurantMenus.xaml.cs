@@ -58,7 +58,7 @@ namespace RestaurantClient
             if (newMen.IsSaved)
             {
                 newMenus.Add(newMen);
-                categoryNames[categoryId] = newMen.CategoryName;
+                categoryNames[newMen.CategoryID] = newMen.CategoryName;
                 categories.Add(newMen.Category);
                 categoryWindows[newMen.CategoryID] = newMen.Category;
                 addCategoryPanel(newMen.CategoryName, newMen.CategoryID);
