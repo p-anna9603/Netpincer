@@ -84,8 +84,55 @@ Use Netpincer
 --JOIN Restaurant.Menu ON Restaurant.Menu.categoryID = Restaurant.CategoryName.categoryID
 --WHERE Restaurant.Menu.restaurantID = @restaurantID
 
-/*SELECT * FROM Restaurant.Menu
+SELECT * FROM Restaurant.Menu
 SELECT * FROM Restaurant.CategoryName
 INSERT INTO Restaurant.CategoryName(categoryName) VALUES('Pizza')
 INSERT INTO Restaurant.CategoryName(categoryName) VALUES('Teszta')
-INSERT INTO Restaurant.Menu(restaurantID,categoryID) VALUES(7,3)*/
+INSERT INTO Restaurant.Menu(restaurantID,categoryID) VALUES(7,3)
+
+SELECT * FROM Restaurant.Food
+-----DELETE EVERYTHING AND RESET PRIMARY KEY TO 1
+--DELETE FROM Restaurant.Food
+--DBCC CHECKIDENT ('Restaurant.Food', RESEED, 0) 
+ALTER TABLE Restaurant.Food ADD restaurantID INT FOREIGN KEY REFERENCES Restaurant.Restaurant(restaurantID) NOT NULL
+--LEVES
+INSERT INTO Restaurant.Food(name,price,rating,pictureID,categoryID,restaurantID)
+VALUES('Husleves',1200,4.5,NULL,1,7)
+INSERT INTO Restaurant.Food(name,price,rating,pictureID,categoryID,restaurantID)
+VALUES('Krumpli leves',1200,4.3,NULL,1,7)
+INSERT INTO Restaurant.Food(name,price,rating,pictureID,categoryID,restaurantID)
+VALUES('Brokkoli leves',1200,4.7,NULL,1,8)
+--KÖRET
+INSERT INTO Restaurant.Food(name,price,rating,pictureID,categoryID,restaurantID)
+VALUES('Krumpli',800,4.3,NULL,2,7)
+INSERT INTO Restaurant.Food(name,price,rating,pictureID,categoryID,restaurantID)
+VALUES('Rizs',700,4.7,NULL,2,7)
+--PIZZA
+INSERT INTO Restaurant.Food(name,price,rating,pictureID,categoryID,restaurantID)
+VALUES('Sajtos pizza',1600,4.3,NULL,3,8)
+INSERT INTO Restaurant.Food(name,price,rating,pictureID,categoryID,restaurantID)
+VALUES('Sonkas pizza',1700,4.7,NULL,3,7)
+--SERVER:
+SELECT foodID,name,price,rating,pictureID
+FROM Restaurant.Food 
+JOIN Restaurant.CategoryName ON Restaurant.CategoryName.categoryID= Restaurant.Food.categoryID
+WHERE Restaurant.Food.restaurantID = '7' AND Restaurant.Food.categoryID='1'
+
+SELECT * FROM Restaurant.AllergenNames
+INSERT INTO Restaurant.AllergenNames(name) VALUES('Liszt')
+INSERT INTO Restaurant.AllergenNames(name) VALUES('Gluten')
+INSERT INTO Restaurant.AllergenNames(name) VALUES('Cukor')
+SELECT * FROM Restaurant.Allergens
+INSERT INTO Restaurant.Allergens VALUES(1,2)
+INSERT INTO Restaurant.Allergens VALUES(2,2)
+INSERT INTO Restaurant.Allergens VALUES(3,2)
+INSERT INTO Restaurant.Allergens VALUES(1,7)
+INSERT INTO Restaurant.Allergens VALUES(2,7)
+INSERT INTO Restaurant.Allergens VALUES(3,7)
+INSERT INTO Restaurant.Allergens VALUES(1,1)
+
+SELECT Restaurant.AllergenNames.name 
+FROM Restaurant.AllergenNames
+JOIN Restaurant.Allergens ON Restaurant.Allergens.allergenID = Restaurant.AllergenNames.allergenID
+JOIN Restaurant.Food ON Restaurant.Food.foodID = Restaurant.Allergens.foodID
+WHERE Restaurant.Allergens.foodID = '1'

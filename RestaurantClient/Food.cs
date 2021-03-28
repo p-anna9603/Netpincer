@@ -29,5 +29,6 @@ namespace RestaurantClient
         public double Price { get => price; set => price = value; }
         public double Rating { get => rating; set => rating = value; }
         public int PictureID { get => pictureID; set => pictureID = value; }
+        public List<string> Allergenes { get => allergenes; set => allergenes = value; }
     }
 }
