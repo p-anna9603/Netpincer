@@ -70,7 +70,8 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Height="40">
                             <TextBlock Height="23" FontFamily="Helvetica" FontWeight="Light" FontSize="20" Foreground="White" HorizontalAlignment="Left" Margin="67,15,0,0" Name="textBlockPhone" Text="Telefon:" VerticalAlignment="Top" Width="158" />
-                            <TextBox Height="23" HorizontalAlignment="Left" Margin="50,15,0,0" Name="textBoxPhone" Text="36-" VerticalAlignment="Center" Width="222" Padding="1.5" AcceptsTab="True" />
+                            <TextBox Height="23" HorizontalAlignment="Left" Margin="50,15,0,0" Name="textBoxPhone" Text="36-" VerticalAlignment="Center" 
+                                     Width="222" Padding="1.5" PreviewTextInput="phone_KeyDown"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Height="40">
                             <TextBlock Height="23" FontFamily="Helvetica" FontWeight="Light" FontSize="20" Foreground="White" HorizontalAlignment="Left" Margin="67,15,0,0" Name="textBlockStyle" Text="Stílus:" VerticalAlignment="Top" Width="158" />

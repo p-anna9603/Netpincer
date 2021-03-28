@@ -23,14 +23,17 @@ namespace FoodOrderClient
         RestaurantMenus menus;
         public UserControl child;
         private ConnectToServer serverConnection;
+        User currUser;
 
         public ConnectToServer ServerConnection { get => serverConnection; set => serverConnection = value; }
+        public User CurrUser { get => currUser; set => currUser = value; }
 
-        public RestaurantMain(ConnectToServer ServerCon)
+        public RestaurantMain(ConnectToServer ServerCon, User usr)
         {
             InitializeComponent();
             Console.WriteLine(settingImg.Source.ToString());
             serverConnection = ServerCon;
+            currUser = usr;
          //   ServerConnection = new ConnectToServer();
 
             /*

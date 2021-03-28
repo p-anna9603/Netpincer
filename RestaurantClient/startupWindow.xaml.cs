@@ -26,7 +26,6 @@ namespace RestaurantClient
         UserType signInType;
         int registryType;
         public ConnectToServer ServerConnection;
-
         public startupWindow()
         {
             InitializeComponent();
@@ -72,9 +71,22 @@ namespace RestaurantClient
                 User user = ServerConnection.getUser(userName, password, signInType);
                 if(user.GetUserType == UserType.RestaurantOwner)
                 {
-                    RestaurantMain restMain = new RestaurantMain(ServerConnection);
+                    RestaurantMain restMain = new RestaurantMain(ServerConnection, user);
                     restMain.Show();
+                    restaurantSign.IsChecked = false;
                     this.Hide();
+                }
+                else if(user.GetUserType == UserType.Customer)
+                {
+                    UserMain usrMain = new UserMain(ServerConnection, user);
+                    usrMain.Show();
+                    clientSign.IsChecked = false;
+                    this.Hide();
+                }
+                else if (user.GetUserType == UserType.DeliveryPerson)
+                {
+                    // TODO delivery person interface
+                    //runningBoySign.IsChecked = false;
                 }
             }
         }
@@ -92,6 +104,7 @@ namespace RestaurantClient
                     registryType = 0;
                     registerUser regUser = new registerUser(ServerConnection, this);
                     regUser.Show();
+                    clientReg.IsChecked = false;
                     this.Hide();
                 }
                 else if (restaurantReg.IsChecked == true)
@@ -99,12 +112,14 @@ namespace RestaurantClient
                     registryType = 1;
                     RestaurantRegister restMain = new RestaurantRegister(ServerConnection, this);
                     restMain.Show();
+                    restaurantReg.IsChecked = false;
                     this.Hide();
                 }
                 else if (runningBoyReg.IsChecked == true)
                 {
                     registryType = 2;
                     //TODO
+                    //runningBoyReg.IsChecked = false;
                 }
                 // Server plíz register me
             }

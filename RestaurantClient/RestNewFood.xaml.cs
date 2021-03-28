@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using FoodOrderClient;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -46,11 +47,12 @@ namespace RestaurantClient
         public int FoodID { get => foodID; set => foodID = value; }
         public List<string> Allergenes { get => allergenes; set => allergenes = value; }
         internal Food Food { get => food; set => food = value; }
-
-        public RestNewFood(Food f = null)
+        RestaurantMain restaurantMain;
+        public RestNewFood(Window restrantMain, Food f = null)
         {
             InitializeComponent();
-            if(f != null) // modifying open
+            restaurantMain = (RestaurantMain)restrantMain;
+            if (f != null) // modifying open
             {
                 food = f;
                 setElementsData();

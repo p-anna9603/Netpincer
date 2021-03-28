@@ -45,24 +45,18 @@ namespace FoodOrderClient
         public string firstName { get; set; }
         public ConnectToServer ServerConnection;
         startupWindow parent;
+        Restaurant newRestaurant;
         public RestaurantRegister(ConnectToServer server, startupWindow startup)
         {
             InitializeComponent();
             ServerConnection = server;
             parent = startup;
-            // CONNECTING TO SERVER--Not Gonna work without the database!
-            //ServerConnection = new ConnectToServer();
-       //     Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword", UserType.Customer).toString());           //OK
-           //  ServerConnection.registerUser(new User("userFromClient", "ass", "Flex", "Elek", "+3699145825", "Veszprem", "8200", "Ass utca 6", "2/A", 1, "imel@gmail.com"));
-           //   Console.WriteLine(ServerConnection.getUser("testUser", "t3stpassword", UserType.RestaurantOwner).toString());   //NOT FOUND RETURNS ERROR MESSAGE
-        //    Console.WriteLine(ServerConnection.getUser("testRestaurantOwner", "r3staurant", UserType.RestaurantOwner).toString());  //OK
-          //   ServerConnection.registerRestaurant(new Restaurant("Veszprem", "8200", "Faradt vagyok utca v2.0", "3/A", 10, 00, 23, 00, "Utalom a C capat", "Hosszabb leiras arrol, mennyire utlaom a Csharpot", "C capa", "Hiiiii", "Jelszoo", "aasd@gmail.com", "+36214563217", "Pistavok", "Tscoo"));
-
         }
         public void registerRestaurant()
         {
-            ServerConnection.registerRestaurant(new Restaurant(citiName, zipCode, street, streetNum, fromHour, fromMin, toHour, toMin, restName, leiras,
-               style, userName, password, email, phone, lastName, firstName));
+            newRestaurant = new Restaurant(citiName, zipCode, street, streetNum, fromHour, fromMin, toHour, toMin, restName, leiras,
+               style, userName, password, email, phone, lastName, firstName);
+            ServerConnection.registerRestaurant(newRestaurant);
            // ServerConnection.StopClient();
         }
 
@@ -112,6 +106,13 @@ namespace FoodOrderClient
                 e.Handled = true;
             }
             zipKeyDone = 1;
+        }
+        private void phone_KeyDown(object sender, TextCompositionEventArgs e)
+        {
+            TextBox ad = sender as TextBox;
+            string phoneUntil = ad.Text;
+            ad.Text = phoneUntil;
+            e.Handled = regex.IsMatch(e.Text);
         }
         private void city_KeyDown(object sender, TextCompositionEventArgs e)
         {

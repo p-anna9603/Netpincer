@@ -34,13 +34,15 @@ namespace RestaurantClient
         RestaurantMain restaurantMain;
 
         public ConnectToServer ServerConnection;
-        public RestaurantCategFoods(int cID)
+        public RestaurantCategFoods(Window restrantMain, int cID)
         {
             InitializeComponent();
             SolidColorBrush color = new SolidColorBrush();
             color.Color = Color.FromArgb(120, 102, 102, 255);
             scrollView.Background = color;
             categID = cID;
+            restaurantMain = (RestaurantMain)restrantMain;
+
             Console.WriteLine("category: " + categID);
             //TODO get category name from db by id categoryName = categNameFromDb
             categName.Text = categoryName;
@@ -56,7 +58,7 @@ namespace RestaurantClient
         private void NewFood_Click(object sender, EventArgs e)
         {
             Console.WriteLine("új hozzáadása");
-            RestNewFood newFood = new RestNewFood();
+            RestNewFood newFood = new RestNewFood(restaurantMain);
             newFood.ShowDialog();
             newFood.Closed += NewFood_Closed;
             Console.WriteLine("új végén");
@@ -224,7 +226,7 @@ namespace RestaurantClient
             foodId = foodPanels[categ]; 
             Console.WriteLine("error 2");
             Food food = newFoodWindows.ElementAt(foodId).Value;
-            RestNewFood f = new RestNewFood(food);
+            RestNewFood f = new RestNewFood(restaurantMain, food);
             f.ShowDialog();
             Console.WriteLine("modositas utan");
             if(f.IsSaved)

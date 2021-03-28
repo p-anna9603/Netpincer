@@ -187,7 +187,7 @@ namespace RestaurantClient
         int clickedCategID;
         StackPanel clickedStackPanel;
         /* Click event on the category panel */
-        private void categImg_MouseDown(object sender, RoutedEventArgs e)        
+        private void categImg_MouseDown(object sender, RoutedEventArgs e)        // List the foods that the category contains 
         {
             StackPanel stackP = sender as StackPanel;
             int categID = 0;
@@ -197,7 +197,7 @@ namespace RestaurantClient
             Console.WriteLine("clicked onL " + clickedStackPanel);
             if (e.Source != settingButton)
             {
-                RestaurantCategFoods categFood = new RestaurantCategFoods(categID);
+                RestaurantCategFoods categFood = new RestaurantCategFoods(restaurantMain, categID);
                 restaurantMain.childWindow.Content = null;
 
                 /* Set the content window to new child */
