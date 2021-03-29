@@ -13,10 +13,14 @@ namespace SocketServer
         double price;
         double rating;
         int pictureID;
+        int categoryID;
+        int restaurantID;
         List<string> allergenes;
         string availableFrom;
         string availableTo;
         public Food(int fID, string nam, double prc, double rate, int picID, List<String> allergs,
+           int catID,
+            int restID,
            string availableFrom,
         string availableTo )
         {
@@ -26,6 +30,8 @@ namespace SocketServer
             rating = rate;
             pictureID = picID;
             allergenes = allergs;
+            categoryID = catID;
+            restaurantID = restID;
             this.availableFrom= availableFrom;
             this.availableTo= availableTo;
         }
@@ -38,5 +44,7 @@ namespace SocketServer
         public List<string> Allergenes { get => allergenes; set => allergenes = value; }
         public string AvailableFrom { get => availableFrom; set => availableFrom = value; }
         public string AvailableTo { get => availableTo; set => availableTo = value; }
+        public int RestaurantID { get => restaurantID; set => restaurantID = value; }
+        public int CategoryID { get => categoryID; set => categoryID = value; }
     }
 }

@@ -84,8 +84,8 @@ namespace SocketServer
                         //Console.WriteLine("bytes recieved {0}", bytesRec);
                         if (bytesRec != 0)
                         {
-                            //data = Encoding.ASCII.GetString(bytes, 0, bytesRec);
-                            data = Encoding.GetEncoding("windows-1250").GetString(bytes);
+                            data = Encoding.ASCII.GetString(bytes, 0, bytesRec);
+                            //data = Encoding.GetEncoding("windows-1250").GetString(bytes);
                             break;
                         }
                     }
@@ -101,7 +101,8 @@ namespace SocketServer
                             //Console.WriteLine("First message");
                             JObject sendJason = new JObject();
                             sendJason = sendFirstConnectionInfo();
-                            handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(sendJason.ToString()));  //Sending Client ID
+                            handler.Send(Encoding.ASCII.GetBytes(sendJason.ToString()));
+                           // handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(sendJason.ToString()));  //Sending Client ID
                                                                                           // listOfConnectedClients.Add(clientID - 1); //Adding client to connected list
                         }
                         else if (receivedJSONObject["type"].ToString() == "1") //Get User Information
@@ -115,8 +116,8 @@ namespace SocketServer
                             //JsonConvert.DeserializeObject(userInfo);
                             header.Merge(userJason);
                             Console.WriteLine("MERGED JSON: {0}", header.ToString());
-                            //handler.Send(Encoding.ASCII.GetBytes(header.ToString()));
-                            handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(header.ToString()));
+                            handler.Send(Encoding.ASCII.GetBytes(header.ToString()));
+                            //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(header.ToString()));
                         }
                         else if (receivedJSONObject["type"].ToString() == "2") //Get Restaurant Information
                         {
@@ -129,44 +130,44 @@ namespace SocketServer
                             //JsonConvert.DeserializeObject(userInfo);
                             header.Merge(userJason);
                             Console.WriteLine("MERGED JSON: {0}", header.ToString());
-                            handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(header.ToString()));
-                            //handler.Send(Encoding.ASCII.GetBytes(header.ToString()));
+                            //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(header.ToString()));
+                            handler.Send(Encoding.ASCII.GetBytes(header.ToString()));
                         }
                         else if (receivedJSONObject["type"].ToString() == "4") // Register User
                         {
                             string register = registerUser(receivedJSONObject);
-                            handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
-                            //handler.Send(Encoding.ASCII.GetBytes(register));
+                            //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                            handler.Send(Encoding.ASCII.GetBytes(register));
                         }
                         else if (receivedJSONObject["type"].ToString() == "5") //Register Restaurant
                         {
                             string register = registerRestaurant(receivedJSONObject);
-                            //handler.Send(Encoding.ASCII.GetBytes(register));
-                            handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                            handler.Send(Encoding.ASCII.GetBytes(register));
+                            //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
                         }
                         else if (receivedJSONObject["type"].ToString() == "7") //Get list of Categories
                         {
                             string register = getCategories(receivedJSONObject["restaurantID"].ToString());
-                            //handler.Send(Encoding.ASCII.GetBytes(register));
-                            handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                            handler.Send(Encoding.ASCII.GetBytes(register));
+                            //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
                         }
                         else if (receivedJSONObject["type"].ToString() == "8") //Add category
                         {
                             string register = addCategory(receivedJSONObject);
-                            //handler.Send(Encoding.ASCII.GetBytes(register));
-                            handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                            handler.Send(Encoding.ASCII.GetBytes(register));
+                            //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
                         }
                         else if (receivedJSONObject["type"].ToString() == "9") //9 - Get list of Food
                         {
                             string register = getFoods(receivedJSONObject["restaurantID"].ToString(), receivedJSONObject["categoryID"].ToString());
-                            //handler.Send(Encoding.ASCII.GetBytes(register));
-                            handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                            handler.Send(Encoding.ASCII.GetBytes(register));
+                            //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
                         }
                         else if (receivedJSONObject["type"].ToString() == "11") //9 - Get list of Restaurants
                         {
                             string register = getRestaurantsList();
-                            //handler.Send(Encoding.ASCII.GetBytes(register));
-                            handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                            handler.Send(Encoding.ASCII.GetBytes(register));
+                            //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
                         }
                         
 
@@ -255,7 +256,7 @@ namespace SocketServer
 
         private string getFoods(string restID, string categoryID)
         {
-            string query = "SELECT foodID,name,price,rating,pictureID,availableFrom,availableTo FROM Restaurant.Food JOIN Restaurant.CategoryName ON Restaurant.CategoryName.categoryID = Restaurant.Food.categoryID WHERE Restaurant.Food.restaurantID = @restaurantID AND Restaurant.Food.categoryID = @categoryID";
+            string query = "SELECT foodID,name,price,rating,pictureID,categoryID,restaurantID,availableFrom,availableTo FROM Restaurant.Food JOIN Restaurant.CategoryName ON Restaurant.CategoryName.categoryID = Restaurant.Food.categoryID WHERE Restaurant.Food.restaurantID = @restaurantID AND Restaurant.Food.categoryID = @categoryID";
             DataTable dataTable = new DataTable();
             List<Food> listOfFood = new List<Food>();
             try
@@ -311,6 +312,8 @@ namespace SocketServer
                         Double.Parse(dataTable.Rows[i]["rating"].ToString()),
                         picID,
                         allergens,
+                        Int32.Parse(dataTable.Rows[i]["categoryID"].ToString()),
+                        Int32.Parse(dataTable.Rows[i]["restaurantID"].ToString()),
                         dataTable.Rows[i]["availableFrom"].ToString(),
                         dataTable.Rows[i]["availableTo"].ToString()));
 
@@ -334,6 +337,10 @@ namespace SocketServer
                 Console.WriteLine("Price: {0}", listOfFood[i].Price);
                 Console.WriteLine("Rating: {0}", listOfFood[i].Rating);
                 Console.WriteLine("PictureID: {0}", listOfFood[i].PictureID);
+                Console.WriteLine("CatID: {0}", listOfFood[i].CategoryID);
+                Console.WriteLine("RestID: {0}", listOfFood[i].RestaurantID);
+                Console.WriteLine("From: {0}", listOfFood[i].AvailableFrom);
+                Console.WriteLine("To: {0}", listOfFood[i].AvailableTo);
                 Console.WriteLine("Allergens:");
                 for (int j = 0; j < listOfFood[i].Allergenes.Count; ++j)
                 {
@@ -763,6 +770,29 @@ namespace SocketServer
                 return getErrorMessage(99);
             }
         }
+
+      /*  private string addFood(JObject o)
+        {
+            query = "DECLARE @returnID INT EXEC @returnID = addCategoryToMenu @categoryName SELECT  'categoryID' = @returnID";
+            SqlCommand command5 = new SqlCommand(query, DatabaseConnection);
+            command5.Parameters.AddWithValue("@categoryName", o["categoryName"].ToString());
+            Console.WriteLine(o["categoryName"].ToString());
+            da.Dispose();
+            da = new SqlDataAdapter(command5);
+            DataTable dataTable4 = new DataTable();
+            da.Fill(dataTable4);
+            if (dataTable4.Rows.Count == 0)
+            {
+                da.Dispose();
+                dataTable4.Dispose();
+                return getErrorMessage(97);
+            }
+            categoryID = dataTable4.Rows[0][0].ToString();   //NOW WE HAVE THE CATEG ID
+            da.Dispose();
+            dataTable4.Clear();
+            dataTable4.Dispose();
+        }
+      */
 
 
         private string getErrorMessage(int errorNumber)
