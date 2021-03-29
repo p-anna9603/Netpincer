@@ -91,15 +91,15 @@ namespace RestaurantClient
                 }
             }
             /* Set availability */
-            if(food.FromDate != "" && food.ToDate != "" && (food.FromDate != null && food.ToDate != null))
+            if(food.AvailableFrom != "" && food.AvailableTo != "" && (food.AvailableFrom != null && food.AvailableTo != null))
             {
                 period_RadioButton.IsChecked = true;
                 //string[] startDate = food.FromDate.Split('.');
                 //string startYear = startDate[0];
                 //string startMonth = startDate[1];
                 //string startDay = startDate[2];
-                fromPeriod.SelectedDate = DateTime.Parse(food.FromDate);
-                toPeriod.SelectedDate = DateTime.Parse(food.ToDate);
+                fromPeriod.SelectedDate = DateTime.Parse(food.AvailableFrom);
+                toPeriod.SelectedDate = DateTime.Parse(food.AvailableTo);
             }
             else
             {
@@ -124,8 +124,8 @@ namespace RestaurantClient
 
         private void addButton_Click(object sender, EventArgs e)
         {
-            string startdate;
-            string enddate;
+            string startdate = "";
+            string enddate = "";
             if (modifyingWindow == 1 && mainPanel.IsEnabled == false)
             {
                 mainPanel.IsEnabled = true;
@@ -193,7 +193,7 @@ namespace RestaurantClient
                     }
                     else
                     {
-                        food = new Food(foodID, foodName, foodPrice, rating, pictureID, Allergenes);
+                        food = new Food(foodID, foodName, foodPrice, rating, pictureID, Allergenes, startdate, enddate);
                         //TODO add new food to database
                         //TODO get the latest foodID from db foodID = foodid;
                         // TODO upload availability to DB

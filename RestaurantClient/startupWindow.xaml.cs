@@ -30,8 +30,8 @@ namespace RestaurantClient
         {
             InitializeComponent();
             ServerConnection = new ConnectToServer();
-            ServerConnection.getFoods(7, 1);
-            ServerConnection.getRestaurantsList();
+            //ServerConnection.getFoods(7, 1);
+            //ServerConnection.getRestaurantsList();
             //ServerConnection.getCategories(1);
             //ServerConnection.getRestaurant("egy").toString();
             /* ServerConnection.addCategory("Leves", "Hiiiii");            //Category didn't exist, now added to menu
@@ -72,6 +72,8 @@ namespace RestaurantClient
                 }
                 userName = textBoxUserName.Text;
                 password = textBoxPassword.Password;
+               
+                Console.WriteLine("username: " + userName + ", pass: " + password + ", sign in: " + signInType);
                 User user = ServerConnection.getUser(userName, password, signInType);
                 if(user.GetUserType == UserType.RestaurantOwner)
                 {
