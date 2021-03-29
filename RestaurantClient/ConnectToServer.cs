@@ -192,8 +192,8 @@ public class ConnectToServer
         {
             //Console.WriteLine("JSONOBJECT:\n {0}", JsonSendObject);
             //string msgJSON = JsonConvert.SerializeObject(JsonSendObject.ToString());
-           // byte[] msg = Encoding.ASCII.GetBytes(JsonSendObject.ToString());
-           byte [] msg = Encoding.GetEncoding("windows-1250").GetBytes(JsonSendObject.ToString());
+           byte[] msg = Encoding.ASCII.GetBytes(JsonSendObject.ToString());
+           //byte [] msg = Encoding.GetEncoding("windows-1250").GetBytes(JsonSendObject.ToString());
             // Send the data through the socket.    
             int bytesSent = sender.Send(msg);
             Console.WriteLine("Bytes sent {0}", bytesSent);
@@ -207,8 +207,8 @@ public class ConnectToServer
         // Receive the response from the remote device.    
         int bytesRec = sender.Receive(bytes);
         Console.WriteLine("Recieved bytes {0}", bytesRec);
-        return Encoding.GetEncoding("windows-1250").GetString(bytes);
-        //return Encoding.ASCII.GetString(bytes, 0, bytesRec);
+        //return Encoding.GetEncoding("windows-1250").GetString(bytes);
+        return Encoding.ASCII.GetString(bytes, 0, bytesRec);
 
     }
     public User getUser(string username, string password, UserType userType)   //Returns the User object for the given username ands password (if the parameters are wrong the server dies rip so don't do that)
@@ -309,62 +309,35 @@ public class ConnectToServer
     }
 
 
-    public FoodList getFoods(int restaurantID, int categoryID)
+    public void addFood(Food f)
     {
-        string recievedMsg = "";
         try
         {
-            JObject jobc = new JObject();
-            jobc.Add("type", 9);        //9 - Get list of Food
-            jobc.Add("clientID", clientID);
-            jobc.Add("restaurantID", restaurantID);
-            jobc.Add("categoryID", categoryID);
-            recievedMsg = sendJSON(jobc);
+            string restString = JsonConvert.SerializeObject(f);
+            JObject header = new JObject();
+            header.Add("type", 10);
+            header.Add("clientID", clientID);
+            JObject body = new JObject();
+            body = JObject.Parse(restString);
+            header.Merge(body);
+            string recievedMsg = sendJSON(header);
             Console.WriteLine("recievedMsg: {0}", recievedMsg);
-            FoodList foodList = Newtonsoft.Json.JsonConvert.DeserializeObject<FoodList>(recievedMsg);
-            if (foodList.ListFood == null)
-                throw new Exception();
-            for (int i = 0; i < foodList.ListFood.Count; ++i)
-            {
-                Console.WriteLine("FoodID: {0}", foodList.ListFood[i].FoodID);
-                Console.WriteLine("Name: {0}", foodList.ListFood[i].Name);
-                Console.WriteLine("Price: {0}", foodList.ListFood[i].Price);
-                Console.WriteLine("Rating: {0}", foodList.ListFood[i].Rating);
-                Console.WriteLine("PictureID: {0}", foodList.ListFood[i].PictureID);
-                Console.WriteLine("AvailableFrom: {0}", foodList.ListFood[i].AvailableFrom);
-                Console.WriteLine("AvailableTo: {0}", foodList.ListFood[i].AvailableTo);
-                Console.WriteLine("Allergens:");
-                for (int j = 0; j < foodList.ListFood[i].Allergenes.Count; ++j)
-                {
-                    Console.WriteLine(foodList.ListFood[i].Allergenes[j]);
-                }
-            }
 
-            return foodList;
-        }
-        catch (NullReferenceException e)
-        {
-            Console.WriteLine(e.ToString());
             JObject receivedJSonObject = new JObject();
             receivedJSonObject = JObject.Parse(recievedMsg);
-            if (receivedJSonObject["type"].ToString() == "99")
+            if (receivedJSonObject["type"].ToString() == "10")
+            {
+                Console.WriteLine("Server: {0}", receivedJSonObject["status"].ToString());
+            }
+            else if (receivedJSonObject["type"].ToString() == "99")
             {
                 Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
-                return new FoodList();  //Sends empty class
             }
         }
         catch (Exception e)
         {
             Console.WriteLine(e.ToString());
-            JObject receivedJSonObject = new JObject();
-            receivedJSonObject = JObject.Parse(recievedMsg);
-            if (receivedJSonObject["type"].ToString() == "99")
-            {
-                Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
-                return new FoodList(); //Sends empty class
-            }
         }
-        return new FoodList();
     }
 
 

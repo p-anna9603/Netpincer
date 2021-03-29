@@ -151,3 +151,36 @@ ALTER TABLE Restaurant.Food ADD [availableTo]	NVARCHAR(20)
 SELECT foodID,name,price,rating,pictureID,availableFrom,availableTo FROM Restaurant.Food JOIN Restaurant.CategoryName ON Restaurant.CategoryName.categoryID = Restaurant.Food.categoryID 
 WHERE Restaurant.Food.restaurantID = '7' AND Restaurant.Food.categoryID = '1'*/
             
+
+--SERVER:
+--RETURNS FOOD ID
+DROP PROCEDURE IF EXISTS addFood
+GO
+CREATE PROCEDURE addFood @foodName nvarchar(30) ,@price int ,@rating float ,@categoryID int ,@restaurantID int,
+@availableFrom nvarchar(30), @availableTo nvarchar(30)
+AS
+DECLARE @OutputTbl TABLE (ID INT)
+INSERT INTO Restaurant.Food(name,price,rating,pictureID,categoryID,restaurantID,availableFrom,availableTo)
+OUTPUT Inserted.foodID	
+INTO @OutputTbl(ID)
+VALUES(@foodName,@price,@rating,NULL,@categoryID,@restaurantID,@availableFrom,@availableTo)
+DECLARE @outputFoodID INT
+SELECT  @outputFoodID = ID FROM @OutputTbl
+RETURN @outputFoodID
+GO
+
+--HASZNÁLAT:
+DECLARE @returnID INT  
+EXEC @returnID = addFood 'Sajtkrémleves',1250,3.2,1,7,'2020.04.19.','2020.06.23.'
+--addFood @foodName,@price,@rating,NULL,@categoryID,@restaurantID,@availableFrom,@availableTo
+SELECT  'foodID' = @returnID 
+GO 
+
+--SERVER:
+DECLARE @returnID INT  
+EXEC @returnID = addFood @foodName,@price,@rating,NULL,@categoryID,@restaurantID,@availableFrom,@availableTo
+SELECT  'foodID' = @returnID 
+GO 
+
+SELECT * FROM Restaurant.Food
+
