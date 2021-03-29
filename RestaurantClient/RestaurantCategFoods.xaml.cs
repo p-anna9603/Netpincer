@@ -27,6 +27,8 @@ namespace RestaurantClient
         int picID;
         //Dictionary<int, RestNewFood> newFoodWindows = new Dictionary<int, RestNewFood>(); // foodID - RestNewFood window
         Dictionary<int, Food> newFoodWindows = new Dictionary<int, Food>(); // foodID - Food
+
+        FoodList listFromServer;
         List<Food> foods = new List<Food>();
         Dictionary<int, String> foodNames = new Dictionary<int, string>(); // map[foodId] = food name
         Dictionary<int, Image> imgNames = new Dictionary<int, Image>(); //    map[foodId] = Image
@@ -42,9 +44,9 @@ namespace RestaurantClient
             scrollView.Background = color;
             categID = cID;
             restaurantMain = (RestaurantMain)restrantMain;
+            /* Get the list of foods from server */
+            listFromServer = restaurantMain.ServerConnection.getFoods(restaurantMain.CurrUser.restaurantID, categID);
 
-            Console.WriteLine("category: " + categID);
-            //TODO get category name from db by id categoryName = categNameFromDb
             categoryName = cName;
             categName.Text = categoryName;
 
@@ -91,6 +93,14 @@ namespace RestaurantClient
 
         private void addExistingFoods()
         {
+            if (listFromServer.ListFood != null)
+            {
+                for (int i = 0; i < listFromServer.ListFood.Count; ++i)
+                {
+                    foods.Add(listFromServer.ListFood[i]);
+                    newFoodWindows.Add(listFromServer.ListFood[i].FoodID, listFromServer.ListFood[i]);
+                }
+            }
             if (foods.Count != 0)
             {
                 foreach (Food i in foods)
@@ -227,7 +237,8 @@ namespace RestaurantClient
             int foodId = 0; // TODO
             foodId = foodPanels[categ]; 
             Console.WriteLine("error 2");
-            Food food = newFoodWindows.ElementAt(foodId).Value;
+            Food food = newFoodWindows[foodId];
+            
             RestNewFood f = new RestNewFood(restaurantMain, food);
             f.ShowDialog();
             Console.WriteLine("modositas utan");

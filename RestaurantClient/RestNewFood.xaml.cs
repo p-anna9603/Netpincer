@@ -38,9 +38,10 @@ namespace RestaurantClient
         
         string imgFilePath;
         List<String> allergenes = new List<String>();
+        List<String> existingAllergenes;
 
         private bool isSaved = false;
-
+        private bool isModified = false;
         public bool IsSaved { get => isSaved; set => isSaved = value; }
         public double FoodPrice { get => foodPrice; set => foodPrice = value; }
         public string FoodName { get => foodName; set => foodName = value; }
@@ -63,6 +64,23 @@ namespace RestaurantClient
         {
             textBoxName.Text = food.Name;
             textBoxPrice.Text = food.Price.ToString();
+            /* Add allergens */
+            existingAllergenes = food.Allergenes;
+            if(existingAllergenes != null)
+            {
+                for(int i = 0; i < existingAllergenes.Count; ++i)
+                {
+                    allergeneListBox.Items.Add(existingAllergenes[i]);
+                    for(int j = 0; j < combo.Items.Count; ++j)
+                    {
+                        if(combo.Items.GetItemAt(j).ToString() == existingAllergenes[i])
+                        {
+                            combo.Items.RemoveAt(j);
+                        }
+                    }
+                }
+            }
+
             //TODO set availability and img
             Submit.Content = "MÓDOSÍTÁS";
             mainPanel.IsEnabled = false;
@@ -88,6 +106,7 @@ namespace RestaurantClient
             {
                 mainPanel.IsEnabled = true;
                 Submit.Content = "MENTÉS";
+                isModified = true;
             }
             else // adding new food / modified food
             {
@@ -185,7 +204,7 @@ namespace RestaurantClient
 
         void windowClosing(object sender, CancelEventArgs e)
         {
-            if (IsSaved != true)
+            if (IsSaved != true && isModified == true)
             {
                 string msg = "Bezárja mentés nélkül?";
                 MessageBoxResult result =

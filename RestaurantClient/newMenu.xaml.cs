@@ -29,6 +29,7 @@ namespace RestaurantClient
         int categoryID = 0;
         string categoryImg = "";
         private bool isSaved = false;
+        private bool isModified = false;
         public ConnectToServer ServerConnection;
         List<string> categories = new List<string>();
         RestaurantMain restaurantMain;
@@ -82,6 +83,7 @@ namespace RestaurantClient
             {
                 mainPanel.IsEnabled = true;
                 Submit.Content = "MENTÉS";
+                isModified = true;
             }
             else if (categoryNameTextBox.Text.Length == 0)
             {
@@ -125,7 +127,7 @@ namespace RestaurantClient
 
         void windowClosing(object sender, CancelEventArgs e)
         {
-            if (IsSaved != true)
+            if (IsSaved != true && isModified == true)
             {
                 string msg = "Bezárja mentés nélkül?";
                 MessageBoxResult result =

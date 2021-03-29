@@ -73,6 +73,8 @@ namespace RestaurantClient
             for(int i = 0; i < cat.ListOfCategoryIDs.Count; ++i)
             {
                 categoryNames.Add(Int32.Parse(cat.ListOfCategoryIDs[i]), cat.ListOfCategoryNames[i]);
+                Category categ = new Category(Int32.Parse(cat.ListOfCategoryIDs[i]), cat.ListOfCategoryNames[i], "");
+                categoryWindows.Add(Int32.Parse(cat.ListOfCategoryIDs[i]), categ);
             }
             if(categoryNames.Count != 0)
             {
@@ -201,7 +203,8 @@ namespace RestaurantClient
             categID = categPanels[stackP];
             clickedCategID = categID;
             clickedStackPanel = stackP;
-            Console.WriteLine("clicked onL " + clickedStackPanel);
+            Console.WriteLine("clicked onL " + clickedCategID);
+            Console.WriteLine("categID onL " + categID);
             if (e.Source != settingButton)
             {
                 RestaurantCategFoods categFood = new RestaurantCategFoods(restaurantMain, categID, categoryNames[categID]);
@@ -220,7 +223,12 @@ namespace RestaurantClient
             Button btn = sender as Button;
             StackPanel p1 = (StackPanel)btn.Parent;
             StackPanel p2 = (StackPanel)p1.Parent;
-            Category categ = categoryWindows.ElementAt(clickedCategID).Value;
+            int categID = 0;
+            categID = categPanels[p2];
+            clickedCategID = categID;
+            Console.WriteLine("clicked onL " + clickedCategID);
+            Console.WriteLine("categID onL " + categID);
+            Category categ = categoryWindows[clickedCategID];
             newMenu m = new newMenu(restaurantMain, categ);
             m.ShowDialog();
             if (m.IsSaved)
