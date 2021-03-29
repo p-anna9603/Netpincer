@@ -211,6 +211,10 @@ public class ConnectToServer
         return Encoding.ASCII.GetString(bytes, 0, bytesRec);
 
     }
+    int userSignIn;
+
+    public int UserSignIn { get => userSignIn; set => userSignIn = value; }
+
     public User getUser(string username, string password, UserType userType)   //Returns the User object for the given username ands password (if the parameters are wrong the server dies rip so don't do that)
     {
         try
@@ -246,7 +250,7 @@ public class ConnectToServer
             {
                 //var root = JObject.Parse(jsonString);
                 //return receivedJSonObject["User"].ToObject<User>();   //WIP
-
+                userSignIn = 1;
                 return new User(
                     receivedJSonObject["username"].ToString(),
                     receivedJSonObject["password"].ToString(),
@@ -264,6 +268,7 @@ public class ConnectToServer
             else if (receivedJSonObject["type"].ToString() == "99")
             {
                 Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+                userSignIn = 0;
             }
         }
         catch (Exception e)
@@ -275,8 +280,9 @@ public class ConnectToServer
     }
 
 
-    public void registerRestaurant(Restaurant rest)
+    public int registerRestaurant(Restaurant rest)
     {
+        int retval = 1;
         try
         {
             Console.WriteLine("Basic Restautant: {0}", rest.toString());
@@ -300,12 +306,15 @@ public class ConnectToServer
             else if (receivedJSonObject["type"].ToString() == "99")
             {
                 Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+                retval = 0;
             }
         }
         catch (Exception e)
         {
             Console.WriteLine(e.ToString());
+            retval = 0;
         }
+        return retval;
     }
 
     public int addFood(Food f)
@@ -437,8 +446,9 @@ public class ConnectToServer
         return new Categories();
     }
 
-    public void registerUser(User user)
+    public int registerUser(User user)
     {
+        int retval = 1;
         //THIS WORKS:
         try 
         { 
@@ -458,17 +468,23 @@ public class ConnectToServer
             receivedJSonObject = JObject.Parse(recievedMsg);
             if (receivedJSonObject["type"].ToString() == "4")
             {
+                userSignIn = 1;
                 Console.WriteLine("Server: {0}", receivedJSonObject["status"].ToString());
             }
             else if (receivedJSonObject["type"].ToString() == "99")
             {
                 Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+                userSignIn = 0;
+                retval = 0;
             }
         }
         catch (Exception e)
         {
             Console.WriteLine(e.ToString());
+            userSignIn = 0;
+            retval = 0;
         }
+        return retval;
  }
 
     public FoodList getFoods(int restaurantID, int categoryID)

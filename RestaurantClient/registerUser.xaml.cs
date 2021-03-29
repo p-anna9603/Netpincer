@@ -38,6 +38,7 @@ namespace RestaurantClient
         string floor;
         string lastName;
         string firstName;
+        int retval;
 
         public registerUser(ConnectToServer ServerCon, startupWindow startupWin)
         {
@@ -53,7 +54,8 @@ namespace RestaurantClient
             //ServerConnection.StopClient();
          //   ServerConnection = new ConnectToServer();
             User usr = new User(userName, password, lastName, firstName, phone, citiName, zipCode, street + " " + streetNum, floor, 0, email);
-            ServerConnection.registerUser(usr);
+            retval = ServerConnection.registerUser(usr);
+            Console.WriteLine("retvaaal:" + retval);
         }
 
         public void Reset()
@@ -266,8 +268,20 @@ namespace RestaurantClient
                     //cmd.ExecuteNonQuery();
                     //con.Close();
                     registerUserToServer();
-                    errormessage.Text = "Regisztrácó sikeres";
-                    Reset();
+                    if(retval == 1)
+                    {
+                        Console.WriteLine("sikeres regisztracio");
+                        errormessage.Text = "Regisztrácó sikeres";
+                        Reset();
+                        parent.Show();
+                        this.Close();
+                    }
+                    else if(retval == 0)
+                    {
+                        Console.WriteLine("felhasználóó foglaaaaaalt");
+                        errormessage.Text = "Felhasználó név foglalt";
+                        textBoxUserName.Focus();
+                    }
                 }
             }
         }

@@ -37,15 +37,7 @@ namespace RestaurantClient
             a.Add("Cukor");
            // ServerConnection.addFood(new Food(-1,"Kenyer3",200,4.7,0,a,2,8,"",""));
             a.Add("Gluten");
-         //   ServerConnection.addFood(new Food(-1, "Kenyer2", 200, 4.7, 0, a, 2, 8, "2020.06.06.", "2020.05.05."));
-           
-            //ServerConnection.getCategories(1);
-            //ServerConnection.getRestaurant("egy").toString();
-            /* ServerConnection.addCategory("Leves", "Hiiiii");            //Category didn't exist, now added to menu
-             ServerConnection.addCategory("Leves", "Hiiiii");            //Category already exists and is part of menu
-             ServerConnection.addCategory("Leves", "AsztalVok1149");     //Category already exists but added to menu
-             ServerConnection.addCategory("Leves", "Teszto1");           //Restaurant not found
-             ServerConnection.addCategory("Alma", "Teszto11");*/           //Restaurant not found
+         //   ServerConnection.addFood(new Food(-1, "Kenyer2", 200, 4.7, 0, a, 2, 8, "2020.06.06.", "2020.05.05."));          
         }
 
         private void signInBtn_Click(object sender, RoutedEventArgs e)
@@ -82,29 +74,38 @@ namespace RestaurantClient
                
                 Console.WriteLine("username: " + userName + ", pass: " + password + ", sign in: " + signInType);
                 User user = ServerConnection.getUser(userName, password, signInType);
-                if(user.GetUserType == UserType.RestaurantOwner)
+                if (ServerConnection.UserSignIn == 1)
                 {
-                    Console.WriteLine("name: " + user.Username);
-                    Restaurant rest = ServerConnection.getRestaurant(user.Username);
-                    RestaurantMain restMain = new RestaurantMain(ServerConnection, rest, this);
-                    restMain.Show();
-                    restaurantSign.IsChecked = false;
-                    this.Hide();
+                    if (user.GetUserType == UserType.RestaurantOwner)
+                    {
+                        Console.WriteLine("name: " + user.Username);
+                        Restaurant rest = ServerConnection.getRestaurant(user.Username);
+                        RestaurantMain restMain = new RestaurantMain(ServerConnection, rest, this);
+                        restMain.Show();
+                        restaurantSign.IsChecked = false;
+                        this.Hide();
+                    }
+                    else if (user.GetUserType == UserType.Customer)
+                    {
+                        UserMain usrMain = new UserMain(ServerConnection, user, this);
+                        usrMain.Show();
+                        clientSign.IsChecked = false;
+                        this.Hide();
+                    }
+                    else if (user.GetUserType == UserType.DeliveryPerson)
+                    {
+                        // TODO delivery person interface
+                        //runningBoySign.IsChecked = false;
+                    }
+                    textBoxPassword.Password = "";
+                    textBoxUserName.Text = "";
+                    errorText.Text = "";
+                    ServerConnection.UserSignIn = 0;
                 }
-                else if(user.GetUserType == UserType.Customer)
+                else
                 {
-                    UserMain usrMain = new UserMain(ServerConnection, user, this);
-                    usrMain.Show();
-                    clientSign.IsChecked = false;
-                    this.Hide();
+                    errorText.Text = "Nincs ilyen felhasználó.";
                 }
-                else if (user.GetUserType == UserType.DeliveryPerson)
-                {
-                    // TODO delivery person interface
-                    //runningBoySign.IsChecked = false;
-                }
-                textBoxPassword.Password = "";
-                textBoxUserName.Text = "";
             }
         }
 

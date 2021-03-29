@@ -37,6 +37,7 @@ namespace FoodOrderClient
             serverConnection = ServerCon;
             currUser = usr;
             parent = (startupWindow)start;
+            userNameTextBox.Text = "Felhasználó: " + currUser.owner;
          //   ServerConnection = new ConnectToServer();
 
             /*

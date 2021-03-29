@@ -190,10 +190,12 @@
                     <RowDefinition Height="60"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-
-
-
                 <!--// Grid for the child elements-->
+            </Grid>
+            <Grid Grid.Row="0" Grid.Column="0">
+                <StackPanel Margin="70,5,0,0">
+                    <TextBlock Name="userNameTextBox" Text="Felhasználó: fdg fdsg " Foreground="White"></TextBlock>
+                </StackPanel>
             </Grid>
             <Grid Margin="80 55 0 0">
                 <!--<Grid x:Name="GridPrincipal" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
@@ -218,7 +220,7 @@
                         <TextBlock  Grid.Row="1"
                                     Grid.Column="0"
                                     Margin="73,-20,0,0"
-                                    Text="M E N U"
+                                    Text="M E N Ü"
                                     Foreground="White"
                                     FontSize="22"
                                     Background="Transparent"
@@ -336,7 +338,7 @@
                                        Stretch="Fill"
                                        Margin="8,0,0,0" Height="42" Width="41"/>
 
-                                <TextBlock Text="Home"
+                                <TextBlock Text="Főoldal"
                                            Margin="25,0,0,0"
                                            Style="{StaticResource font_style}"/>
 
@@ -347,7 +349,7 @@
                             <ListViewItem.ToolTip>
 
                                 <ToolTip x:Name="tt_home"
-                                         Content="Home"
+                                         Content="Főoldal"
                                          Style="{StaticResource tt_style}"/>
 
                             </ListViewItem.ToolTip>
@@ -394,11 +396,11 @@
                             <StackPanel Orientation="Horizontal"
                                         Width="230">
 
-                                <Image Source="Assets/img_message.png"
+                                <Image Source="Assets/searchIcon3.png"
                                        Stretch="Fill"
                                        Margin="7,0,0,0" Height="42" Width="41"/>
 
-                                <TextBlock Text="Messages"
+                                <TextBlock Text="Étel keresése"
                                            Margin="25,0,0,0"
                                            Style="{StaticResource font_style}"/>
 
@@ -409,7 +411,7 @@
                             <ListViewItem.ToolTip>
 
                                 <ToolTip x:Name="tt_messages"
-                                         Content="Messages"
+                                         Content="Étel keresése"
                                          Style="{StaticResource tt_style}"/>
 
                             </ListViewItem.ToolTip>
@@ -425,11 +427,11 @@
                             <StackPanel Orientation="Horizontal"
                                         Width="230">
 
-                                <Image Source="Assets/img_map.png"
+                                <Image Source="Assets/shoppingCart.png"
                                        Stretch="Fill"
                                        Margin="7,0,0,0" Height="42" Width="41"/>
 
-                                <TextBlock Text="Maps"
+                                <TextBlock Text="Kosár"
                                            Margin="25,0,0,0"
                                            Style="{StaticResource font_style}"/>
 
@@ -440,7 +442,7 @@
                             <ListViewItem.ToolTip>
 
                                 <ToolTip x:Name="tt_maps"
-                                         Content="Maps"
+                                         Content="Kosár"
                                          Style="{StaticResource tt_style}"/>
 
                             </ListViewItem.ToolTip>
@@ -460,7 +462,7 @@
                                        Stretch="Fill"
                                        Margin="7,0,0,0" Height="42" Width="41"/>
 
-                                <TextBlock Text="Settings"
+                                <TextBlock Text="Beállítások"
                                            Margin="25,0,0,0"
                                            Style="{StaticResource font_style}"/>
 
@@ -471,7 +473,7 @@
                             <ListViewItem.ToolTip>
 
                                 <ToolTip x:Name="tt_settings"
-                                         Content="Settings"
+                                         Content="Beállítások"
                                          Style="{StaticResource tt_style}"/>
 
                             </ListViewItem.ToolTip>
@@ -492,7 +494,7 @@
                                        Margin="7,0,0,0" Height="42" Width="41"/>
 
                                 <TextBlock Text="Kilépés"
-                                           Margin="12,0,0,0"
+                                           Margin="25,0,0,0"
                                            Style="{StaticResource font_style}"/>
 
                             </StackPanel>

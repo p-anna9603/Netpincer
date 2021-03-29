@@ -6,7 +6,49 @@
              xmlns:local="clr-namespace:RestaurantClient"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+    <Border BorderBrush="black" BorderThickness="2">
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="217*"/>
+                <RowDefinition Height="15"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="90"/>
+                <ColumnDefinition Width="15"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" Height="30">
+                <!--<TextBlock Text="Menük" FontFamily="Cooper Black" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" Height="30">
+                </TextBlock>-->
+            </StackPanel>
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="" Foreground="White" FontSize="23" FontFamily="Cooper Black"></TextBlock>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.ColumnSpan="2" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="151"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.RowSpan="2">
+                    <TextBlock Text="Kategóriák" Foreground="White" HorizontalAlignment="Center" Margin="10" FontSize="28"/>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="1" Margin="0,0,0,10">
+                    <TextBlock Name="restNameText" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Cooper Black" FontSize="24"
+                               Foreground="White"></TextBlock>
+                </Grid>
+                <ScrollViewer Name="scrollView" Grid.Column="1" Grid.Row="1" Background="#FFF1F1F1" VerticalScrollBarVisibility="Auto">
+                    <WrapPanel Name="menuList" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+
+                    </WrapPanel>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+    </Border>
 </UserControl>

@@ -584,7 +584,7 @@ namespace SocketServer
         private string registerRestaurant(JObject o)
         {
             //CHECK TO SEE IF USER IS AVAILABLE
-            string response = checkUsernameAvailable(o["username"].ToString(), 1);
+            string response = checkUsernameAvailable(o["owner"].ToString(), 1);
             if (response[0] != '1')
                 return response;
            
@@ -592,8 +592,8 @@ namespace SocketServer
             try
             {
                 SqlCommand command = new SqlCommand(query, DatabaseConnection);
-                command.Parameters.AddWithValue("@username", o["username"].ToString());
-                Console.WriteLine(o["username"].ToString());
+                command.Parameters.AddWithValue("@username", o["owner"].ToString());
+                Console.WriteLine(o["owner"].ToString());
                 command.Parameters.AddWithValue("@pass", o["pass"].ToString());
                 Console.WriteLine(o["pass"].ToString());
                 command.Parameters.AddWithValue("@lastName", o["lastName"].ToString());

@@ -138,16 +138,16 @@ namespace RestaurantClient
             StackPanel stackP = sender as StackPanel;
             int restID = 0;
             restID = restPanels[stackP];
-            Restaurant rest = restaurantWindows[restID];      
-           
-            //UserRestCategs restCategs = new UserRestCategs(userMain, rest);
+            Restaurant rest = restaurantWindows[restID];
+
+            UserRestCategs restCategs = new UserRestCategs(userMain, rest);
 
             ///* Set the content window to new child */
-            //userMain.childWindow.Content = null;
-            //userMain.childWindow.Content = categFood;
-            //userMain.child = categFood;
-            //userMain.LV.SelectedIndex = -1;
-           
+            userMain.childWindow.Content = null;
+            userMain.childWindow.Content = restCategs;
+            userMain.child = restCategs;
+            userMain.LV.SelectedIndex = -1;
+
         }
     }
 }

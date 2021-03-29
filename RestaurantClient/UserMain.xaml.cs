@@ -30,6 +30,7 @@ namespace RestaurantClient
             serverConnection = ServerCon;
             currUser = usr;
             parent = (startupWindow)start;
+            userNameTextBox.Text = "Felhasználó: " + currUser.Username;
         }
         private void ListViewItem_MouseEnter(object sender, MouseEventArgs e)
         {

@@ -40,6 +40,7 @@ namespace FoodOrderClient
         string streetNum;
         string leiras;
         string style;
+        int retval;
         public string line2 { get; set; }
         public string lastName { get; set; }
         public string firstName { get; set; }
@@ -54,7 +55,7 @@ namespace FoodOrderClient
         }
         public void registerRestaurant()
         {
-            ServerConnection.registerRestaurant(new Restaurant(citiName, zipCode, street, streetNum, fromHour, fromMin, toHour, toMin, restName, leiras,
+           retval = ServerConnection.registerRestaurant(new Restaurant(citiName, zipCode, street, streetNum, fromHour, fromMin, toHour, toMin, restName, leiras,
                style, userName, phone, -1, lastName, firstName, password, email)); 
            // ServerConnection.StopClient();
         }
@@ -263,10 +264,18 @@ namespace FoodOrderClient
                     //cmd.ExecuteNonQuery();
                     //con.Close();
                     registerRestaurant();
-                    errormessage.Text = "Regisztrácó sikeres";
-                    Reset();
-                    parent.Show();
-                    this.Close();
+                    if(retval == 1)
+                    {
+                        errormessage.Text = "Regisztrácó sikeres";
+                        Reset();
+                        parent.Show();
+                        this.Close();
+                    }
+                    else if(retval == 0)
+                    {
+                        errormessage.Text = "Foglalt felhasználónév";
+                        textBoxUserName.Focus();
+                    }
                 }
             }
         }
@@ -348,12 +357,12 @@ namespace FoodOrderClient
             fromMin = Int32.Parse(allFrom[1]);
             toHour = Int32.Parse(allTo[0]);
             toMin = Int32.Parse(allTo[1]);
-
-            //Console.WriteLine(fromHour);          
-            //Console.WriteLine(fromMin);
-            //Console.WriteLine(toHour);
-            //Console.WriteLine(toMin);
-            if((fromHour < toHour) || (fromHour <= toHour && fromMin < toMin))
+            Console.WriteLine("HOOOOOOOOOOOOOOOOOOOOOOOUUUUUUUUUUURRRRRRRRRRRR");
+            Console.WriteLine(fromHour);
+            Console.WriteLine(fromMin);
+            Console.WriteLine(toHour);
+            Console.WriteLine(toMin);
+            if ((fromHour < toHour) || (fromHour <= toHour && fromMin < toMin))
             {
                 retval = 1;
             }

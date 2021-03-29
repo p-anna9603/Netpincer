@@ -137,6 +137,12 @@
     <Compile Include="UserRestaurantList.xaml.cs">
       <DependentUpon>UserRestaurantList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserRestCategFoods.xaml.cs">
+      <DependentUpon>UserRestCategFoods.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserRestCategs.xaml.cs">
+      <DependentUpon>UserRestCategs.xaml</DependentUpon>
+    </Compile>
     <Page Include="newMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -187,6 +193,14 @@
     <Page Include="UserRestaurantList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserRestCategFoods.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserRestCategs.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -259,6 +273,22 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\restaurantBuilding.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\searchIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\searchIcon2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\searchIcon3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\shoppingCart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\deliveryScooter.png" />
+    <Resource Include="Assets\waiter.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
