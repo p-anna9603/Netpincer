@@ -39,16 +39,16 @@
                     <!--<TextBox Height="23" HorizontalAlignment="Left" Margin="5,15,0,0" Padding="1.5" Name="textBoxUserName" VerticalAlignment="Top" Width="222" />-->
                     <ComboBox  Name="combo" Height="23" Width="222" Margin="10,5,0,0" HorizontalAlignment="Center"  SelectedValuePath="Content" SelectionChanged="selectedAllergene">
                         <ComboBoxItem Content="Tejfehérje"></ComboBoxItem>
-                        <ComboBoxItem>Laktóz</ComboBoxItem>
-                        <ComboBoxItem>Glutén</ComboBoxItem>
-                        <ComboBoxItem>Tojás</ComboBoxItem>
-                        <ComboBoxItem>Diófélék</ComboBoxItem>
-                        <ComboBoxItem>Földimogyoró</ComboBoxItem>
+                        <ComboBoxItem>Laktoz</ComboBoxItem>
+                        <ComboBoxItem>Gluten</ComboBoxItem>
+                        <ComboBoxItem>Tojas</ComboBoxItem>
+                        <ComboBoxItem>Diofelek</ComboBoxItem>
+                        <ComboBoxItem>Foldimogyoro</ComboBoxItem>
                         <ComboBoxItem>Eper</ComboBoxItem>
-                        <ComboBoxItem>Málna</ComboBoxItem>
+                        <ComboBoxItem>Malna</ComboBoxItem>
                         <ComboBoxItem>Kiwi</ComboBoxItem>
                         <ComboBoxItem>Paradicsom</ComboBoxItem>
-                        <ComboBoxItem>Kagyló</ComboBoxItem>
+                        <ComboBoxItem>Kagylo</ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
                 <StackPanel Height="120">
