@@ -23,7 +23,8 @@ namespace RestaurantClient
     {
         public ConnectToServer ServerConnection;
         UserMain userMain;
-        List<Restaurant> restList;
+        ListOfRestaurants restListFromServer;
+        List<Restaurant> restList = new List<Restaurant>();
         Dictionary<StackPanel, int> restPanels = new Dictionary<StackPanel, int>();
 
         public UserRestaurantList(Window parent)
@@ -31,15 +32,23 @@ namespace RestaurantClient
             InitializeComponent();
             userMain = (UserMain)parent;
             ServerConnection = userMain.ServerConnection;
+            restListFromServer = ServerConnection.getRestaurantsList();
             // restList = szerver lista
             addExistingRestaurants();
         }
 
         public void addExistingRestaurants()
         {
-            for(int i = 0; i < restList.Count; ++i)
-            {               
-                addCategoryPanel(restList[i].name, restList[i].restaurantID);
+            if (restListFromServer.RestaurantList != null)
+            {
+                for (int i = 0; i < restListFromServer.RestaurantList.Count; ++i)
+                {
+                    restList.Add(restListFromServer.RestaurantList[i]);
+                }
+                for (int i = 0; i < restList.Count; ++i)
+                {
+                    addCategoryPanel(restList[i].name, restList[i].restaurantID);
+                }
             }
         }
         private void addCategoryPanel(string restName, int restID)
