@@ -255,7 +255,7 @@ namespace SocketServer
 
         private string getFoods(string restID, string categoryID)
         {
-            string query = "SELECT foodID,name,price,rating,pictureID FROM Restaurant.Food JOIN Restaurant.CategoryName ON Restaurant.CategoryName.categoryID = Restaurant.Food.categoryID WHERE Restaurant.Food.restaurantID = @restaurantID AND Restaurant.Food.categoryID = @categoryID";
+            string query = "SELECT foodID,name,price,rating,pictureID,availableFrom,availableTo FROM Restaurant.Food JOIN Restaurant.CategoryName ON Restaurant.CategoryName.categoryID = Restaurant.Food.categoryID WHERE Restaurant.Food.restaurantID = @restaurantID AND Restaurant.Food.categoryID = @categoryID";
             DataTable dataTable = new DataTable();
             List<Food> listOfFood = new List<Food>();
             try
@@ -310,7 +310,9 @@ namespace SocketServer
                         Int32.Parse(dataTable.Rows[i]["price"].ToString()),
                         Double.Parse(dataTable.Rows[i]["rating"].ToString()),
                         picID,
-                        allergens));
+                        allergens,
+                        dataTable.Rows[i]["availableFrom"].ToString(),
+                        dataTable.Rows[i]["availableTo"].ToString()));
 
                     da2.Dispose();
                     dataTable2.Clear();

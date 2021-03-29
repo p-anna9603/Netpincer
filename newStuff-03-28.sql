@@ -138,11 +138,16 @@ WHERE Restaurant.Allergens.foodID = '1'
 
 --03.29.
 --GET RESTAURANT LIST
-
-SELECT restaurantID,name,restaurantDescription,style,owner,phoneNumber, city,zipcode,line1,line2, fromHour,fromMinute,toHour,toMinute
+--SERVER:
+/*SELECT restaurantID,name,restaurantDescription,style,owner,phoneNumber, city,zipcode,line1,line2, fromHour,fromMinute,toHour,toMinute
 FROM Restaurant.Restaurant
 JOIN Restaurant.RestaurantAddress ON Restaurant.RestaurantAddress.addressID = Restaurant.addressID
-JOIN Restaurant.OpeningHours ON Restaurant.OpeningHours.openingHoursID = Restaurant.openingHoursID
+JOIN Restaurant.OpeningHours ON Restaurant.OpeningHours.openingHoursID = Restaurant.openingHoursID*/
 
-							
-						
+----------ANNA INNEN-----------
+ALTER TABLE Restaurant.Food ADD [availableFrom]	NVARCHAR(20) --Mert nem akarok pontokat konvertálgatni
+ALTER TABLE Restaurant.Food ADD [availableTo]	NVARCHAR(20) 
+/*SERVER:						
+SELECT foodID,name,price,rating,pictureID,availableFrom,availableTo FROM Restaurant.Food JOIN Restaurant.CategoryName ON Restaurant.CategoryName.categoryID = Restaurant.Food.categoryID 
+WHERE Restaurant.Food.restaurantID = '7' AND Restaurant.Food.categoryID = '1'*/
+            

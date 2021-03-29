@@ -331,6 +331,8 @@ public class ConnectToServer
                 Console.WriteLine("Price: {0}", foodList.ListFood[i].Price);
                 Console.WriteLine("Rating: {0}", foodList.ListFood[i].Rating);
                 Console.WriteLine("PictureID: {0}", foodList.ListFood[i].PictureID);
+                Console.WriteLine("AvailableFrom: {0}", foodList.ListFood[i].AvailableFrom);
+                Console.WriteLine("AvailableTo: {0}", foodList.ListFood[i].AvailableTo);
                 Console.WriteLine("Allergens:");
                 for (int j = 0; j < foodList.ListFood[i].Allergenes.Count; ++j)
                 {
