@@ -309,7 +309,7 @@ public class ConnectToServer
     }
 
 
-    public void addFood(Food f)
+    public int addFood(Food f)
     {
         try
         {
@@ -328,6 +328,7 @@ public class ConnectToServer
             if (receivedJSonObject["type"].ToString() == "10")
             {
                 Console.WriteLine("Server: {0}", receivedJSonObject["status"].ToString());
+                return Int32.Parse(receivedJSonObject["foodID"].ToString());
             }
             else if (receivedJSonObject["type"].ToString() == "99")
             {
@@ -338,6 +339,7 @@ public class ConnectToServer
         {
             Console.WriteLine(e.ToString());
         }
+        return -1;
     }
 
 
@@ -470,7 +472,65 @@ public class ConnectToServer
         }
  }
 
+    public FoodList getFoods(int restaurantID, int categoryID)
+    {
+        string recievedMsg = "";
+        try
+        {
+            JObject jobc = new JObject();
+            jobc.Add("type", 9);        //9 - Get list of Food
+            jobc.Add("clientID", clientID);
+            jobc.Add("restaurantID", restaurantID);
+            jobc.Add("categoryID", categoryID);
+            recievedMsg = sendJSON(jobc);
+            Console.WriteLine("recievedMsg: {0}", recievedMsg);
+            FoodList foodList = Newtonsoft.Json.JsonConvert.DeserializeObject<FoodList>(recievedMsg);
+            if (foodList.ListFood == null)
+                throw new Exception();
+            for (int i = 0; i < foodList.ListFood.Count; ++i)
+            {
+                Console.WriteLine("FoodID: {0}", foodList.ListFood[i].FoodID);
+                Console.WriteLine("Name: {0}", foodList.ListFood[i].Name);
+                Console.WriteLine("Price: {0}", foodList.ListFood[i].Price);
+                Console.WriteLine("Rating: {0}", foodList.ListFood[i].Rating);
+                Console.WriteLine("PictureID: {0}", foodList.ListFood[i].PictureID);
+                Console.WriteLine("CatID: {0}", foodList.ListFood[i].CategoryID);
+                Console.WriteLine("RestID: {0}", foodList.ListFood[i].RestaurantID);
+                Console.WriteLine("From: {0}", foodList.ListFood[i].AvailableFrom);
+                Console.WriteLine("To: {0}", foodList.ListFood[i].AvailableTo);
+                Console.WriteLine("Allergens:");
+                for (int j = 0; j < foodList.ListFood[i].Allergenes.Count; ++j)
+                {
+                    Console.WriteLine(foodList.ListFood[i].Allergenes[j]);
+                }
+            }
 
+            return foodList;
+        }
+        catch (NullReferenceException e)
+        {
+            Console.WriteLine(e.ToString());
+            JObject receivedJSonObject = new JObject();
+            receivedJSonObject = JObject.Parse(recievedMsg);
+            if (receivedJSonObject["type"].ToString() == "99")
+            {
+                Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+                return new FoodList();  //Sends empty class
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+            JObject receivedJSonObject = new JObject();
+            receivedJSonObject = JObject.Parse(recievedMsg);
+            if (receivedJSonObject["type"].ToString() == "99")
+            {
+                Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+                return new FoodList(); //Sends empty class
+            }
+        }
+        return new FoodList();
+    }
 
     private JObject sendFirstConnectionInfo()
     {
