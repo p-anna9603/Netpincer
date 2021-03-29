@@ -30,7 +30,8 @@ namespace RestaurantClient
         {
             InitializeComponent();
             ServerConnection = new ConnectToServer();
-            ServerConnection.getCategories(1);
+            ServerConnection.getFoods(7, 1);
+            //ServerConnection.getCategories(1);
             //ServerConnection.getRestaurant("egy").toString();
             /* ServerConnection.addCategory("Leves", "Hiiiii");            //Category didn't exist, now added to menu
              ServerConnection.addCategory("Leves", "Hiiiii");            //Category already exists and is part of menu

@@ -60,6 +60,9 @@ namespace SocketServer
                 // Specify how many requests a Socket can listen before it gives Server busy response.  
                 // We will listen 10 requests at a time  
                 listener.Listen(10);
+
+               // getFoods("7", "1");
+
                 waitingForConnection();
 
                 // Incoming data from the client.    
@@ -145,6 +148,12 @@ namespace SocketServer
                             string register = addCategory(receivedJSONObject);
                             handler.Send(Encoding.ASCII.GetBytes(register));
                         }
+                        else if (receivedJSONObject["type"].ToString() == "9") //9 - Get list of Food
+                        {
+                            string register = getFoods(receivedJSONObject["restaurantID"].ToString(), receivedJSONObject["categoryID"].ToString());
+                            handler.Send(Encoding.ASCII.GetBytes(register));
+                        }
+                        
                     }
                     catch (Exception e)
                     {
@@ -177,6 +186,95 @@ namespace SocketServer
 
             Console.WriteLine("\n Press any key to continue...");
             Console.ReadKey();
+        }
+
+        private string getFoods(string restID, string categoryID)
+        {
+            string query = "SELECT foodID,name,price,rating,pictureID FROM Restaurant.Food JOIN Restaurant.CategoryName ON Restaurant.CategoryName.categoryID = Restaurant.Food.categoryID WHERE Restaurant.Food.restaurantID = @restaurantID AND Restaurant.Food.categoryID = @categoryID";
+            DataTable dataTable = new DataTable();
+            List<Food> listOfFood = new List<Food>();
+            try
+            {
+                Console.WriteLine(1);
+                SqlCommand command = new SqlCommand(query, DatabaseConnection);
+                command.Parameters.AddWithValue("@restaurantID", restID);
+                command.Parameters.AddWithValue("@categoryID", categoryID);
+                SqlDataAdapter da = new SqlDataAdapter(command);
+                da.Fill(dataTable);
+                if (dataTable.Rows.Count == 0)
+                    return getErrorMessage(70);
+                Console.WriteLine(2);
+                for (int i = 0; i < dataTable.Rows.Count; i++)
+                {
+                    Console.WriteLine(3);
+                    //GETTING ALLERGENES
+                    DataTable dataTable2 = new DataTable();
+                    query = "SELECT Restaurant.AllergenNames.name FROM Restaurant.AllergenNames JOIN Restaurant.Allergens ON Restaurant.Allergens.allergenID = Restaurant.AllergenNames.allergenID JOIN Restaurant.Food ON Restaurant.Food.foodID = Restaurant.Allergens.foodID WHERE Restaurant.Allergens.foodID = @foodID";
+                    SqlCommand command2 = new SqlCommand(query, DatabaseConnection);
+                    Console.WriteLine(4);
+                    command2.Parameters.AddWithValue("@foodID", dataTable.Rows[i]["foodID"].ToString());
+                    Console.WriteLine(5);
+                    SqlDataAdapter da2 = new SqlDataAdapter(command2);
+                    Console.WriteLine(6);
+                    da2.Fill(dataTable2);
+                    Console.WriteLine(7);
+                    List<string> allergens = new List<string>();
+                    if (dataTable2.Rows.Count != 0)
+                    {
+                        Console.WriteLine(8);
+                        for (int k=0;k< dataTable2.Rows.Count;++k)
+                            allergens.Add(dataTable2.Rows[k]["name"].ToString());
+                        Console.WriteLine(9);
+                    }
+
+                    Console.WriteLine(10);
+                    int picID = 0;
+                    Console.WriteLine(dataTable.Rows[i]["pictureID"].ToString());
+                    if (dataTable.Rows[i]["pictureID"].ToString() != "")
+                    {
+                        Console.WriteLine(11);
+                        picID = Int32.Parse(dataTable.Rows[i]["pictureID"].ToString());
+                        
+                    }
+                        
+                    Console.WriteLine(12);
+                    listOfFood.Add(
+                        new Food(
+                        Int32.Parse(dataTable.Rows[i]["foodID"].ToString()),
+                        dataTable.Rows[i]["name"].ToString(),
+                        Int32.Parse(dataTable.Rows[i]["price"].ToString()),
+                        Double.Parse(dataTable.Rows[i]["rating"].ToString()),
+                        picID,
+                        allergens));
+
+                    da2.Dispose();
+                    dataTable2.Clear();
+                    dataTable2.Dispose();
+                }
+                da.Dispose();
+                dataTable.Clear();
+                dataTable.Dispose();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return getErrorMessage(71);
+            }
+            for (int i = 0; i < listOfFood.Count; ++i)
+            {
+                Console.WriteLine("FoodID: {0}", listOfFood[i].FoodID);
+                Console.WriteLine("Name: {0}", listOfFood[i].Name);
+                Console.WriteLine("Price: {0}", listOfFood[i].Price);
+                Console.WriteLine("Rating: {0}", listOfFood[i].Rating);
+                Console.WriteLine("PictureID: {0}", listOfFood[i].PictureID);
+                Console.WriteLine("Allergens:");
+                for (int j = 0; j < listOfFood[i].Allergenes.Count; ++j)
+                {
+                    Console.WriteLine(listOfFood[i].Allergenes[j]);
+                }
+            }
+            FoodList fl = new FoodList(listOfFood);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(fl);
         }
 
 
