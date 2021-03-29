@@ -121,6 +121,8 @@ SELECT * FROM Restaurant.AllergenNames
 INSERT INTO Restaurant.AllergenNames(name) VALUES('Liszt')
 INSERT INTO Restaurant.AllergenNames(name) VALUES('Gluten')
 INSERT INTO Restaurant.AllergenNames(name) VALUES('Cukor')
+DELETE FROM Restaurant.AllergenNames
+	WHERE allergenID = 3
 SELECT * FROM Restaurant.Allergens
 INSERT INTO Restaurant.Allergens VALUES(1,2)
 INSERT INTO Restaurant.Allergens VALUES(2,2)
@@ -195,3 +197,16 @@ WHERE Restaurant.Allergens.allergenID = '1'
 
 SELECT allergenID FROM Restaurant.AllergenNames WHERE name = 'Liszt'
 INSERT INTO Restaurant.Allergens(allergenID,foodID)*/
+
+
+
+/* ALLERGÉNEK */
+INSERT INTO Restaurant.AllergenNames(name) VALUES('Laktoz')
+INSERT INTO Restaurant.AllergenNames(name) VALUES('Tojas')
+INSERT INTO Restaurant.AllergenNames(name) VALUES('Diofelek')
+INSERT INTO Restaurant.AllergenNames(name) VALUES('Foldimogyoro')
+INSERT INTO Restaurant.AllergenNames(name) VALUES('Eper')
+INSERT INTO Restaurant.AllergenNames(name) VALUES('Malna')
+INSERT INTO Restaurant.AllergenNames(name) VALUES('Kiwi')
+INSERT INTO Restaurant.AllergenNames(name) VALUES('Paradicsom')
+INSERT INTO Restaurant.AllergenNames(name) VALUES('Kagylo')

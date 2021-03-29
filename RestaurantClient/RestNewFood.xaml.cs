@@ -196,7 +196,7 @@ namespace RestaurantClient
                     }
                     else
                     {
-                        food = new Food(foodID, foodName, foodPrice, rating, pictureID, Allergenes, restaurantMain.CurrUser.restaurantID, restCateg.CategID, startdate, enddate);
+                        food = new Food(foodID, foodName, foodPrice, rating, pictureID, Allergenes, restCateg.CategID, restaurantMain.CurrUser.restaurantID, startdate, enddate);
                         foodID = restaurantMain.ServerConnection.addFood(food);
                         savePictureToDatabase(); // TODO save to DB                       
                     }

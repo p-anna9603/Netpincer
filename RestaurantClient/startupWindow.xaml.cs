@@ -37,7 +37,7 @@ namespace RestaurantClient
             a.Add("Cukor");
            // ServerConnection.addFood(new Food(-1,"Kenyer3",200,4.7,0,a,2,8,"",""));
             a.Add("Gluten");
-            ServerConnection.addFood(new Food(-1, "Kenyer2", 200, 4.7, 0, a, 2, 8, "2020.06.06.", "2020.05.05."));
+         //   ServerConnection.addFood(new Food(-1, "Kenyer2", 200, 4.7, 0, a, 2, 8, "2020.06.06.", "2020.05.05."));
            
             //ServerConnection.getCategories(1);
             //ServerConnection.getRestaurant("egy").toString();
