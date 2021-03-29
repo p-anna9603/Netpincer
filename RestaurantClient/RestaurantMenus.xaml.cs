@@ -35,6 +35,8 @@ namespace RestaurantClient
         int categoryId = 0;
         newMenu newMen;
         public ConnectToServer ServerConnection;
+
+        Categories cat;
         public RestaurantMenus(Window parent)
         {
             InitializeComponent();
@@ -42,6 +44,7 @@ namespace RestaurantClient
             color.Color = Color.FromArgb(120, 102, 102, 255);
             scrollView.Background = color;
             restaurantMain = (RestaurantMain)parent;
+            cat = restaurantMain.ServerConnection.getCategories(restaurantMain.CurrUser.restaurantID);
             // get latest categoryId
             // TODO: fill categoryNames with existing categories from Database
             // TODO: fill imgNames with existing images according to the categoryID from db
@@ -67,6 +70,10 @@ namespace RestaurantClient
 
         private void addExistingCategories()
         {
+            for(int i = 0; i < cat.ListOfCategoryIDs.Count; ++i)
+            {
+                categoryNames.Add(Int32.Parse(cat.ListOfCategoryIDs[i]), cat.ListOfCategoryNames[i]);
+            }
             if(categoryNames.Count != 0)
             {
                 foreach(KeyValuePair<int, string> i in categoryNames)

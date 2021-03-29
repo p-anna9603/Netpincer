@@ -47,6 +47,7 @@ namespace RestaurantClient
             //TODO get category name from db by id categoryName = categNameFromDb
             categoryName = cName;
             categName.Text = categoryName;
+
             //TODO create new Food from existing ones from db
                     // Food f = new Food(..); -->  foods.Add(f);
                     // newFoodWindows[foodID] = f;
