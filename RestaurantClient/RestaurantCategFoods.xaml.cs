@@ -36,6 +36,9 @@ namespace RestaurantClient
         RestaurantMain restaurantMain;
 
         public ConnectToServer ServerConnection;
+
+        public int CategID { get => categID; set => categID = value; }
+
         public RestaurantCategFoods(Window restrantMain, int cID, string cName)
         {
             InitializeComponent();
@@ -62,7 +65,7 @@ namespace RestaurantClient
         private void NewFood_Click(object sender, EventArgs e)
         {
             Console.WriteLine("új hozzáadása");
-            RestNewFood newFood = new RestNewFood(restaurantMain);
+            RestNewFood newFood = new RestNewFood(restaurantMain, this);
             newFood.ShowDialog();
             newFood.Closed += NewFood_Closed;
             Console.WriteLine("új végén");
@@ -239,7 +242,7 @@ namespace RestaurantClient
             Console.WriteLine("error 2");
             Food food = newFoodWindows[foodId];
             
-            RestNewFood f = new RestNewFood(restaurantMain, food);
+            RestNewFood f = new RestNewFood(restaurantMain, this, food);
             f.ShowDialog();
             Console.WriteLine("modositas utan");
             if(f.IsSaved)

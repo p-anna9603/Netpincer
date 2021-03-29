@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -84,12 +85,14 @@ namespace FoodOrderClient
         private void Tg_Btn_Unchecked(object sender, RoutedEventArgs e) // menü összecsukása
         {
             img_bg.Opacity = 1;
+            childWindow.Opacity = 1;
             Console.WriteLine("tgbutn unchecked");
         }
 
         private void Tg_Btn_Checked(object sender, RoutedEventArgs e) // menü megnyitása
         {
             img_bg.Opacity = 0.3;
+            childWindow.Opacity = 0.3;
             Console.WriteLine("tgbutn checked");
         }
 
@@ -121,11 +124,10 @@ namespace FoodOrderClient
                     childWindow.Content = null;
                     menus = new RestaurantMenus(this);
                     //GridPrincipal.Children.Add(menus);
-                    //menus.Width = GridPrincipal.Width;
-                    //menus.Height = GridPrincipal.Height;
+                    menus.Width = childWindow.Width;
+                    menus.Height = childWindow.Height;
 
                     childWindow.Content = menus;
-
                     child = menus;
                     break;
                 case 5:
@@ -177,5 +179,6 @@ namespace FoodOrderClient
                 Console.WriteLine("GridPrincipal. " + e.NewSize.Width + ", " + e.NewSize.Height);
             }
         }
+
     }
 }

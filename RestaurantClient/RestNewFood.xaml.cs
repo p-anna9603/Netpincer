@@ -49,10 +49,13 @@ namespace RestaurantClient
         public List<string> Allergenes { get => allergenes; set => allergenes = value; }
         internal Food Food { get => food; set => food = value; }
         RestaurantMain restaurantMain;
-        public RestNewFood(Window restrantMain, Food f = null)
+        RestaurantCategFoods restCateg;
+        public RestNewFood(Window restrantMain, RestaurantCategFoods parent, Food f = null)
         {
             InitializeComponent();
             restaurantMain = (RestaurantMain)restrantMain;
+            restCateg = (RestaurantCategFoods)parent;
+
             if (f != null) // modifying open
             {
                 food = f;
@@ -193,10 +196,8 @@ namespace RestaurantClient
                     }
                     else
                     {
-                        //food = new Food(foodID, foodName, foodPrice, rating, pictureID,/*categoryID,restaurantID,*/ Allergenes, startdate, enddate);
-                        //TODO add new food to database
-                        //TODO get the latest foodID from db foodID = foodid;
-                        // TODO upload availability to DB
+                        food = new Food(foodID, foodName, foodPrice, rating, pictureID, Allergenes, restaurantMain.CurrUser.restaurantID, restCateg.CategID, startdate, enddate);
+                        foodID = restaurantMain.ServerConnection.addFood(food);
                         savePictureToDatabase(); // TODO save to DB                       
                     }
                     IsSaved = true;
@@ -260,6 +261,7 @@ namespace RestaurantClient
             {
                 allergName = allergeneListBox.Items[i].ToString();
                 Console.WriteLine(allergName);
+                allergenes.Add(allergName);
                 //  TODO get allergen id from database
                 //  Upload foodID to database to the given allergenID
                 //  Allergen al = new Allergen(allergenID, allergName, foodID);

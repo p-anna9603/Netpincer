@@ -58,12 +58,14 @@ namespace RestaurantClient
         private void Tg_Btn_Unchecked(object sender, RoutedEventArgs e) // menü összecsukása
         {
             img_bg.Opacity = 1;
+            childWindow.Opacity = 1;
             Console.WriteLine("tgbutn unchecked");
         }
 
         private void Tg_Btn_Checked(object sender, RoutedEventArgs e) // menü megnyitása
         {
             img_bg.Opacity = 0.3;
+            childWindow.Opacity = 0.3;
             Console.WriteLine("tgbutn checked");
         }
 
@@ -95,8 +97,8 @@ namespace RestaurantClient
                     childWindow.Content = null;
                     restaurants = new UserRestaurantList(this);
                     //GridPrincipal.Children.Add(menus);
-                    //menus.Width = GridPrincipal.Width;
-                    //menus.Height = GridPrincipal.Height;
+                    restaurants.Width = childWindow.Width;
+                    restaurants.Height = childWindow.Height;
 
                     childWindow.Content = restaurants;
                     child = restaurants;

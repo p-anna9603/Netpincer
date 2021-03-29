@@ -30,7 +30,7 @@ namespace RestaurantClient
         {
             InitializeComponent();
             ServerConnection = new ConnectToServer();
-            ServerConnection.getFoods(7, 1);
+            //ServerConnection.getFoods(7, 1);
             //ServerConnection.getRestaurantsList();
             //ServerConnection.addFood();
             //ServerConnection.getCategories(1);
