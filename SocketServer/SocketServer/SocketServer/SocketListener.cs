@@ -256,7 +256,7 @@ namespace SocketServer
 
         private string getFoods(string restID, string categoryID)
         {
-            string query = "SELECT foodID,name,price,rating,pictureID,categoryID,restaurantID,availableFrom,availableTo FROM Restaurant.Food JOIN Restaurant.CategoryName ON Restaurant.CategoryName.categoryID = Restaurant.Food.categoryID WHERE Restaurant.Food.restaurantID = @restaurantID AND Restaurant.Food.categoryID = @categoryID";
+            string query = "SELECT foodID,name,price,rating,pictureID,Restaurant.Food.categoryID,Restaurant.Food.restaurantID,availableFrom,availableTo FROM Restaurant.Food JOIN Restaurant.CategoryName ON Restaurant.CategoryName.categoryID = Restaurant.Food.categoryID WHERE Restaurant.Food.restaurantID = @restaurantID AND Restaurant.Food.categoryID = @categoryID";
             DataTable dataTable = new DataTable();
             List<Food> listOfFood = new List<Food>();
             try
@@ -771,28 +771,31 @@ namespace SocketServer
             }
         }
 
-      /*  private string addFood(JObject o)
+         private string addFood(JObject o)
         {
-            query = "DECLARE @returnID INT EXEC @returnID = addCategoryToMenu @categoryName SELECT  'categoryID' = @returnID";
+            string query = "DECLARE @returnID INT EXEC @returnID = addFood @foodName,@price,@rating,@categoryID,@restaurantID,@availableFrom,@availableTo SELECT  'foodID' = @returnID";
             SqlCommand command5 = new SqlCommand(query, DatabaseConnection);
             command5.Parameters.AddWithValue("@categoryName", o["categoryName"].ToString());
             Console.WriteLine(o["categoryName"].ToString());
-            da.Dispose();
-            da = new SqlDataAdapter(command5);
+            SqlDataAdapter da = new SqlDataAdapter(command5);
             DataTable dataTable4 = new DataTable();
             da.Fill(dataTable4);
             if (dataTable4.Rows.Count == 0)
             {
                 da.Dispose();
                 dataTable4.Dispose();
-                return getErrorMessage(97);
+                return getErrorMessage(98);
             }
-            categoryID = dataTable4.Rows[0][0].ToString();   //NOW WE HAVE THE CATEG ID
+            string foodID = dataTable4.Rows[0][0].ToString();   //NOW WE HAVE THE CATEG ID
             da.Dispose();
             dataTable4.Clear();
             dataTable4.Dispose();
+            JObject ok2 = new JObject();
+            ok2.Add("type", 10);
+            ok2.Add("status", "Food added succesfully");
+            ok2.Add("categoryID", foodID);
+            return ok2.ToString();
         }
-      */
 
 
         private string getErrorMessage(int errorNumber)
@@ -830,6 +833,9 @@ namespace SocketServer
                     break;
                 case 97:
                     errorObject.Add("error", "attempt to add category failed");
+                    break;
+                case 98:
+                    errorObject.Add("error", "attempt to add Food failed");
                     break;
                 default:
                     errorObject.Add("error", "Unexpected error");

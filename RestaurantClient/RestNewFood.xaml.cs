@@ -193,7 +193,7 @@ namespace RestaurantClient
                     }
                     else
                     {
-                        food = new Food(foodID, foodName, foodPrice, rating, pictureID, Allergenes, startdate, enddate);
+                        //food = new Food(foodID, foodName, foodPrice, rating, pictureID,/*categoryID,restaurantID,*/ Allergenes, startdate, enddate);
                         //TODO add new food to database
                         //TODO get the latest foodID from db foodID = foodid;
                         // TODO upload availability to DB

@@ -14,11 +14,13 @@ namespace RestaurantClient
         double rating;
         int pictureID;
         List<string> allergenes;
+        int categoryID;
         int restaurantID;
         string availableFrom;
         string availableTo;
         public Food(int fID, string nam, double prc, double rate, int picID, List<String> allergs,
             int restID,
+            int categoryID,
            string availableFrom,
         string availableTo)
         {
@@ -29,6 +31,7 @@ namespace RestaurantClient
             pictureID = picID;
             allergenes = allergs;
             restaurantID = restID;
+            this.categoryID = categoryID;
             this.availableFrom = availableFrom;
             this.availableTo = availableTo;
         }
@@ -42,5 +45,6 @@ namespace RestaurantClient
         public string AvailableFrom { get => availableFrom; set => availableFrom = value; }
         public string AvailableTo { get => availableTo; set => availableTo = value; }
         public int RestaurantID { get => restaurantID; set => restaurantID = value; }
+        public int CategoryID { get => categoryID; set => categoryID = value; }
     }
 }
