@@ -77,7 +77,6 @@ WHERE Restaurant.owner=@username
 GO
 
 SELECT * FROM Restaurant.Menu
-----ANNA INNEN---------------
 Use Netpincer
 --SERVER:
 --SELECT Restaurant.Menu.categoryID,categoryName FROM Restaurant.CategoryName 
@@ -136,3 +135,14 @@ FROM Restaurant.AllergenNames
 JOIN Restaurant.Allergens ON Restaurant.Allergens.allergenID = Restaurant.AllergenNames.allergenID
 JOIN Restaurant.Food ON Restaurant.Food.foodID = Restaurant.Allergens.foodID
 WHERE Restaurant.Allergens.foodID = '1'
+
+--03.29.
+--GET RESTAURANT LIST
+
+SELECT restaurantID,name,restaurantDescription,style,owner,phoneNumber, city,zipcode,line1,line2, fromHour,fromMinute,toHour,toMinute
+FROM Restaurant.Restaurant
+JOIN Restaurant.RestaurantAddress ON Restaurant.RestaurantAddress.addressID = Restaurant.addressID
+JOIN Restaurant.OpeningHours ON Restaurant.OpeningHours.openingHoursID = Restaurant.openingHoursID
+
+							
+						

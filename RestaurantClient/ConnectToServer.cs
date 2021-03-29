@@ -22,7 +22,7 @@ public class ConnectToServer
     private IPAddress ipAddress;
     private IPEndPoint remoteEP;
     private Socket sender;
-    byte[] bytes = new byte[2048];
+    byte[] bytes = new byte[4096];
 
     public ConnectToServer()
     {
@@ -79,7 +79,7 @@ public class ConnectToServer
                             {
                                 clientID = Int32.Parse(receivedJSonObject["clientID"].ToString());
                                 Console.WriteLine("ClientID : {0}", clientID);
-                            }
+                        }
                         }
                         catch (Exception e)
                         {
@@ -192,8 +192,8 @@ public class ConnectToServer
         {
             //Console.WriteLine("JSONOBJECT:\n {0}", JsonSendObject);
             //string msgJSON = JsonConvert.SerializeObject(JsonSendObject.ToString());
-            byte[] msg = Encoding.ASCII.GetBytes(JsonSendObject.ToString());
-
+           // byte[] msg = Encoding.ASCII.GetBytes(JsonSendObject.ToString());
+           byte [] msg = Encoding.GetEncoding("windows-1250").GetBytes(JsonSendObject.ToString());
             // Send the data through the socket.    
             int bytesSent = sender.Send(msg);
             Console.WriteLine("Bytes sent {0}", bytesSent);
@@ -207,7 +207,8 @@ public class ConnectToServer
         // Receive the response from the remote device.    
         int bytesRec = sender.Receive(bytes);
         Console.WriteLine("Recieved bytes {0}", bytesRec);
-        return Encoding.ASCII.GetString(bytes, 0, bytesRec);
+        return Encoding.GetEncoding("windows-1250").GetString(bytes);
+        //return Encoding.ASCII.GetString(bytes, 0, bytesRec);
 
     }
     public User getUser(string username, string password, UserType userType)   //Returns the User object for the given username ands password (if the parameters are wrong the server dies rip so don't do that)
@@ -365,6 +366,49 @@ public class ConnectToServer
     }
 
 
+    public ListOfRestaurants getRestaurantsList()
+    {
+        string recievedMsg = "";
+        try
+        {
+            JObject jobc = new JObject();
+            jobc.Add("type", 11);        //11 - Get list of Restaurants
+            jobc.Add("clientID", clientID);
+            recievedMsg = sendJSON(jobc);
+            Console.WriteLine("recievedMsg: {0}", recievedMsg);
+            ListOfRestaurants rl = Newtonsoft.Json.JsonConvert.DeserializeObject<ListOfRestaurants>(recievedMsg);
+            if (rl.RestaurantList == null)
+                throw new Exception();
+            for (int i = 0; i < rl.RestaurantList.Count; ++i)
+            {
+                Console.WriteLine("Restaurant {0}\n{1}",i+1, rl.RestaurantList[i].toString());
+            }
+            return rl;
+        }
+        catch (NullReferenceException e)
+        {
+            Console.WriteLine(e.ToString());
+            JObject receivedJSonObject = new JObject();
+            receivedJSonObject = JObject.Parse(recievedMsg);
+            if (receivedJSonObject["type"].ToString() == "99")
+            {
+                Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+                return new ListOfRestaurants();  //Sends empty class
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+            JObject receivedJSonObject = new JObject();
+            receivedJSonObject = JObject.Parse(recievedMsg);
+            if (receivedJSonObject["type"].ToString() == "99")
+            {
+                Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+                return new ListOfRestaurants(); //Sends empty class
+            }
+        }
+        return new ListOfRestaurants();
+    }
 
 
     public Categories getCategories(int restaurantID) 

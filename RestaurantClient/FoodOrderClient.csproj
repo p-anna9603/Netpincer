@@ -110,6 +110,7 @@
     <Compile Include="ConnectToServer.cs" />
     <Compile Include="Food.cs" />
     <Compile Include="FoodList.cs" />
+    <Compile Include="ListOfRestaurants.cs" />
     <Compile Include="newMenu.xaml.cs">
       <DependentUpon>newMenu.xaml</DependentUpon>
     </Compile>
