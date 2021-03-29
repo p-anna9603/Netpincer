@@ -70,18 +70,42 @@ namespace RestaurantClient
             {
                 for(int i = 0; i < existingAllergenes.Count; ++i)
                 {
-                    allergeneListBox.Items.Add(existingAllergenes[i]);
-                    for(int j = 0; j < combo.Items.Count; ++j)
+                    int index = 0;
+                    bool canDelete = false;
+                    foreach (ComboBoxItem item in combo.Items)
                     {
-                        if(combo.Items.GetItemAt(j).ToString() == existingAllergenes[i])
+                        Console.WriteLine("asdlfkhj " + item.Content);
+                        if (item.Content.Equals(existingAllergenes[i]))
                         {
-                            combo.Items.RemoveAt(j);
+                            index = combo.Items.IndexOf(item);
+                            Console.WriteLine("1 combo: " + item.Content);
+                            Console.WriteLine("1 exist: " + existingAllergenes[i]);
+                            canDelete = true;
                         }
                     }
+                    if (canDelete == true)
+                    {
+                        combo.Items.RemoveAt(index);
+                    }
+                    allergeneListBox.Items.Add(existingAllergenes[i]);
                 }
             }
-
-            //TODO set availability and img
+            /* Set availability */
+            if(food.FromDate != "" && food.ToDate != "" && (food.FromDate != null && food.ToDate != null))
+            {
+                period_RadioButton.IsChecked = true;
+                //string[] startDate = food.FromDate.Split('.');
+                //string startYear = startDate[0];
+                //string startMonth = startDate[1];
+                //string startDay = startDate[2];
+                fromPeriod.SelectedDate = DateTime.Parse(food.FromDate);
+                toPeriod.SelectedDate = DateTime.Parse(food.ToDate);
+            }
+            else
+            {
+                always_RadioButton.IsChecked = true;
+            }
+            //TODO add img
             Submit.Content = "MÓDOSÍTÁS";
             mainPanel.IsEnabled = false;
         }
@@ -139,7 +163,8 @@ namespace RestaurantClient
 
                 }
                 else if (period_RadioButton.IsChecked == true && !(DateTime.Now.Date.ToShortDateString().Equals(fromPeriod.SelectedDate.Value.ToShortDateString()))
-                    && DateTime.Compare((DateTime)fromPeriod.SelectedDate.Value, DateTime.Now) < 0)
+                    && DateTime.Compare((DateTime)fromPeriod.SelectedDate.Value, DateTime.Now) < 0
+                    && isModified == false)
                 {
                     errorMessage.Text = "Kezdő dátum nem lehet korábban mint a jelenlegi!";
                 }
@@ -156,6 +181,7 @@ namespace RestaurantClient
                     {
                         startdate = fromPeriod.SelectedDate.Value.ToShortDateString();
                         enddate = toPeriod.SelectedDate.Value.ToShortDateString();
+                        Console.WriteLine("start: " + startdate  + ", end: " + enddate);
                     }
                     else
                     {
