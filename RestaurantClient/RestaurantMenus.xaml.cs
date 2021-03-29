@@ -96,7 +96,7 @@ namespace RestaurantClient
                 addCategoryPanel(newMen.CategoryName, newMen.CategoryID);           
             }
         }
-
+     //   Button settingBtn = new Button();
         private void addCategoryPanel(string categName, int categID)
         {
             Console.WriteLine("addcateg");
@@ -205,8 +205,8 @@ namespace RestaurantClient
             clickedStackPanel = stackP;
             Console.WriteLine("clicked onL " + clickedCategID);
             Console.WriteLine("categID onL " + categID);
-            if (e.Source != settingButton)
-            {
+            //if (e.Source != settingBtn)
+            //{
                 RestaurantCategFoods categFood = new RestaurantCategFoods(restaurantMain, categID, categoryNames[categID]);
                 restaurantMain.childWindow.Content = null;
 
@@ -214,7 +214,7 @@ namespace RestaurantClient
                 restaurantMain.childWindow.Content = categFood;
                 restaurantMain.child = categFood;
                 restaurantMain.LV.SelectedIndex = -1;
-            }
+            //}
         }
 
         private void menuSetting_Click(object sender, EventArgs e)

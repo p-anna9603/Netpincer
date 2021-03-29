@@ -25,7 +25,14 @@ namespace RestaurantClient
         UserMain userMain;
         ListOfRestaurants restListFromServer;
         List<Restaurant> restList = new List<Restaurant>();
-        Dictionary<StackPanel, int> restPanels = new Dictionary<StackPanel, int>();
+        Dictionary<StackPanel, int> restPanels = new Dictionary<StackPanel, int>(); // map[panel] = restID
+
+        Dictionary<int, Restaurant> restaurantWindows = new Dictionary<int, Restaurant>(); // map[restID] = Restaurant
+
+        Dictionary<int, String> categoryNames = new Dictionary<int, string>(); // map[categoryid] = category name
+        Dictionary<int, Image> imgNames = new Dictionary<int, Image>(); //        map[categoryid] = Image
+    
+        int categoryId = 0;
 
         public UserRestaurantList(Window parent)
         {
@@ -44,10 +51,11 @@ namespace RestaurantClient
                 for (int i = 0; i < restListFromServer.RestaurantList.Count; ++i)
                 {
                     restList.Add(restListFromServer.RestaurantList[i]);
+                    restaurantWindows.Add(restListFromServer.RestaurantList[i].restaurantID, restListFromServer.RestaurantList[i]);
                 }
                 for (int i = 0; i < restList.Count; ++i)
                 {
-                    addCategoryPanel(restList[i].name, restList[i].restaurantID);
+                    addCategoryPanel(restList[i].name, restList[i].restaurantID);                  
                 }
             }
         }
@@ -124,9 +132,22 @@ namespace RestaurantClient
             color.Color = Color.FromArgb(100, 255, 204, 153);
             panel.Background = color;
         }
-        private void restImg_MouseDown(object sender, RoutedEventArgs e)    // Get restaurant foods?
-        {
 
+        private void restImg_MouseDown(object sender, RoutedEventArgs e)      // Get restaurant foods?
+        {
+            StackPanel stackP = sender as StackPanel;
+            int restID = 0;
+            restID = restPanels[stackP];
+            Restaurant rest = restaurantWindows[restID];      
+           
+            //UserRestCategs restCategs = new UserRestCategs(userMain, rest);
+
+            ///* Set the content window to new child */
+            //userMain.childWindow.Content = null;
+            //userMain.childWindow.Content = categFood;
+            //userMain.child = categFood;
+            //userMain.LV.SelectedIndex = -1;
+           
         }
     }
 }

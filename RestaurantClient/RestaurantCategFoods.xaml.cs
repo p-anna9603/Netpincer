@@ -131,7 +131,7 @@ namespace RestaurantClient
             DataTrigger dataTrigger = new DataTrigger();
             Binding binding = new Binding();
             binding.Path = new PropertyPath("IsMouseOver");
-            binding.Source = food;
+            //binding.Source = food;
        //     binding.ElementName = "food";
             dataTrigger.Binding = binding;
 

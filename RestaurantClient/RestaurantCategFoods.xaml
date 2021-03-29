@@ -36,17 +36,15 @@
         </Grid>
         <ScrollViewer Name="scrollView" Grid.Column="1" Grid.Row="1" Background="#FFF1F1F1" VerticalScrollBarVisibility="Auto" >
             <WrapPanel Name="FoodList"  Opacity="120" OpacityMask="Aqua">
-                <Border BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <!--<Border BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <StackPanel Name="food" Orientation="Horizontal" HorizontalAlignment="Center"
-                                        Width="330" Height="102" Margin="5,5,0,0" Style="{StaticResource bckgStyle}">                    
-                    <!--<Border BorderBrush="AliceBlue" BorderThickness="1">-->
+                                        Width="330" Height="102" Margin="5,5,0,0" Style="{StaticResource bckgStyle}">                                       
                     <StackPanel Orientation="Vertical" Width="263">
                         <TextBlock VerticalAlignment="Top" FontSize="16" FontFamily="Century" HorizontalAlignment="Left"  TextAlignment="Left"
                                      Margin="0,0,0,0" Width="272" Height="56" Text="1. étel neve" TextWrapping="Wrap" Padding="10,10,2,0"/>
-                        <TextBlock VerticalAlignment="Top" FontSize="16" FontFamily="Century" HorizontalAlignment="Left"  TextAlignment="Left"
+                            <TextBlock VerticalAlignment="Top" FontSize="16" FontFamily="Century" HorizontalAlignment="Left"  TextAlignment="Left"
                                      Margin="0,0,0,0" Width="272" Height="56" Text="1. étel ára" TextWrapping="Wrap" Padding="10,10,2,0"/>
-                        <!--</Border>-->
-                    </StackPanel>
+                        </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Width="76">
                         <Image Source="Assets/meal.png" HorizontalAlignment="Center" VerticalAlignment="Center"
                                        Stretch="Fill"
@@ -71,7 +69,7 @@
                         </Style>
                     </Border.Style>
                     
-                </Border>
+                </Border>-->
             </WrapPanel>
         </ScrollViewer>
     </Grid>
