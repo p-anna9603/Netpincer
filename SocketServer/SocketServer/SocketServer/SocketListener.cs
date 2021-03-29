@@ -63,7 +63,15 @@ namespace SocketServer
 
                 // getFoods("7", "1");
                 //getRestaurantsList();
-
+                /*JObject test = new JObject();
+                test.Add("name","Pizza pizza");
+                test.Add("price", "600");
+                test.Add("rating", "3.4");
+                test.Add("categoryID", "3");
+                test.Add("restaurantID", "7");
+                test.Add("availableFrom", "");
+                test.Add("availableTo", "");
+                addFood(test);*/
                 waitingForConnection();
 
                 // Incoming data from the client.    
@@ -163,13 +171,19 @@ namespace SocketServer
                             handler.Send(Encoding.ASCII.GetBytes(register));
                             //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
                         }
-                        else if (receivedJSONObject["type"].ToString() == "11") //9 - Get list of Restaurants
+                        else if (receivedJSONObject["type"].ToString() == "10") //10 - Add Food
+                        {
+                            string register = addFood(receivedJSONObject);
+                            handler.Send(Encoding.ASCII.GetBytes(register));
+                        }
+                        else if (receivedJSONObject["type"].ToString() == "11") //11 - Get list of Restaurants
                         {
                             string register = getRestaurantsList();
                             handler.Send(Encoding.ASCII.GetBytes(register));
                             //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
                         }
                         
+
 
 
                     }
@@ -775,8 +789,20 @@ namespace SocketServer
         {
             string query = "DECLARE @returnID INT EXEC @returnID = addFood @foodName,@price,@rating,@categoryID,@restaurantID,@availableFrom,@availableTo SELECT  'foodID' = @returnID";
             SqlCommand command5 = new SqlCommand(query, DatabaseConnection);
-            command5.Parameters.AddWithValue("@categoryName", o["categoryName"].ToString());
-            Console.WriteLine(o["categoryName"].ToString());
+            command5.Parameters.AddWithValue("@foodName", o["Name"].ToString());
+            Console.WriteLine(o["Name"].ToString());
+            command5.Parameters.AddWithValue("@price", o["Price"].ToString());
+            Console.WriteLine(o["Price"].ToString());
+            command5.Parameters.AddWithValue("@rating", o["Rating"].ToString());
+            Console.WriteLine(o["Rating"].ToString());
+            command5.Parameters.AddWithValue("@categoryID", o["CategoryID"].ToString());
+            Console.WriteLine(o["CategoryID"].ToString());
+            command5.Parameters.AddWithValue("@restaurantID", o["RestaurantID"].ToString());
+            Console.WriteLine(o["RestaurantID"].ToString());
+            command5.Parameters.AddWithValue("@availableFrom", o["AvailableFrom"].ToString());
+            Console.WriteLine(o["AvailableFrom"].ToString());
+            command5.Parameters.AddWithValue("@availableTo", o["AvailableTo"].ToString());
+            Console.WriteLine(o["AvailableTo"].ToString());
             SqlDataAdapter da = new SqlDataAdapter(command5);
             DataTable dataTable4 = new DataTable();
             da.Fill(dataTable4);
@@ -790,10 +816,46 @@ namespace SocketServer
             da.Dispose();
             dataTable4.Clear();
             dataTable4.Dispose();
+            //FOOD ADDED, NOT LET'S SEE IF ALLERGEN EXISTS OR NOT
+            List<string> allergens = new List<string>();
+            allergens = JsonConvert.DeserializeObject<List<string>>(o["Allergenes"].ToString());
+            for (int i = 0; i < allergens.Count; ++i)
+            {
+                query = "SELECT allergenID FROM Restaurant.AllergenNames WHERE name = @allergenName";
+                SqlCommand command = new SqlCommand(query, DatabaseConnection);
+                command.Parameters.AddWithValue("@allergenName", allergens[i]);
+                SqlDataAdapter da2 = new SqlDataAdapter(command);
+                DataTable dataTable2 = new DataTable();
+                da2.Fill(dataTable2);
+                if (dataTable2.Rows.Count == 0)
+                {
+                    da2.Dispose();
+                    dataTable2.Dispose();
+                    return getErrorMessage(69);
+                }
+                string allergenID = dataTable2.Rows[0][0].ToString();   //NOW WE HAVE THE CATEG ID
+                da2.Dispose();
+                dataTable2.Clear();
+                dataTable2.Dispose();
+                //ADDING ALLERGENS TO FOOD
+                query = "INSERT INTO Restaurant.Allergens(allergenID,foodID) VALUES(@allergenID,@foodID)";
+                SqlCommand command3 = new SqlCommand(query, DatabaseConnection);
+                command3.Parameters.AddWithValue("@allergenID", Int32.Parse(allergenID));
+                Console.WriteLine("allergenID: {0}", allergenID);
+                command3.Parameters.AddWithValue("@foodID", Int32.Parse(foodID));
+                Console.WriteLine("foodID: {0}", foodID);
+                int affectedRows = command3.ExecuteNonQuery();
+                if (affectedRows == 0)
+                {
+                    return getErrorMessage(68);
+                }
+            }
+            
+
             JObject ok2 = new JObject();
             ok2.Add("type", 10);
             ok2.Add("status", "Food added succesfully");
-            ok2.Add("categoryID", foodID);
+            ok2.Add("foodID", foodID);
             return ok2.ToString();
         }
 
@@ -804,6 +866,12 @@ namespace SocketServer
             errorObject.Add("type", 99);
             switch (errorNumber) 
             {
+                case 68:
+                    errorObject.Add("error", "attempt to add Allergens failed");
+                    break;
+                case 69:
+                    errorObject.Add("error", "Allergen doesn't exist");
+                    break;
                 case 70:
                     errorObject.Add("error", "Category table empty");
                     break;

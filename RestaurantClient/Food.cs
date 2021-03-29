@@ -19,8 +19,7 @@ namespace RestaurantClient
         string availableFrom;
         string availableTo;
         public Food(int fID, string nam, double prc, double rate, int picID, List<String> allergs,
-            int restID,
-            int categoryID,
+            int categoryID, int restID,     //CATEGORYID, RESTID
            string availableFrom,
         string availableTo)
         {

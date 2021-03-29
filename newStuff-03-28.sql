@@ -144,7 +144,7 @@ FROM Restaurant.Restaurant
 JOIN Restaurant.RestaurantAddress ON Restaurant.RestaurantAddress.addressID = Restaurant.addressID
 JOIN Restaurant.OpeningHours ON Restaurant.OpeningHours.openingHoursID = Restaurant.openingHoursID*/
 
-----------ANNA INNEN-----------
+
 ALTER TABLE Restaurant.Food ADD [availableFrom]	NVARCHAR(20) --Mert nem akarok pontokat konvertálgatni
 ALTER TABLE Restaurant.Food ADD [availableTo]	NVARCHAR(20) 
 /*SERVER:						
@@ -154,6 +154,10 @@ WHERE Restaurant.Food.restaurantID = '7' AND Restaurant.Food.categoryID = '1'*/
 
 --SERVER:
 --RETURNS FOOD ID
+
+
+
+----------ANNA INNEN-----------
 DROP PROCEDURE IF EXISTS addFood
 GO
 CREATE PROCEDURE addFood @foodName nvarchar(30) ,@price int ,@rating float ,@categoryID int ,@restaurantID int,
@@ -169,18 +173,25 @@ SELECT  @outputFoodID = ID FROM @OutputTbl
 RETURN @outputFoodID
 GO
 
---HASZNÁLAT:
+/*--HASZNÁLAT:
 DECLARE @returnID INT  
 EXEC @returnID = addFood 'Sajtkrémleves',1250,3.2,1,7,'2020.04.19.','2020.06.23.'
---addFood @foodName,@price,@rating,NULL,@categoryID,@restaurantID,@availableFrom,@availableTo
 SELECT  'foodID' = @returnID 
 GO 
 
 --SERVER:
 DECLARE @returnID INT  
-EXEC @returnID = addFood @foodName,@price,@rating,NULL,@categoryID,@restaurantID,@availableFrom,@availableTo
+EXEC @returnID = addFood @foodName,@price,@rating,@categoryID,@restaurantID,@availableFrom,@availableTo
 SELECT  'foodID' = @returnID 
 GO 
 
 SELECT * FROM Restaurant.Food
+SELECT * FROM Restaurant.CategoryName
+SELECT * FROM Restaurant.AllergenNames
 
+SELECT * FROM Restaurant.Allergens
+JOIN Restaurant.AllergenNames ON Restaurant.AllergenNames.allergenID = Restaurant.Allergens.allergenID
+WHERE Restaurant.Allergens.allergenID = '1'
+
+SELECT allergenID FROM Restaurant.AllergenNames WHERE name = 'Liszt'
+INSERT INTO Restaurant.Allergens(allergenID,foodID)*/
