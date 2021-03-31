@@ -40,3 +40,24 @@ C:\Anna\Netpincer\Netpincer\SocketServer\SocketServer\SocketServer\obj\Debug\net
 C:\Anna\Netpincer\Netpincer\SocketServer\SocketServer\SocketServer\obj\Debug\netcoreapp3.1\SocketServer.dll
 C:\Anna\Netpincer\Netpincer\SocketServer\SocketServer\SocketServer\obj\Debug\netcoreapp3.1\SocketServer.pdb
 C:\Anna\Netpincer\Netpincer\SocketServer\SocketServer\SocketServer\obj\Debug\netcoreapp3.1\SocketServer.genruntimeconfig.cache
+C:\xampp\htdocs\Pe Pincer\Netpincer\SocketServer\SocketServer\SocketServer\bin\Debug\netcoreapp3.1\SocketServer.exe
+C:\xampp\htdocs\Pe Pincer\Netpincer\SocketServer\SocketServer\SocketServer\bin\Debug\netcoreapp3.1\SocketServer.deps.json
+C:\xampp\htdocs\Pe Pincer\Netpincer\SocketServer\SocketServer\SocketServer\bin\Debug\netcoreapp3.1\SocketServer.runtimeconfig.json
+C:\xampp\htdocs\Pe Pincer\Netpincer\SocketServer\SocketServer\SocketServer\bin\Debug\netcoreapp3.1\SocketServer.runtimeconfig.dev.json
+C:\xampp\htdocs\Pe Pincer\Netpincer\SocketServer\SocketServer\SocketServer\bin\Debug\netcoreapp3.1\SocketServer.dll
+C:\xampp\htdocs\Pe Pincer\Netpincer\SocketServer\SocketServer\SocketServer\bin\Debug\netcoreapp3.1\SocketServer.pdb
+C:\xampp\htdocs\Pe Pincer\Netpincer\SocketServer\SocketServer\SocketServer\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\xampp\htdocs\Pe Pincer\Netpincer\SocketServer\SocketServer\SocketServer\bin\Debug\netcoreapp3.1\System.Data.SqlClient.dll
+C:\xampp\htdocs\Pe Pincer\Netpincer\SocketServer\SocketServer\SocketServer\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\sni.dll
+C:\xampp\htdocs\Pe Pincer\Netpincer\SocketServer\SocketServer\SocketServer\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\sni.dll
+C:\xampp\htdocs\Pe Pincer\Netpincer\SocketServer\SocketServer\SocketServer\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\sni.dll
+C:\xampp\htdocs\Pe Pincer\Netpincer\SocketServer\SocketServer\SocketServer\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\xampp\htdocs\Pe Pincer\Netpincer\SocketServer\SocketServer\SocketServer\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\xampp\htdocs\Pe Pincer\Netpincer\SocketServer\SocketServer\SocketServer\obj\Debug\netcoreapp3.1\SocketServer.csprojAssemblyReference.cache
+C:\xampp\htdocs\Pe Pincer\Netpincer\SocketServer\SocketServer\SocketServer\obj\Debug\netcoreapp3.1\SocketServer.AssemblyInfoInputs.cache
+C:\xampp\htdocs\Pe Pincer\Netpincer\SocketServer\SocketServer\SocketServer\obj\Debug\netcoreapp3.1\SocketServer.AssemblyInfo.cs
+C:\xampp\htdocs\Pe Pincer\Netpincer\SocketServer\SocketServer\SocketServer\obj\Debug\netcoreapp3.1\SocketServer.csproj.CoreCompileInputs.cache
+C:\xampp\htdocs\Pe Pincer\Netpincer\SocketServer\SocketServer\SocketServer\obj\Debug\netcoreapp3.1\SocketServer.csproj.CopyComplete
+C:\xampp\htdocs\Pe Pincer\Netpincer\SocketServer\SocketServer\SocketServer\obj\Debug\netcoreapp3.1\SocketServer.dll
+C:\xampp\htdocs\Pe Pincer\Netpincer\SocketServer\SocketServer\SocketServer\obj\Debug\netcoreapp3.1\SocketServer.pdb
+C:\xampp\htdocs\Pe Pincer\Netpincer\SocketServer\SocketServer\SocketServer\obj\Debug\netcoreapp3.1\SocketServer.genruntimeconfig.cache

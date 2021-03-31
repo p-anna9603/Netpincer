@@ -1,66 +1,58 @@
 <?php 
-
-error_reporting(E_ALL);
-
-/* Allow the script to hang around waiting for connections. */
-set_time_limit(0);
-
-/* Turn on implicit output flushing so we see what we're getting
- * as it comes in. */
-ob_implicit_flush();
-
-$address = "127.0.0.1";
-$port = 11000;
-
-if (($sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === false) {
-    echo "socket_create() failed: reason: " . socket_strerror(socket_last_error()) . "\n";
+/*
+if(!($sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)))
+{
+    $errorcode = socket_last_error();
+    $errormsg = socket_strerror($errorcode);
+     
+    die("Couldn't create socket: [$errorcode] $errormsg \n");
 }
-if ( ! socket_set_option($sock, SOL_SOCKET, SO_REUSEADDR, 1)) 
-{ 
-    echo socket_strerror(socket_last_error($sock)); 
-    exit; 
+ 
+echo "Socket created";
+if(!socket_connect($sock , '127.0.0.1' , 1433))
+{
+    $errorcode = socket_last_error();
+    $errormsg = socket_strerror($errorcode);
+     
+    die("Could not connect: [$errorcode] $errormsg \n");
 }
+ 
+echo "Connection established \n";
 
-if (socket_bind($sock, $address, $port) === false) {
-    echo "socket_bind() failed: reason: " . socket_strerror(socket_last_error($sock)) . "\n";
+
+$message = "GET / HTTP/1.1\r\n\r\n";
+ 
+//Send the message to the server
+if( ! socket_send ( $sock , $message , strlen($message) , 0))
+{
+    $errorcode = socket_last_error();
+    $errormsg = socket_strerror($errorcode);
+     
+    die("Could not send data: [$errorcode] $errormsg \n");
 }
+ 
+echo "Message send successfully <br>";
 
-if (socket_listen($sock, 5) === false) {
-    echo "socket_listen() failed: reason: " . socket_strerror(socket_last_error($sock)) . "\n";
+ 
+//Now receive reply from server
+if(socket_recv ( $sock , $buf , 80 , MSG_WAITALL ) === FALSE)
+{
+    $errorcode = socket_last_error();
+    $errormsg = socket_strerror($errorcode);
+     
+    die("Could not receive data: [$errorcode] $errormsg \n");
 }
+ 
+//print the received message
+echo $buf;*/
 
-do {
-    if (($msgsock = socket_accept($sock)) === false) {
-        echo "socket_accept() failed: reason: " . socket_strerror(socket_last_error($sock)) . "\n";
-        break;
-    }
-    /* Send instructions. */
-    $msg = "\nWelcome to the PHP Test Server. \n" .
-        "To quit, type 'quit'. To shut down the server type 'shutdown'.\n";
-    socket_write($msgsock, $msg, strlen($msg));
+$ip = "127.0.0.1";
+$port = "1433";
+$sendData = "pls mukodj";
 
-    do {
-        if (false === ($buf = socket_read($msgsock, 2048, PHP_NORMAL_READ))) {
-            echo "socket_read() failed: reason: " . socket_strerror(socket_last_error($msgsock)) . "\n";
-            break 2;
-        }
-        if (!$buf = trim($buf)) {
-            continue;
-        }
-        if ($buf == 'quit') {
-            break;
-        }
-        if ($buf == 'shutdown') {
-            socket_close($msgsock);
-            break 2;
-        }
-        $talkback = "PHP: You said '$buf'.\n";
-        socket_write($msgsock, $talkback, strlen($talkback));
-        echo "$buf\n";
-    } while (true);
-    socket_close($msgsock);
-} while (true);
+$socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 
-socket_close($sock);
+socket_connect($socket,$ip, $port);
 
+socket_write($socket, "1");
 ?>
