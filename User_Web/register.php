@@ -52,7 +52,8 @@
                         <div class="row align-items-center g-5 py-5">
                                 <div class="col-lg-7 text-center text-lg-start">
                                     <h1 class="display-4 fw-bold lh-1 mb-3">Bejelentkezés</h1>
-                                    <p class="col-lg-10 fs-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae laborum pariatur blanditiis vero culpa quas est, facilis quam commodi facere maxime atque impedit repellendus, odio consequuntur mollitia molestiae sed. Quam.</p>
+                                    <p class="col-lg-10 fs-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae laborum pariatur blanditiis vero culpa quas est, facilis quam commodi facere maxime atque impedit repellendus, odio consequuntur mollitia molestiae sed. Quam.
+                                                              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam ullam eius totam repellendus omnis veritatis voluptatum odio fugiat? </p>
                                 </div>
                                     <div class="col-10 mx-auto col-lg-5">
                                             <form class="p-5 border rounded-3 bg-light">
@@ -75,17 +76,34 @@
                                             </form>
                                     </div>
                         </div>   
-           <!-- Vezetéknév
-  Keresztnév
-  Telefon
-  Cím
-  Felhnév
-  email
-  jelszo 1 2--> 
 
                         <div class="row align-items-center g-5 py-5">
                                     <div class="col-lg-7 text-center text-lg-start">
-                                    <form class="p-5 border rounded-3 bg-light">
+                                    <form class="p-5 border rounded-3 bg-light" method="POST" action="<?php $_SERVER['PHP_SELF'] ?>">
+                                    <small class="text-muted">Bejelentkezési adatok <br></small>
+                                                    <div class="form-floating mb-3">
+                                                        <input type="text" class="form-control" id="floating_username" placeholder="Felhasználónév">
+                                                        <label for="floatingInput">Felhasználónév </label>
+                                                    </div>
+
+                                                    <div class="form-floating mb-3">
+                                                        <input type="email" class="form-control" id="floating_email" placeholder="E-mail">
+                                                        <label for="floatingInput"> E-mail cím </label>
+                                                    </div>
+
+                                                    <div class="form-floating mb-3">
+                                                        <input type="email" class="form-control" id="floating_password" placeholder="Jelszó">
+                                                        <label for="floatingInput"> Jelszó </label>
+                                                    </div>
+
+                                                    <div class="form-floating mb-3">
+                                                        <input type="email" class="form-control" id="floating_password_2" placeholder="Jelszó mégegyszer">
+                                                        <label for="floatingInput"> Jelszó mégegyszer </label>
+                                                    </div>
+
+                                                    <small class="text-muted">Fő adatok<br></small>
+
+
                                                     <div class="form-floating mb-3">
                                                         <input type="text" class="form-control" id="floating_first_name" placeholder="Keresztnév">
                                                         <label for="floatingInput">Keresztnév</label>
@@ -100,71 +118,55 @@
                                                         <label for="floatingInput">Telefonszám</label>
                                                     </div>
 
-                                                    <div class="form-row">
-                                                        <div class="form-floating mb-3">
-                                                            <input type="text" class="form-control" id="floating_city" placeholder="Város">
-                                                            <label for="floatingInput">Város</label>
+                                                    <div class="row">
+                                                        <div class="col-8">
+                                                            <div class="form-floating mb-3">
+                                                                <input type="text" class="form-control" id="floating_city" placeholder="Város">
+                                                                <label for="floatingInput">Város</label>
+                                                            </div>
                                                         </div>
-                                                        <div class="form-floating mb-3">
-                                                            <input type="text" class="form-control" id="floating_city" placeholder="Irányítószám">
-                                                            <label for="floatingInput">Irányítószám</label>
+                                                        <div class="col-4">
+                                                                <div class="form-floating mb-3">
+                                                                    <input type="number" class="form-control" id="floating_ZIP" placeholder="Irányítószám">
+                                                                    <label for="floatingInput">Irányítószám</label>
+                                                                </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-7">
+                                                            <div class="form-floating mb-3">
+                                                                <input type="text" class="form-control" id="floating_street" placeholder="Utca">
+                                                                <label for="floatingInput">Utca</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-5">
+                                                                <div class="form-floating mb-3">
+                                                                    <input type="number" class="form-control" id="floating_ZIP" placeholder="ZIP code">
+                                                                    <label for="floatingInput">Házszám</label>
+                                                                </div>
                                                         </div>
                                                     </div>
 
                                                     <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" id="floating_adrress" placeholder="Utcanév">
-                                                        <label for="floatingInput">Utca</label>
+                                                        <input type="text" class="form-control" id="floating_adress_line_2" placeholder="Emelet / Ajtó">
+                                                        <label for="floatingInput">Emelet/ Ajtó </label>
                                                     </div>
 
-                                                    <div class="form-row">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="inputAddress">Address</label>
-                                                            <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="inputAddress2">Address 2</label>
-                                                            <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-                                                        </div>
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-6">
-                                                            <label for="inputCity">City</label>
-                                                            <input type="text" class="form-control" id="inputCity">
-                                                            </div>
-                                                            <div class="form-group col-md-4">
-                                                            <label for="inputState">State</label>
-                                                            <select id="inputState" class="form-control">
-                                                                <option selected>Choose...</option>
-                                                                <option>...</option>
-                                                            </select>
-                                                            </div>
-                                                            <div class="form-group col-md-2">
-                                                            <label for="inputZip">Zip</label>
-                                                            <input type="text" class="form-control" id="inputZip">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" id="gridCheck">
-                                                            <label class="form-check-label" for="gridCheck">
-                                                                Check me out
-                                                            </label>
-                                                            </div>
-                                                        </div>
+                                                    <hr class="my-4">
+                                                        <button class="w-100 btn btn-lg btn-success" type="submit" name="BTN_register">Regisztráció</button>
+                                                    <hr class="my-4">
 
-                                                    <div class="checkbox mb-3">
-                                                        <label>
-                                                            <input type="checkbox" value="remember-me"> Emlékezz rám
-                                                        </label>
-                                                    </div>
-                                                        <button class="w-100 btn btn-lg btn-primary" type="submit">Bejelentkezés</button>
-                                                        <hr class="my-4">
                                                     <small class="text-muted">Lorem ipsum dolor sit amet</small>
                                                 </form>
+
+                                               
                                        </div>
                                         <div class="col-10 mx-auto col-lg-5">
                                         <h1 class="display-4 fw-bold lh-1 mb-3">Regisztráció</h1>
-                                        <p class="col-lg-10 fs-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae laborum pariatur blanditiis vero culpa quas est, facilis quam commodi facere maxime atque impedit repellendus, odio consequuntur mollitia molestiae sed. Quam.</p>
+                                        <p class="col-lg-10 fs-4">
+                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae laborum pariatur blanditiis vero culpa quas est, facilis quam commodi facere maxime atque impedit repellendus, odio consequuntur mollitia molestiae sed. Quam.
+                                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumenda dolores repudiandae fugit enim deleniti neque numquam libero in labore reprehenderit quaerat rerum atque distinctio laborum, magni dignissimos, provident, quod obcaecati?  
+                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto blanditiis eius asperiores consectetur similique velit molestiae mollitia optio illo accusamus a iusto                  </p>
                                     
                                         </div>
                         </div>     
@@ -183,7 +185,17 @@
   <div class="card">
             <p class="lead mb-4">Tesztelődoboz</p>
 
+            <?php 
+                if(isset($_POST['BTN_register'])) 
+                {
+                  echo "Gombnyomás";
+                }
+            ?>
+
             <script src="/socket.io/socket.io.js"></script>
+
+            <script src="src/register.js"></script> 
+            
             <script>
                   const socket = io("localhost:11000");
                   socket.connect();
@@ -197,7 +209,6 @@
            
             </script>
             </div>
-    
   </div>
 
   <!-- Footer -->
