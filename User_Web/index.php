@@ -96,9 +96,17 @@
   <div class="container">
   <div class="card">
             <p class="lead mb-4">Tesztelődoboz</p>
-            <?php 
-              include("src/connect_server.php");
-            ?>
+
+            <script src="/socket.io/socket.io.js"></script>
+            <script>
+            const socket = io("localhost:11000");
+            socket.connect();
+           
+            socket.on("connect", () => {
+              console.log(socket.id); // x8WIv7-mJelg7on_ALbx
+            });
+           
+            </script>
             </div>
     
   </div>

@@ -15,8 +15,6 @@ using System.Data;
  *  clientID: 0 }
  */
 
-
-
 namespace SocketServer
 {
     class SocketListener
@@ -25,8 +23,10 @@ namespace SocketServer
         private int clientID;
         private List<int> listOfConnectedClients;
         private Socket listener;
+        private Socket JS_listener;
         Socket handler;
-        public SocketListener() 
+        Socket JS_handler;
+        public SocketListener()
         {
             /*
             * Right Click on Project > Manage Nuget Packages > Search & install 'System.Data.SqlClient'
@@ -35,6 +35,7 @@ namespace SocketServer
             Console.WriteLine("Connection State: {0}", DatabaseConnection.State);
             clientID = 0;
             listOfConnectedClients = new List<int>();
+            Start_JS_Teszt();
             StartServer();
 
             DatabaseConnection.Close();
@@ -49,17 +50,25 @@ namespace SocketServer
             IPAddress ipAddress = host.AddressList[0];
             IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);
 
+            IPEndPoint localJSEP = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 3000);
 
             try
             {
 
                 // Create a Socket that will use Tcp protocol      
+                
                 listener = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
+                JS_listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 // A Socket must be associated with an endpoint using the Bind method  
                 listener.Bind(localEndPoint);
+
+                JS_listener.Bind(localJSEP);
                 // Specify how many requests a Socket can listen before it gives Server busy response.  
                 // We will listen 10 requests at a time  
                 listener.Listen(10);
+
+                JS_listener.Listen(10);
 
                 // getFoods("7", "1");
                 //getRestaurantsList();
@@ -77,18 +86,23 @@ namespace SocketServer
                 // Incoming data from the client.    
                 string data = null;
                 byte[] bytes = null;
+                byte[] JS_bytes = null;
                 bool shutdown = false;
 
                 while (!shutdown)
                 {
+                    Console.WriteLine("Eljutok ide ");
                     while (true)
                     {
                         //if (handler.Poll(1000,SelectMode.SelectRead))
                         {
-                        //    waitingForConnection();
+                            //    waitingForConnection();
                         }
                         bytes = new byte[4096];
+                        JS_bytes = new byte[4096];
                         int bytesRec = handler.Receive(bytes);
+                        int JS_bytesRec = JS_handler.Receive(bytes);
+                        Console.WriteLine("Eljutok ide 1");
                         //Console.WriteLine("bytes recieved {0}", bytesRec);
                         if (bytesRec != 0)
                         {
@@ -96,6 +110,30 @@ namespace SocketServer
                             //data = Encoding.GetEncoding("windows-1250").GetString(bytes);
                             break;
                         }
+                        else if (JS_bytesRec != 0)
+                        {
+                            data = Encoding.ASCII.GetString(JS_bytes, 0, JS_bytesRec);
+                            Console.WriteLine("Eljutok ide 2");
+                            //data = Encoding.GetEncoding("windows-1250").GetString(bytes);
+                            break;
+                        }
+                    }
+                    try
+                    {
+                        var client = JS_listener.Accept();
+                        //var client = JS_handler;
+                        var buffer = Encoding.UTF8.GetBytes("Hello Node.js - I am the C# Server");
+                        client.Send(buffer, 0, buffer.Length, 0);
+                        buffer = new byte[255];
+                        int rec = client.Receive(buffer, 0, buffer.Length, 0);
+                        Array.Resize(ref buffer, rec);
+                        Console.WriteLine("Received: " + Encoding.UTF8.GetString(buffer));
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.ToString());
+                        Console.WriteLine("Could not establish connection with Node Js");
+                        throw e; 
                     }
 
                     //RECEIVED NEW BYTES
@@ -110,8 +148,8 @@ namespace SocketServer
                             JObject sendJason = new JObject();
                             sendJason = sendFirstConnectionInfo();
                             handler.Send(Encoding.ASCII.GetBytes(sendJason.ToString()));
-                           // handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(sendJason.ToString()));  //Sending Client ID
-                                                                                          // listOfConnectedClients.Add(clientID - 1); //Adding client to connected list
+                            // handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(sendJason.ToString()));  //Sending Client ID
+                            // listOfConnectedClients.Add(clientID - 1); //Adding client to connected list
                         }
                         else if (receivedJSONObject["type"].ToString() == "1") //Get User Information
                         {
@@ -182,7 +220,7 @@ namespace SocketServer
                             handler.Send(Encoding.ASCII.GetBytes(register));
                             //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
                         }
-                        
+
 
 
 
@@ -192,11 +230,11 @@ namespace SocketServer
                         Console.WriteLine(e.ToString());
 
                     }
-                    
+
 
                     //Console.WriteLine("Text received : {0}", data);
 
-                    
+
 
                     //byte[] msg = Encoding.ASCII.GetBytes(data);
                     //byte[] msg = Encoding.ASCII.GetBytes(data);
@@ -220,6 +258,21 @@ namespace SocketServer
             Console.ReadKey();
         }
 
+        public void Start_JS_Teszt() 
+        {
+            Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            socket.Bind(new IPEndPoint(IPAddress.Parse("127.0.0.1"),11000));
+            socket.Listen(0);
+            var client = socket.Accept();
+            var buffer = Encoding.UTF8.GetBytes("Hello Node.js - I am the C# Server");
+            client.Send(buffer, 0, buffer.Length, 0);
+            buffer = new byte[255];
+            int rec = client.Receive(buffer, 0, buffer.Length, 0);
+            Array.Resize(ref buffer, rec);
+            Console.WriteLine("Received: " + Encoding.UTF8.GetString(buffer));
+            //client.Close();
+            //socket.Close();
+        }
 
         private string getRestaurantsList()
         {
@@ -918,6 +971,9 @@ namespace SocketServer
         {
             Console.WriteLine("Waiting for a connection...");
             handler = listener.Accept();
+            JS_handler = JS_listener.Accept();
+            
+
         }
     }
 }
