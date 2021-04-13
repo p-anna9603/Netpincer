@@ -48,15 +48,7 @@
 
    
     <div class="container col-xl-10 col-xxl-8 px-4 py-5">
-        <div class="accordion" id="accordion_Login_Reg">
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button" type="button" data-toggle="collapse" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    Bejelentkezés
-                </button>
-                </h2>
-                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
+    
                         <div class="row align-items-center g-5 py-5">
                                 <div class="col-lg-7 text-center text-lg-start">
                                     <h1 class="display-4 fw-bold lh-1 mb-3">Bejelentkezés</h1>
@@ -65,7 +57,7 @@
                                     <div class="col-10 mx-auto col-lg-5">
                                             <form class="p-5 border rounded-3 bg-light">
                                                 <div class="form-floating mb-3">
-                                                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                                                    <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
                                                     <label for="floatingInput">Felhasználónév</label>
                                                 </div>
                                                 <div class="form-floating mb-3">
@@ -74,7 +66,7 @@
                                                 </div>
                                                 <div class="checkbox mb-3">
                                                     <label>
-                                                        <input type="checkbox" value="remember-me"> Emlékezz rám
+                                                        <input type="checkbox" value="remember-me" disabled> Emlékezz rám
                                                     </label>
                                                 </div>
                                                     <button class="w-100 btn btn-lg btn-primary" type="submit">Bejelentkezés</button>
@@ -83,28 +75,83 @@
                                             </form>
                                     </div>
                         </div>   
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        Regisztráció
-                    </button>
-                </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
+           <!-- Vezetéknév
+  Keresztnév
+  Telefon
+  Cím
+  Felhnév
+  email
+  jelszo 1 2--> 
+
                         <div class="row align-items-center g-5 py-5">
                                     <div class="col-lg-7 text-center text-lg-start">
                                     <form class="p-5 border rounded-3 bg-light">
                                                     <div class="form-floating mb-3">
-                                                        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                                                        <label for="floatingInput">Felhasználónév</label>
+                                                        <input type="text" class="form-control" id="floating_first_name" placeholder="Keresztnév">
+                                                        <label for="floatingInput">Keresztnév</label>
                                                     </div>
                                                     <div class="form-floating mb-3">
-                                                        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-                                                        <label for="floatingPassword">Jelszó</label>
+                                                        <input type="text" class="form-control" id="floating_last_name" placeholder="Vezetéknév">
+                                                        <label for="floatingInput">Vezetéknév</label>
                                                     </div>
+
+                                                    <div class="form-floating mb-3">
+                                                        <input type="number" class="form-control" id="floating_phone" placeholder="Telefonszám"> <!-- pattern="[0-9]{2}[0-9]{2}[0-9]{3}[0-9]{4}" -->
+                                                        <label for="floatingInput">Telefonszám</label>
+                                                    </div>
+
+                                                    <div class="form-row">
+                                                        <div class="form-floating mb-3">
+                                                            <input type="text" class="form-control" id="floating_city" placeholder="Város">
+                                                            <label for="floatingInput">Város</label>
+                                                        </div>
+                                                        <div class="form-floating mb-3">
+                                                            <input type="text" class="form-control" id="floating_city" placeholder="Irányítószám">
+                                                            <label for="floatingInput">Irányítószám</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-floating mb-3">
+                                                        <input type="text" class="form-control" id="floating_adrress" placeholder="Utcanév">
+                                                        <label for="floatingInput">Utca</label>
+                                                    </div>
+
+                                                    <div class="form-row">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="inputAddress">Address</label>
+                                                            <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="inputAddress2">Address 2</label>
+                                                            <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-6">
+                                                            <label for="inputCity">City</label>
+                                                            <input type="text" class="form-control" id="inputCity">
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                            <label for="inputState">State</label>
+                                                            <select id="inputState" class="form-control">
+                                                                <option selected>Choose...</option>
+                                                                <option>...</option>
+                                                            </select>
+                                                            </div>
+                                                            <div class="form-group col-md-2">
+                                                            <label for="inputZip">Zip</label>
+                                                            <input type="text" class="form-control" id="inputZip">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" id="gridCheck">
+                                                            <label class="form-check-label" for="gridCheck">
+                                                                Check me out
+                                                            </label>
+                                                            </div>
+                                                        </div>
+
                                                     <div class="checkbox mb-3">
                                                         <label>
                                                             <input type="checkbox" value="remember-me"> Emlékezz rám
@@ -121,21 +168,7 @@
                                     
                                         </div>
                         </div>     
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingThree">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    Accordion Item #3
-                </button>
-                </h2>
-                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                </div>
-                </div>
-            </div>
+           
         </div>
 
 
