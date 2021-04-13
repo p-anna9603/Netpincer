@@ -23,118 +23,136 @@ namespace SocketServer
         private int clientID;
         private List<int> listOfConnectedClients;
         private Socket listener;
-        private Socket JS_listener;
         Socket handler;
-        Socket JS_handler;
         public SocketListener()
         {
-            /*
-            * Right Click on Project > Manage Nuget Packages > Search & install 'System.Data.SqlClient'
-            */
             DatabaseConnection = ConnectToDatabase();
             Console.WriteLine("Connection State: {0}", DatabaseConnection.State);
             clientID = 0;
             listOfConnectedClients = new List<int>();
-            Start_JS_Teszt();
             StartServer();
-
             DatabaseConnection.Close();
+        }
+        public static void Connect_Try(string host, int port)
+        {
+            IPAddress[] IPs = Dns.GetHostAddresses(host);
+
+            Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+            Console.WriteLine("Establishing Connection to {0}",
+                host);
+            s.Connect(IPs[0], port);
+            Console.WriteLine("Connection established");
+        }
+        private bool Test_Connection()
+        {
+            
+            try
+            {
+                Connect_Try("localhost", 11000);
+            }
+            catch (Exception e)
+            {
+                return false;
+                throw e;
+            }
+            return true;
         }
 
         public void StartServer()
         {
-            // Get Host IP Address that is used to establish a connection  
-            // In this case, we get one IP address of localhost that is IP : 127.0.0.1  
-            // If a host has multiple addresses, you will get a list of addresses  
             IPHostEntry host = Dns.GetHostEntry("localhost");
             IPAddress ipAddress = host.AddressList[0];
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);
+            //IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);
 
-            IPEndPoint localJSEP = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 3000);
+            #region Klau
+            //// Get Host IP Address that is used to establish a connection  
+            //// In this case, we get one IP address of localhost that is IP : 127.0.0.1  
+            //// If a host has multiple addresses, you will get a list of addresses  
+            //IPHostEntry host = Dns.GetHostEntry("localhost");
+            //IPAddress ipAddress = host.AddressList[0];
+            //IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);
+            #endregion
+
+
 
             try
             {
+                #region Klau
+                //// Create a Socket that will use Tcp protocol      
+                //listener = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+                //// A Socket must be associated with an endpoint using the Bind method  
+                //listener.Bind(localEndPoint);
+                //// Specify how many requests a Socket can listen before it gives Server busy response.  
+                //// We will listen 10 requests at a time  
+                //listener.Listen(10);
 
-                // Create a Socket that will use Tcp protocol      
-                
-                listener = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+                //// getFoods("7", "1");
+                ////getRestaurantsList();
+                ///*JObject test = new JObject();
+                //test.Add("name","Pizza pizza");
+                //test.Add("price", "600");
+                //test.Add("rating", "3.4");
+                //test.Add("categoryID", "3");
+                //test.Add("restaurantID", "7");
+                //test.Add("availableFrom", "");
+                //test.Add("availableTo", "");
+                //addFood(test);*/
+                //waitingForConnection();
 
-                JS_listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                // A Socket must be associated with an endpoint using the Bind method  
-                listener.Bind(localEndPoint);
+                //// Incoming data from the client.    
+                //string data = null;
+                //byte[] bytes = null;
+                //bool shutdown = false;
+                #endregion
 
-                JS_listener.Bind(localJSEP);
-                // Specify how many requests a Socket can listen before it gives Server busy response.  
-                // We will listen 10 requests at a time  
-                listener.Listen(10);
+                #region Marci
+                    Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    socket.Bind(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000));
+                    socket.Listen(10);
+                    waitingForConnection_teszt(socket);
 
-                JS_listener.Listen(10);
-
-                // getFoods("7", "1");
-                //getRestaurantsList();
-                /*JObject test = new JObject();
-                test.Add("name","Pizza pizza");
-                test.Add("price", "600");
-                test.Add("rating", "3.4");
-                test.Add("categoryID", "3");
-                test.Add("restaurantID", "7");
-                test.Add("availableFrom", "");
-                test.Add("availableTo", "");
-                addFood(test);*/
-                waitingForConnection();
-
-                // Incoming data from the client.    
-                string data = null;
-                byte[] bytes = null;
-                byte[] JS_bytes = null;
-                bool shutdown = false;
+                    string data = null;
+                    byte[] bytes = null;
+                    bool shutdown = false;
+                #endregion
 
                 while (!shutdown)
                 {
-                    Console.WriteLine("Eljutok ide ");
+                    #region Klau
+                    //while (true)
+                    //{
+                    //    //if (handler.Poll(1000,SelectMode.SelectRead))
+                    //    {
+                    //        //    waitingForConnection();
+                    //    }
+                    //    bytes = new byte[4096];
+                    //    int bytesRec = handler.Receive(bytes);
+                    //    //Console.WriteLine("bytes recieved {0}", bytesRec);
+                    //    if (bytesRec != 0)
+                    //    {
+                    //        data = Encoding.ASCII.GetString(bytes, 0, bytesRec);
+                    //        //data = Encoding.GetEncoding("windows-1250").GetString(bytes);
+                    //        break;
+                    //    }
+                    //}
+                    #endregion
+                    #region Marci
+
                     while (true)
                     {
-                        //if (handler.Poll(1000,SelectMode.SelectRead))
-                        {
-                            //    waitingForConnection();
-                        }
                         bytes = new byte[4096];
-                        JS_bytes = new byte[4096];
                         int bytesRec = handler.Receive(bytes);
-                        int JS_bytesRec = JS_handler.Receive(bytes);
-                        Console.WriteLine("Eljutok ide 1");
-                        //Console.WriteLine("bytes recieved {0}", bytesRec);
                         if (bytesRec != 0)
                         {
                             data = Encoding.ASCII.GetString(bytes, 0, bytesRec);
-                            //data = Encoding.GetEncoding("windows-1250").GetString(bytes);
-                            break;
-                        }
-                        else if (JS_bytesRec != 0)
-                        {
-                            data = Encoding.ASCII.GetString(JS_bytes, 0, JS_bytesRec);
-                            Console.WriteLine("Eljutok ide 2");
-                            //data = Encoding.GetEncoding("windows-1250").GetString(bytes);
                             break;
                         }
                     }
-                    try
-                    {
-                        var client = JS_listener.Accept();
-                        //var client = JS_handler;
-                        var buffer = Encoding.UTF8.GetBytes("Hello Node.js - I am the C# Server");
-                        client.Send(buffer, 0, buffer.Length, 0);
-                        buffer = new byte[255];
-                        int rec = client.Receive(buffer, 0, buffer.Length, 0);
-                        Array.Resize(ref buffer, rec);
-                        Console.WriteLine("Received: " + Encoding.UTF8.GetString(buffer));
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.ToString());
-                        Console.WriteLine("Could not establish connection with Node Js");
-                        throw e; 
-                    }
+
+                    #endregion
+
+
 
                     //RECEIVED NEW BYTES
                     try
@@ -258,20 +276,44 @@ namespace SocketServer
             Console.ReadKey();
         }
 
-        public void Start_JS_Teszt() 
+        public void Start_Teszt()
         {
-            Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            socket.Bind(new IPEndPoint(IPAddress.Parse("127.0.0.1"),11000));
-            socket.Listen(0);
-            var client = socket.Accept();
-            var buffer = Encoding.UTF8.GetBytes("Hello Node.js - I am the C# Server");
-            client.Send(buffer, 0, buffer.Length, 0);
-            buffer = new byte[255];
-            int rec = client.Receive(buffer, 0, buffer.Length, 0);
-            Array.Resize(ref buffer, rec);
-            Console.WriteLine("Received: " + Encoding.UTF8.GetString(buffer));
-            //client.Close();
-            //socket.Close();
+                    //    try
+                    //    {
+               
+                    //        while (!shutdown)
+                    //        {
+                   
+                    //            try
+                    //            {
+                    //                JObject receivedJSONObject = new JObject();
+                    //                receivedJSONObject = JObject.Parse(data);
+                    //                Console.WriteLine("Received JSON: {0}", receivedJSONObject.ToString());
+                    //                if (receivedJSONObject["type"].ToString() == "0")  //First Connection From Client
+                    //                {
+                    //                    JObject sendJason = new JObject();
+                    //                    sendJason = sendFirstConnectionInfo();
+                    //                    handler.Send(Encoding.ASCII.GetBytes(sendJason.ToString()));
+                    //                }
+                    //            }
+                    //            catch
+                    //            {
+                    //            }
+
+                    //        }
+
+                    //    }
+                    //    catch
+                    //    {
+                    //    }
+                    //Console.WriteLine("\n Press any key to continue...");
+                    //Console.ReadKey();
+        }
+
+        private void waitingForConnection_teszt(Socket listener)
+        {
+            Console.WriteLine("Waiting for a connection...");
+            handler = listener.Accept();
         }
 
         private string getRestaurantsList()
@@ -971,9 +1013,6 @@ namespace SocketServer
         {
             Console.WriteLine("Waiting for a connection...");
             handler = listener.Accept();
-            JS_handler = JS_listener.Accept();
-            
-
         }
     }
 }

@@ -99,12 +99,15 @@
 
             <script src="/socket.io/socket.io.js"></script>
             <script>
-            const socket = io("localhost:11000");
-            socket.connect();
-           
-            socket.on("connect", () => {
-              console.log(socket.id); // x8WIv7-mJelg7on_ALbx
-            });
+                  const socket = io("localhost:11000");
+                  socket.connect();
+                
+                  socket.on("connect", () => {
+                    console.log(socket.id); // x8WIv7-mJelg7on_ALbx
+                  });
+                  socket.on('data',() => {
+                    console.log("received data" );
+                  });
            
             </script>
             </div>

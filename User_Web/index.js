@@ -1,25 +1,24 @@
 var net = require('net');
-
 var client = new net.Socket();
 
-console.log('First JSON to send : ');
-const first_JSON = 
-{
-	type:0, msgID:0, clientID:0
-}
-const jsonStr = JSON.stringify(first_JSON);
-console.log(jsonStr);
+var PORT = 11000;
+var HOST = '127.0.0.1';
 
-client.connect(11000, '127.0.0.1', function() {
-	console.log('Connected');
-	client.write('Hello, C# server! I am a Node.js client');
+client.connect(PORT,HOST, function() {
+	console.log('Connected to: ' + HOST + ':' + PORT);
+	//client.write('Hello, C# server! I am a Node.js client');
 	//client.write(jsonStr);
 });
-
+// megkap
 client.on('data', function(data){
 	console.log("Received : " + data);
+	
 })
-
+client.on('connect', function (connect) {
+	console.log('First JSON to send : ');
+	console.log(jsonStr);
+	client.write(jsonStr);
+})
 process.on('uncaughtException', function (err) {
     console.log(err);
 }); 
@@ -42,3 +41,8 @@ client.on('data', function(data) {
  *  clientID: 0 }
 });*/
 
+const first_JSON = 
+{
+	type:0, msgID:0
+}
+const jsonStr = JSON.stringify(first_JSON);

@@ -50,11 +50,11 @@ public class ConnectToServer
             // In this case, we get one IP address of localhost that is IP : 127.0.0.1  
             // If a host has multiple addresses, you will get a list of addresses  
             host = Dns.GetHostEntry("localhost");
-            ipAddress = host.AddressList[0];
+            ipAddress = host.AddressList[1];
             remoteEP = new IPEndPoint(ipAddress, 11000);
 
             // Create a TCP/IP  socket.    
-            sender = new Socket(ipAddress.AddressFamily,
+            sender = new Socket(AddressFamily.InterNetwork,
                 SocketType.Stream, ProtocolType.Tcp);
 
             // Connect the socket to the remote endpoint. Catch any errors.    
@@ -69,7 +69,6 @@ public class ConnectToServer
                     {
                         //Sending "Hello" to Server
                         string receivedMsg =sendJSON(sendFirstConnectionInfo());
-                    
                     
                         try
                         {
