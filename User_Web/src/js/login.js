@@ -1,5 +1,4 @@
-JS_connect();
-var net = require('net');
+/*var net = require('net');
 var client = new net.Socket();
 
 var PORT = 11000;
@@ -11,7 +10,7 @@ client.connect(PORT,HOST, function() {
 
 client.on('data', function(data){
 	console.log("Received : " + data);
-	
+	//console.log(data[0]);
 })
 
 client.on('connect', function (connect) {
@@ -25,4 +24,4 @@ const first_JSON =
 {
 	type:0, msgID:0
 }
-const jsonStr = JSON.stringify(first_JSON);
+const jsonStr = JSON.stringify(first_JSON);*/

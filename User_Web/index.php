@@ -97,9 +97,14 @@
   <div class="card">
             <p class="lead mb-4">Tesztelődoboz</p>
 
+            <button onclick="connectServer()" id="server_connect_btn">
+              Click me
+               
+            </button>
+
             <script src="/socket.io/socket.io.js"></script>
             <script>
-                  const socket = io("localhost:11000");
+                /* const socket = io("localhost:11000");
                   socket.connect();
                 
                   socket.on("connect", () => {
@@ -108,7 +113,7 @@
                   socket.on('data',() => {
                     console.log("received data" );
                   });
-           
+           */
             </script>
             </div>
     
@@ -181,14 +186,14 @@
 
   <!-- Copyright -->
   <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-    © 2020 Copyright:
-    <a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+    © 2021 Copyright:
+    <a class="text-dark" href=""> Pannon Egyetem</a>
   </div>
   <!-- Copyright -->
 </footer>
 <!-- Footer -->
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
 
   </body>
 </html>

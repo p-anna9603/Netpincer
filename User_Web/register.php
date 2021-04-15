@@ -9,7 +9,6 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <link href="src/style.css" rel="stylesheet">
-
     <title>Netpincér</title>
   </head>
 
@@ -43,10 +42,6 @@
     <!-- Navbar -->
    
     <!-- Main-->
-
-
-
-   
     <div class="container col-xl-10 col-xxl-8 px-4 py-5">
     
                         <div class="row align-items-center g-5 py-5">
@@ -56,13 +51,13 @@
                                                               Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam ullam eius totam repellendus omnis veritatis voluptatum odio fugiat? </p>
                                 </div>
                                     <div class="col-10 mx-auto col-lg-5">
-                                            <form class="p-5 border rounded-3 bg-light">
+                                            <form class="p-5 border rounded-3 bg-light" method="POST" action="<?php $_SERVER['PHP_SELF'] ?>">
                                                 <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
+                                                    <input type="text" class="form-control" id="floating_username_login" name="floating_username_login" placeholder="name@example.com" required>
                                                     <label for="floatingInput">Felhasználónév</label>
                                                 </div>
                                                 <div class="form-floating mb-3">
-                                                    <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                                                    <input type="password" class="form-control" id="floating_password_login" name="floating_password_login" placeholder="Password" required>
                                                     <label for="floatingPassword">Jelszó</label>
                                                 </div>
                                                 <div class="checkbox mb-3">
@@ -70,10 +65,35 @@
                                                         <input type="checkbox" value="remember-me" disabled> Emlékezz rám
                                                     </label>
                                                 </div>
-                                                    <button class="w-100 btn btn-lg btn-primary" type="submit">Bejelentkezés</button>
+                                                    <button class="w-100 btn btn-lg btn-primary" onclick="login_function()" id="BTN_login" name="BTN_login" type="submit" >Bejelentkezés</button>
                                                     <hr class="my-4">
                                                 <small class="text-muted">Lorem ipsum dolor sit amet</small>
                                             </form>
+                                            <?php 
+                                                if(isset($_POST['BTN_login'])) 
+                                                {
+                                                    $username = ""; $password = "";
+
+                                                    $username = $_POST['floating_username_login'];
+                                                    $password = $_POST['floating_password_login'];
+                                                    // echo $username;
+                                                    // script rész
+                                                   // echo " <script> login_function();</script> ";
+
+                                                }
+                                            ?>
+                                            <script src="/socket.io/socket.io.js"></script>
+                                            <script type="text/javascript"> 
+
+                                              function login_function()
+                                              {
+                                                    /*var username = document.getElementById('floating_username_login').value;
+                                                    var password = document.getElementById('floating_password_login').value;
+                                                    var_dump(username);
+                                                    var_dump(password);*/
+                                              }
+
+                                            </script>
                                     </div>
                         </div>   
 
@@ -141,7 +161,7 @@
                                                         </div>
                                                         <div class="col-5">
                                                                 <div class="form-floating mb-3">
-                                                                    <input type="number" class="form-control" id="floating_ZIP" placeholder="ZIP code">
+                                                                    <input type="number" class="form-control" id="floating_housenumber" placeholder="Házszám">
                                                                     <label for="floatingInput">Házszám</label>
                                                                 </div>
                                                         </div>

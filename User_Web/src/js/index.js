@@ -1,14 +1,10 @@
-
+/*
 	var net = require('net');
 	var client = new net.Socket();
-	
 	var PORT = 11000;
 	var HOST = '127.0.0.1';
-	
 	client.connect(PORT,HOST, function() {
 		console.log('Connected to: ' + HOST + ':' + PORT);
-		//client.write('Hello, C# server! I am a Node.js client');
-		//client.write(jsonStr);
 	});
 	// megkap
 	client.on('data', function(data){
@@ -33,6 +29,7 @@ const first_JSON =
 	type:0, msgID:0
 }
 const jsonStr = JSON.stringify(first_JSON);
+
 //client.write(JSON.stringify({ type: 0, msgID:0 }));
 /*
 client.on('data', function(data) {
@@ -46,4 +43,3 @@ client.on('data', function(data) {
  *  msgID: 0,
  *  clientID: 0 }
 });*/
-
