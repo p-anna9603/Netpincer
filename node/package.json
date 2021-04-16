@@ -1,0 +1,22 @@
+{
+  "name": "user_node",
+  "version": "1.0.0",
+  "description": "user_node_1.0.0 rework",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "y"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "Marcell",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1"
+  }
+}
