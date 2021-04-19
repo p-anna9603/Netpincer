@@ -47,14 +47,15 @@ app.use(session({
 
 app.post('/auth', function(request, response) {
   
-	var got_username = request.body.username;
-	var got_password = request.body.password;
+	var got_username = request.body.auth_name;
+	var got_password = request.body.auth_pass;
 
     const login_JSON = 
     {
-          username: got_username, password: got_password, type: 1
+        type:1, clientID: 0, username: got_username, password: got_password, userType: 0
     }
     const jsonStr = JSON.stringify(login_JSON);
+    console.log("JSON to send: ");
     console.log(login_JSON);
 	if (true) 
     {
@@ -95,16 +96,7 @@ function Connect_To_Server (json)
 function sendData(json_Object)
 {
     const jsonStr = JSON.stringify(json_Object);
-
-   /* client.connect(11000,'localhost', function() {
-        console.log('Connected to: ' + 'localhost' + ':' + 11000);
-    });*/
-
-    client.on('connect', function (connect) {
-        console.log('JSON to send : ');
-        console.log(jsonStr);
-        client.write(jsonStr);
-    })
+    client.write(jsonStr);
 
      client.on('data', function(data){
         console.log("Received : " + data);
