@@ -14,7 +14,11 @@ let User = class
         this.userType = userType;
         this.email = email;
       }
-    
+    static loggedin()
+    {
+        return true;
+    }
+        
 }
 
 class Orders

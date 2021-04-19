@@ -21,7 +21,7 @@
                                 </div>
                                     <div class="col-10 mx-auto col-lg-5">
 
-                                            <form class="p-5 border rounded-3 bg-light" method="POST" action="auth">
+                                            <form class="p-5 border rounded-3 bg-light" method="POST" action="authentication">
                                                 <div class="form-floating mb-3">
                                                     <input type="text" class="form-control" id="auth_name" name="auth_name" placeholder="Kiss Pista" required>
                                                     <label for="auth_name">Felhasználónév</label>
@@ -36,6 +36,7 @@
                                                     </label>
                                                 </div>
                                                     <button class="w-100 btn btn-lg btn-primary" id="BTN_login" name="BTN_login" type="submit" >Bejelentkezés</button>
+                                                    <span class="text-red" id="error_log"> </span>
                                                     <hr class="my-4">
                                                 <small class="text-muted">Lorem ipsum dolor sit amet</small>
                                             </form>
