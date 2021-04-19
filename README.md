@@ -1,17 +1,17 @@
 # Netpincer
 
 User_Web/node_modules nincs felöltve 
-> npm install
-> npm install express@4
-> npm install socket.io
-> npm install socket.io-client
+npm init
+npm install --save express ejs
+npm install session
+npm install express-session
+npm install body-parser
+npm install path
 
-    futtat XAMPP -> Apache
-    terminál elérési út \Netprincér\ node index.js
-
+    futtat -> terminál -> node server.js
 
     TODO: tesztelődobozt kivenni
-    TODO: javascript belinkelése az oldalra, hogy autómatán kezdjen működni, tesztelés miatt nincs így
+    TODO: mindent
 
 
 WebClient Changelog:
