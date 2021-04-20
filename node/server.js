@@ -82,7 +82,7 @@ app.get('/home', function(request,response){
     if (request.session.loggedIn) 
     {
         //response.send('Welcome back, ' + request.session.username + '!');
-        response.render('pages/home');
+        response.render('pages/home', {'data' : request.session.username, 'session_var': request.session });
     }
     else {
 		response.send('Please login to view this page!');
@@ -100,9 +100,33 @@ app.post('/authentication', function(request, response)
     login_var = sendData(login_JSON, request, response);
     sleep(3000);
     console.log("Most: " + request.session.loggedIn );
+});
 
-      
-  
+app.post('/register_authentication', function(request, response) 
+{
+    var got_username = request.body.floating_username;
+    var got_email = request.body.floating_email;
+    var got_password_1 = request.body.floating_password;
+    var got_password_2 = request.body.floating_password_2;
+
+    var got_firstname = request.body.floating_first_name;
+    var got_lastname = request.body.floating_last_name;
+    var got_phonenumber = request.body.floating_phone;
+
+    var got_city = request.body.floating_city;
+    var got_ZIP = request.body.floating_ZIP;
+    var got_street = request.body.floating_street + " " + request.body.floating_housenumber ;
+    //var got_housenumber = ;
+    var got_adressline_2 = request.body.floating_address_line_2;
+    // type ID 4 a register user
+
+    const reg_JSON = { type:4, clientID: 0, username: got_username, password: got_password_1, lastName: got_lastname, firstName: got_firstname, phoneNumber: got_phonenumber, 
+         city: got_city, zipcode: got_ZIP, line1: got_street, line2: got_adressline_2 ,userType: 0, email: got_email, GetUserType: 0, Username:got_username }
+    const jsonStr = JSON.stringify(reg_JSON);
+    console.log("JSON to send: "  + jsonStr);
+    login_var = sendData(reg_JSON, request, response);
+    sleep(3000);
+    console.log("Most: " + request.session.loggedIn );
 });
 
 
@@ -157,6 +181,11 @@ function sendData(json_Object, request, response)
                 //response.redirect('/login');
                 response.end();
             }
+         }
+         else if(parsed_JSON["type"] == 4)
+         {
+            console.log("Received register data : " + data);
+            console.log("Handshake -> Type: 4 <- User Login");
          }
      })
     client.on('error', function(err) {

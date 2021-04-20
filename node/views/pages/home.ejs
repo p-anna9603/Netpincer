@@ -11,21 +11,11 @@
        <!-- Navbar--> 
    
     <!-- Main-->
-  
-    <div class="container">
-        <div class="card">
-                  <p class="lead mb-4">Tesztelődoboz</p>
-      
-                  Üdv!<br>
 
-        </div>
-    </div>
-    
-    <!-- Main-->
     <div class="px-4 pt-5 my-5 text-center border-bottom">
-      <h1 class="display-4 fw-bold">Netpincér</h1>
+      <h1 class="display-4 fw-bold">Üdv <%= data %> </h1>
         <div class="col-lg-6 mx-auto">
-          <p class="lead mb-4"><i>"Ahol az étel házhoz jön"</i></p>
+          <p class="lead mb-4"><i>Már kezdheted is a rendelést</i></p>
           <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
               <button type="button" class="btn btn-primary btn-lg px-4 me-sm-3">Lorem</button>
               <button type="button" class="btn btn-outline-secondary btn-lg px-4">Ipsum</button>
@@ -38,7 +28,24 @@
           </div>
         </div>
     </div>
- 
+
+      
+      <div class="container">
+        <div class="card">
+                  <p class="lead mb-4">Tesztelődoboz</p>
+      
+                  Üdv!  <%= data %> <br>
+                  Session tulajdonságai:
+                  átadott user:  <%= session_var.username %>
+                  session log :  <%= session_var.loggedIn %>
+                  session User : <%= session_var.user.firstname %>
+
+        </div>
+    </div>
+    
+    
+    <!-- Main-->
+
     <!-- Footer -->
     <%- include('../partials/footer'); %>
     <!-- Footer --> 
