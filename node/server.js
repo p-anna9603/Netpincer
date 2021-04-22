@@ -224,13 +224,14 @@ function sendData(json_Object, request, response)
             console.log("Received register data : " + data);
             console.log("Handshake -> Type: 4 <- User Login");
          }
-        else if (parsed_JSON["type"] == 11) {
+        else if (parsed_JSON.restaurantList[0].RestaurantID == 1) {
             console.log("Received Restaurant Data : " + data);
             //request.session.loggedIn = userParser(data);
          }
          else
          {
             console.log("Received Unknown Data : " + data);
+            console.log("Restaurant 1: " + parsed_JSON[0]);
          }
      })
     client.on('error', function(err) {
