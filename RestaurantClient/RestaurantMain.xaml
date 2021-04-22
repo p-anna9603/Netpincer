@@ -400,7 +400,7 @@
                                        Stretch="Fill"
                                        Margin="7,0,0,0" Height="42" Width="41"/>
 
-                                <TextBlock Text="Megrendelése"
+                                <TextBlock Text="Megrendelések"
                                            Margin="25,0,0,0"
                                            Style="{StaticResource font_style}"/>
 

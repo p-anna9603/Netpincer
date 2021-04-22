@@ -22,6 +22,8 @@ namespace FoodOrderClient
     public partial class RestaurantMain : Window
     {
         RestaurantMenus menus;
+        Orders orders;
+        AssignDelivery assignDelivery;
         public UserControl child;
         private ConnectToServer serverConnection;
         Restaurant currUser;
@@ -131,6 +133,24 @@ namespace FoodOrderClient
                     childWindow.Content = menus;
                     child = menus;
                     break;
+                case 2:
+                    childWindow.Content = null;
+                    orders = new Orders(this);
+                    orders.Width = childWindow.Width;
+                    orders.Height = childWindow.Height;
+                    
+                    childWindow.Content = orders;
+                    child = orders;
+                    break;
+                case 3:
+                    childWindow.Content = null;
+                    assignDelivery = new AssignDelivery(this);
+                    assignDelivery.Width = childWindow.Width;
+                    assignDelivery.Height = childWindow.Height;
+
+                    childWindow.Content = assignDelivery;
+                    child = assignDelivery;
+                    break;
                 case 5:
                     windowClosing();
                     break;
@@ -181,5 +201,15 @@ namespace FoodOrderClient
             }
         }
 
+        public void refreshRequested(UserControl child)
+        {
+            childWindow.Content = null;
+            orders = new Orders(this);
+            orders.Width = childWindow.Width;
+            orders.Height = childWindow.Height;
+
+            childWindow.Content = orders;
+            child = orders;
+        }
     }
 }

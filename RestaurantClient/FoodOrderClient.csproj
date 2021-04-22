@@ -105,14 +105,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AssignDelivery.xaml.cs">
+      <DependentUpon>AssignDelivery.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Categories.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="ConnectToServer.cs" />
+    <Compile Include="DeliveryBoy.cs" />
     <Compile Include="Food.cs" />
     <Compile Include="FoodList.cs" />
     <Compile Include="ListOfRestaurants.cs" />
     <Compile Include="newMenu.xaml.cs">
       <DependentUpon>newMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Order.cs" />
+    <Compile Include="Orders.xaml.cs">
+      <DependentUpon>Orders.xaml</DependentUpon>
     </Compile>
     <Compile Include="registerUser.xaml.cs">
       <DependentUpon>registerUser.xaml</DependentUpon>
@@ -130,6 +138,9 @@
     <Compile Include="startupWindow.xaml.cs">
       <DependentUpon>startupWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="stateChecker.xaml.cs">
+      <DependentUpon>stateChecker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="User.cs" />
     <Compile Include="UserMain.xaml.cs">
       <DependentUpon>UserMain.xaml</DependentUpon>
@@ -143,7 +154,15 @@
     <Compile Include="UserRestCategs.xaml.cs">
       <DependentUpon>UserRestCategs.xaml</DependentUpon>
     </Compile>
+    <Page Include="AssignDelivery.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="newMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Orders.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -183,6 +202,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="startupWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="stateChecker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -289,6 +312,9 @@
   <ItemGroup>
     <Resource Include="Assets\deliveryScooter.png" />
     <Resource Include="Assets\waiter.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\more.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

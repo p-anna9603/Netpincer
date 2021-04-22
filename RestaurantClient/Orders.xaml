@@ -1,0 +1,118 @@
+﻿<UserControl x:Class="RestaurantClient.Orders"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RestaurantClient"
+             mc:Ignorable="d" 
+  Height="439.844" Width="704.061" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Border BorderBrush="black" BorderThickness="2">
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="217*"/>
+                <RowDefinition Height="15"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="50"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Height="40" Width="182">
+                <TextBlock Text="Rendelések" Foreground="White" HorizontalAlignment="Center" Margin="10,0" FontSize="28"/>
+            </StackPanel>
+            <!--<Grid Grid.ColumnSpan="2" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="151"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>-->
+
+            <!--<ScrollViewer Name="scrollView" Grid.Row="1" Background="#FFF1F1F1" VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="2" Margin="22,0,0,0">-->
+            <DataGrid Grid.Row="1" Grid.Column="0" Name="table" AutoGenerateColumns="False"
+                              HorizontalScrollBarVisibility="Visible" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                      Margin="16,40,16,19" IsReadOnly="True" PreviewMouseDown="table_onClick" PreviewMouseLeftButtonUp="table_onClick"
+                      PreviewMouseLeftButtonDown="table_onClick">
+                <DataGrid.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" 
+                   Color="#005ce6"/>
+                </DataGrid.Resources>
+                <DataGrid.ItemContainerStyle>
+                    <Style TargetType="DataGridRow">
+                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="table_OnMouseDown"/>
+                    </Style>
+                </DataGrid.ItemContainerStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Rendelés ID" Binding="{Binding OrderID}" Width="*"/>
+                    <DataGridTextColumn Header="Státusz" Binding="{Binding StatusString}" Width="*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Style.Triggers>
+                                    <Trigger Property="Text" Value="Új">
+                                        <Setter Property="Background" Value="Red"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                    </Trigger>
+                                    <Trigger Property="Text" Value="Fogadva">
+                                        <Setter Property="Background" Value="LightSalmon"/>
+                                        <Setter Property="Foreground" Value="Black"/>
+                                    </Trigger>
+                                    <Trigger Property="Text" Value="Kiszállításra kész">
+                                        <Setter Property="Background" Value="Yellow"/>
+                                        <Setter Property="Foreground" Value="Black"/>
+                                    </Trigger>
+                                    <Trigger Property="Text" Value="Kiszállítás alatt">
+                                        <Setter Property="Background" Value="LightBlue"/>
+                                        <Setter Property="Foreground" Value="Black"/>
+                                    </Trigger>
+                                    <Trigger Property="Text" Value="Kiszállítva">
+                                        <Setter Property="Background" Value="LightGreen"/>
+                                        <Setter Property="Foreground" Value="Black"/>
+                                    </Trigger>                                
+                                </Style.Triggers>
+                            </Style>
+                          
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Rendelés ideje" Binding="{Binding OrderTime}" Width="*"/>
+                    <DataGridTextColumn Header="Megrendelő" Binding="{Binding Customer}" Width="*"/>
+                    <DataGridTextColumn Header="Összeg" Binding="{Binding TotalPrice}" Width="*"/>
+                    <DataGridTemplateColumn Header="Több">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button x:Name="more" Height="25" Width="25" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                        Background="Transparent" Click="more_Click" Margin="0,0,0,0">
+                                    <Button.ToolTip>
+                                        <ToolTip Content="Módosítás"/>
+                                    </Button.ToolTip>
+                                    <Image x:Name="settingImg" Source="Assets/more.png" Stretch="Fill"/>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Beállítás">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button x:Name="setting" Height="25" Width="25" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                        Background="Transparent" Click="setting_Click" Margin="0,0,0,0">
+                                    <Button.ToolTip>
+                                        <ToolTip Content="Módosítás"/>
+                                    </Button.ToolTip>
+                                    <Image x:Name="settingImg" Source="Assets/img_setting.png" Stretch="Fill"/>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+                <DataGrid.RowDetailsTemplate>
+                    <DataTemplate>
+                        <TextBlock Name="rowDetails" Text="{Binding Details}"  ></TextBlock>
+                    </DataTemplate>
+                </DataGrid.RowDetailsTemplate>
+            </DataGrid>
+            <!--</ScrollViewer>-->
+            <!--</Grid>-->
+        </Grid>
+    </Border>
+</UserControl>

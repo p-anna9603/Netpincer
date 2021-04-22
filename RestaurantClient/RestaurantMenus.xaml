@@ -50,7 +50,7 @@
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>
                         <ListViewItem HorizontalAlignment="Left" Width="200" Height="128">-->
-                    <WrapPanel Name="menuList" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <WrapPanel  Name="menuList" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <!--<StackPanel Orientation="Vertical" HorizontalAlignment="Center" MouseDown="categImg_MouseDown"
                                         Width="200" Height="132" Margin="5,5,0,0">
                             <Border BorderBrush="AliceBlue" BorderThickness="1">
