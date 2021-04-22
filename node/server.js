@@ -46,7 +46,7 @@ var sess = {
     secret: 'secret keyboard cat ',
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 60000},
+    cookie: { maxAge: 60000000},
     loggedIn: false
   }
 
@@ -78,6 +78,7 @@ app.get('/auth', function(request, response) {
         response.render('pages/auth');
 });
 
+
 app.get('/home', function(request,response){
     if (request.session.loggedIn) 
     {
@@ -90,6 +91,21 @@ app.get('/home', function(request,response){
     //
 
 });
+
+
+app.get('/auth_restaurants', function(request,response){
+    if (request.session.loggedIn) 
+    {
+        //response.send('Welcome back, ' + request.session.username + '!');
+        response.render('pages/auth_restaurants', {'data' : request.session.username, 'session_var': request.session });
+    }
+    else {
+		response.send('Please login to view this page!');
+	}
+    //
+
+});
+
 app.post('/authentication', function(request, response) 
 {
 	var got_username = request.body.auth_name;
