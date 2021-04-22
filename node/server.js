@@ -203,7 +203,7 @@ function sendData(json_Object, request, response)
 
     client.on('data', function(data){
         var parsed_JSON = jsonParser(data);
-        if (parsed_JSON["type"] == 1) {
+        if (parsed_JSON["type"] == 1) { // get User Data
             console.log("Received login data : " + data);
             console.log("Handshake -> Type: 1 <- User Login");
             request.session.loggedIn = userParser(data);
@@ -219,13 +219,18 @@ function sendData(json_Object, request, response)
                 response.end();
             }
          }
-         else if(parsed_JSON["type"] == 4)
+        else if(parsed_JSON["type"] == 4)
          {
             console.log("Received register data : " + data);
             console.log("Handshake -> Type: 4 <- User Login");
          }
-         else if (parsed_JSON["type"] == 11) {
-
+        else if (parsed_JSON["type"] == 11) {
+            console.log("Received Restaurant Data : " + data);
+            //request.session.loggedIn = userParser(data);
+         }
+         else
+         {
+            console.log("Received Unknown Data : " + data);
          }
      })
     client.on('error', function(err) {
@@ -297,10 +302,10 @@ async function slep(number) {
             "clientID": 0
             }
       */
-    const login_JSON = { type:11, clientID: 0}
-    const jsonStr = JSON.stringify(login_JSON);
-    sendData(jsonStr,request,response);
-
+    const Get_Restaurant_JSON = { type:11, clientID: 0}
+    const jsonStr = JSON.stringify(Get_Restaurant_JSON);
+    console.log("Sent Restaurant JSON -> " + jsonStr)
+    sendData(Get_Restaurant_JSON,request,response);
   }
 
   //GET RESTAURANTS - 11-ES KÓD
