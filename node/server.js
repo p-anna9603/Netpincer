@@ -1,3 +1,4 @@
+
 let User = class
 {
     constructor(type,clientID,username, password, firstName, phoneNumber, city, zipcode, line1, line2, userType, email) {
@@ -15,11 +16,27 @@ let User = class
         this.email = email;
       }   
 }
-const first_JSON = 
-{
-      type:0, msgID:0
+let Restaurant = class {
+    constructor(restaurantID, name, restaurantDesc, style, owner, phonenumber, city, zipcode, line1, line2, fromHour,toHour, toMinute)
+    {
+        this.RestaurantID=restaurantID;
+        this.Name = name;
+        this.RestaurantDesc = restaurantDesc;
+        this.Stlye = style;
+        this.Owner = owner;
+        this.PhoneNumber = phonenumber;
+        this.City = city;
+        this.Zipcode = zipcode;
+        this.Line_1 = line1;
+        this.Line_2 = line2;
+        this.FromHour = fromHour;
+        this.ToHour = toHour;
+        this.ToMinute = toMinute;
+    }
 }
+const first_JSON = { type:0, msgID:0 }
 
+// MUST-HAVE ééééés DEPENDENCIES
 var net = require('net');
 var client = new net.Socket();
 var express = require('express');
@@ -29,24 +46,21 @@ var bodyParser = require('body-parser');
     app.use(bodyParser.urlencoded({extended : true}));
     app.use(express.json());
 var path = require('path');
-/*
-    const fs = require('fs');
-    const { json } = require('body-parser');
-    const { response } = require('express');
-*/
-
+// MUST-HAVE ééééés DEPENDENCIES
 
 
 var session = require('express-session');
+const { send } = require('process');
     //var sess;
 var login_var = false;
 
-let logged;
+let logged; // current user
+let Ettermek; // étterem array amit átad a sessionben
 var sess = {
     secret: 'secret keyboard cat ',
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 60000000},
+    cookie: { maxAge: 60000000}, // ms-ben van -> 360000 = 6 min, 60millió az 16 óra, mert mér ne
     loggedIn: false
   }
 
@@ -57,7 +71,7 @@ app.set('view engine', 'ejs');
 app.get('/', function (req, res) {
     if (req.session.loggedIn) {
         console.log(session);
-        res.redirect('/home');
+        res.redirect('/home'); // ha be van jelentkezve, és még él a süti, akkor abból felállítja a rendszert
     } else {
         console.log(session);
         res.render('pages/index');
@@ -78,11 +92,10 @@ app.get('/auth', function(request, response) {
         response.render('pages/auth');
 });
 
-
+// HOMEPAGE
 app.get('/home', function(request,response){
     if (request.session.loggedIn) 
     {
-        //response.send('Welcome back, ' + request.session.username + '!');
         response.render('pages/home', {'data' : request.session.username, 'session_var': request.session });
     }
     else {
@@ -91,13 +104,14 @@ app.get('/home', function(request,response){
     //
 
 });
+// HOMEPAGE
 
-
+// RESTAURANT PAGE
 app.get('/auth_restaurants', function(request,response){
     if (request.session.loggedIn) 
     {
-        //response.send('Welcome back, ' + request.session.username + '!');
-        response.render('pages/auth_restaurants', {'data' : request.session.username, 'session_var': request.session });
+        getRestaurants(request,response); // Bekéri az összes éttermet -> frissíteni kell az odalt, ha újat kap az adatbázis
+        response.render('pages/auth_restaurants', {'data' : request.session.username, 'session_var': request.session }); // session-ben átadja madj az éttermeket egy objektum array-ként TODO#######
     }
     else {
 		response.send('Please login to view this page!');
@@ -105,7 +119,9 @@ app.get('/auth_restaurants', function(request,response){
     //
 
 });
+// RESTAURANT PAGE
 
+ // LOGIN
 app.post('/authentication', function(request, response) 
 {
 	var got_username = request.body.auth_name;
@@ -117,7 +133,9 @@ app.post('/authentication', function(request, response)
     sleep(3000);
     console.log("Most: " + request.session.loggedIn );
 });
+// LOGIN
 
+// REGISTER
 app.post('/register_authentication', function(request, response) 
 {
     var got_username = request.body.floating_username;
@@ -144,10 +162,11 @@ app.post('/register_authentication', function(request, response)
     sleep(3000);
     console.log("Most: " + request.session.loggedIn );
 });
-
+// REGISTER
 
 app.listen(8000);
 
+//CONNECT TO SERVE FUNCTION
 function Connect_To_Server (json) 
 {
     const jsonStr = JSON.stringify(json);
@@ -174,7 +193,9 @@ function Connect_To_Server (json)
      })
 
     };
+//CONNECT TO SERVE FUNCTION
 
+//SEND_DATA FUNCTION   
 function sendData(json_Object, request, response)
 {
     const jsonStr = JSON.stringify(json_Object);
@@ -203,12 +224,15 @@ function sendData(json_Object, request, response)
             console.log("Received register data : " + data);
             console.log("Handshake -> Type: 4 <- User Login");
          }
+         else if (parsed_JSON["type"] == 11) {
+
+         }
      })
     client.on('error', function(err) {
         console.log(err)
      })
 }
-
+//SEND_DATA FUNCTION   
 
 function jsonParser(object) {
 
@@ -216,6 +240,7 @@ function jsonParser(object) {
     return parsed_JSON;
  }
 
+//USER PARSER FUNCTION 
  function userParser (object)
  {
     try {
@@ -228,20 +253,54 @@ function jsonParser(object) {
         session.loggedIn = false;
         return false;
     }
-    console.log("Userparser kész:  :" + session.loggedIn)
+    console.log("> UserParser() kész!");
     return true;
 
  }
+ //USER PARSER FUNCTION 
 
- 
+ //RESTAURANT PARSER FUNCTION 
+ function RestaurantParser(object){
+     try{
+         var p = jsonParser(object);
+         //TODO - idk if it works
+         rest = new Restaurant (p["restaurantID"],p["name"],p["restaurantDescription"],p["style"], p["owner"], p["phonenumber"], p["city"], p["zipcode"], p["line1"], p["line2"], p["fromHour"], p["toHour"], p["toMinute"]);
+         console.log(rest);
+     } catch (error){
+        console.log(error);
+        return false;
+     }
+     console.log("> RestaurantParser() kész!");
+     return true;
+ }
+//RESTAURANT PARSER FUNCTION 
+
+//SLEEP
 async function slep(number) {
     console.log("slep begin");
     await sleep(number);
     console.log("slep end");
   }
-
   function sleep(ms) {
     return new Promise((resolve) => {
       setTimeout(resolve, ms);
     });
   }  
+//SLEEP
+
+//GET RESTAURANTS - 11-ES KÓD
+  function getRestaurants(request, response)
+  {
+      /* Szerver 
+      Received JSON: {
+            "type": 11,
+            "clientID": 0
+            }
+      */
+    const login_JSON = { type:11, clientID: 0}
+    const jsonStr = JSON.stringify(login_JSON);
+    sendData(jsonStr,request,response);
+
+  }
+
+  //GET RESTAURANTS - 11-ES KÓD
