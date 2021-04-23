@@ -51,11 +51,14 @@ var path = require('path');
 
 var session = require('express-session');
 const { send } = require('process');
+const { json } = require('body-parser');
+const { parse } = require('path');
     //var sess;
 var login_var = false;
 
 let logged; // current user
-let Ettermek; // étterem array amit átad a sessionben
+let Ettermek = []; // étterem array amit átad a sessionben
+let Étterem_JSON;
 var sess = {
     secret: 'secret keyboard cat ',
     resave: false,
@@ -96,6 +99,7 @@ app.get('/auth', function(request, response) {
 app.get('/home', function(request,response){
     if (request.session.loggedIn) 
     {
+        getRestaurants(request,response);
         response.render('pages/home', {'data' : request.session.username, 'session_var': request.session });
     }
     else {
@@ -110,14 +114,21 @@ app.get('/home', function(request,response){
 app.get('/auth_restaurants', function(request,response){
     if (request.session.loggedIn) 
     {
-        getRestaurants(request,response); // Bekéri az összes éttermet -> frissíteni kell az odalt, ha újat kap az adatbázis
-        response.render('pages/auth_restaurants', {'data' : request.session.username, 'session_var': request.session }); // session-ben átadja madj az éttermeket egy objektum array-ként TODO#######
+        if (Ettermek.length == 0) {
+            getRestaurants(request,response); // Bekéri az összes éttermet -> frissíteni kell az odalt, ha újat kap az adatbázis
+            console.log("Ettermek" + Ettermek);
+            console.log("JSOnN" + JSON.parse(Étterem_JSON));
+            response.render('pages/auth_restaurants', {'ettermek' : Ettermek, 'session_var': request.session, 'Étterem_JSON': Étterem_JSON}); // session-ben átadja madj az éttermeket egy objektum array-ként TODO#######
+        }
+        else{
+            console.log("Ettermek" + Ettermek);
+            console.log("JSOnN" + Étterem_JSON);
+            response.render('pages/auth_restaurants', {'ettermek' : Ettermek, 'session_var': request.session, 'Étterem_JSON': Étterem_JSON  }); // session-ben átadja madj az éttermeket egy objektum array-ként TODO#######
+        }
     }
     else {
 		response.send('Please login to view this page!');
 	}
-    //
-
 });
 // RESTAURANT PAGE
 
@@ -203,6 +214,7 @@ function sendData(json_Object, request, response)
 
     client.on('data', function(data){
         var parsed_JSON = jsonParser(data);
+        //var obj = JSON.parse(data);
         if (parsed_JSON["type"] == 1) { // get User Data
             console.log("Received login data : " + data);
             console.log("Handshake -> Type: 1 <- User Login");
@@ -218,21 +230,35 @@ function sendData(json_Object, request, response)
                 //response.redirect('/login');
                 response.end();
             }
-         }
+        }
         else if(parsed_JSON["type"] == 4)
          {
             console.log("Received register data : " + data);
             console.log("Handshake -> Type: 4 <- User Login");
-         }
-        else if (parsed_JSON.restaurantList[0].RestaurantID == 1) {
-            console.log("Received Restaurant Data : " + data);
-            //request.session.loggedIn = userParser(data);
-         }
-         else
-         {
-            console.log("Received Unknown Data : " + data);
-            console.log("Restaurant 1: " + parsed_JSON[0]);
-         }
+        }
+        else if(parsed_JSON["restaurantList"].length != 0)
+        { 
+            Ettermek = [];
+            console.log(">> Received Restaurants");
+            console.log(data);
+            parsed_JSON["restaurantList"].forEach(element => {
+                etterem = RestaurantParser(element);
+                Ettermek.push(etterem);
+            });
+            Étterem_JSON = data;
+            /*
+            const fs = require('fs'); 
+            let restik = JSON.stringify(parsed_JSON,null,2);
+            fs.writeFile('restaurants.json', restik, (err) => {
+                    if (err) throw err;
+                    console.log('>>> Restaurants have been written to file');
+                });*/
+           
+        }
+        else
+        {
+            console.log("Received Unknown Data :" + parsed_JSON);
+        }
      })
     client.on('error', function(err) {
         console.log(err)
@@ -266,18 +292,18 @@ function jsonParser(object) {
  //USER PARSER FUNCTION 
 
  //RESTAURANT PARSER FUNCTION 
- function RestaurantParser(object){
+ function RestaurantParser(p){
      try{
-         var p = jsonParser(object);
+         //var p = jsonParser(object);
          //TODO - idk if it works
          rest = new Restaurant (p["restaurantID"],p["name"],p["restaurantDescription"],p["style"], p["owner"], p["phonenumber"], p["city"], p["zipcode"], p["line1"], p["line2"], p["fromHour"], p["toHour"], p["toMinute"]);
-         console.log(rest);
+         //console.log(rest);
      } catch (error){
         console.log(error);
-        return false;
+        return null;
      }
      console.log("> RestaurantParser() kész!");
-     return true;
+     return rest;
  }
 //RESTAURANT PARSER FUNCTION 
 
@@ -297,12 +323,6 @@ async function slep(number) {
 //GET RESTAURANTS - 11-ES KÓD
   function getRestaurants(request, response)
   {
-      /* Szerver 
-      Received JSON: {
-            "type": 11,
-            "clientID": 0
-            }
-      */
     const Get_Restaurant_JSON = { type:11, clientID: 0}
     const jsonStr = JSON.stringify(Get_Restaurant_JSON);
     console.log("Sent Restaurant JSON -> " + jsonStr)

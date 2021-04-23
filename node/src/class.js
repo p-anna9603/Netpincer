@@ -1,3 +1,4 @@
+
 let User = class
 {
     constructor(type,clientID,username, password, firstName, phoneNumber, city, zipcode, line1, line2, userType, email) {
@@ -13,15 +14,23 @@ let User = class
         this.line2 = line2;
         this.userType = userType;
         this.email = email;
-      }
-    static loggedin()
-    {
-        return true;
-    }
-        
+      }   
 }
-
-class Orders
-{
-
+let Restaurant = class {
+    constructor(restaurantID, name, restaurantDesc, style, owner, phonenumber, city, zipcode, line1, line2, fromHour,toHour, toMinute)
+    {
+        this.RestaurantID=restaurantID;
+        this.Name = name;
+        this.RestaurantDesc = restaurantDesc;
+        this.Stlye = style;
+        this.Owner = owner;
+        this.PhoneNumber = phonenumber;
+        this.City = city;
+        this.Zipcode = zipcode;
+        this.Line_1 = line1;
+        this.Line_2 = line2;
+        this.FromHour = fromHour;
+        this.ToHour = toHour;
+        this.ToMinute = toMinute;
+    }
 }
