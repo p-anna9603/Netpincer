@@ -10,7 +10,7 @@ namespace RestaurantClient
     {
         int deliveryBoyID;
         string name;
-        List<Order> orders;
+        List<Order> orders; // ongoing deliveries
 
         public DeliveryBoy(int dID, string nam, List<Order> ords = null)
         {

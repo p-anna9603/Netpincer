@@ -22,9 +22,10 @@
             </StackPanel>
 
             <!--<ScrollViewer Name="scrollView" Grid.Row="1" Background="#FFF1F1F1" VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="2" Margin="22,0,0,0">-->
-            <DataGrid Grid.Row="1" Grid.Column="0" Name="table" AutoGenerateColumns="False"
-                              HorizontalScrollBarVisibility="Visible" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                      Margin="16,10,16,0" IsReadOnly="True"  AllowDrop="True" SelectionMode="Extended"  PreviewMouseDown="table_onClick" 
+            <Grid Grid.Row="1" Grid.Column="0" Margin="16,7,16,4" Opacity="120" Name="tableGrid">
+            <DataGrid Name="table" AutoGenerateColumns="False"
+                              HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                       IsReadOnly="True"  AllowDrop="True" SelectionMode="Extended"  PreviewMouseDown="table_onClick" 
                       PreviewMouseLeftButtonUp="table_leftClick" PreviewMouseMove="table_MouseMove">
                 <DataGrid.Resources>
                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" 
@@ -69,68 +70,70 @@
                     <DataGridTextColumn Header="Rendelés ideje" Binding="{Binding OrderTime}" Width="*"/>
                     <DataGridTextColumn Header="Megrendelő" Binding="{Binding Customer}" Width="*"/>
                     <DataGridTextColumn Header="Összeg" Binding="{Binding TotalPrice}" Width="*"/>
-                    <DataGridTemplateColumn Header="Több">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button x:Name="more" Height="25" Width="25" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                        <DataGridTemplateColumn Header="Több">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button x:Name="more" Height="25" Width="25" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                         Background="Transparent" Margin="0,0,0,0" Click="more_Click" >
-                                    <Button.ToolTip>
-                                        <ToolTip Content="Módosítás"/>
-                                    </Button.ToolTip>
-                                    <Image x:Name="settingImg" Source="Assets/more.png" Stretch="Fill"/>
-                                </Button>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Beállítás">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button x:Name="setting" Height="25" Width="25" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                        Background="Transparent" Margin="0,0,0,0">
-                                    <Button.ToolTip>
-                                        <ToolTip Content="Módosítás"/>
-                                    </Button.ToolTip>
-                                    <Image x:Name="settingImg" Source="Assets/img_setting.png" Stretch="Fill"/>
-                                </Button>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
+                                        <Button.ToolTip>
+                                            <ToolTip Content="Módosítás"/>
+                                        </Button.ToolTip>
+                                        <Image x:Name="settingImg" Source="Assets/more.png" Stretch="Fill"/>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
                 <DataGrid.RowDetailsTemplate>
                     <DataTemplate>
                         <TextBlock Name="rowDetails" Text="{Binding Details}"  ></TextBlock>
                     </DataTemplate>
                 </DataGrid.RowDetailsTemplate>
             </DataGrid>
-            <WrapPanel Name="futarLista" Grid.Row="2" Background="#FFF1F1F1" Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                       Margin="16,5,0,0">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" 
-                                        Width="200" Height="132" Margin="5,5,0,0">
-                    <Border BorderBrush="AliceBlue" BorderThickness="2">
-                        <TextBlock VerticalAlignment="Top" FontSize="16" FontFamily="Century" HorizontalAlignment="Center"  TextAlignment="Center"
+            </Grid>
+            <ScrollViewer Name="scrollView" Grid.Column="0" Grid.Row="2" Background="#FFF1F1F1" VerticalScrollBarVisibility="Auto" Margin="16,5,16,0">
+                <WrapPanel Name="futarLista" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Stretch" 
+                           Opacity="120" OpacityMask="Aqua" Width="784">
+                    <!--<StackPanel Orientation="Vertical" HorizontalAlignment="Left" 
+                                        Width="200" Height="132">
+                        <Border BorderBrush="AliceBlue" BorderThickness="2">
+                            <TextBlock VerticalAlignment="Top" FontSize="16" FontFamily="Century" HorizontalAlignment="Center"  TextAlignment="Center"
                                      Margin="0,0,0,0" Width="200" Height="50" Text="1. futár - Kiss Péter" TextWrapping="Wrap" Padding="2,10,2,0"/>
-                    </Border>
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalAlignment="Center" Height="79" Width="200" 
+                        </Border>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalAlignment="Center" Height="79" Width="200" 
                                   AllowDrop="True" Drop="DropRow_Drop" DragEnter="DropRow_DragEnter" PreviewMouseUp="table_PreviewMouseUp">
-                        <StackPanel>
-                            <TextBlock Text=" 1. 0234. rendelés" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,3,0,0"></TextBlock>
-                            <TextBlock Text=" 1. 0234. rendelés" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,3,0,0"></TextBlock>
-                            <TextBlock Text=" 1. 0234. rendelés" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,3,0,0"></TextBlock>
-                            <TextBlock Text=" 1. 0234. rendelés" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,3,0,0"></TextBlock>
-                            <TextBlock Text=" 1. 0234. rendelés" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,3,0,0"></TextBlock>
-                            <TextBlock Text=" 1. 0234. rendelés" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,3,0,0"></TextBlock>
-                        </StackPanel>
-                    </ScrollViewer>
-                    <StackPanel.Background>
-                        <SolidColorBrush>
-                            <SolidColorBrush.Color>
-                                <Color A="50" R="255" G="204" B="153"></Color>
-                            </SolidColorBrush.Color>
-                        </SolidColorBrush>
-                    </StackPanel.Background>
-                </StackPanel>
-            </WrapPanel>
-            <!--</Grid>-->
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock Text="1. " Margin="0,3,0,0" VerticalAlignment="Top"></TextBlock>
+                                    <TextBlock Text="0234. rendelés" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,3,0,0"></TextBlock>
+                                    <Button Margin="10,2,0,0" Width="18" Height="18" VerticalContentAlignment="Center" HorizontalAlignment="Right"
+                                             Background="Transparent" BorderBrush="Transparent">
+                                        <Image x:Name="settingImg" Source="Assets/exit.png" Stretch="Fill"/>
+                                    </Button>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock Text=" 1. 0234. rendelés" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,3,0,0"></TextBlock>
+                                    <Button Margin="10,2,0,0" Width="18" Height="18" VerticalContentAlignment="Center" Background="Transparent" BorderBrush="Transparent">
+                                        <Image Source="Assets/exit.png" Stretch="Fill"/>
+                                    </Button>
+                                </StackPanel>
+                                <TextBlock Text=" 1. 0234. rendelés" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,3,0,0"></TextBlock>
+                                <TextBlock Text=" 1. 0234. rendelés" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,3,0,0"></TextBlock>
+                                <TextBlock Text=" 1. 0234. rendelés" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,3,0,0"></TextBlock>
+                                <TextBlock Text=" 1. 0234. rendelés" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,3,0,0"></TextBlock>
+                            </StackPanel>
+                        </ScrollViewer>
+                        <StackPanel.Background>
+                            <SolidColorBrush>
+                                <SolidColorBrush.Color>
+                                    <Color A="50" R="255" G="204" B="153"></Color>
+                                </SolidColorBrush.Color>
+                            </SolidColorBrush>
+                        </StackPanel.Background>
+                    </StackPanel>-->
+                </WrapPanel>
+                <!--</Grid>-->
+            </ScrollViewer>
         </Grid>
     </Border>
 </UserControl>

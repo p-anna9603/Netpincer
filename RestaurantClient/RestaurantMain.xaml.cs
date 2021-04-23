@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,10 +29,23 @@ namespace FoodOrderClient
         private ConnectToServer serverConnection;
         Restaurant currUser;
         startupWindow parent;
+        List<Order> newOrders = new List<Order>();
+        List<Order> ordersList = new List<Order>();
+        List<Order> checkedNewOrders = new List<Order>();
 
         public ConnectToServer ServerConnection { get => serverConnection; set => serverConnection = value; }
         public Restaurant CurrUser { get => currUser; set => currUser = value; }
+        internal List<Order> CheckedNewOrders { get => checkedNewOrders; set => checkedNewOrders = value; }
 
+        Order dummyOrder;
+        Order dummyOrder2;
+        Order dummyOrder3;
+        Order dummyOrder4;
+        Order dummyOrder5;
+        List<string> dummyAllergs = new List<string>();
+        List<Food> oneOrdersFoods = new List<Food>();
+        Food food;
+        Food food2;
         public RestaurantMain(ConnectToServer ServerCon, Restaurant usr, Window start)
         {
             InitializeComponent();
@@ -40,7 +54,7 @@ namespace FoodOrderClient
             currUser = usr;
             parent = (startupWindow)start;
             userNameTextBox.Text = "Felhasználó: " + currUser.owner;
-         //   ServerConnection = new ConnectToServer();
+            //   ServerConnection = new ConnectToServer();
 
             /*
                         //CONNECTING TO SERVER      --Not Gonna work without the database!
@@ -60,6 +74,17 @@ namespace FoodOrderClient
                         for (int i=0;i<categories.Count;++i)
                             Console.WriteLine("CATEGORIES FOR UTALOM A C CAPAT: \n {0}", categories[i]);
             */
+            dummyAllergs.Add("glutén");
+            food = new Food(1, "Paprikás pizza", 1200, 3, 0, dummyAllergs, 2, 2, "2021.03.11", "2022.01.01");
+            oneOrdersFoods.Add(food);
+            dummyOrder = new Order(1, 0, "2021.04.22 12:22", "Anna", 2000, oneOrdersFoods);
+            ordersList.Add(dummyOrder);
+
+            dummyOrder3 = new Order(3, 2, "2021.04.22 14:22", "Zoli", 2000, oneOrdersFoods);
+            ordersList.Add(dummyOrder3);
+
+            dummyOrder4 = new Order(4, 0, "2021.04.22 14:22", "Réka", 2000, oneOrdersFoods);
+            ordersList.Add(dummyOrder4);
         }
         private void ListViewItem_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -201,6 +226,15 @@ namespace FoodOrderClient
             }
         }
 
+        private void orders_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("cliiiick");
+            if(LV.SelectedIndex == 2)
+            {
+                refreshRequested(orders);
+            }
+        }
+
         public void refreshRequested(UserControl child)
         {
             childWindow.Content = null;
@@ -210,6 +244,46 @@ namespace FoodOrderClient
 
             childWindow.Content = orders;
             child = orders;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            new Thread(refreshData).Start();
+        }
+        int z = 0;
+        public delegate void UpdateTextCallback(string message);
+        public void refreshData()
+        {
+            while(z == 0)
+            {
+                Thread.Sleep(10000);
+                //ordersList = serverConnection.getOrders(currUser.restaurantID); TODO
+                for (int i = 1; i < ordersList.Count; ++i)
+                {
+                    if(ordersList[i].OrderStatus == 0 && !(checkedNewOrders.Contains(ordersList[i])))
+                    {
+                        Console.WriteLine("hozzáadás");
+                        newOrders.Add(ordersList[i]);
+                    }
+                }
+                if(newOrders.Count != 0)
+                {
+                    // alert the restaurant that there are not checked new orders
+                    Console.WriteLine("Alert");
+                    //newOrderCount.Text = newOrders.Count.ToString();
+                    //newOrderCount.Visibility = Visibility.Visible;
+                    newOrderCount.Dispatcher.Invoke(
+                        new UpdateTextCallback(this.UpdateText),
+                        new object[] { newOrders.Count.ToString() });
+                }
+                newOrders.Clear();
+                Console.WriteLine("10 mp eltelt");
+            }
+        }
+        private void UpdateText(string message)
+        {
+            newOrderCount.Text = message;
+            newOrderCount.Visibility = Visibility.Visible;
         }
     }
 }

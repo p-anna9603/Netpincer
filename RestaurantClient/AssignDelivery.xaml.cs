@@ -23,12 +23,14 @@ namespace RestaurantClient
     {
 
         RestaurantMain restaurantMain;
-        // DeliveryBoyList listfromServer; // DeliveryBoyList
+        DeliveryBoyList listFromServer; // DeliveryBoyList
         List<DeliveryBoy> boys = new List<DeliveryBoy>();
-        Dictionary<StackPanel, int> boysPanels = new Dictionary<StackPanel, int>();
+        Dictionary<StackPanel, int> boysPanels = new Dictionary<StackPanel, int>(); // stackpanel, boyID
+        Dictionary<Button, Order> xPanels = new Dictionary<Button, Order>(); // xButton, Order
 
-        // OrderList orderslistfromServer; TODO
+        OrderList orderslistFromServer; // TODO
         List<Order> waitingForDeliveryOrders = new List<Order>();
+        List<Order> dummyAssign = new List<Order>();
 
         Order dummyOrder;
         Order dummyOrder2;
@@ -45,34 +47,41 @@ namespace RestaurantClient
         public AssignDelivery(Window restrantMain)
         {
             InitializeComponent();
+            SolidColorBrush color = new SolidColorBrush();
+            color.Color = Color.FromArgb(120, 102, 102, 255);
+            scrollView.Background = color;
+            tableGrid.Background = color;
+
             restaurantMain = (RestaurantMain)restrantMain;
             //     listFromServer = restaurantMain.ServerConnection.getDeliveryBoys(restaurantMain.CurrUser.restaurantID); // TODO
-            //     orderslistfromServer = restaurantMain.ServerConnection.getOrders(restaurantMain.CurrUser.restaurantID); // TODO
+            //     orderslistFromServer = restaurantMain.ServerConnection.getOrders(restaurantMain.CurrUser.restaurantID); // TODO
 
             addOrdersToTable();
             dummyAllergs.Add("glutén");
             food = new Food(1, "Paprikás pizza", 1200, 3, 0, dummyAllergs, 2, 2, "2021.03.11", "2022.01.01");
             oneOrdersFoods.Add(food);
-            dummyOrder = new Order(1, 0, "2021.04.22 12:22", "Anna", 2000, -1, oneOrdersFoods);
+            dummyOrder = new Order(1, 0, "2021.04.22 12:22", "Anna", 2000, oneOrdersFoods);
             waitingForDeliveryOrders.Add(dummyOrder);
 
             food2 = new Food(3, "Magyaros pizza", 1200, 3, 0, dummyAllergs, 2, 2, "2021.03.11", "2022.01.01");
             oneOrdersFoods.Add(food2);
-            dummyOrder2 = new Order(2, 1, "2021.04.22 14:22", "Pista", 2000, -1, oneOrdersFoods);
+            dummyOrder2 = new Order(2, 1, "2021.04.22 14:22", "Pista", 2000, oneOrdersFoods);
             waitingForDeliveryOrders.Add(dummyOrder2);
+            dummyAssign.Add(dummyOrder2);
 
             oneOrdersFoods.Add(food2);
-            dummyOrder3 = new Order(3, 2, "2021.04.22 14:22", "Pista", 2000, -1, oneOrdersFoods);
+            dummyOrder3 = new Order(3, 2, "2021.04.22 14:22", "Lilla", 2000, oneOrdersFoods);
             waitingForDeliveryOrders.Add(dummyOrder3);
 
             oneOrdersFoods.Add(food2);
-            dummyOrder4 = new Order(3, 3, "2021.04.22 14:22", "Pista", 2000, -1, oneOrdersFoods);
+            dummyOrder4 = new Order(4, 3, "2021.04.22 14:22", "Zoli", 2000,  oneOrdersFoods);
             waitingForDeliveryOrders.Add(dummyOrder4);
+            dummyAssign.Add(dummyOrder4);
 
             dummyBoy = new DeliveryBoy(1, "David");
             boys.Add(dummyBoy);
 
-            dummyBoy2 = new DeliveryBoy(1, "Ákos", waitingForDeliveryOrders);
+            dummyBoy2 = new DeliveryBoy(2, "Ákos", dummyAssign);
             boys.Add(dummyBoy2);
 
             addExistingDeliveryBoys();
@@ -80,24 +89,23 @@ namespace RestaurantClient
         public void addExistingDeliveryBoys()
         {
             // TODO fill the list from the listFromServerConnection
-            //if (listFromServer.ListFood != null)
-            //{
-            //    for (int i = 0; i < listFromServer.ListFood.Count; ++i)
-            //    {
-            //        orders.Add(listFromServer.ListFood[i]);
-            //        newFoodWindows.Add(listFromServer.ListFood[i].FoodID, listFromServer.ListFood[i]);
-            //    }
-            //}
-
-            // table.Items.Add(newOrders);
-           // table.ItemsSource = newOrders;
+            /*
+            if (listFromServer.ListDevliveryboy != null)
+            {
+                for (int i = 0; i < listFromServer.ListDevliveryboy.Count; ++i)
+                {
+                    boys.Add(listFromServer.ListDevliveryboy[i]);
+                //    newFoodWindows.Add(listFromServer.ListFood[i].FoodID, listFromServer.ListFood[i]);
+                }
+            }
+            */
             if (boys.Count != 0)
             {
                 Console.WriteLine("addpanel 0");
                 for (int i = 0; i < boys.Count; ++i)
                 {
                     Console.WriteLine("addpanel 1");
-                    addBoyPanel(boys[i].Name, boys[i].DeliveryBoyID, boys[i].Orders);
+                    addBoyPanel(boys[i].Name, boys[i].DeliveryBoyID, boys[i].Orders); 
                 }
             }
         }
@@ -105,14 +113,19 @@ namespace RestaurantClient
         public void addOrdersToTable()
         {
             // TODO fill the list from the listFromServerConnection
-            //if (listFromServer.ListFood != null)
-            //{
-            //    for (int i = 0; i < listFromServer.ListFood.Count; ++i)
-            //    {
-            //        waitingForDeliveryOrders.Add(listFromServer.ListFood[i]);
-            //        newFoodWindows.Add(listFromServer.ListFood[i].FoodID, listFromServer.ListFood[i]);
-            //    }
-            //}
+            /*
+            if (orderslistFromServer.ListOrder != null)
+            {
+                for (int i = 0; i < orderslistFromServer.ListOrder.Count; ++i)
+                {
+                    if(orderslistFromServer.ListOrder[i].OrderStatus == 2) // only those orders which are ready for delivery
+                    {
+                        waitingForDeliveryOrders.Add(orderslistFromServer.ListOrder[i]);
+                      //  newFoodWindows.Add(listFromServer.ListFood[i].FoodID, listFromServer.ListFood[i]);
+                    }
+                }
+            }
+            */
             table.ItemsSource = waitingForDeliveryOrders;
         }
 
@@ -121,7 +134,7 @@ namespace RestaurantClient
             Console.WriteLine("addpanel 2 " + boyName);
             StackPanel newCategory = new StackPanel();
             newCategory.Orientation = Orientation.Vertical;
-            newCategory.HorizontalAlignment = HorizontalAlignment.Center;
+            newCategory.HorizontalAlignment = HorizontalAlignment.Left;
             newCategory.Width = 200;
             newCategory.Height = 132;
             SolidColorBrush color = new SolidColorBrush();
@@ -133,7 +146,7 @@ namespace RestaurantClient
             //border.BorderBrush = new SolidColorBrush(Colors.AliceBlue);
             border.BorderThickness = new Thickness(1);
             border.HorizontalAlignment = HorizontalAlignment.Left;
-            border.VerticalAlignment = VerticalAlignment.Top;
+            border.VerticalAlignment = VerticalAlignment.Center;
 
             DataTrigger dataTrigger = new DataTrigger();
             Binding binding = new Binding();
@@ -178,9 +191,13 @@ namespace RestaurantClient
 
             List<TextBlock> ordersTextBlock = new List<TextBlock>();
             StackPanel panel2 = new StackPanel();
+            panel2.Name = "firstChildOfScroll";
+
+            StackPanel panel3 = new StackPanel(); // hold the textblock and the x button
 
             /* Block of the orders the delivery boy is delivering */
             TextBlock newText2;
+            TextBlock newTextNum;
             int counter = 0;
             if (orders != null)
             {
@@ -189,6 +206,11 @@ namespace RestaurantClient
                     if (orders[i].OrderStatus == 3)
                     {
                         counter++;
+                        newTextNum = new TextBlock();
+                        newTextNum.Margin = new Thickness(0, 3, 0, 0);
+                        newTextNum.Name = "counter";
+                        newTextNum.FontFamily = new FontFamily("Century");
+                        newTextNum.VerticalAlignment = VerticalAlignment.Top;
                         newText2 = new TextBlock();
                         newText2.Name = "foodPrice" + i;
                         newText2.VerticalAlignment = VerticalAlignment.Top;
@@ -197,19 +219,90 @@ namespace RestaurantClient
                         newText2.FontSize = 12;
                         newText2.TextWrapping = TextWrapping.Wrap;
                         newText2.Margin = new Thickness(0, 3, 0, 0);
-                        newText2.Text = counter + ". " + orders[i].OrderID.ToString() + ". id -jú rendelés";
-                      //  ordersTextBlock.Add(newText2);
-                        panel2.Children.Add(newText2);
+                        newTextNum.Text = counter + ". ";
+                        newText2.Text = orders[i].OrderID.ToString() + ". id -jú rendelés";
+                        //  ordersTextBlock.Add(newText2);
+                        //   panel2.Children.Add(newText2);
+                        panel3 = new StackPanel(); // hold the textblock and the x button
+                        panel3.Orientation = Orientation.Horizontal;
+                        panel3.HorizontalAlignment = HorizontalAlignment.Center;
+
+                        panel3.Children.Add(newTextNum);
+                        panel3.Children.Add(newText2);
+
+                        /* x button */
+                        Button xButton = new Button();
+                        xButton.Margin = new Thickness(10, 2, 0, 0);
+                        xButton.Width = 18;
+                        xButton.Height = 18;
+                        xButton.VerticalContentAlignment = VerticalAlignment.Center;
+                        xButton.Background = System.Windows.Media.Brushes.Transparent;
+                        xButton.BorderBrush = System.Windows.Media.Brushes.Transparent;
+                        xButton.Click += XButton_Click;
+
+                        /* x image */
+                        Image img = new Image();
+                        img.Source = new BitmapImage(new Uri("Assets/exit.png", UriKind.Relative));
+                        img.Stretch = Stretch.Fill;
+                        xButton.Content = img;
+
+                        panel3.Children.Add(xButton);
+                        panel2.Children.Add(panel3);
+                        xPanels.Add(xButton, orders[i]);
                     }
                 }
             }
             scrollArea.Content = panel2;
+
+
             newCategory.Children.Add(border);
             newCategory.Children.Add(scrollArea);
             newCategory.MouseEnter += NewCategory_MouseEnter;
             newCategory.MouseLeave += NewCategory_MouseLeave;
-            boysPanels[newCategory] = boyID;
+       //     boysPanels[newCategory] = boyID;
+            boysPanels[panel2] = boyID;
             futarLista.Children.Add(newCategory);
+        }
+
+        private void XButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button xButton = sender as Button;
+            StackPanel stack = (StackPanel)xButton.Parent; // panel3
+            StackPanel panel2 = (StackPanel)stack.Parent; // panel2
+            int boyID = boysPanels[panel2];
+            panel2.Children.Remove(stack);
+          
+            Order order = xPanels[xButton];
+            order.OrderStatus = 2;
+            order.StatusString = "Kiszállításra kész";
+            waitingForDeliveryOrders.Add(order);
+            table.ItemsSource = null;
+            table.ItemsSource = waitingForDeliveryOrders;
+            xPanels.Remove(xButton);
+
+            Console.WriteLine("boy: " + boyID + ", o:  " + order.OrderID);
+            //   restaurantMain.ServerConnection.updateOrderState(order.OrderID, 2); // TODO
+            //   restaurantMain.ServerConnection.removeOrderFromDeliveryBoy(boyID, order.OrderID); // TODO
+
+            /* Újra számozás */
+            //    List<StackPanel> children = panel2.Children;
+            int counter = 0;
+            for(int i = 0; i < panel2.Children.Count; ++i)
+            {
+                StackPanel panel = (StackPanel)panel2.Children[i]; // panel3
+                for(int j = 0; j < panel.Children.Count; j++)
+                {
+                    if(panel.Children[j].GetType() == typeof(TextBlock))
+                    {
+                        TextBlock t = (TextBlock)panel.Children[j];
+                        if(t.Name.Equals("counter"))
+                        {
+                            counter++;
+                            t.Text = counter + ". ";
+                        }                        
+                    }
+                }
+            }
         }
 
         private void NewCategory_MouseLeave(object sender, MouseEventArgs e)
@@ -257,31 +350,16 @@ namespace RestaurantClient
         /* Drag and Drop functions */
         private void table_leftClick(object sender, MouseButtonEventArgs e)
         {
-          //  // Store the mouse position
-          //  rowIndex = table.SelectedIndex;
-          ////  rowIndex = table.GetCurrentRowIndex(e.GetPosition);
-          //  if (rowIndex < 0)
-          //      return;
-          //  table.SelectedIndex = rowIndex;
-          //  Order selectedOrder = table.Items[rowIndex] as Order;
-          //  if (selectedOrder == null)
-          //      return;
-          //  DragDropEffects dragdropeffects = DragDropEffects.Move;
-          //  if (DragDrop.DoDragDrop(table, selectedOrder, dragdropeffects)
-          //                      != DragDropEffects.None)
-          //  {
-          //      table.SelectedItem = selectedOrder;
-          //  }
-
             startPoint = e.GetPosition(null);
         }
 
         private void table_MouseMove(object sender, MouseEventArgs e)
         {
             // No drag operation
-            if (startPoint == null)
+         //   Console.WriteLine("table_MouseMove");
+            if (startPoint == null || sender == null)
                 return;
-            Console.WriteLine("move. " + sender.GetType().ToString());
+          //  Console.WriteLine("move. " + sender.GetType().ToString());
             var dg = sender as DataGrid;
             if (dg == null) return;
             // Get the current mouse position
@@ -347,11 +425,9 @@ namespace RestaurantClient
             Console.WriteLine("drop " + sender.GetType().ToString());
             var dg = sender as ScrollViewer;
             if (dg == null) return;
-            Console.WriteLine("drop 2");
             var dgSrc = e.Data.GetData("DragSource") as DataGrid;
             var data = e.Data.GetData(typeof(Order));
             if (dgSrc == null || data == null) return;
-            Console.WriteLine("drop 3");
             // Implement move data here, depends on your implementation
             //     MoveDataFromSrcToDest(dgSrc, dg, data);
             // OR
@@ -363,12 +439,22 @@ namespace RestaurantClient
         StackPanel t;
         private void DropNewLine(Order order, ScrollViewer scroll)
         {
-            StackPanel stackPanel = EnumVisual(this, scroll);
+            StackPanel stackPanel = EnumVisual(this, scroll);        
             stackPanel = t;
+            StackPanel panel3 = new StackPanel(); // hold the textblock and the x button
+            panel3.Orientation = Orientation.Horizontal;
+            panel3.HorizontalAlignment = HorizontalAlignment.Center;
+
             int count = stackPanel.Children.Count;
-           // List<TextBlock> tts = (List<TextBlock>)scroll.Content;
-            //var StackPanel =
-            //        FindAnchestor<DataGridRow>((DependencyObject)scroll);
+            /* Counter */
+            TextBlock newTextNum = new TextBlock();
+            newTextNum = new TextBlock();
+            newTextNum.Margin = new Thickness(0, 3, 0, 0);
+            newTextNum.VerticalAlignment = VerticalAlignment.Top;
+            newTextNum.Name = "counter";
+            newTextNum.Text = ++count + ". ";
+
+            Console.WriteLine("stack name: " + stackPanel.Name);
             TextBlock newText2 = new TextBlock();
             newText2.Name = "foodPrice";
             newText2.VerticalAlignment = VerticalAlignment.Top;
@@ -377,17 +463,39 @@ namespace RestaurantClient
             newText2.FontSize = 12;
             newText2.TextWrapping = TextWrapping.Wrap;
             newText2.Margin = new Thickness(0, 3, 0, 0);
-            newText2.Text = ++count + ". " + order.OrderID.ToString() + ". id -jú rendelés";
-            //if(tts != null)
-            //{
-            //    tts.Add(newText2);
-            //}
-            //else
-            //{
-            //    tts = new List<TextBlock>();
-            //    tts.Add(newText2);
-            //}
-            stackPanel.Children.Add(newText2);
+            newText2.Text = order.OrderID.ToString() + ". id -jú rendelés";
+
+            panel3.Children.Add(newTextNum);
+            panel3.Children.Add(newText2);
+
+            /* x button */
+            Button xButton = new Button();
+            xButton.Margin = new Thickness(10, 2, 0, 0);
+            xButton.Width = 18;
+            xButton.Height = 18;
+            xButton.VerticalContentAlignment = VerticalAlignment.Center;
+            xButton.Background = System.Windows.Media.Brushes.Transparent;
+            xButton.BorderBrush = System.Windows.Media.Brushes.Transparent;
+            xButton.Click += XButton_Click;
+
+            /* x image */
+            Image img = new Image();
+            img.Source = new BitmapImage(new Uri("Assets/exit.png", UriKind.Relative));
+            img.Stretch = Stretch.Fill;
+            xButton.Content = img;
+
+            panel3.Children.Add(xButton);
+            stackPanel.Children.Add(panel3);
+
+            xPanels.Add(xButton, order);
+
+            Console.WriteLine("kulcs előtt");
+            int boyID = boysPanels[stackPanel];
+            Console.WriteLine("kulcs után");
+            order.OrderStatus = 3; // change order state to under delivery
+            order.StatusString = "Kiszállítás alatt";
+          //  table.Items.Remove(order);
+            addOrderToDeliveryBoy(order, boyID);
         }
 
         public StackPanel EnumVisual(Visual myVisual, ScrollViewer categ)
@@ -400,9 +508,12 @@ namespace RestaurantClient
                 // Do processing of the child visual object.
                 if (childVisual.GetType() == typeof(StackPanel) && childVisual.IsDescendantOf(categ))
                 {
-                    Console.WriteLine("3 to change");
+                    Console.WriteLine("3 to change");                    
                     t = (StackPanel)childVisual;
-                    return t;
+                    if(t.Name.Equals("firstChildOfScroll"))
+                    {
+                        return t;
+                    }                    
                 }
                 else
                 {
@@ -413,6 +524,31 @@ namespace RestaurantClient
         
             }
             return null;
+        }
+  
+        private void addOrderToDeliveryBoy(Order order, int boyID)
+        {
+            Console.WriteLine("update to server\n");
+            //  restaurantMain.ServerConnection.addOrderToDeliveryBoy(boyID, order.OrderID); //TODO
+            //  restaurantMain.ServerConnection.updateOrderState(order.orderID, 3); //TODO
+            Console.WriteLine("update to server 2\n");
+            for (int i = 0; i < boys.Count; ++i)
+            {
+                if (boys[i].DeliveryBoyID == boyID)
+                {
+                    if (boys[i].Orders == null)
+                    {
+                        Console.WriteLine("update to server 3\n");
+                        boys[i].Orders = new List<Order>();
+                    }
+                    boys[i].Orders.Add(order);
+                    Console.WriteLine("update to server 4\n");
+                }
+            }
+            waitingForDeliveryOrders.Remove(order);
+            table.ItemsSource = null;
+            table.ItemsSource = waitingForDeliveryOrders;
+            //  table.Items.Remove(order);
         }
     }
 }

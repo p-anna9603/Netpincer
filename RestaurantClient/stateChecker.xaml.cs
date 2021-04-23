@@ -37,13 +37,17 @@ namespace RestaurantClient
             {
                 newState = 1;
             }
-            else if (underDelivery.IsChecked == true)
+            else if (readyForDelivery.IsChecked == true)
             {
                 newState = 2;
             }
-            else if (delivered.IsChecked == true)
+            else if (underDelivery.IsChecked == true)
             {
                 newState = 3;
+            }
+            else if (delivered.IsChecked == true)
+            {
+                newState = 4;
             }
             else
             {

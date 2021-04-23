@@ -18,7 +18,7 @@ namespace RestaurantClient
         string statusString;
         string foods;
 
-        public Order(int oId, int status, string orderTim, string cust, double price, int deliveryID, List<Food> list)
+        public Order(int oId, int status, string orderTim, string cust, double price, List<Food> list, int deliveryID = -1)
         {
             orderID = oId;
             orderStatus = status;

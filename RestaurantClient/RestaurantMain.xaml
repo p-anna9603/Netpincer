@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FoodOrderClient"
         mc:Ignorable="d"
-        Title="RestaurantMain" Height="600" Width="900" WindowStartupLocation="CenterScreen" SizeChanged="window_sizeChanged">
+        Title="RestaurantMain" Height="600" Width="900" WindowStartupLocation="CenterScreen" SizeChanged="window_sizeChanged" Loaded="Window_Loaded">
     <Window.Resources>
 
         <!--// Toggle Button Style Template //-->
@@ -390,19 +390,28 @@
                         <!--// Messages //-->
 
                         <ListViewItem HorizontalAlignment="Left"
-                                      Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter"
+                                      Margin="0,0,0,15" MouseEnter="ListViewItem_MouseEnter" PreviewMouseLeftButtonDown="orders_Click"
                                       >
 
                             <StackPanel Orientation="Horizontal"
                                         Width="230">
-
-                                <Image Source="Assets/waiter.png"
+                                <Grid>
+                                    <!--<Border Name="newOrderBorder" BorderBrush="Red" BorderThickness="2" Visibility="Visible">-->
+                                        <Image Source="Assets/waiter.png"
                                        Stretch="Fill"
                                        Margin="7,0,0,0" Height="42" Width="41"/>
+                                    <!--</Border>-->
+                                    <TextBlock Name="newOrderCount" Text="2" FontSize="18" Foreground="red" FontWeight="Bold" HorizontalAlignment="Right" 
+                                           VerticalAlignment="Top" Background="AliceBlue" Opacity="200" Width="12" Visibility="Hidden">
+                                    <TextBlock.Effect>
+                                        <DropShadowEffect ShadowDepth="0" Color="Blue" BlurRadius="10" />
+                                    </TextBlock.Effect>
+                                </TextBlock>
+                                </Grid>
 
                                 <TextBlock Text="Megrendelések"
                                            Margin="25,0,0,0"
-                                           Style="{StaticResource font_style}"/>
+                                           Style="{StaticResource font_style}" Width="145"/>
 
                             </StackPanel>
 

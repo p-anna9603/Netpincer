@@ -81,7 +81,7 @@
                     <DataGridTemplateColumn Header="Több">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button x:Name="more" Height="25" Width="25" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                <Button Name="more" Height="25" Width="25" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                         Background="Transparent" Click="more_Click" Margin="0,0,0,0">
                                     <Button.ToolTip>
                                         <ToolTip Content="Módosítás"/>
@@ -105,9 +105,9 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
-                <DataGrid.RowDetailsTemplate>
+                <DataGrid.RowDetailsTemplate>                    
                     <DataTemplate>
-                        <TextBlock Name="rowDetails" Text="{Binding Details}"  ></TextBlock>
+                        <TextBlock Name="rowDetails" Text="{Binding Details}" Visibility="Visible"  IsVisibleChanged="rowDetails_IsVisibleChanged" ></TextBlock>
                     </DataTemplate>
                 </DataGrid.RowDetailsTemplate>
             </DataGrid>

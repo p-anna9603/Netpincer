@@ -112,6 +112,7 @@
     <Compile Include="Category.cs" />
     <Compile Include="ConnectToServer.cs" />
     <Compile Include="DeliveryBoy.cs" />
+    <Compile Include="DeliveryBoyList.cs" />
     <Compile Include="Food.cs" />
     <Compile Include="FoodList.cs" />
     <Compile Include="ListOfRestaurants.cs" />
@@ -119,6 +120,7 @@
       <DependentUpon>newMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="Order.cs" />
+    <Compile Include="OrderList.cs" />
     <Compile Include="Orders.xaml.cs">
       <DependentUpon>Orders.xaml</DependentUpon>
     </Compile>
@@ -315,6 +317,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\more.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\exit.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
