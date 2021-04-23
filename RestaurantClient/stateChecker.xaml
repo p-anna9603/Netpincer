@@ -1,0 +1,43 @@
+﻿<Window x:Class="RestaurantClient.stateChecker"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RestaurantClient"
+        mc:Ignorable="d"
+        Title="Rendelés új állapota" Height="225" Width="335" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <!--<RowDefinition Height="25"></RowDefinition>-->
+            <RowDefinition Height="150*"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+        <Border BorderBrush="#FF250A5F"  BorderThickness="0.7" CornerRadius="10" Margin="5,10,5,0" Width="300">
+            <Border.Effect>
+                <BlurEffect Radius="1.5"/>
+            </Border.Effect>
+        </Border>
+        <StackPanel>
+            <TextBlock Text="Válassza ki az új státuszt!" Margin="20,20,25,15" HorizontalAlignment="Left"></TextBlock>
+            <ListBox Margin="10,0,96,0" HorizontalAlignment="Center">
+                <RadioButton Grid.Row="1" GroupName="one" Name="newOrder" Content="Új megrendelés"></RadioButton>
+                <RadioButton Grid.Row="1" GroupName="one" Name="accepted" Content="Fogadva"></RadioButton>
+                <RadioButton Grid.Row="1" GroupName="one" Name="readyForDelivery" Content="Kiszállításra kész"></RadioButton>
+                <RadioButton Grid.Row="1" GroupName="one" Name="underDelivery" Content="Kiszállítás alatt"></RadioButton>
+                <RadioButton Grid.Row="1" GroupName="one" Name="delivered" Content="Kiszállítva"></RadioButton>
+            </ListBox>
+        </StackPanel>
+        </Grid>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
+            <Button Content="OK" Width="71" Height="30" Margin="0,0,0,0" VerticalAlignment="Top" Click="ok_onClick"
+                    FontSize="14"  FontStyle="Normal"  HorizontalAlignment="Center"  Name="Submit"
+                    Foreground="#FFF9F8F8" Background="#FF5A97D4" BorderBrush="#FFFFFDFD"
+                    BorderThickness="2"/>
+            <Button Content="MÉGSEM" Width="71" Height="30" Margin="50,0,0,0" VerticalAlignment="Top" Click="ok_onClick"
+                    FontSize="14"  FontStyle="Normal"  HorizontalAlignment="Center"  Name="Cancel"
+                    Foreground="#FFF9F8F8" Background="#FF5A97D4" BorderBrush="#FFFFFDFD"
+                    BorderThickness="2"/>
+        </StackPanel>
+    </Grid>
+</Window>
