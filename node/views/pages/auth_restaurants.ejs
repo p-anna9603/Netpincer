@@ -18,8 +18,22 @@
     </div>
 
     <hr>
-    <div class="container">
+    <div class="container" >
+     <!-- <%= JSON.stringify(ettermek) %> -->
+    <!-- <%- JSON.parse(Étterem_JSON) %> -->
+    <%= adatok = JSON.stringify(ettermek) %>
+    <div id="text_from_script">    
+        Üdv! Teszt <%= adatok %>
+    </div>
+    
+    <script>
+      var stringified = JSON.stringify(ettermek);
+      var test = JSON.parse("<%-Étterem_JSON%>");
+      document.write(adatok);
+  </script>
+    <br>
       <div class="row mb-2">
+        
 
         <!-- GetRestauranList() -->
         <div class="col-md-6">
