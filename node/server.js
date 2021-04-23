@@ -57,7 +57,7 @@ const { parse } = require('path');
 var login_var = false;
 
 let logged; // current user
-let Ettermek; // étterem array amit átad a sessionben
+const Ettermek = []; // étterem array amit átad a sessionben
 var sess = {
     secret: 'secret keyboard cat ',
     resave: false,
@@ -205,7 +205,7 @@ function sendData(json_Object, request, response)
 
     client.on('data', function(data){
         var parsed_JSON = jsonParser(data);
-        var obj = JSON.parse(data);
+        //var obj = JSON.parse(data);
         if (parsed_JSON["type"] == 1) { // get User Data
             console.log("Received login data : " + data);
             console.log("Handshake -> Type: 1 <- User Login");
@@ -227,20 +227,16 @@ function sendData(json_Object, request, response)
             console.log("Received register data : " + data);
             console.log("Handshake -> Type: 4 <- User Login");
          }
-         else if (parsed_JSON.restaurantList[0].RestaurantID == 1) {
-            console.log("Received Restaurant Data : " + data);
-            console.log("Restaurant 1: " + parsed_JSON["restaurantList"]["name"]);
-         }
-        else if (parsed_JSON["restaurantList"][1]["restaurantID"] == 1) {
-            console.log("Received Restaurant Data : " + data);
-             console.log("Restaurant 1: " + parsed_JSON["restaurantList"]["name"]);
-            //request.session.loggedIn = userParser(data);
-         }
          else
          {
             console.log("Received Unknown Data : " + data);
-            Json_Values(parsed_JSON);
- 
+            console.log("Received Unknown Data :" + parsed_JSON["restaurantList"]);
+            //var newData = parsed_JSON.restaurantList.
+            parsed_JSON["restaurantList"].forEach(element => {
+                etterem = RestaurantParser(element);
+                Ettermek.push(etterem);
+            });
+            //Json_Values(parsed_JSON["restaurantList"]);
            
          }
      })
@@ -254,6 +250,7 @@ function Json_Values(obj) {
     for(var k in obj) {
         if(obj[k] instanceof Object) {
             Json_Values(obj[k]);
+            RestaurantParser(obj[k]);
         } else {
             console.log(obj[k]);
             //document.write(obj[k] + "<br>");
@@ -289,18 +286,18 @@ function jsonParser(object) {
  //USER PARSER FUNCTION 
 
  //RESTAURANT PARSER FUNCTION 
- function RestaurantParser(object){
+ function RestaurantParser(p){
      try{
-         var p = jsonParser(object);
+         //var p = jsonParser(object);
          //TODO - idk if it works
          rest = new Restaurant (p["restaurantID"],p["name"],p["restaurantDescription"],p["style"], p["owner"], p["phonenumber"], p["city"], p["zipcode"], p["line1"], p["line2"], p["fromHour"], p["toHour"], p["toMinute"]);
          console.log(rest);
      } catch (error){
         console.log(error);
-        return false;
+        return null;
      }
      console.log("> RestaurantParser() kész!");
-     return true;
+     return rest;
  }
 //RESTAURANT PARSER FUNCTION 
 
