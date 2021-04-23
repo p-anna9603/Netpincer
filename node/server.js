@@ -51,6 +51,8 @@ var path = require('path');
 
 var session = require('express-session');
 const { send } = require('process');
+const { json } = require('body-parser');
+const { parse } = require('path');
     //var sess;
 var login_var = false;
 
@@ -203,6 +205,7 @@ function sendData(json_Object, request, response)
 
     client.on('data', function(data){
         var parsed_JSON = jsonParser(data);
+        var obj = JSON.parse(data);
         if (parsed_JSON["type"] == 1) { // get User Data
             console.log("Received login data : " + data);
             console.log("Handshake -> Type: 1 <- User Login");
@@ -224,14 +227,21 @@ function sendData(json_Object, request, response)
             console.log("Received register data : " + data);
             console.log("Handshake -> Type: 4 <- User Login");
          }
-        else if (parsed_JSON.restaurantList[0].RestaurantID == 1) {
+         else if (parsed_JSON.restaurantList[0].RestaurantID == 1) {
             console.log("Received Restaurant Data : " + data);
+            console.log("Restaurant 1: " + parsed_JSON["restaurantList"]["name"]);
+         }
+        else if (parsed_JSON["restaurantList"][1]["restaurantID"] == 1) {
+            console.log("Received Restaurant Data : " + data);
+             console.log("Restaurant 1: " + parsed_JSON["restaurantList"]["name"]);
             //request.session.loggedIn = userParser(data);
          }
          else
          {
             console.log("Received Unknown Data : " + data);
-            console.log("Restaurant 1: " + parsed_JSON[0]);
+            Json_Values(parsed_JSON);
+ 
+           
          }
      })
     client.on('error', function(err) {
@@ -239,6 +249,19 @@ function sendData(json_Object, request, response)
      })
 }
 //SEND_DATA FUNCTION   
+// Teszt
+function Json_Values(obj) {
+    for(var k in obj) {
+        if(obj[k] instanceof Object) {
+            Json_Values(obj[k]);
+        } else {
+            console.log(obj[k]);
+            //document.write(obj[k] + "<br>");
+        };
+    }
+};
+// Teszt 
+
 
 function jsonParser(object) {
 
