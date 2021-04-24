@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <%- include('../partials/auth_head'); %>
+  </%- include('../../src/class.js'); %>
   </head>
 
   
@@ -19,17 +20,17 @@
 
     <hr>
     <div class="container" >
-     <!-- <%= JSON.stringify(ettermek) %> -->
+     <!-- <%= JSON.stringify(Éttermek) %> -->
     <!-- <%- JSON.parse(Étterem_JSON) %> -->
-    <%= adatok = JSON.stringify(ettermek) %>
     <div id="text_from_script">    
-        Üdv! Teszt <%= adatok %>
+        Üdv! <%= JSON.parse(Éttermek)[0]["Name"] %>
     </div>
-    
-    <script>
-      var stringified = JSON.stringify(ettermek);
-      var test = JSON.parse("<%-Étterem_JSON%>");
-      document.write(adatok);
+    <script type="text/javascript">    
+    //alert("Helo World go to slep");
+      document.write("Hello");
+      var initData = JSON.parse('<%=Éttermek%>');
+      alert(initData[0]["Style"]);
+      document.write(initData[0]["Style"]);
   </script>
     <br>
       <div class="row mb-2">

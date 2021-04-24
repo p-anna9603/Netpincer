@@ -1,64 +1,44 @@
-{
-  "restaurantList": [
-    {
-      "restaurantID": 1,
-      "city": "Veszprem",
-      "zipcode": "8200",
-      "line1": "Kossuth utca",
-      "line2": "2",
-      "fromHour": 8,
-      "fromMinute": 0,
-      "toHour": 16,
-      "toMinute": 0,
-      "name": "Marica",
-      "restaurantDescription": "Minden jo egy helyen",
-      "style": "Modern, letisztult",
-      "owner": "marica",
-      "pass": "",
-      "email": "",
-      "phoneNumber": "36-201111111",
-      "lastName": "",
-      "firstName": ""
-    },
-    {
-      "restaurantID": 2,
-      "city": "Veszprem",
-      "zipcode": "8200",
-      "line1": "Ady Endre utca",
-      "line2": "12",
-      "fromHour": 8,
-      "fromMinute": 0,
-      "toHour": 16,
-      "toMinute": 0,
-      "name": "Nagyi sutodeje",
-      "restaurantDescription": "Finomat olcson, gyorsan",
-      "style": "Hagyomanyos, izes, fuszeres",
-      "owner": "nagyi",
-      "pass": "",
-      "email": "",
-      "phoneNumber": "36-204433665",
-      "lastName": "",
-      "firstName": ""
-    },
-    {
-      "restaurantID": 3,
-      "city": "Veszprem",
-      "zipcode": "8200",
-      "line1": "Kossuth utca",
-      "line2": "12",
-      "fromHour": 8,
-      "fromMinute": 0,
-      "toHour": 16,
-      "toMinute": 0,
-      "name": "finom pizza",
-      "restaurantDescription": "finom sdaf ",
-      "style": "modern",
-      "owner": "pizza",
-      "pass": "",
-      "email": "",
-      "phoneNumber": "36-201111111",
-      "lastName": "",
-      "firstName": ""
-    }
-  ]
-}
+[
+  {
+    "RestaurantID": 1,
+    "Name": "Marica",
+    "RestaurantDesc": "Minden jo egy helyen",
+    "Stlye": "Modern, letisztult",
+    "Owner": "marica",
+    "City": "Veszprem",
+    "Zipcode": "8200",
+    "Line_1": "Kossuth utca",
+    "Line_2": "2",
+    "FromHour": 8,
+    "ToHour": 16,
+    "ToMinute": 0
+  },
+  {
+    "RestaurantID": 2,
+    "Name": "Nagyi sutodeje",
+    "RestaurantDesc": "Finomat olcson, gyorsan",
+    "Stlye": "Hagyomanyos, izes, fuszeres",
+    "Owner": "nagyi",
+    "City": "Veszprem",
+    "Zipcode": "8200",
+    "Line_1": "Ady Endre utca",
+    "Line_2": "12",
+    "FromHour": 8,
+    "ToHour": 16,
+    "ToMinute": 0
+  },
+  {
+    "RestaurantID": 3,
+    "Name": "finom pizza",
+    "RestaurantDesc": "finom sdaf ",
+    "Stlye": "modern",
+    "Owner": "pizza",
+    "City": "Veszprem",
+    "Zipcode": "8200",
+    "Line_1": "Kossuth utca",
+    "Line_2": "12",
+    "FromHour": 8,
+    "ToHour": 16,
+    "ToMinute": 0
+  }
+]
