@@ -36,6 +36,8 @@ namespace RestaurantClient
         Order dummyOrder2;
         Order dummyOrder3;
         Order dummyOrder4;
+        workingSchedule dummySchedule;
+        workingSchedule dummySchedule2;
         List<string> dummyAllergs = new List<string>();
         List<Food> oneOrdersFoods = new List<Food>();
         Food food;
@@ -57,31 +59,34 @@ namespace RestaurantClient
             //     orderslistFromServer = restaurantMain.ServerConnection.getOrders(restaurantMain.CurrUser.restaurantID); // TODO
 
             addOrdersToTable();
+            dummySchedule = new workingSchedule(1, 8, 16, 30, 0, "1,2,3");
+            dummySchedule2 = new workingSchedule(1, 8, 16, 30, 0, "2,4,5");
+
             dummyAllergs.Add("glutén");
             food = new Food(1, "Paprikás pizza", 1200, 3, 0, dummyAllergs, 2, 2, "2021.03.11", "2022.01.01");
             oneOrdersFoods.Add(food);
-            dummyOrder = new Order(1, 0, "2021.04.22 12:22", "Anna", 2000, oneOrdersFoods);
+            dummyOrder = new Order(1, 0, "2021.04.22 12:22", "", "Anna", 2000, oneOrdersFoods);
             waitingForDeliveryOrders.Add(dummyOrder);
 
             food2 = new Food(3, "Magyaros pizza", 1200, 3, 0, dummyAllergs, 2, 2, "2021.03.11", "2022.01.01");
             oneOrdersFoods.Add(food2);
-            dummyOrder2 = new Order(2, 1, "2021.04.22 14:22", "Pista", 2000, oneOrdersFoods);
+            dummyOrder2 = new Order(2, 1, "2021.04.22 14:22", "", "Pista", 2000, oneOrdersFoods);
             waitingForDeliveryOrders.Add(dummyOrder2);
             dummyAssign.Add(dummyOrder2);
 
             oneOrdersFoods.Add(food2);
-            dummyOrder3 = new Order(3, 2, "2021.04.22 14:22", "Lilla", 2000, oneOrdersFoods);
+            dummyOrder3 = new Order(3, 2, "2021.04.22 14:22", "", "Lilla", 2000, oneOrdersFoods);
             waitingForDeliveryOrders.Add(dummyOrder3);
 
             oneOrdersFoods.Add(food2);
-            dummyOrder4 = new Order(4, 3, "2021.04.22 14:22", "Zoli", 2000,  oneOrdersFoods);
+            dummyOrder4 = new Order(4, 3, "2021.04.22 14:22", "", "Zoli", 2000,  oneOrdersFoods);
             waitingForDeliveryOrders.Add(dummyOrder4);
             dummyAssign.Add(dummyOrder4);
 
-            dummyBoy = new DeliveryBoy(1, "David");
+            dummyBoy = new DeliveryBoy(1, "David", dummySchedule);
             boys.Add(dummyBoy);
 
-            dummyBoy2 = new DeliveryBoy(2, "Ákos", dummyAssign);
+            dummyBoy2 = new DeliveryBoy(2, "Ákos", dummySchedule2, dummyAssign);
             boys.Add(dummyBoy2);
 
             addExistingDeliveryBoys();
@@ -89,7 +94,7 @@ namespace RestaurantClient
         public void addExistingDeliveryBoys()
         {
             // TODO fill the list from the listFromServerConnection
-            /*
+            
             if (listFromServer.ListDevliveryboy != null)
             {
                 for (int i = 0; i < listFromServer.ListDevliveryboy.Count; ++i)
@@ -98,7 +103,7 @@ namespace RestaurantClient
                 //    newFoodWindows.Add(listFromServer.ListFood[i].FoodID, listFromServer.ListFood[i]);
                 }
             }
-            */
+            
             if (boys.Count != 0)
             {
                 Console.WriteLine("addpanel 0");
