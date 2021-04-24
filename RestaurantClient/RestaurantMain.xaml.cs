@@ -30,12 +30,16 @@ namespace FoodOrderClient
         Restaurant currUser;
         startupWindow parent;
         List<Order> newOrders = new List<Order>();
+        List<int> newOrdersID = new List<int>();
         List<Order> ordersList = new List<Order>();
         List<Order> checkedNewOrders = new List<Order>();
+        List<int> checkedNewOrdersID = new List<int>();
 
         public ConnectToServer ServerConnection { get => serverConnection; set => serverConnection = value; }
         public Restaurant CurrUser { get => currUser; set => currUser = value; }
         internal List<Order> CheckedNewOrders { get => checkedNewOrders; set => checkedNewOrders = value; }
+        internal List<int> CheckedNewOrdersID { get => checkedNewOrdersID; set => checkedNewOrdersID = value; }
+        public List<int> NewOrdersID { get => newOrdersID; set => newOrdersID = value; }
 
         Order dummyOrder;
         Order dummyOrder2;
@@ -77,13 +81,13 @@ namespace FoodOrderClient
             dummyAllergs.Add("glutén");
             food = new Food(1, "Paprikás pizza", 1200, 3, 0, dummyAllergs, 2, 2, "2021.03.11", "2022.01.01");
             oneOrdersFoods.Add(food);
-            dummyOrder = new Order(1, 0, "2021.04.22 12:22", "Anna", 2000, oneOrdersFoods);
+            dummyOrder = new Order(1, 0, "2021.04.22 12:22", "", "Anna", 2000, "1,2,3");
             ordersList.Add(dummyOrder);
 
-            dummyOrder3 = new Order(3, 2, "2021.04.22 14:22", "Zoli", 2000, oneOrdersFoods);
-            ordersList.Add(dummyOrder3);
+            dummyOrder2 = new Order(2, 1, "2021.04.22 14:22", "", "Pista", 2000, "2,3");
+            ordersList.Add(dummyOrder2);
 
-            dummyOrder4 = new Order(4, 0, "2021.04.22 14:22", "Réka", 2000, oneOrdersFoods);
+            dummyOrder4 = new Order(4, 3, "2021.04.22 14:22", "", "Réka", 2000, "1");
             ordersList.Add(dummyOrder4);
         }
         private void ListViewItem_MouseEnter(object sender, MouseEventArgs e)
@@ -258,25 +262,26 @@ namespace FoodOrderClient
             {
                 Thread.Sleep(10000);
                 //ordersList = serverConnection.getOrders(currUser.restaurantID); TODO
-                for (int i = 1; i < ordersList.Count; ++i)
+                for (int i = 0; i < ordersList.Count; ++i)
                 {
-                    if(ordersList[i].OrderStatus == 0 && !(checkedNewOrders.Contains(ordersList[i])))
+                    //if(ordersList[i].OrderStatus == 0 && !(checkedNewOrders.Contains(ordersList[i])))
+                    if(ordersList[i].OrderStatus == 0 && !(checkedNewOrdersID.Contains(ordersList[i].OrderID)))
                     {
                         Console.WriteLine("hozzáadás");
-                        newOrders.Add(ordersList[i]);
+                        //newOrders.Add(ordersList[i]);
+                        NewOrdersID.Add(ordersList[i].OrderID);
                     }
                 }
-                if(newOrders.Count != 0)
+                if(NewOrdersID.Count != 0)
                 {
                     // alert the restaurant that there are not checked new orders
                     Console.WriteLine("Alert");
-                    //newOrderCount.Text = newOrders.Count.ToString();
-                    //newOrderCount.Visibility = Visibility.Visible;
                     newOrderCount.Dispatcher.Invoke(
                         new UpdateTextCallback(this.UpdateText),
-                        new object[] { newOrders.Count.ToString() });
+                        new object[] { NewOrdersID.Count.ToString() });
                 }
                 newOrders.Clear();
+                NewOrdersID.Clear();
                 Console.WriteLine("10 mp eltelt");
             }
         }

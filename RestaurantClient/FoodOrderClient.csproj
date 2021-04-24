@@ -156,6 +156,7 @@
     <Compile Include="UserRestCategs.xaml.cs">
       <DependentUpon>UserRestCategs.xaml</DependentUpon>
     </Compile>
+    <Compile Include="workingSchedule.cs" />
     <Page Include="AssignDelivery.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
