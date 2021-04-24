@@ -53,23 +53,23 @@ namespace RestaurantClient
             dummyAllergs.Add("glutén");
             food = new Food(1, "Paprikás pizza", 1200, 3, 0, dummyAllergs, 2, 2, "2021.03.11", "2022.01.01");
             oneOrdersFoods.Add(food);
-            dummyOrder = new Order(1, 0, "2021.04.22 12:22", "Anna", 2000, oneOrdersFoods);
+            dummyOrder = new Order(1, 0, "2021.04.22 12:22", "", "Anna", 2000, oneOrdersFoods);
             newOrders.Add(dummyOrder);
 
             food2 = new Food(2, "Magyaros pizza", 1400, 3, 0, dummyAllergs, 2, 2, "2021.03.11", "2022.01.01");
             oneOrdersFoods.Add(food2);
-            dummyOrder2 = new Order(2, 1, "2021.04.22 14:22", "Pista", 2000, oneOrdersFoods);
+            dummyOrder2 = new Order(2, 1, "2021.04.22 14:22","", "Pista", 2000, oneOrdersFoods);
             acceptedOrders.Add(dummyOrder2);
 
-            dummyOrder3 = new Order(3, 2, "2021.04.22 14:22", "Zoli", 2000, oneOrdersFoods);
+            dummyOrder3 = new Order(3, 2, "2021.04.22 14:22", "", "Zoli", 2000, oneOrdersFoods);
             readyForDelivery.Add(dummyOrder3);
 
             food2 = new Food(3, "Tészta leves", 700, 3, 0, dummyAllergs, 2, 2, "2021.03.11", "2022.01.01");
             oneOrdersFoods.Add(food2);
-            dummyOrder4 = new Order(4, 3, "2021.04.22 14:22", "Réka", 2000, oneOrdersFoods);
+            dummyOrder4 = new Order(4, 3, "2021.04.22 14:22", "", "Réka", 2000, oneOrdersFoods);
             underDeliveryOrders.Add(dummyOrder4);
 
-            dummyOrder5 = new Order(4, 0, "2021.04.22 14:22", "János", 2000, oneOrdersFoods);
+            dummyOrder5 = new Order(4, 0, "2021.04.22 14:22", "", "János", 2000, oneOrdersFoods);
             newOrders.Add(dummyOrder5);
             //Button button = new Button();
             //more_Click(button, (RoutedEventArgs)EventArgs.Empty);

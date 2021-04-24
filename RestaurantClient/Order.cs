@@ -11,6 +11,7 @@ namespace RestaurantClient
         int orderID;
         int orderStatus;
         string orderTime;
+        string endorderTime;
         string customer;
         double totalPrice;
         int deliveryPersonId;
@@ -18,15 +19,17 @@ namespace RestaurantClient
         string statusString;
         string foods;
 
-        public Order(int oId, int status, string orderTim, string cust, double price, List<Food> list, int deliveryID = -1)
+        public Order(int oId, int status, string orderTim, string endOrderTime, string cust, double price, string foods)
         {
             orderID = oId;
             orderStatus = status;
             orderTime = orderTim;
             customer = cust;
             totalPrice = price;
-            deliveryPersonId = deliveryID;
+         //   deliveryPersonId = deliveryID;
+            // TODO : Parsolni foodsot vesszők szerint és adott foodID-ra megnézni mi a FOOD - szerverről, és ezeket belepakolni a List<Food>-ba
             orderedFoodList = list;
+            endorderTime = endOrderTime;
             if (orderStatus == 0)
             {
                 statusString = "Új";
