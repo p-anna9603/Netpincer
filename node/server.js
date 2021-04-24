@@ -22,7 +22,7 @@ let Restaurant = class {
         this.RestaurantID=restaurantID;
         this.Name = name;
         this.RestaurantDesc = restaurantDesc;
-        this.Stlye = style;
+        this.Style = style;
         this.Owner = owner;
         this.PhoneNumber = phonenumber;
         this.City = city;
@@ -91,8 +91,12 @@ app.get('/register', function(req, res) {
     res.render('pages/register');
 });
 
-app.get('/auth', function(request, response) {
-        response.render('pages/auth');
+app.get('/register', function(req, res) {
+    res.render('pages/register');
+});
+
+app.get('restaurant', function(request, response) {
+        response.render('../partials/rest_cards');
 });
 
 // HOMEPAGE
@@ -117,7 +121,7 @@ app.get('/auth_restaurants', function(request,response){
         if (Ettermek.length == 0) {
             getRestaurants(request,response); // Bekéri az összes éttermet -> frissíteni kell az odalt, ha újat kap az adatbázis
             console.log("Ettermek : " + Ettermek);
-            response.render('pages/auth_restaurants', {'Éttermek' : JSON.stringify(Ettermek), 'session_var': request.session, 'Étterem_JSON': Étterem_JSON}); // session-ben átadja madj az éttermeket egy objektum array-ként TODO#######
+            response.render('pages/auth_restaurants', {'Éttermek' : JSON.stringify(Ettermek), 'session_var': request.session, 'Étterem_JSON': Étterem_JSON }); // session-ben átadja madj az éttermeket egy objektum array-ként TODO#######
         }
         else{
             console.log("Ettermek : " + Ettermek); // kirakja Objektként, hogy mennyit ad át
