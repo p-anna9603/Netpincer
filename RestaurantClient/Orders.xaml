@@ -6,6 +6,21 @@
              xmlns:local="clr-namespace:RestaurantClient"
              mc:Ignorable="d" 
   Height="439.844" Width="704.061" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <UserControl.Resources>
+        <Style TargetType="DataGridCell">
+            <Style.Setters>
+                  <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                  <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+            </Style.Setters>
+        </Style>
+        <Style TargetType="DataGridColumnHeader">
+            <Style.Setters>
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+            </Style.Setters>
+        </Style>
+    </UserControl.Resources>
     <Border BorderBrush="black" BorderThickness="2">
         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.RowDefinitions>
@@ -31,10 +46,10 @@
                 </Grid.ColumnDefinitions>-->
 
             <!--<ScrollViewer Name="scrollView" Grid.Row="1" Background="#FFF1F1F1" VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="2" Margin="22,0,0,0">-->
-            <DataGrid Grid.Row="1" Grid.Column="0" Name="table" AutoGenerateColumns="False"
+            <DataGrid Grid.Row="1" Grid.Column="0" Name="table" AutoGenerateColumns="False" ItemsSource="{Binding ordersLists}"
                               HorizontalScrollBarVisibility="Visible" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                       Margin="16,40,16,19" IsReadOnly="True" PreviewMouseDown="table_onClick" PreviewMouseLeftButtonUp="table_onClick"
-                      PreviewMouseLeftButtonDown="table_onClick">
+                      PreviewMouseLeftButtonDown="table_onClick" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                 <DataGrid.Resources>
                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" 
                    Color="#005ce6"/>
@@ -49,7 +64,7 @@
                     <DataGridTextColumn Header="Státusz" Binding="{Binding StatusString}" Width="*">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="{x:Type TextBlock}">
-                                <Style.Triggers>
+                                <Style.Triggers>                                    
                                     <Trigger Property="Text" Value="Új">
                                         <Setter Property="Background" Value="Red"/>
                                         <Setter Property="Foreground" Value="White"/>

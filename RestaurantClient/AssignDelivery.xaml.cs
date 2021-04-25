@@ -28,7 +28,7 @@ namespace RestaurantClient
         Dictionary<StackPanel, int> boysPanels = new Dictionary<StackPanel, int>(); // stackpanel, boyID
         Dictionary<Button, Order> xPanels = new Dictionary<Button, Order>(); // xButton, Order
 
-        OrderList orderslistFromServer; // TODO
+        OrderList orderslistFromServer;
         List<Order> waitingForDeliveryOrders = new List<Order>();
         List<Order> dummyAssign = new List<Order>();
 
@@ -40,6 +40,7 @@ namespace RestaurantClient
         Order dummyOrder4;
         workingSchedule dummySchedule;
         workingSchedule dummySchedule2;
+        workingSchedule dummySchedule3;
         List<string> dummyAllergs = new List<string>();
         List<Food> oneOrdersFoods = new List<Food>();
         Food food;
@@ -47,6 +48,7 @@ namespace RestaurantClient
 
         DeliveryBoy dummyBoy;
         DeliveryBoy dummyBoy2;
+        DeliveryBoy dummyBoy3;
 
         public AssignDelivery(Window restrantMain)
         {
@@ -57,44 +59,47 @@ namespace RestaurantClient
             tableGrid.Background = color;
 
             restaurantMain = (RestaurantMain)restrantMain;
-            //     listFromServer = restaurantMain.ServerConnection.getDeliveryBoys(restaurantMain.CurrUser.restaurantID); // TODO
-            //     orderslistFromServer = restaurantMain.ServerConnection.getOrders(restaurantMain.CurrUser.restaurantID); // TODO
+            //listFromServer = restaurantMain.ServerConnection.getDeliveryBoys(restaurantMain.CurrUser.restaurantID); // TODO
+            orderslistFromServer = restaurantMain.ServerConnection.getOrders(restaurantMain.CurrUser.restaurantID);
 
             addOrdersToTable();
+
             dummySchedule = new workingSchedule(1, 8, 16, 30, 0, "1,2,3");
-            dummySchedule2 = new workingSchedule(1, 8, 16, 30, 0, "2,4,5");
+            dummySchedule2 = new workingSchedule(2, 8, 16, 30, 0, "2,4,5");
+            dummySchedule3 = new workingSchedule(3, 8, 22, 30, 0, "5,6,7");
 
             dummyAllergs.Add("glutén");
             food = new Food(1, "Paprikás pizza", 1200, 3, 0, dummyAllergs, 2, 2, "2021.03.11", "2022.01.01");
             oneOrdersFoods.Add(food);
             dummyOrder = new Order(1, 0, "2021.04.22 12:22", "", "Anna", 2000, "2");
-            waitingForDeliveryOrders.Add(dummyOrder);
+          //  waitingForDeliveryOrders.Add(dummyOrder);
 
             food2 = new Food(3, "Magyaros pizza", 1200, 3, 0, dummyAllergs, 2, 2, "2021.03.11", "2022.01.01");
             oneOrdersFoods.Add(food2);
             dummyOrder2 = new Order(2, 1, "2021.04.22 14:22", "", "Pista", 2000, "1");
-            waitingForDeliveryOrders.Add(dummyOrder2);
+         //   waitingForDeliveryOrders.Add(dummyOrder2);
             dummyAssign.Add(dummyOrder2);
 
             oneOrdersFoods.Add(food2);
             dummyOrder3 = new Order(3, 2, "2021.04.22 14:22", "", "Lilla", 2000, "1,2");
-            waitingForDeliveryOrders.Add(dummyOrder3);
+         //   waitingForDeliveryOrders.Add(dummyOrder3);
 
             oneOrdersFoods.Add(food2);
             dummyOrder4 = new Order(4, 3, "2021.04.22 14:22", "", "Zoli", 2000,  "2");
-            waitingForDeliveryOrders.Add(dummyOrder4);
+         //   waitingForDeliveryOrders.Add(dummyOrder4);
             dummyAssign.Add(dummyOrder4);
 
             dummyBoy = new DeliveryBoy(1, "David", dummySchedule);
            // boys.Add(dummyBoy);
-
             dummyBoy2 = new DeliveryBoy(2, "Ákos", dummySchedule2, dummyAssign);
-         //   boys.Add(dummyBoy2);
+            //   boys.Add(dummyBoy2);
+            dummyBoy3 = new DeliveryBoy(3, "Fruzsi", dummySchedule3, dummyAssign);
 
             listFromServer = new DeliveryBoyList();
             listFromServer.ListDevliveryboy = new List<DeliveryBoy>();
             listFromServer.ListDevliveryboy.Add(dummyBoy);
             listFromServer.ListDevliveryboy.Add(dummyBoy2);
+            listFromServer.ListDevliveryboy.Add(dummyBoy3);
             addExistingDeliveryBoys();
         }
         public void addExistingDeliveryBoys()
@@ -108,19 +113,23 @@ namespace RestaurantClient
                     int isDayOk = 0;
                     dateTime = DateTime.Now;
                     int day = (int)dateTime.DayOfWeek; // current day of the week in number
+                    if(day == 0)
+                    {
+                        day = 7;
+                    }
                     int hour = dateTime.Hour;
                     int min = dateTime.Minute;
-
                     workingSchedule workTime = listFromServer.ListDevliveryboy[i].Working;
                     for (int j = 0; j < workTime.WorkingDaysInInt.Count; ++j)
                     {
-                        if(workTime.WorkingDaysInInt[i] == day)
+                        if(workTime.WorkingDaysInInt[j] == day)
                         {
                             isDayOk = 1;
                             break;
                         }
                     }
-                    if(isDayOk == 1 && workTime.FromHour <= hour && workTime.FromMinute <= min && workTime.ToHour >= hour && workTime.ToMinute-5 >= min)
+                    if(isDayOk == 1 && workTime.FromHour <= hour  && 
+                       ( workTime.ToHour > hour || workTime.ToHour == hour && workTime.ToMinute  >= min))
                     {
                         boys.Add(listFromServer.ListDevliveryboy[i]);
                     }
@@ -142,7 +151,7 @@ namespace RestaurantClient
         public void addOrdersToTable()
         {
             // TODO fill the list from the listFromServerConnection
-            /*
+           
             if (orderslistFromServer.ListOrder != null)
             {
                 for (int i = 0; i < orderslistFromServer.ListOrder.Count; ++i)
@@ -156,7 +165,7 @@ namespace RestaurantClient
                     }
                 }
             }
-            */
+            
             table.ItemsSource = waitingForDeliveryOrders;
         }
 
@@ -312,7 +321,7 @@ namespace RestaurantClient
             xPanels.Remove(xButton);
 
             Console.WriteLine("boy: " + boyID + ", o:  " + order.OrderID);
-            //   restaurantMain.ServerConnection.updateOrderState(order.OrderID, 2); // TODO
+            restaurantMain.ServerConnection.updateOrderState(order.OrderID, 2);
             //   restaurantMain.ServerConnection.removeOrderFromDeliveryBoy(boyID, order.OrderID); // TODO
 
             /* Újra számozás */
@@ -561,7 +570,7 @@ namespace RestaurantClient
         {
             Console.WriteLine("update to server\n");
             //  restaurantMain.ServerConnection.addOrderToDeliveryBoy(boyID, order.OrderID); //TODO
-            //  restaurantMain.ServerConnection.updateOrderState(order.orderID, 3); //TODO
+            restaurantMain.ServerConnection.updateOrderState(order.OrderID, 3);
             Console.WriteLine("update to server 2\n");
             for (int i = 0; i < boys.Count; ++i)
             {

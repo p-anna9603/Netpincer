@@ -28,40 +28,8 @@ namespace RestaurantClient
             orderTime = orderTim;
             customer = cust;
             totalPrice = price;
-            //   deliveryPersonId = deliveryID;
-            // TODO : Parsolni foodsot vesszők szerint és adott foodID-ra megnézni mi a FOOD - szerverről, és ezeket belepakolni a List<Food>-ba
             foods = foodsString;
-            /*
-            string[] foodNums = foods.Split(',');
-            for(int i = 0; i < foodNums.Length; ++i)
-            {
-                int foodID;
-                foodID = Int32.Parse(foodNums[i]);
-                Food food = restMain.ServerConnection.getFood(foodID);
-                orderedFoodList.Add(food);
-            }
-            orderedFoodList = list;*/
-            endorderTime = endOrderTime;
-            if (orderStatus == 0)
-            {
-                statusString = "Új";
-            }
-            else if (orderStatus == 1)
-            {
-                statusString = "Fogadva";
-            }
-            else if (orderStatus == 2)
-            {
-                statusString = "Kiszállításra kész";
-            }
-            else if (orderStatus == 3)
-            {
-                statusString = "Kiszállítás alatt";
-            }
-            else if (orderStatus == 4)
-            {
-                statusString = "Kiszállítva";
-            }
+            endorderTime = endOrderTime; 
             //string foodsDesc = "\tRendelt ételek\n\t\t";
             //for(int i = 0; i < orderedFoodList.Count; ++i)
             //{
@@ -70,7 +38,38 @@ namespace RestaurantClient
         }
 
         public int OrderID { get => orderID; set => orderID = value; }
-        public int OrderStatus { get => orderStatus; set => orderStatus = value; }
+        public int OrderStatus 
+        { 
+            get => orderStatus;
+            set
+            {
+                orderStatus = value;
+                Console.WriteLine("#############test id: " + orderID + ", " + orderStatus);
+                if (orderStatus == 0)
+                {
+                    Console.WriteLine("új");
+                    statusString = "Új";
+                }
+                else if (orderStatus == 1)
+                {
+                    Console.WriteLine("fogadva");
+                    statusString = "Fogadva";
+                }
+                else if (orderStatus == 2)
+                {
+                    Console.WriteLine("kiszállításrakész");
+                    statusString = "Kiszállításra kész";
+                }
+                else if (orderStatus == 3)
+                {
+                    statusString = "Kiszállítás alatt";
+                }
+                else if (orderStatus == 4)
+                {
+                    statusString = "Kiszállítva";
+                }
+            }     
+        }
         public string OrderTime { get => orderTime; set => orderTime = value; }
         public string Customer { get => customer; set => customer = value; }
         public double TotalPrice { get => totalPrice; set => totalPrice = value; }
@@ -88,21 +87,26 @@ namespace RestaurantClient
 
         public void setFoods()
         {
-            string[] foodNums = foods.Split(',');
+            Console.WriteLine("kaják: " + foods);
+            Console.WriteLine("statusString: " + statusString);
+            String[] foodNums = foods.Split(',');
             for (int i = 0; i < foodNums.Length; ++i)
             {
                 int foodID;
                 foodID = Int32.Parse(foodNums[i]);
                 /* Test if restMain works with server connection */
-                Categories cats = restMain.ServerConnection.getCategories(1);
-               Console.WriteLine("cats count: " + cats.ListOfCategoryNames.Count);
+                /*
+                  Categories cats = restMain.ServerConnection.getCategories(1);
+                  Console.WriteLine("cats count: " + cats.ListOfCategoryNames.Count);
+                */
 
-                //Food food = restMain.ServerConnection.getFood(foodID);
+                Food food = restMain.ServerConnection.getFoodByID(foodID);
                 /* Delete if above function exists : */
-                List<string> dummyAllergs = new List<string>();
-                dummyAllergs.Add("glutén");
-                Food food = new Food(foodID, "Paprikás pizza", 1200, 3, 0, dummyAllergs, 2, 2, "2021.03.11", "2022.01.01");
-
+                /*
+                     List<string> dummyAllergs = new List<string>();
+                     dummyAllergs.Add("glutén");
+                     Food food = new Food(foodID, "Paprikás pizza", 1200, 3, 0, dummyAllergs, 2, 2, "2021.03.11", "2022.01.01");
+                */
                 orderedFoodList.Add(food);
             }
             foodsDesc = "\tRendelt ételek\n\t\t";
@@ -113,5 +117,6 @@ namespace RestaurantClient
         }
         public RestaurantMain RestMain { get => restMain; set => restMain = value; }
         public string EndorderTime { get => endorderTime; set => endorderTime = value; }
+        public string Foods { get => foods; set => foods = value; }
     }
 }

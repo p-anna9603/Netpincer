@@ -661,11 +661,11 @@ public class ConnectToServer
                 Console.WriteLine("EndorderTime: {0}", receivedOrderList.ListOrder[i].EndorderTime);
                 Console.WriteLine("Customer: {0}", receivedOrderList.ListOrder[i].Customer);
                 Console.WriteLine("TotalPrice: {0}", receivedOrderList.ListOrder[i].TotalPrice);
-                Console.WriteLine("Foods:");
-                for (int j = 0; j < receivedOrderList.ListOrder[i].OrderedFoodList.Count; ++j)
-                {
-                    Console.WriteLine(receivedOrderList.ListOrder[i].OrderedFoodList[j]);
-                }
+                Console.WriteLine("Foods: {0}", receivedOrderList.ListOrder[i].Foods);
+                //for (int j = 0; j < receivedOrderList.ListOrder[i].OrderedFoodList.Count; ++j)
+                //{
+                //    Console.WriteLine(receivedOrderList.ListOrder[i].OrderedFoodList[j]);
+                //}
             }
             return receivedOrderList;
         }
