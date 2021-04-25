@@ -46,6 +46,23 @@ let Category = class
         return this.listOfCategoryNames;
     }
 }
+let Food = class 
+{
+    constructor(foodID, name, price, rating, pictureID, allergenes, categoryID, restaurantID, avaibleFrom, avaibleTo)
+    {
+        this.FoodID = foodID;
+        this.Name = name;
+        this.Price = price;
+        this.Rating = rating;
+        this.PictureID =  pictureID;
+        this.Allergenes = allergenes;
+        this.CategoryID = categoryID;
+        this.RestaurantID = restaurantID;
+        this.AvaibleFrom = avaibleFrom;
+        this.AvaibleTo = avaibleTo;
+    }
+
+}
 const first_JSON = { type:0, msgID:0 }
 
 // MUST-HAVE ééééés DEPENDENCIES
@@ -130,6 +147,23 @@ app.get('/restaurant', async function(req, res) {
     
  });
 
+ app.get('/categories', async function(req, res) {
+
+    if (req.session.loggedIn) 
+    {
+        let id = req.query.id;
+        let esziID = req.query.restID;
+        getFoods();
+        res.render('pages/categories');
+    }
+    else
+    {
+        res.send('Please login to view this page!');
+    }
+
+    
+ });
+
  app.get('/futar_login', async function(req, res) {
     res.render('pages/futar_login');
     
@@ -162,12 +196,9 @@ app.get('/auth_restaurants', function(request,response){
         if (Ettermek.length == 0) {
             getRestaurants(request,response); // Bekéri az összes éttermet -> frissíteni kell az odalt, ha újat kap az adatbázis
             Kategoriak = null;
-            console.log("Ettermek : " + Ettermek);
             response.render('pages/auth_restaurants', {'Éttermek' : JSON.stringify(Ettermek), 'session_var': request.session, 'Étterem_JSON': Étterem_JSON }); // session-ben átadja madj az éttermeket egy objektum array-ként TODO#######
         }
         else{
-            console.log("Ettermek : " + Ettermek); // kirakja Objektként, hogy mennyit ad át
-            console.log("Étterem JSON : " + Étterem_JSON); // teljes JSON
             response.render('pages/auth_restaurants', {'Éttermek' : JSON.stringify(Ettermek), 'session_var': request.session, 'Étterem_JSON': Étterem_JSON  }); // session-ben átadja madj az éttermeket egy objektum array-ként TODO#######
         }
     }
@@ -288,6 +319,10 @@ function sendData(json_Object, request, response)
             Kategoriak= CategoryParser(parsed_JSON);
             console.log("Kategoriak feltöltve: " + Kategoriak.listOfCategoryNames);
         }
+        else if(parsed_JSON["Type"] == 9) // getFoods
+        {
+            console.log("Received Food data : " + data);
+        }
         else if(parsed_JSON["restaurantList"].length != 0)
                 { 
                     Ettermek = [];
@@ -305,9 +340,7 @@ function sendData(json_Object, request, response)
                             console.log('>>> Restaurants have been written to file');
                         });
                 
-                }
-            
-        
+        }
         else
         {
             console.log("Hiba: " + error);
@@ -373,8 +406,18 @@ function CategoryParser(p){
     return macska;
 }
 //CATEGORY PARSER
-
-
+//FOOD PARSER
+function FoodParser(p){
+    try{
+        macska = new Food (p["listOfCategoryNames"], p["listOfCategoryIDs"]);
+    } catch (error){
+       console.log(error);
+       return null;
+    }
+    console.log("> Category() kész!");
+    return macska;
+}
+//FOOD PARSER
 
 //SLEEP
 async function slep(number) {
@@ -403,12 +446,19 @@ async function slep(number) {
   //GET CATEGORY - 7-es KÓD
 function getCategory(restaurant_ID, request, response)
 {
-    const Get_Category_JSON = { type: 7, clientID: 0, restaurantID: restaurant_ID}
+    const Get_Category_JSON = { type: 7, clientID: 0, restaurantID: restaurant_ID};
     const jsonStr = JSON.stringify(Get_Category_JSON);
-    console.log("Sent Category JSON -> " + jsonStr)
+    console.log("Sent Category JSON -> " + jsonStr);
     sendData(Get_Category_JSON,request,response);
 }
 
+function getFoods(restaurant_ID, macska, request, response)
+{
+    const Get_Foods_JSON = { type: 9, clientID: 0, restaurantID: restaurant_ID, category_ID: macska};
+    const jsonStr = JSON.stringify(Get_Category_JSON);
+    console.log("Sent Food JSON -> " + jsonStr);
+    sendData(Get_Foods_JSON,request,response);
+}
    //GET CATEGORY - 7-es KÓD
    /*
    Received JSON: {
