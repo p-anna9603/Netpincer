@@ -34,6 +34,14 @@ let Restaurant = class {
         this.ToMinute = toMinute;
     }
 }
+let Category = class
+{
+    constructor(names,IDs)
+    {
+        this.listOfCategoryNames = names;
+        this.listOfCategoryIDs = IDs;
+    }
+}
 const first_JSON = { type:0, msgID:0 }
 
 // MUST-HAVE ééééés DEPENDENCIES
@@ -235,8 +243,6 @@ function sendData(json_Object, request, response)
 
     client.on('data', function(data){
         var parsed_JSON = jsonParser(data);
-        console.log(data);
-        console.log(parsed_JSON);
         //var obj = JSON.parse(data);
         if (parsed_JSON["type"] == 1) { // get User Data
             console.log("Received login data : " + data);
@@ -263,10 +269,10 @@ function sendData(json_Object, request, response)
         {
             console.log("Received Category data : " + data);
             console.log("Handshake -> Type: 7 <- Got Category");
-            parsed_JSON["listOfCategoryNames"].forEach(element => {
-                     etterem = RestaurantParser(element);
-                     Ettermek.push(etterem);
-                 });
+            kat = CategoryParser(parsed_JSON);
+            Kategoriak = [];
+            Kategoriak.push(kat);
+            console.log(Kategoriak);
         }
         else if(parsed_JSON["restaurantList"].length != 0)
                 { 
@@ -340,6 +346,21 @@ function jsonParser(object) {
      return rest;
  }
 //RESTAURANT PARSER FUNCTION 
+
+//CATEGORY PARSER
+function CategoryParser(p){
+    try{
+        macska = new Category (p["listOfCategoryNames"], p["listOfCategoryIDs"]);
+    } catch (error){
+       console.log(error);
+       return null;
+    }
+    console.log("> Category() kész!");
+    return macska;
+}
+//CATEGORY PARSER
+
+
 
 //SLEEP
 async function slep(number) {
