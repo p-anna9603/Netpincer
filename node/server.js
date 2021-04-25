@@ -92,13 +92,13 @@ app.get('/register', function(req, res) {
 });
 
 app.get('/restaurant', async function(req, res) {
-    if (request.session.loggedIn) 
+    if (req.session.loggedIn) 
     {
         let id = req.query.id;
         res.render('pages/restaurant', { 'id': id, 'Éttermek' : JSON.stringify(Ettermek)});
     }
     else {
-		response.send('Please login to view this page!');
+		res.send('Please login to view this page!');
 	}
     
  });
