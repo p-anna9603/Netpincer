@@ -128,15 +128,11 @@ app.get('/restaurant', async function(req, res) {
         if (Kategoriak == null) {
             let id = req.query.id;
             getCategory(id,req,res);
-            console.log("String" + JSON.stringify(Kategoriak));
-            console.log("Sima: " + Kategoriak);
             res.render('pages/restaurant', { 'id': id, 'Éttermek' : JSON.stringify(Ettermek), 'Kategóriák': JSON.stringify(Kategoriak)});
   
         }
         else{
             let id = req.query.id;
-            console.log("String" + JSON.stringify(Kategoriak.listOfCategoryNames));
-            console.log("Sima: " + Kategoriak.listOfCategoryIDs);
             res.render('pages/restaurant', { 'id': id, 'Éttermek' : JSON.stringify(Ettermek), 'Kategóriák': JSON.stringify(Kategoriak.listOfCategoryNames), 'IDk': JSON.stringify(Kategoriak.listOfCategoryIDs) });
         }
 
@@ -153,7 +149,7 @@ app.get('/restaurant', async function(req, res) {
     {
         let id = req.query.id;
         let esziID = req.query.restID;
-        getFoods();
+        getFoods(esziID,id,req,res);
         res.render('pages/categories');
     }
     else
@@ -455,7 +451,7 @@ function getCategory(restaurant_ID, request, response)
 function getFoods(restaurant_ID, macska, request, response)
 {
     const Get_Foods_JSON = { type: 9, clientID: 0, restaurantID: restaurant_ID, category_ID: macska};
-    const jsonStr = JSON.stringify(Get_Category_JSON);
+    const jsonStr = JSON.stringify(Get_Foods_JSON);
     console.log("Sent Food JSON -> " + jsonStr);
     sendData(Get_Foods_JSON,request,response);
 }

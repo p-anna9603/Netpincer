@@ -1,12 +1,12 @@
 # Netpincer
 
 User_Web/node_modules nincs felöltve 
-npm init
-npm install --save express ejs
-npm install session
-npm install express-session
-npm install body-parser
-npm install path
+	npm init
+	npm install --save express ejs
+	npm install session
+	npm install express-session
+	npm install body-parser
+	npm install path
 
     futtat -> terminál -> node server.js
 
