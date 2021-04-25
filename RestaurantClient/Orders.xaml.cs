@@ -22,7 +22,9 @@ namespace RestaurantClient
     public partial class Orders : UserControl
     {
         List<Order> orders;
-        OrderList listFromServer; 
+        OrderList listFromServer;
+
+        List<Food> orderedFoodList; // for 1 order
 
         RestaurantMain restaurantMain;
         List<Order> newOrders = new List<Order>();
@@ -48,32 +50,40 @@ namespace RestaurantClient
             InitializeComponent();
             restaurantMain = (RestaurantMain)restrantMain;
             //     listFromServer = restaurantMain.ServerConnection.getOrders(restaurantMain.CurrUser.restaurantID); // TODO
-            addExistingOrders();
-
+     
+            /* Dummy orders to test : delete if server function is working */
             dummyAllergs.Add("glutén");
             food = new Food(1, "Paprikás pizza", 1200, 3, 0, dummyAllergs, 2, 2, "2021.03.11", "2022.01.01");
             oneOrdersFoods.Add(food);
-            dummyOrder = new Order(1, 0, "2021.04.22 12:22", "", "Anna", 2000, oneOrdersFoods);
+            dummyOrder = new Order(1, 0, "2021.04.22 12:22", "", "Anna", 2000, "1,2,3");
             newOrders.Add(dummyOrder);
 
             food2 = new Food(2, "Magyaros pizza", 1400, 3, 0, dummyAllergs, 2, 2, "2021.03.11", "2022.01.01");
             oneOrdersFoods.Add(food2);
-            dummyOrder2 = new Order(2, 1, "2021.04.22 14:22","", "Pista", 2000, oneOrdersFoods);
+            dummyOrder2 = new Order(2, 1, "2021.04.22 14:22","", "Pista", 2000, "2,3");
             acceptedOrders.Add(dummyOrder2);
 
-            dummyOrder3 = new Order(3, 2, "2021.04.22 14:22", "", "Zoli", 2000, oneOrdersFoods);
+            dummyOrder3 = new Order(3, 2, "2021.04.22 14:22", "", "Zoli", 2000, "1,2");
             readyForDelivery.Add(dummyOrder3);
 
             food2 = new Food(3, "Tészta leves", 700, 3, 0, dummyAllergs, 2, 2, "2021.03.11", "2022.01.01");
             oneOrdersFoods.Add(food2);
-            dummyOrder4 = new Order(4, 3, "2021.04.22 14:22", "", "Réka", 2000, oneOrdersFoods);
+            dummyOrder4 = new Order(4, 3, "2021.04.22 14:22", "", "Réka", 2000, "1");
             underDeliveryOrders.Add(dummyOrder4);
 
-            dummyOrder5 = new Order(4, 0, "2021.04.22 14:22", "", "János", 2000, oneOrdersFoods);
+            dummyOrder5 = new Order(4, 0, "2021.04.22 14:22", "", "János", 2000, "2");
             newOrders.Add(dummyOrder5);
-            //Button button = new Button();
-            //more_Click(button, (RoutedEventArgs)EventArgs.Empty);
-            //more_Click(button, (RoutedEventArgs)EventArgs.Empty);
+
+            listFromServer = new OrderList();
+            listFromServer.ListOrder = new List<Order>();
+            listFromServer.ListOrder.Add(dummyOrder);
+            listFromServer.ListOrder.Add(dummyOrder2);
+            listFromServer.ListOrder.Add(dummyOrder3);
+            listFromServer.ListOrder.Add(dummyOrder4);
+            listFromServer.ListOrder.Add(dummyOrder5);
+            /* Delete until here */
+
+            addExistingOrders();
             more_Click(null, null);
             more_Click(null, null);
         }
@@ -81,15 +91,18 @@ namespace RestaurantClient
         public void addExistingOrders()
         {
             // TODO fill the three list from the listFromServerConnection
-            /*
+            
             if (listFromServer.ListOrder != null)
             {
                 for (int i = 0; i < listFromServer.ListOrder.Count; ++i)
                 {
-                    if(listFromServer.ListOrder[i].OrderStatus == 0) // Új
+                    listFromServer.ListOrder[i].RestMain = restaurantMain;
+                    listFromServer.ListOrder[i].setFoods();
+                    if (listFromServer.ListOrder[i].OrderStatus == 0) // Új
                     {
                         newOrders.Add(listFromServer.ListOrder[i]);
-                        restaurantMain.CheckedNewOrders.Add(listFromServer.ListOrder[i]);
+                        //restaurantMain.CheckedNewOrders.Add(listFromServer.ListOrder[i]);
+                        restaurantMain.CheckedNewOrdersID.Add(listFromServer.ListOrder[i].OrderID);
                     }
                     else if (listFromServer.ListOrder[i].OrderStatus == 1) // Fogadva
                     {
@@ -97,16 +110,15 @@ namespace RestaurantClient
                     }
                     else if(listFromServer.ListOrder[i].OrderStatus == 2) // Kiszállításra kész
                     {
-                        underDeliveryOrders.Add(listFromServer.ListOrder[i]);
+                        readyForDelivery.Add(listFromServer.ListOrder[i]);
                     }
                     else if(listFromServer.ListOrder[i].OrderStatus == 3) // Kiszállítás alatt
                     {
                         underDeliveryOrders.Add(listFromServer.ListOrder[i]);
-                    }
-            
+                    }            
                   //  newFoodWindows.Add(listFromServer.ListFood[i].FoodID, listFromServer.ListFood[i]);
                 }
-            }*/
+            }
             restaurantMain.newOrderCount.Visibility = Visibility.Hidden;
             ordersLists.Add(newOrders);
             ordersLists.Add(acceptedOrders);

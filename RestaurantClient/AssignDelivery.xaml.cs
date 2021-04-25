@@ -32,6 +32,8 @@ namespace RestaurantClient
         List<Order> waitingForDeliveryOrders = new List<Order>();
         List<Order> dummyAssign = new List<Order>();
 
+        DateTime dateTime;
+
         Order dummyOrder;
         Order dummyOrder2;
         Order dummyOrder3;
@@ -65,30 +67,34 @@ namespace RestaurantClient
             dummyAllergs.Add("glutén");
             food = new Food(1, "Paprikás pizza", 1200, 3, 0, dummyAllergs, 2, 2, "2021.03.11", "2022.01.01");
             oneOrdersFoods.Add(food);
-            dummyOrder = new Order(1, 0, "2021.04.22 12:22", "", "Anna", 2000, oneOrdersFoods);
+            dummyOrder = new Order(1, 0, "2021.04.22 12:22", "", "Anna", 2000, "2");
             waitingForDeliveryOrders.Add(dummyOrder);
 
             food2 = new Food(3, "Magyaros pizza", 1200, 3, 0, dummyAllergs, 2, 2, "2021.03.11", "2022.01.01");
             oneOrdersFoods.Add(food2);
-            dummyOrder2 = new Order(2, 1, "2021.04.22 14:22", "", "Pista", 2000, oneOrdersFoods);
+            dummyOrder2 = new Order(2, 1, "2021.04.22 14:22", "", "Pista", 2000, "1");
             waitingForDeliveryOrders.Add(dummyOrder2);
             dummyAssign.Add(dummyOrder2);
 
             oneOrdersFoods.Add(food2);
-            dummyOrder3 = new Order(3, 2, "2021.04.22 14:22", "", "Lilla", 2000, oneOrdersFoods);
+            dummyOrder3 = new Order(3, 2, "2021.04.22 14:22", "", "Lilla", 2000, "1,2");
             waitingForDeliveryOrders.Add(dummyOrder3);
 
             oneOrdersFoods.Add(food2);
-            dummyOrder4 = new Order(4, 3, "2021.04.22 14:22", "", "Zoli", 2000,  oneOrdersFoods);
+            dummyOrder4 = new Order(4, 3, "2021.04.22 14:22", "", "Zoli", 2000,  "2");
             waitingForDeliveryOrders.Add(dummyOrder4);
             dummyAssign.Add(dummyOrder4);
 
             dummyBoy = new DeliveryBoy(1, "David", dummySchedule);
-            boys.Add(dummyBoy);
+           // boys.Add(dummyBoy);
 
             dummyBoy2 = new DeliveryBoy(2, "Ákos", dummySchedule2, dummyAssign);
-            boys.Add(dummyBoy2);
+         //   boys.Add(dummyBoy2);
 
+            listFromServer = new DeliveryBoyList();
+            listFromServer.ListDevliveryboy = new List<DeliveryBoy>();
+            listFromServer.ListDevliveryboy.Add(dummyBoy);
+            listFromServer.ListDevliveryboy.Add(dummyBoy2);
             addExistingDeliveryBoys();
         }
         public void addExistingDeliveryBoys()
@@ -97,9 +103,27 @@ namespace RestaurantClient
             
             if (listFromServer.ListDevliveryboy != null)
             {
-                for (int i = 0; i < listFromServer.ListDevliveryboy.Count; ++i)
+                for (int i = 0; i < listFromServer.ListDevliveryboy.Count; ++i) // loop through the delivery boys
                 {
-                    boys.Add(listFromServer.ListDevliveryboy[i]);
+                    int isDayOk = 0;
+                    dateTime = DateTime.Now;
+                    int day = (int)dateTime.DayOfWeek; // current day of the week in number
+                    int hour = dateTime.Hour;
+                    int min = dateTime.Minute;
+
+                    workingSchedule workTime = listFromServer.ListDevliveryboy[i].Working;
+                    for (int j = 0; j < workTime.WorkingDaysInInt.Count; ++j)
+                    {
+                        if(workTime.WorkingDaysInInt[i] == day)
+                        {
+                            isDayOk = 1;
+                            break;
+                        }
+                    }
+                    if(isDayOk == 1 && workTime.FromHour <= hour && workTime.FromMinute <= min && workTime.ToHour >= hour && workTime.ToMinute-5 >= min)
+                    {
+                        boys.Add(listFromServer.ListDevliveryboy[i]);
+                    }
                 //    newFoodWindows.Add(listFromServer.ListFood[i].FoodID, listFromServer.ListFood[i]);
                 }
             }
@@ -125,6 +149,8 @@ namespace RestaurantClient
                 {
                     if(orderslistFromServer.ListOrder[i].OrderStatus == 2) // only those orders which are ready for delivery
                     {
+                        orderslistFromServer.ListOrder[i].RestMain = restaurantMain;
+                        orderslistFromServer.ListOrder[i].setFoods();
                         waitingForDeliveryOrders.Add(orderslistFromServer.ListOrder[i]);
                       //  newFoodWindows.Add(listFromServer.ListFood[i].FoodID, listFromServer.ListFood[i]);
                     }
