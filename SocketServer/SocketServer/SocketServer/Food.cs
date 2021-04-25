@@ -18,6 +18,9 @@ namespace SocketServer
         List<string> allergenes;
         string availableFrom;
         string availableTo;
+
+        public Food() { }
+        
         public Food(int fID, string nam, double prc, double rate, int picID, List<String> allergs,
            int catID,
             int restID,

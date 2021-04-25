@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 
 namespace RestaurantClient
 {
-    class OrderList
+    public class OrderList
     {
         private List<Order> listOrder;
 
-        public OrderList()
-        {
+        public List<Order> ListOrder { get => listOrder; set => listOrder = value; }
 
+        public OrderList(List<Order> lo)
+        {
+            listOrder = lo;
         }
-        internal List<Order> ListOrder { get => listOrder; set => listOrder = value; }
+        public OrderList() { }
     }
 }

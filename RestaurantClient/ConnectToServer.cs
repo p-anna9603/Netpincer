@@ -316,6 +316,34 @@ public class ConnectToServer
         return retval;
     }
 
+    public void updateOrderState(int OrderID, int newState)
+    {
+        try
+        {
+            JObject obj = new JObject();
+            obj.Add("type", 13);
+            obj.Add("OrderID", OrderID);
+            obj.Add("newState", newState);
+            string recievedMsg = sendJSON(obj);
+            Console.WriteLine("recievedMsg: {0}", recievedMsg);
+
+            JObject receivedJSonObject = new JObject();
+            receivedJSonObject = JObject.Parse(recievedMsg);
+            if (receivedJSonObject["type"].ToString() == "13")
+            {
+                Console.WriteLine("Server: {0}", receivedJSonObject["status"].ToString());
+            }
+            else if (receivedJSonObject["type"].ToString() == "99")
+            {
+                Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+        }
+    }
+
     public int addFood(Food f)
     {
         try
@@ -546,6 +574,57 @@ public class ConnectToServer
         return new FoodList();
     }
 
+    public Food getFoodByID(int foodID)
+    {
+        string recievedMsg = "";
+        try
+        {
+            JObject jobc = new JObject();
+            jobc.Add("type", 14);        //14 - Get Food by ID
+            jobc.Add("clientID", clientID);
+            jobc.Add("foodID", foodID);
+            recievedMsg = sendJSON(jobc);
+            Console.WriteLine("recievedMsg: {0}", recievedMsg);
+            Food f = Newtonsoft.Json.JsonConvert.DeserializeObject<Food>(recievedMsg);
+            if (f == null)
+                throw new Exception();
+
+            Console.WriteLine("FoodID: {0}", f.FoodID);
+            Console.WriteLine("Name: {0}", f.Name);
+            Console.WriteLine("Price: {0}", f.Price);
+            Console.WriteLine("Rating: {0}", f.Rating);
+            Console.WriteLine("PictureID: {0}", f.PictureID);
+            Console.WriteLine("CatID: {0}", f.CategoryID);
+            Console.WriteLine("RestID: {0}", f.RestaurantID);
+            Console.WriteLine("From: {0}", f.AvailableFrom);
+            Console.WriteLine("To: {0}", f.AvailableTo);
+            Console.WriteLine("Allergens:");
+            for (int j = 0; j < f.Allergenes.Count; ++j)
+            {
+                Console.WriteLine(f.Allergenes[j]);
+            }
+
+            return f;
+        }
+        catch (NullReferenceException e)
+        {
+            Console.WriteLine(e.ToString());
+            JObject receivedJSonObject = new JObject();
+            receivedJSonObject = JObject.Parse(recievedMsg);
+            if (receivedJSonObject["type"].ToString() == "99")
+            {
+                Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+                
+            }
+            return new Food();  //Sends empty class
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+            return new Food(); //Sends empty class
+        }
+    }
+
     private JObject sendFirstConnectionInfo()
     {
         JObject jobc = new JObject();
@@ -553,5 +632,61 @@ public class ConnectToServer
         jobc.Add("msgID", msgID);       //#of messages sent     //WILL BE DELETED
         msgID++;
         return jobc;
+    }
+
+
+    public OrderList getOrders(int restaurantID)
+    {
+        string recievedMsg = "";
+        try
+        {
+            JObject jobc = new JObject();
+            jobc.Add("type", 12);        //12 - Get Orders for one Restaurant
+            jobc.Add("clientID", clientID);
+            jobc.Add("restaurantID", restaurantID);
+            recievedMsg = sendJSON(jobc);
+            Console.WriteLine("recievedMsg: {0}", recievedMsg);
+            OrderList receivedOrderList = Newtonsoft.Json.JsonConvert.DeserializeObject<OrderList>(recievedMsg);
+            if (receivedOrderList.ListOrder == null)
+            {
+                Console.WriteLine("ListOrder == null");
+                throw new Exception();
+            }
+            for (int i = 0; i < receivedOrderList.ListOrder.Count; ++i)
+            {
+                Console.WriteLine("OrderID: {0}", receivedOrderList.ListOrder[i].OrderID);
+                Console.WriteLine("OrderStatus: {0}", receivedOrderList.ListOrder[i].OrderStatus);
+                Console.WriteLine("StatusString: {0}", receivedOrderList.ListOrder[i].StatusString);
+                Console.WriteLine("OrderTime: {0}", receivedOrderList.ListOrder[i].OrderTime);
+                Console.WriteLine("EndorderTime: {0}", receivedOrderList.ListOrder[i].EndorderTime);
+                Console.WriteLine("Customer: {0}", receivedOrderList.ListOrder[i].Customer);
+                Console.WriteLine("TotalPrice: {0}", receivedOrderList.ListOrder[i].TotalPrice);
+                Console.WriteLine("Foods:");
+                for (int j = 0; j < receivedOrderList.ListOrder[i].OrderedFoodList.Count; ++j)
+                {
+                    Console.WriteLine(receivedOrderList.ListOrder[i].OrderedFoodList[j]);
+                }
+            }
+            return receivedOrderList;
+        }
+        catch (NullReferenceException e)
+        {
+            Console.WriteLine(e.ToString());
+            JObject receivedJSonObject = new JObject();
+            receivedJSonObject = JObject.Parse(recievedMsg);
+            if (receivedJSonObject["type"].ToString() == "99")
+            {
+                Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+                return new OrderList();  //Sends empty class
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+            JObject receivedJSonObject = new JObject();
+            receivedJSonObject = JObject.Parse(recievedMsg);
+            return new OrderList(); //Sends empty class
+        }
+        return new OrderList();
     }
 }

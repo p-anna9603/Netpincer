@@ -30,6 +30,14 @@ namespace RestaurantClient
         {
             InitializeComponent();
             ServerConnection = new ConnectToServer();
+
+            #region KLAU TESZT 04.25
+            //ServerConnection.getOrders(1);        //OK
+            //ServerConnection.updateOrderState(2, 3);    //OK
+            //ServerConnection.getFoodByID(1);      //OK
+            #endregion
+
+
             //ServerConnection.getFoods(7, 1);
             //ServerConnection.getRestaurantsList();
             List<string> a = new List<string>();

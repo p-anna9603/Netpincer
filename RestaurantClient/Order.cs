@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RestaurantClient
 {
-    class Order
+    public class Order
     {
         int orderID;
         int orderStatus;
@@ -112,5 +112,6 @@ namespace RestaurantClient
             }
         }
         public RestaurantMain RestMain { get => restMain; set => restMain = value; }
+        public string EndorderTime { get => endorderTime; set => endorderTime = value; }
     }
 }

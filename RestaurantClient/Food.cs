@@ -18,6 +18,8 @@ namespace RestaurantClient
         int restaurantID;
         string availableFrom;
         string availableTo;
+
+        public Food() { }
         public Food(int fID, string nam, double prc, double rate, int picID, List<String> allergs,
             int categoryID, int restID,     //CATEGORYID, RESTID
            string availableFrom,

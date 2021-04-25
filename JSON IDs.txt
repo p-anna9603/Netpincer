@@ -1,0 +1,22 @@
+type
+0 - Basic Server Info "Hello"
+
+1 - User login
+2 - Get Restaurant login
+3 - Delivery person login
+
+4 - Register User
+5 - Register Restaurant
+6 - Register Delivery Person
+
+7 - Get list of Categories
+8 - Add category
+9 - Get list of Food
+10 - Add Food
+11 - Get list of Restaurants
+
+12 - Get Orders for one Restaurant
+13 - Update Order Status
+14 - Get Food by ID
+
+99 - Error

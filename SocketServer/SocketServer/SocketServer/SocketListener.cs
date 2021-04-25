@@ -238,6 +238,24 @@ namespace SocketServer
                             handler.Send(Encoding.ASCII.GetBytes(register));
                             //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
                         }
+                        else if (receivedJSONObject["type"].ToString() == "12")
+                        {
+                            string register = getOrders(Int32.Parse(receivedJSONObject["restaurantID"].ToString()));
+                            handler.Send(Encoding.ASCII.GetBytes(register));
+                            
+                        }
+                        else if (receivedJSONObject["type"].ToString() == "13")
+                        {
+                            string register = updateOrderState(Int32.Parse(receivedJSONObject["OrderID"].ToString()), Int32.Parse(receivedJSONObject["newState"].ToString()));
+                            handler.Send(Encoding.ASCII.GetBytes(register));
+
+                        }
+                        else if (receivedJSONObject["type"].ToString() == "14")
+                        {
+                            string register = foodByID(receivedJSONObject["foodID"].ToString());
+                            handler.Send(Encoding.ASCII.GetBytes(register));
+                        }
+                        
 
 
 
@@ -458,6 +476,90 @@ namespace SocketServer
             }
             FoodList fl = new FoodList(listOfFood);
             return Newtonsoft.Json.JsonConvert.SerializeObject(fl);
+        }
+
+
+        private string foodByID(string foodID)
+        {
+            string query = "SELECT foodID,name,price,rating,pictureID,Restaurant.Food.categoryID,Restaurant.Food.restaurantID,availableFrom,availableTo FROM Restaurant.Food JOIN Restaurant.CategoryName ON Restaurant.CategoryName.categoryID = Restaurant.Food.categoryID WHERE Restaurant.Food.foodID = @foodID";
+            DataTable dataTable = new DataTable();
+            try
+            {
+                //Console.WriteLine(1);
+                SqlCommand command = new SqlCommand(query, DatabaseConnection);
+                command.Parameters.AddWithValue("@foodID", foodID);
+                SqlDataAdapter da = new SqlDataAdapter(command);
+                da.Fill(dataTable);
+                if (dataTable.Rows.Count == 0)
+                    return getErrorMessage(66);
+                //Console.WriteLine(2);
+                Console.WriteLine(3);
+                //GETTING ALLERGENES
+                DataTable dataTable2 = new DataTable();
+                query = "SELECT Restaurant.AllergenNames.name FROM Restaurant.AllergenNames JOIN Restaurant.Allergens ON Restaurant.Allergens.allergenID = Restaurant.AllergenNames.allergenID JOIN Restaurant.Food ON Restaurant.Food.foodID = Restaurant.Allergens.foodID WHERE Restaurant.Allergens.foodID = @foodID";
+                SqlCommand command2 = new SqlCommand(query, DatabaseConnection);
+                //Console.WriteLine(4);
+                command2.Parameters.AddWithValue("@foodID", foodID);
+                //Console.WriteLine(5);
+                SqlDataAdapter da2 = new SqlDataAdapter(command2);
+                //Console.WriteLine(6);
+                da2.Fill(dataTable2);
+                //Console.WriteLine(7);
+                List<string> allergens = new List<string>();
+                if (dataTable2.Rows.Count != 0)
+                {
+                    //Console.WriteLine(8);
+                    for (int k = 0; k < dataTable2.Rows.Count; ++k)
+                        allergens.Add(dataTable2.Rows[k]["name"].ToString());
+                    //Console.WriteLine(9);
+                }
+
+                //Console.WriteLine(10);
+                int picID = 0;
+                if (dataTable.Rows[0]["pictureID"].ToString() != "")
+                {
+                    Console.WriteLine(11);
+                    picID = Int32.Parse(dataTable.Rows[0]["pictureID"].ToString());
+                }
+                Food f= new Food(
+                Int32.Parse(dataTable.Rows[0]["foodID"].ToString()),
+                dataTable.Rows[0]["name"].ToString(),
+                Int32.Parse(dataTable.Rows[0]["price"].ToString()),
+                Double.Parse(dataTable.Rows[0]["rating"].ToString()),
+                picID,
+                allergens,
+                Int32.Parse(dataTable.Rows[0]["categoryID"].ToString()),
+                Int32.Parse(dataTable.Rows[0]["restaurantID"].ToString()),
+                dataTable.Rows[0]["availableFrom"].ToString(),
+                dataTable.Rows[0]["availableTo"].ToString());
+
+                da2.Dispose();
+                dataTable2.Clear();
+                dataTable2.Dispose();
+                Console.WriteLine("FoodID: {0}", f.FoodID);
+                Console.WriteLine("Name: {0}", f.Name);
+                Console.WriteLine("Price: {0}", f.Price);
+                Console.WriteLine("Rating: {0}", f.Rating);
+                Console.WriteLine("PictureID: {0}", f.PictureID);
+                Console.WriteLine("CatID: {0}", f.CategoryID);
+                Console.WriteLine("RestID: {0}", f.RestaurantID);
+                Console.WriteLine("From: {0}", f.AvailableFrom);
+                Console.WriteLine("To: {0}", f.AvailableTo);
+                Console.WriteLine("Allergens:");
+                for (int j = 0; j < f.Allergenes.Count; ++j)
+                {
+                    Console.WriteLine(f.Allergenes[j]);
+                }
+                da.Dispose();
+                dataTable.Clear();
+                dataTable.Dispose();
+                return Newtonsoft.Json.JsonConvert.SerializeObject(f);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return getErrorMessage(99);
+            } 
         }
 
 
@@ -955,12 +1057,102 @@ namespace SocketServer
         }
 
 
+        private string getOrders(int restaurantID)
+        {
+            string query = "SELECT orderID, [status], startOrderTime, endOrderTime, username, price, foods FROM Restaurant.Orders JOIN Restaurant.Restaurant ON Restaurant.restaurantID = Orders.restaurantID WHERE Orders.restaurantID = @restID";
+            List<Order> localOrders = new List<Order>();
+            try
+            {
+                DataTable dataTable = new DataTable();
+                SqlCommand command = new SqlCommand(query, DatabaseConnection);
+                command.Parameters.AddWithValue("@restID", restaurantID);
+                SqlDataAdapter da = new SqlDataAdapter(command);
+                da.Fill(dataTable);
+                if (dataTable.Rows.Count == 0)
+                    return getErrorMessage(92);
+                for (int i = 0; i < dataTable.Rows.Count; i++)
+                {
+                    localOrders.Add(
+                        new Order(
+                        Int32.Parse(dataTable.Rows[i]["orderID"].ToString()),
+                        Int32.Parse(dataTable.Rows[i]["status"].ToString()),
+                        dataTable.Rows[i]["startOrderTime"].ToString(),
+                        dataTable.Rows[i]["endOrderTime"].ToString(),
+                        dataTable.Rows[i]["username"].ToString(),
+                        Double.Parse(dataTable.Rows[i]["price"].ToString()),
+                        dataTable.Rows[i]["foods"].ToString()));
+                }
+                da.Dispose();
+                dataTable.Clear();
+                dataTable.Dispose();
+                for (int k = 0; k < localOrders.Count; ++k)
+                {
+                    Console.WriteLine("OrderID: {0}", localOrders[k].OrderID);
+                    Console.WriteLine("OrderStatus: {0}", localOrders[k].OrderStatus);
+                    Console.WriteLine("OrderTime: {0}", localOrders[k].OrderTime);
+                    Console.WriteLine("EndorderTime: {0}", localOrders[k].EndorderTime);
+                    Console.WriteLine("Customer: {0}", localOrders[k].Customer);
+                    Console.WriteLine("TotalPrice: {0}", localOrders[k].TotalPrice);
+                    Console.WriteLine("Foods: {0}", localOrders[k].Foods);
+                }
+                OrderList ol = new OrderList(localOrders);
+                Console.WriteLine("Heyyoooo");
+                string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(ol);
+                Console.WriteLine("JSON:\n {0}",jsonString);
+                return jsonString;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return getErrorMessage(92);
+            }
+        }
+
+
+        private string updateOrderState(int orderID, int status)
+        {
+            
+            string query = "UPDATE Restaurant.Orders SET [status] = @status WHERE orderID = @orderID";
+            try
+            {
+                SqlCommand command = new SqlCommand(query, DatabaseConnection);
+                command.Parameters.AddWithValue("@status", status);
+                Console.WriteLine("Status: {0}",status);
+                command.Parameters.AddWithValue("@orderID", orderID);
+                Console.WriteLine("orderID: {0}", orderID);
+
+                int affectedRows = command.ExecuteNonQuery();
+                if (affectedRows == 0)
+                {
+                    return getErrorMessage(67);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return getErrorMessage(99);
+            }
+            JObject ok = new JObject();
+            ok.Add("type", 13);
+            ok.Add("status", "Successful status update");
+            return ok.ToString();
+        }
+
+
+
+
         private string getErrorMessage(int errorNumber)
         {
             JObject errorObject = new JObject();
             errorObject.Add("type", 99);
             switch (errorNumber) 
             {
+                case 66:
+                    errorObject.Add("error", "FoodID not found");
+                    break;
+                case 67:
+                    errorObject.Add("error", "attempt to update Order Status failed");
+                    break;
                 case 68:
                     errorObject.Add("error", "attempt to add Allergens failed");
                     break;
