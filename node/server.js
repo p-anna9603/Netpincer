@@ -91,13 +91,27 @@ app.get('/register', function(req, res) {
     res.render('pages/register');
 });
 
-app.get('/register', function(req, res) {
-    res.render('pages/register');
-});
+app.get('/restaurant', async function(req, res) {
+    if (request.session.loggedIn) 
+    {
+        let id = req.query.id;
+        res.render('pages/restaurant', { 'id': id, 'Éttermek' : JSON.stringify(Ettermek)});
+    }
+    else {
+		response.send('Please login to view this page!');
+	}
+    
+ });
 
-app.get('restaurant', function(request, response) {
-        response.render('../partials/rest_cards');
-});
+ app.get('/futar_login', async function(req, res) {
+    res.render('pages/futar_login');
+    
+ });
+
+ app.get('/futar_register', async function(req, res) {
+    res.render('pages/futar_register');
+    
+ });
 
 // HOMEPAGE
 app.get('/home', function(request,response){
