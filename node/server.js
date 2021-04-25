@@ -104,7 +104,7 @@ app.set('view engine', 'ejs');
 
 app.get('/', function (req, res) {
     if (req.session.loggedIn) {
-        console.log(session);
+        console.log("Session elkezdődött" + session);
         res.redirect('/home'); // ha be van jelentkezve, és még él a süti, akkor abból felállítja a rendszert
     } else {
         console.log(session);
@@ -128,7 +128,7 @@ app.get('/restaurant', async function(req, res) {
         if (Kategoriak == null) {
             let id = req.query.id;
             getCategory(id,req,res);
-            res.render('pages/restaurant', { 'id': id, 'Éttermek' : JSON.stringify(Ettermek), 'Kategóriák': JSON.stringify(Kategoriak)});
+            res.render('pages/restaurant', { 'id': id, 'Éttermek' : JSON.stringify(Ettermek), 'Kategóriák': JSON.stringify(Kategoriak) });
   
         }
         else{
@@ -147,8 +147,8 @@ app.get('/restaurant', async function(req, res) {
 
     if (req.session.loggedIn) 
     {
-        let id = req.query.id;
-        let esziID = req.query.restID;
+        let id = req.query.id; //macska id
+        let esziID = req.query.restID; // eszi ID
         getFoods(esziID,id,req,res);
         res.render('pages/categories');
     }
@@ -211,10 +211,9 @@ app.post('/authentication', function(request, response)
 	var got_password = request.body.auth_pass;
     const login_JSON = { type:1, clientID: 0, username: got_username, password: got_password, userType: 0 }
     const jsonStr = JSON.stringify(login_JSON);
-    console.log("JSON to send: "  + jsonStr);
+    console.log("kOGIN INITIATED -> JSON to send: "  + jsonStr);
     login_var = sendData(login_JSON, request, response);
     sleep(3000);
-    console.log("Most: " + request.session.loggedIn );
 });
 // LOGIN
 
@@ -254,11 +253,10 @@ function Connect_To_Server (json)
 {
     const jsonStr = JSON.stringify(json);
     client.connect(11000,'localhost', function() {
-         console.log('Connected to: ' + 'localhost' + ':' + 11000);
+         console.log('Connected to: ' + 'localhost on port' + ': ' + 11000);
      });
     client.on('connect', function (connect) {
-         console.log('First JSON to send : ');
-         console.log(jsonStr);
+         console.log('First JSON to send : ' + jsonStr);
          client.write(jsonStr);
      })
 
@@ -310,8 +308,7 @@ function sendData(json_Object, request, response)
         }
         else if(parsed_JSON["Type"] == 7) // getCategories
         {
-            console.log("Received Category data : " + data);
-            console.log("Handshake -> Type: 7 <- Got Category");
+            console.log("Received Category data -||- Handshake -> Type: 7 <- Got Category");
             Kategoriak= CategoryParser(parsed_JSON);
             console.log("Kategoriak feltöltve: " + Kategoriak.listOfCategoryNames);
         }
@@ -323,11 +320,12 @@ function sendData(json_Object, request, response)
                 { 
                     Ettermek = [];
                     console.log(">> Received Restaurants");
-                    console.log(data);
+                    ;
                     parsed_JSON["restaurantList"].forEach(element => {
                         etterem = RestaurantParser(element);
                         Ettermek.push(etterem);
                     });
+                    console.log("> RestaurantParser() kész!");
                     Étterem_JSON = data;
                     const fs = require('fs'); 
                     let restik = JSON.stringify(Ettermek,null,2);
@@ -361,7 +359,7 @@ function jsonParser(object) {
     try {
         var p = jsonParser(object);
         logged = new User(p["type"],p["clientID"],p["username"],p["password"], p["firstName"], p["phoneNumber"], p["city"], p["zipcode"], p["line1"], p["line2"], p["userType"], p["email"]);
-        console.log(logged);
+        console.log("Current user: " + logged);
         session.loggedIn = true;
     } catch (error) {
         console.log(error);
@@ -385,7 +383,7 @@ function jsonParser(object) {
         console.log(error);
         return null;
      }
-     console.log("> RestaurantParser() kész!");
+
      return rest;
  }
 //RESTAURANT PARSER FUNCTION 
@@ -398,7 +396,7 @@ function CategoryParser(p){
        console.log(error);
        return null;
     }
-    console.log("> Category() kész!");
+    console.log("> CategoryParser() kész!");
     return macska;
 }
 //CATEGORY PARSER
@@ -410,7 +408,7 @@ function FoodParser(p){
        console.log(error);
        return null;
     }
-    console.log("> Category() kész!");
+    console.log("> FoodParser() kész!");
     return macska;
 }
 //FOOD PARSER
@@ -448,22 +446,13 @@ function getCategory(restaurant_ID, request, response)
     sendData(Get_Category_JSON,request,response);
 }
 
-function getFoods(restaurant_ID, macska, request, response)
+function getFoods(ID, macska, request, response)
 {
-    const Get_Foods_JSON = { type: 9, clientID: 0, restaurantID: restaurant_ID, category_ID: macska};
+    const Get_Foods_JSON = { type: 9, clientID: 0, restaurantID: ID, categoryID: macska};
     const jsonStr = JSON.stringify(Get_Foods_JSON);
     console.log("Sent Food JSON -> " + jsonStr);
     sendData(Get_Foods_JSON,request,response);
 }
-   //GET CATEGORY - 7-es KÓD
-   /*
-   Received JSON: {
-  "type": 7,
-  "clientID": 0,
-  "restaurantID": 1
-}
-   */
-
 
 /*
 GETFOODS
