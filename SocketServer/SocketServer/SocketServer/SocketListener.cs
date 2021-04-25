@@ -645,7 +645,7 @@ namespace SocketServer
                 Console.WriteLine(e.ToString());
                 return getErrorMessage(71);
             }
-            Categories cat = new Categories(idList, catList);
+            Categories cat = new Categories(idList, catList);            
             return Newtonsoft.Json.JsonConvert.SerializeObject(cat);
         }
 
