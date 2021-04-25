@@ -48,7 +48,7 @@ let Category = class
 }
 let Food = class 
 {
-    constructor(foodID, name, price, rating, pictureID, allergenes, categoryID, restaurantID, avaibleFrom, avaibleTo)
+    constructor(foodID, name, price, rating, pictureID, allergenes,avaibleFrom, avaibleTo, restaurantID, categoryID )
     {
         this.FoodID = foodID;
         this.Name = name;
@@ -89,7 +89,10 @@ let logged; // current user
 let Ettermek = []; // étterem array amit átad a sessionben
 let Étterem_JSON;
 
+let Kajak = [];
+
 let Kategoriak;
+
 var sess = {
     secret: 'secret keyboard cat ',
     resave: false,
@@ -314,13 +317,22 @@ function sendData(json_Object, request, response)
         }
         else if(parsed_JSON["Type"] == 9) // getFoods
         {
+            Kajak = [];
+            let kaja;
             console.log("Received Food data : " + data);
+            parsed_JSON["listFood"].forEach(element => {
+                console.log(element);
+                kaja = FoodParser(element);
+                Kajak.push(kaja);
+            });
+            console.log("> FoodParser() kész!");
+            console.log(Kajak);
+            /* {"Type":9,"listFood":[{"Type":9,"FoodID":3,"Name":"Sajtkrem leves","Price":800.0,"Rating":0.0,"PictureID":0,"Allergenes":["Laktoz"],"AvailableFrom":"","AvailableTo":"","RestaurantID":1,"CategoryID":2},{"Type":9,"FoodID":4,"Name":"Gulyas leves","Price":1000.0,"Rating":0.0,"PictureID":0,"Allergenes":[],"AvailableFrom":"","AvailableTo":"","RestaurantID":1,"CategoryID":2}]}*/
         }
         else if(parsed_JSON["restaurantList"].length != 0)
                 { 
                     Ettermek = [];
                     console.log(">> Received Restaurants");
-                    ;
                     parsed_JSON["restaurantList"].forEach(element => {
                         etterem = RestaurantParser(element);
                         Ettermek.push(etterem);
@@ -401,15 +413,15 @@ function CategoryParser(p){
 }
 //CATEGORY PARSER
 //FOOD PARSER
-function FoodParser(p){
+function FoodParser(p){  //foodID, name, price, rating, pictureID, allergenes, categoryID, restaurantID, avaibleFrom, avaibleTo
+    console.log("Foodparser p -> " + p);
     try{
-        macska = new Food (p["listOfCategoryNames"], p["listOfCategoryIDs"]);
+        fiszfasz = new Food(p["FoodID"],p["Name"],p["Price"], p["Rating"],p["PictureID"],p["Allergenes"], p["AvaibleFrom"],p["AvaibleTo"], p["RestaurantID"], p["CategoryID"]);
     } catch (error){
        console.log(error);
        return null;
     }
-    console.log("> FoodParser() kész!");
-    return macska;
+    return fiszfasz;
 }
 //FOOD PARSER
 
