@@ -28,18 +28,53 @@
 
 
     <hr>
-
-    <section class="py-5 text-center container">
-      <div class="row py-lg-5">
-        <%= id %>
-        <%=JSON.parse(Éttermek)[id-1]["Name"]%>
-      </div>
-    </section>
     <div class="container" >
-     <!-- <%= JSON.stringify(Éttermek) %> -->
-  
+      <div class="row py-lg-5">
+        <div class="col col-4 col-lg-4"> 
+
+          <div class="card" style="width: 18rem;">
+            <img src="..." class="card-img-top" alt="logo">
+            <div class="card-body">
+              <h5 class="card-title fw-bold">   <%=JSON.parse(Éttermek)[id-1]["Name"]%></h5>
+              <p class="card-text">  <%= JSON.parse(Éttermek)[id-1]["RestaurantDesc"]%></p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Stílus: <%= JSON.parse(Éttermek)[id-1]["Style"] %> </li>
+              <li class="list-group-item fw-bold">Nyitvatartás: <%= JSON.parse(Éttermek)[id-1]["FromHour"] %> - <%= JSON.parse(Éttermek)[id-1]["ToHour"]%>: <%= JSON.parse(Éttermek)[id-1]["ToMinute"]%> </li>
+              <li class="list-group-item text-center"></li>
+            </ul>
+            <div class="card-body">
+              <a href="#" class="card-link">06 99 123 4567</a>
+              <a href="#" class="card-link">x</a>
+            </div>
+          </div>
+        </div>
+        <div class="col col-lg-4 col-lg-8"> 
+          <%= JSON.parse(IDk);%>
+          <div class="row mb-2">
+            <% var i = 0; %>
+            <% JSON.parse(Kategóriák).forEach(function(Kat) {%>
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <h2 class="mb-0"><%= Kat %></h2>
+                <%=JSON.parse(IDk)[i++] %>
+                <strong class="card-text mb-auto"> </strong>
+                <a href="/category?id=<%=JSON.parse(IDk)[i-1]%>?restID=<%=JSON.parse(Éttermek)[id-1]['RestaurantID']%>" class="stretched-link">  Megnézem</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                <svg class="bd-placeholder-img" width="250" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Sample Image</text></svg>
+      
+              </div>
+            </div>
+            <%  }); %>
+        </div>
+
+
+        
+      </div>
     </div>
     <!-- Main-->
+
 
     <!-- Footer -->
     <%- include('../partials/footer'); %>

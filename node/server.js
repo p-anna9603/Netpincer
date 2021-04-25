@@ -41,6 +41,10 @@ let Category = class
         this.listOfCategoryNames = names;
         this.listOfCategoryIDs = IDs;
     }
+    getList()
+    {
+        return this.listOfCategoryNames;
+    }
 }
 const first_JSON = { type:0, msgID:0 }
 
@@ -68,7 +72,7 @@ let logged; // current user
 let Ettermek = []; // étterem array amit átad a sessionben
 let Étterem_JSON;
 
-let Kategoriak = [];
+let Kategoriak;
 var sess = {
     secret: 'secret keyboard cat ',
     resave: false,
@@ -104,10 +108,21 @@ app.get('/register', function(req, res) {
 app.get('/restaurant', async function(req, res) {
     if (req.session.loggedIn) 
     {
-        
-        let id = req.query.id;
-        getCategory(id,req,res);
-        res.render('pages/restaurant', { 'id': id, 'Éttermek' : JSON.stringify(Ettermek), 'Kategóriák': JSON.stringify(Kategoriak) });
+        if (Kategoriak == null) {
+            let id = req.query.id;
+            getCategory(id,req,res);
+            console.log("String" + JSON.stringify(Kategoriak));
+            console.log("Sima: " + Kategoriak);
+            res.render('pages/restaurant', { 'id': id, 'Éttermek' : JSON.stringify(Ettermek), 'Kategóriák': JSON.stringify(Kategoriak)});
+  
+        }
+        else{
+            let id = req.query.id;
+            console.log("String" + JSON.stringify(Kategoriak.listOfCategoryNames));
+            console.log("Sima: " + Kategoriak.listOfCategoryIDs);
+            res.render('pages/restaurant', { 'id': id, 'Éttermek' : JSON.stringify(Ettermek), 'Kategóriák': JSON.stringify(Kategoriak.listOfCategoryNames), 'IDk': JSON.stringify(Kategoriak.listOfCategoryIDs) });
+        }
+
     }
     else {
 		res.send('Please login to view this page!');
@@ -146,6 +161,7 @@ app.get('/auth_restaurants', function(request,response){
     {
         if (Ettermek.length == 0) {
             getRestaurants(request,response); // Bekéri az összes éttermet -> frissíteni kell az odalt, ha újat kap az adatbázis
+            Kategoriak = null;
             console.log("Ettermek : " + Ettermek);
             response.render('pages/auth_restaurants', {'Éttermek' : JSON.stringify(Ettermek), 'session_var': request.session, 'Étterem_JSON': Étterem_JSON }); // session-ben átadja madj az éttermeket egy objektum array-ként TODO#######
         }
@@ -269,10 +285,8 @@ function sendData(json_Object, request, response)
         {
             console.log("Received Category data : " + data);
             console.log("Handshake -> Type: 7 <- Got Category");
-            kat = CategoryParser(parsed_JSON);
-            Kategoriak = [];
-            Kategoriak.push(kat);
-            console.log(Kategoriak);
+            Kategoriak= CategoryParser(parsed_JSON);
+            console.log("Kategoriak feltöltve: " + Kategoriak.listOfCategoryNames);
         }
         else if(parsed_JSON["restaurantList"].length != 0)
                 { 
