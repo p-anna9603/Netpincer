@@ -65,3 +65,4 @@ INSERT INTO Restaurant.Orders(restaurantID, username,foods, [status], startOrder
 ----------------------------04-27.---------------------
 USE Netpincer
 INSERT INTO DeliveryPerson.WorkingHours(username ,fromHour,fromMinute,toHour,toMinute ,workingDays) VALUES ('alma',8,30,20,45,'1,2,3,5')
+

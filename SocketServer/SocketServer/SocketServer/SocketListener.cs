@@ -201,6 +201,7 @@ namespace SocketServer
                         {
                             string register = deliveryPersonLogin(receivedJSONObject["username"].ToString(), receivedJSONObject["password"].ToString(), receivedJSONObject["userType"].ToString());
                             //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                            //register = "5";
                             handler.Send(Encoding.ASCII.GetBytes(register));
                         }
                         else if (receivedJSONObject["type"].ToString() == "4") // Register User
@@ -212,9 +213,23 @@ namespace SocketServer
                         else if (receivedJSONObject["type"].ToString() == "41") // Register Delivery Person for piece of shirt Java, because it's a useless language and nothing ever works
                         {
                             string register = registerUser(receivedJSONObject);
-                            register += "-1";   //trying to send EOF to Java client
+                            register = "5";
+                            //register += "-1";   //trying to send EOF to Java client
                             //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
                             handler.Send(Encoding.ASCII.GetBytes(register));
+                        }
+                        if (receivedJSONObject["type"].ToString() == "42")  //First Connection From DP Client
+                        {
+                            //Console.WriteLine("First message");
+                           /*JObject sendJason = new JObject();
+                            sendJason = sendFirstConnectionInfo();
+                            String response = sendJason.ToString();
+                           */
+                            String rsp="5";
+                           // response+= "EXIT";   //trying to send EOF to Java client*/
+                            handler.Send(Encoding.ASCII.GetBytes(rsp));
+                            // handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(sendJason.ToString()));  //Sending Client ID
+                            // listOfConnectedClients.Add(clientID - 1); //Adding client to connected list
                         }
                         else if (receivedJSONObject["type"].ToString() == "5") //Register Restaurant
                         {
@@ -883,18 +898,19 @@ namespace SocketServer
                 int affectedRows = command.ExecuteNonQuery();
                 if (affectedRows == 0)
                 {
-                    return getErrorMessage(91);
+                    return "1";
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
-                return getErrorMessage(99);
+                return "1";
             }
-            JObject ok = new JObject();
+            /*JObject ok = new JObject();
             ok.Add("type", 5);
             ok.Add("status", "Successful");
-            return ok.ToString();
+            return ok.ToString();*/
+            return "5";
         }
 
         
@@ -1029,19 +1045,19 @@ namespace SocketServer
                 {
                     da.Dispose();
                     //return getErrorMessage(91);
-                    return "Error";
+                    return "1";
                 }
                 //Console.WriteLine("rows: {0}", dataTable.ToString());
                 da.Dispose();
                 //Console.WriteLine("TABLE: {0}", JsonConvert.SerializeObject(dataTable));
                 //return JsonConvert.SerializeObject(dataTable);
-                return "OK";
+                return "5";
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
                 //return getErrorMessage(99);
-                return "Error";
+                return "1";
             }
         }
 
