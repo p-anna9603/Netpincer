@@ -5,9 +5,9 @@ type
 2 - Get Restaurant login
 3 - Delivery person login
 
-4 - Register User
+4 - Register User / Delivery Person
 5 - Register Restaurant
-6 - Register Delivery Person
+6 - Register Delivery Person Working Hours
 
 7 - Get list of Categories
 8 - Add category
