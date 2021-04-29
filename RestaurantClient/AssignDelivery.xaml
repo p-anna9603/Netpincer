@@ -5,7 +5,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RestaurantClient"
              mc:Ignorable="d" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="505.312" Width="866.562">
-    <Border BorderBrush="black" BorderThickness="2">
+    <UserControl.Resources>
+        <Style TargetType="DataGridCell">
+            <Style.Setters>
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+            </Style.Setters>
+        </Style>
+        <Style TargetType="DataGridColumnHeader">
+            <Style.Setters>
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+            </Style.Setters>
+        </Style>
+    </UserControl.Resources>
+        <Border BorderBrush="black" BorderThickness="2">
         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
@@ -26,7 +41,7 @@
             <DataGrid Name="table" AutoGenerateColumns="False"
                               HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                        IsReadOnly="True"  AllowDrop="True" SelectionMode="Extended"  PreviewMouseDown="table_onClick" 
-                      PreviewMouseLeftButtonUp="table_leftClick" PreviewMouseMove="table_MouseMove">
+                      PreviewMouseLeftButtonUp="table_leftClick" PreviewMouseMove="table_MouseMove" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
                 <DataGrid.Resources>
                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" 
                    Color="#005ce6"/>
@@ -41,7 +56,7 @@
                     <DataGridTextColumn Header="Státusz" Binding="{Binding StatusString}" Width="*">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="{x:Type TextBlock}">
-                                <Style.Triggers>
+                                    <Style.Triggers>
                                     <Trigger Property="Text" Value="Új">
                                         <Setter Property="Background" Value="Red"/>
                                         <Setter Property="Foreground" Value="White"/>

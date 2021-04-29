@@ -60,3 +60,9 @@ INSERT INTO Restaurant.Orders(restaurantID, username,foods, [status], startOrder
 --UPDATE Restaurant.Orders SET [status] = '2' WHERE orderID = '1'
 
 --SELECT foodID,name,price,rating,pictureID,Restaurant.Food.categoryID,Restaurant.Food.restaurantID,availableFrom,availableTo FROM Restaurant.Food JOIN Restaurant.CategoryName ON Restaurant.CategoryName.categoryID = Restaurant.Food.categoryID WHERE Restaurant.Food.foodID = 1
+
+
+----------------------------04-27.---------------------
+USE Netpincer
+INSERT INTO DeliveryPerson.WorkingHours(username ,fromHour,fromMinute,toHour,toMinute ,workingDays) VALUES ('alma',8,30,20,45,'1,2,3,5')
+

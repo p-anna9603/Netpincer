@@ -31,7 +31,7 @@ namespace FoodOrderClient
         startupWindow parent;
         List<Order> newOrders = new List<Order>();
         List<int> newOrdersID = new List<int>();
-        List<Order> ordersList = new List<Order>();
+        OrderList ordersList = new OrderList();
         List<Order> checkedNewOrders = new List<Order>();
         List<int> checkedNewOrdersID = new List<int>();
 
@@ -78,17 +78,6 @@ namespace FoodOrderClient
                         for (int i=0;i<categories.Count;++i)
                             Console.WriteLine("CATEGORIES FOR UTALOM A C CAPAT: \n {0}", categories[i]);
             */
-            dummyAllergs.Add("glutén");
-            food = new Food(1, "Paprikás pizza", 1200, 3, 0, dummyAllergs, 2, 2, "2021.03.11", "2022.01.01");
-            oneOrdersFoods.Add(food);
-            dummyOrder = new Order(1, 0, "2021.04.22 12:22", "", "Anna", 2000, "1,2,3");
-            ordersList.Add(dummyOrder);
-
-            dummyOrder2 = new Order(2, 1, "2021.04.22 14:22", "", "Pista", 2000, "2,3");
-            ordersList.Add(dummyOrder2);
-
-            dummyOrder4 = new Order(4, 3, "2021.04.22 14:22", "", "Réka", 2000, "1");
-            ordersList.Add(dummyOrder4);
         }
         private void ListViewItem_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -261,15 +250,14 @@ namespace FoodOrderClient
             while(z == 0)
             {
                 Thread.Sleep(10000);
-                //ordersList = serverConnection.getOrders(currUser.restaurantID); TODO
-                for (int i = 0; i < ordersList.Count; ++i)
+                ordersList = serverConnection.getOrders(currUser.restaurantID);
+                for (int i = 0; i < ordersList.ListOrder.Count; ++i)
                 {
-                    //if(ordersList[i].OrderStatus == 0 && !(checkedNewOrders.Contains(ordersList[i])))
-                    if(ordersList[i].OrderStatus == 0 && !(checkedNewOrdersID.Contains(ordersList[i].OrderID)))
+                    if(ordersList.ListOrder[i].OrderStatus == 0 && !(checkedNewOrdersID.Contains(ordersList.ListOrder[i].OrderID)))
                     {
                         Console.WriteLine("hozzáadás");
                         //newOrders.Add(ordersList[i]);
-                        NewOrdersID.Add(ordersList[i].OrderID);
+                        NewOrdersID.Add(ordersList.ListOrder[i].OrderID);
                     }
                 }
                 if(NewOrdersID.Count != 0)

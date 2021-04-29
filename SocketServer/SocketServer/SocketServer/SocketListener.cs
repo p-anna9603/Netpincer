@@ -197,15 +197,49 @@ namespace SocketServer
                             //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(header.ToString()));
                             handler.Send(Encoding.ASCII.GetBytes(header.ToString()));
                         }
+                        else if (receivedJSONObject["type"].ToString() == "3") // DP login
+                        {
+                            string register = deliveryPersonLogin(receivedJSONObject["username"].ToString(), receivedJSONObject["password"].ToString(), receivedJSONObject["userType"].ToString());
+                            //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                            //register = "5";
+                            handler.Send(Encoding.ASCII.GetBytes(register));
+                        }
                         else if (receivedJSONObject["type"].ToString() == "4") // Register User
                         {
                             string register = registerUser(receivedJSONObject);
                             //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
                             handler.Send(Encoding.ASCII.GetBytes(register));
                         }
+                        else if (receivedJSONObject["type"].ToString() == "41") // Register Delivery Person for piece of shirt Java, because it's a useless language and nothing ever works
+                        {
+                            string register = registerUser(receivedJSONObject);
+                            register = "5";
+                            //register += "-1";   //trying to send EOF to Java client
+                            //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                            handler.Send(Encoding.ASCII.GetBytes(register));
+                        }
+                        if (receivedJSONObject["type"].ToString() == "42")  //First Connection From DP Client
+                        {
+                            //Console.WriteLine("First message");
+                           /*JObject sendJason = new JObject();
+                            sendJason = sendFirstConnectionInfo();
+                            String response = sendJason.ToString();
+                           */
+                            String rsp="5";
+                           // response+= "EXIT";   //trying to send EOF to Java client*/
+                            handler.Send(Encoding.ASCII.GetBytes(rsp));
+                            // handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(sendJason.ToString()));  //Sending Client ID
+                            // listOfConnectedClients.Add(clientID - 1); //Adding client to connected list
+                        }
                         else if (receivedJSONObject["type"].ToString() == "5") //Register Restaurant
                         {
                             string register = registerRestaurant(receivedJSONObject);
+                            handler.Send(Encoding.ASCII.GetBytes(register));
+                            //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                        }
+                        else if (receivedJSONObject["type"].ToString() == "6") //Delivery Person Working Hours
+                        {
+                            string register = deliveryPersonWorkingHoursRegister(receivedJSONObject);
                             handler.Send(Encoding.ASCII.GetBytes(register));
                             //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
                         }
@@ -842,7 +876,44 @@ namespace SocketServer
             return ok.ToString();
         }
 
+        private string deliveryPersonWorkingHoursRegister(JObject o)
+        {
+            string query = "INSERT INTO DeliveryPerson.WorkingHours(username ,fromHour,fromMinute,toHour,toMinute ,workingDays) VALUES (@username, @fromHour ,@fromMinute, @toHour, @toMinute, @days)";
+            try
+            {
+                SqlCommand command = new SqlCommand(query, DatabaseConnection);
+                command.Parameters.AddWithValue("@username", o["username"].ToString());
+                Console.WriteLine(o["username"].ToString());
+                command.Parameters.AddWithValue("@fromHour", Int32.Parse(o["fromHour"].ToString()));
+                Console.WriteLine(o["fromHour"].ToString());
+                command.Parameters.AddWithValue("@fromMinute", Int32.Parse(o["fromMinute"].ToString()));
+                Console.WriteLine(o["fromMinute"].ToString());
+                command.Parameters.AddWithValue("@toHour", Int32.Parse(o["toHour"].ToString()));
+                Console.WriteLine(o["toHour"].ToString());
+                command.Parameters.AddWithValue("@toMinute", Int32.Parse(o["toMinute"].ToString()));
+                Console.WriteLine(o["toMinute"].ToString());
+                command.Parameters.AddWithValue("@days", o["workingDays"].ToString()); //workingDays
+                Console.WriteLine(o["workingDays"].ToString());
 
+                int affectedRows = command.ExecuteNonQuery();
+                if (affectedRows == 0)
+                {
+                    return "1";
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return "1";
+            }
+            /*JObject ok = new JObject();
+            ok.Add("type", 5);
+            ok.Add("status", "Successful");
+            return ok.ToString();*/
+            return "5";
+        }
+
+        
 
         private string registerUser(JObject o)
         {
@@ -954,6 +1025,40 @@ namespace SocketServer
                 Console.WriteLine(e.ToString());
                 return getErrorMessage(99);
             }   
+        }
+
+        private string deliveryPersonLogin(string username, string pass, string userType)
+        {
+            string query = "SELECT* FROM getUser(@username, @pass, @userType)";
+            DataTable dataTable = new DataTable();
+            try
+            {
+                SqlCommand command = new SqlCommand(query, DatabaseConnection);
+                command.Parameters.AddWithValue("@username", username);
+                command.Parameters.AddWithValue("@pass", pass);
+                command.Parameters.AddWithValue("@userType", userType);
+                SqlDataAdapter da = new SqlDataAdapter(command);
+                Console.WriteLine("USER type int: {0}", userType);
+                // Console.WriteLine("SQL COMMAND: {0}", command.Parameters.ToString());
+                da.Fill(dataTable);
+                if (dataTable.Rows.Count == 0)
+                {
+                    da.Dispose();
+                    //return getErrorMessage(91);
+                    return "1";
+                }
+                //Console.WriteLine("rows: {0}", dataTable.ToString());
+                da.Dispose();
+                //Console.WriteLine("TABLE: {0}", JsonConvert.SerializeObject(dataTable));
+                //return JsonConvert.SerializeObject(dataTable);
+                return "5";
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                //return getErrorMessage(99);
+                return "1";
+            }
         }
 
         private string getRestaurant(string username)
