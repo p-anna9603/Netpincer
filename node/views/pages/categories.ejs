@@ -28,11 +28,19 @@
                 <div class="h-100 p-5 text-white bg-dark rounded-3">
                   <h2><%= kaja["Name"] %></h2>
                   <p>Ár: <%= kaja["Price"] %> Ft.</p>
+                  <p>Allergének:
+                    <% if(kaja["Allergenes"].length == 0) { %>
+                      <p> Nincs benne allergén </p>   
+                    <% } else {  %>
+                      <% kaja["Allergenes"] %>
+                    <% } %> </p>
                   <button class="btn btn-outline-light" type="button">Kosárhoz adom</button>
                 </div>
               </div>
               <%  }); %>
         </div>
+
+       
           
 
     </div>
