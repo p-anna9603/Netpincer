@@ -153,7 +153,7 @@ app.get('/restaurant', async function(req, res) {
         let id = req.query.id; //macska id
         let esziID = req.query.restID; // eszi ID
         getFoods(esziID,id,req,res);
-        res.render('pages/categories');
+        res.render('pages/categories', { 'kajak' : JSON.stringify(Kajak) });
     }
     else
     {
