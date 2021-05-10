@@ -10,31 +10,37 @@
        <!-- Navbar -->
         <%- include('../partials/auth_navbar'); %>
        <!-- Navbar--> 
+
+
     <div class="container">
         <div class="p-5 mb-4 bg-light rounded-3">
             <div class="container-fluid py-5">
-              <h1 class="display-5 fw-bold">Ételek</h1>
-              <p class="col-md-8 fs-4">Using a series of utilities, you can create this jumbotron, just like the one in previous versions of Bootstrap. Check out the examples below for how you can remix and restyle it to your liking.</p>
-              <button class="btn btn-primary btn-lg" type="button">Example button</button>
+              <h1 class="display-5 fw-bold">Kínálat</h1>
+              <p class="col-md-8 fs-4">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Enim explicabo recusandae, porro magni ullam, consequuntur impedit nihil sed sapiente vero deserunt. Molestias quasi debitis in eveniet sit! Fuga, incidunt possimus?</p>
+              <button class="btn btn-primary btn-lg" type="button">Example Lorem Ipsum</button>
             </div>
           </div>
         <div class="row">
+          
+            <% var i = 0; %>
+            <% JSON.parse(kajak).forEach(function(kaja) {%>
             <div class="col-md-6">
                 <div class="h-100 p-5 text-white bg-dark rounded-3">
-                  <h2>Change the background</h2>
-                  <p>Swap the background-color utility and add a `.text-*` color utility to mix up the jumbotron look. Then, mix and match with additional component themes and more.</p>
-                  <button class="btn btn-outline-light" type="button">Example button</button>
+                  <h2><%= kaja["Name"] %></h2>
+                  <p>Ár: <%= kaja["Price"] %> Ft.</p>
+                  <p>Allergének:
+                    <% if(kaja["Allergenes"].length == 0) { %>
+                      <p> Nincs benne allergén </p>   
+                    <% } else {  %>
+                      <% kaja["Allergenes"] %>
+                    <% } %> </p>
+                  <button class="btn btn-outline-light" type="button">Kosárhoz adom</button>
                 </div>
               </div>
-    
-              <div class="col-md-6">
-                <div class="h-100 p-5 text-white bg-dark rounded-3">
-                  <h2>Change the background</h2>
-                  <p>Swap the background-color utility and add a `.text-*` color utility to mix up the jumbotron look. Then, mix and match with additional component themes and more.</p>
-                  <button class="btn btn-outline-light" type="button">Example button</button>
-                </div>
-              </div>
+              <%  }); %>
         </div>
+
+       
           
 
     </div>
