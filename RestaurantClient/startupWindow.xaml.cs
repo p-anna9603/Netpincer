@@ -48,9 +48,9 @@ namespace RestaurantClient
             //   ServerConnection.addFood(new Food(-1, "Kenyer2", 200, 4.7, 0, a, 2, 8, "2020.06.06.", "2020.05.05."));
             //   
             /* For dummy restaurant sign in pls delete before pushing */
-            restaurantSign.IsChecked = true;
-            textBoxUserName.Text = "marica";
-            textBoxPassword.Password = "marica";
+            //restaurantSign.IsChecked = true;
+            //textBoxUserName.Text = "marica";
+            //textBoxPassword.Password = "marica";
             
         }
 
@@ -66,6 +66,7 @@ namespace RestaurantClient
             }
             else
             {
+
                 if(clientSign.IsChecked == true)
                 {
                     signInType = UserType.Customer;
@@ -83,6 +84,7 @@ namespace RestaurantClient
                     errorText.Text = "Adja meg a belépés típusát!";
                     return;
                 }
+  
                 userName = textBoxUserName.Text;
                 password = textBoxPassword.Password;
                
