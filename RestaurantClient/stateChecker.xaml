@@ -34,7 +34,7 @@
                     FontSize="14"  FontStyle="Normal"  HorizontalAlignment="Center"  Name="Submit"
                     Foreground="#FFF9F8F8" Background="#FF5A97D4" BorderBrush="#FFFFFDFD"
                     BorderThickness="2"/>
-            <Button Content="MÉGSEM" Width="71" Height="30" Margin="50,0,0,0" VerticalAlignment="Top" Click="ok_onClick"
+            <Button Content="MÉGSEM" Width="71" Height="30" Margin="50,0,0,0" VerticalAlignment="Top" Click="cancel_onClick"
                     FontSize="14"  FontStyle="Normal"  HorizontalAlignment="Center"  Name="Cancel"
                     Foreground="#FFF9F8F8" Background="#FF5A97D4" BorderBrush="#FFFFFDFD"
                     BorderThickness="2"/>

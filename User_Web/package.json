@@ -1,13 +1,18 @@
 {
   "dependencies": {
     "async": "^3.2.0",
+    "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
+    "ejs": "^3.1.6",
     "express": "^4.17.1",
+    "express-session": "^1.17.1",
     "morgan": "^1.10.0",
+    "path": "^0.12.7",
     "serve-favicon": "^2.5.0",
+    "session": "^0.1.0",
     "socket.io-client": "^4.0.1"
   },
-  "name": "user_web",
+  "name": "user_node",
   "version": "1.0.0",
   "description": "user web engine",
   "main": "run.js",
@@ -15,6 +20,17 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Anna",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/p-anna9603/Netpincer.git"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "bugs": {
+    "url": "https://github.com/p-anna9603/Netpincer/issues"
+  },
+  "homepage": "https://github.com/p-anna9603/Netpincer#readme"
 }

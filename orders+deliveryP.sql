@@ -66,3 +66,16 @@ INSERT INTO Restaurant.Orders(restaurantID, username,foods, [status], startOrder
 USE Netpincer
 INSERT INTO DeliveryPerson.WorkingHours(username ,fromHour,fromMinute,toHour,toMinute ,workingDays) VALUES ('alma',8,30,20,45,'1,2,3,5')
 
+SELECT * FROM Users.UsersAddress
+SELECT * FROM DeliveryPerson.WorkingHours
+SELECT * FROM Restaurant.CategoryName
+
+SELECT * FROM Users.Users
+
+INSERT INTO Users.UsersAddress(city, zipcode, line1, line2) VALUES('Veszprem', 8200, 'Kiskorosi utca', '12')
+
+INSERT INTO Users.Users(username, password, lastName, firstName, phoneNumber, addressID, userType, email) 
+	VALUES('futar01','1234', 'Futar', 'Vilmos', '36-202222221', 6, 2,'futar01@gmail.com')
+
+INSERT INTO DeliveryPerson.WorkingHours(username ,fromHour,fromMinute,toHour,toMinute ,workingDays) VALUES ('futar01',8,30,20,45,'1,2,3,5')
+
