@@ -25,6 +25,8 @@ namespace FoodOrderClient
         RestaurantMenus menus;
         Orders orders;
         AssignDelivery assignDelivery;
+        ManageDiscount manageDiscount;
+        Summary summary;
         public UserControl child;
         private ConnectToServer serverConnection;
         Restaurant currUser;
@@ -169,7 +171,25 @@ namespace FoodOrderClient
                     childWindow.Content = assignDelivery;
                     child = assignDelivery;
                     break;
+                case 4:
+                    childWindow.Content = null;
+                    manageDiscount = new ManageDiscount(this);
+                    manageDiscount.Width = childWindow.Width;
+                    manageDiscount.Height = childWindow.Height;
+
+                    childWindow.Content = manageDiscount;
+                    child = manageDiscount;
+                    break;
                 case 5:
+                    childWindow.Content = null;
+                    summary = new Summary(this);
+                    summary.Width = childWindow.Width;
+                    summary.Height = childWindow.Height;
+
+                    childWindow.Content = summary;
+                    child = summary;
+                    break;
+                case 6:
                     windowClosing();
                     break;
                 default:

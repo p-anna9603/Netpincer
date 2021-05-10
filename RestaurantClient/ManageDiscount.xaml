@@ -1,0 +1,101 @@
+﻿<UserControl x:Class="RestaurantClient.ManageDiscount"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RestaurantClient"
+             mc:Ignorable="d" Height="615.75" Width="919.25">
+    <UserControl.Resources>
+        <Style TargetType="DataGridCell">
+            <Style.Setters>
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+            </Style.Setters>
+        </Style>
+        <Style TargetType="DataGridColumnHeader">
+            <Style.Setters>
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+            </Style.Setters>
+        </Style>
+    </UserControl.Resources>
+    <Border BorderBrush="black" BorderThickness="2">
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="170*"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="217*"/>
+                <RowDefinition Height="15"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="90"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Height="70" Width="875">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="Akciók kezelése" Foreground="White" HorizontalAlignment="Center" Margin="10,0" FontSize="28"/>
+                </StackPanel>
+                <TextBlock Text="Kategóriák" Foreground="White" HorizontalAlignment="Left" Margin="10,0" FontSize="18"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Button Name="activeDisc" HorizontalAlignment="Center" VerticalAlignment="Center" Width="70" Foreground="#FFF9F8F8" Background="#FF5A97D4" BorderBrush="#FFFFFDFD" Margin="0,5,0,0">
+                    <TextBlock Text="Jelenlegi akciók" TextWrapping="Wrap" TextAlignment="Center" MouseDown="activeDiscount_MouseDown"></TextBlock>
+                </Button>
+            </StackPanel>
+
+            <!--<ScrollViewer Name="scrollView" Grid.Row="1" Background="#FFF1F1F1" VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="2" Margin="22,0,0,0">-->
+            <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" Margin="16,7,16,4" Opacity="120" Name="categScroll" VerticalScrollBarVisibility="Auto" >
+                <WrapPanel  Name="menuList" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+
+                </WrapPanel>
+            </ScrollViewer>
+            <StackPanel Grid.Row="2" Margin="0,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <TextBlock  Text="Ételek" FontFamily="Helvetica" FontSize="19" Foreground="White"></TextBlock>
+            </StackPanel>
+            <ScrollViewer Name="foodScrollView" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="3" VerticalScrollBarVisibility="Auto" Margin="16,5,16,0">
+                <WrapPanel Name="foodWrapPanel" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <!--<StackPanel Orientation="Vertical" HorizontalAlignment="Left" 
+                                    Width="200" Height="132">
+                    <Border BorderBrush="AliceBlue" BorderThickness="2">
+                        <TextBlock VerticalAlignment="Top" FontSize="16" FontFamily="Century" HorizontalAlignment="Center"  TextAlignment="Center"
+                                    Margin="0,0,0,0" Width="200" Height="50" Text="1. futár - Kiss Péter" TextWrapping="Wrap" Padding="2,10,2,0"/>
+                    </Border>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalAlignment="Center" Height="79" Width="200" 
+                                AllowDrop="True" Drop="DropRow_Drop" DragEnter="DropRow_DragEnter" PreviewMouseUp="table_PreviewMouseUp">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock Text="1. " Margin="0,3,0,0" VerticalAlignment="Top"></TextBlock>
+                                <TextBlock Text="0234. rendelés" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,3,0,0"></TextBlock>
+                                <Button Margin="10,2,0,0" Width="18" Height="18" VerticalContentAlignment="Center" HorizontalAlignment="Right"
+                                            Background="Transparent" BorderBrush="Transparent">
+                                    <Image x:Name="settingImg" Source="Assets/exit.png" Stretch="Fill"/>
+                                </Button>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock Text=" 1. 0234. rendelés" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,3,0,0"></TextBlock>
+                                <Button Margin="10,2,0,0" Width="18" Height="18" VerticalContentAlignment="Center" Background="Transparent" BorderBrush="Transparent">
+                                    <Image Source="Assets/exit.png" Stretch="Fill"/>
+                                </Button>
+                            </StackPanel>
+                            <TextBlock Text=" 1. 0234. rendelés" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,3,0,0"></TextBlock>
+                            <TextBlock Text=" 1. 0234. rendelés" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,3,0,0"></TextBlock>
+                            <TextBlock Text=" 1. 0234. rendelés" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,3,0,0"></TextBlock>
+                            <TextBlock Text=" 1. 0234. rendelés" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,3,0,0"></TextBlock>
+                        </StackPanel>
+                    </ScrollViewer>
+                    <StackPanel.Background>
+                        <SolidColorBrush>
+                            <SolidColorBrush.Color>
+                                <Color A="50" R="255" G="204" B="153"></Color>
+                            </SolidColorBrush.Color>
+                        </SolidColorBrush>
+                    </StackPanel.Background>
+                </StackPanel>-->
+                </WrapPanel>
+                <!--</Grid>-->
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</UserControl>

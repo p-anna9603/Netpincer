@@ -17,7 +17,10 @@ namespace RestaurantClient
 		public int fromMinute { get; set; }
 		public int toHour { get; set; }
 		public int toMinute { get; set; }
-		public string name { get; set; }
+
+        public int deliveryTime { get; set; }
+
+        public string name { get; set; }
 		public string restaurantDescription { get; set; }
 		public string style { get; set; }
 		public string owner { get; set; }
@@ -31,7 +34,7 @@ namespace RestaurantClient
 		public Restaurant() { }
 
 		public Restaurant(string city_, string zipcode_, string line1_, string line2_, 
-			int fromHour_, int fromMinute_, int toHour_, int toMinute_,
+			int fromHour_, int fromMinute_, int toHour_, int toMinute_, /*int deliveryTime_,*/
 			string name_, string restaurantDescription_, string style_, 
 			string username_, string phoneNumber_, int restID = 0,
 			string lastName="", string firstName="", string pass_="", string email_="")
@@ -45,6 +48,7 @@ namespace RestaurantClient
 			this.fromMinute = fromMinute_;
 			this.toHour = toHour_;
 			this.toMinute = toMinute_;
+         //   this.deliveryTime = deliveryTime_;
 			this.name = name_;
 			this.restaurantDescription = restaurantDescription_;
 			this.style = style_;

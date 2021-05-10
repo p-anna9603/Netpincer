@@ -13,7 +13,9 @@ namespace RestaurantClient
         int orderStatus;
         string orderTime;
         string endorderTime;
+        string approxDeliveryTime;
         string customer;
+        string address = "8200, Veszprém, Egyetem utca 12.";
         double totalPrice;
         int deliveryPersonId;
         List<Food> orderedFoodList = new List<Food>();
@@ -21,6 +23,7 @@ namespace RestaurantClient
         string foods;
         RestaurantMain restMain;
         string foodsDesc = "";
+        string foodDescToAssignment = "";
         public Order(int oId, int status, string orderTim, string endOrderTime, string cust, double price, string foodsString)
         {
             orderID = oId;
@@ -29,7 +32,9 @@ namespace RestaurantClient
             customer = cust;
             totalPrice = price;
             foods = foodsString;
-            endorderTime = endOrderTime; 
+            endorderTime = endOrderTime;
+         //   approxDeliveryTime = approxDeliveryTime_; // TODO
+
             //string foodsDesc = "\tRendelt ételek\n\t\t";
             //for(int i = 0; i < orderedFoodList.Count; ++i)
             //{
@@ -84,7 +89,13 @@ namespace RestaurantClient
                 return foodsDesc;
             }
         }
-
+        public string Details2
+        {
+            get
+            {
+                return foodDescToAssignment;
+            }
+        }
         public void setFoods()
         {
             Console.WriteLine("kaják: " + foods);
@@ -114,9 +125,12 @@ namespace RestaurantClient
             {
                 foodsDesc += orderedFoodList[i].Name + "\n\t\t";
             }
+            foodDescToAssignment = foodsDesc;
+            foodDescToAssignment += "\r\tSzállítási cím: " + address;
         }
         public RestaurantMain RestMain { get => restMain; set => restMain = value; }
         public string EndorderTime { get => endorderTime; set => endorderTime = value; }
         public string Foods { get => foods; set => foods = value; }
+        public string Address { get => address; set => address = value; }
     }
 }

@@ -101,7 +101,7 @@
                     </DataGrid.Columns>
                 <DataGrid.RowDetailsTemplate>
                     <DataTemplate>
-                        <TextBlock Name="rowDetails" Text="{Binding Details}"  ></TextBlock>
+                            <TextBlock Name="rowDetails" Text="{Binding Details2}"  ></TextBlock>
                     </DataTemplate>
                 </DataGrid.RowDetailsTemplate>
             </DataGrid>

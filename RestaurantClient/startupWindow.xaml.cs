@@ -48,10 +48,9 @@ namespace RestaurantClient
             //   ServerConnection.addFood(new Food(-1, "Kenyer2", 200, 4.7, 0, a, 2, 8, "2020.06.06.", "2020.05.05."));
             //   
             /* For dummy restaurant sign in pls delete before pushing */
-            //restaurantSign.IsChecked = true;
-            //textBoxUserName.Text = "marica";
-            //textBoxPassword.Password = "marica";
-            
+            textBoxUserName.Text = "marica";
+            textBoxPassword.Password = "marica";
+
         }
 
         private void signInBtn_Click(object sender, RoutedEventArgs e)
@@ -66,7 +65,7 @@ namespace RestaurantClient
             }
             else
             {
-
+                /*
                 if(clientSign.IsChecked == true)
                 {
                     signInType = UserType.Customer;
@@ -84,7 +83,8 @@ namespace RestaurantClient
                     errorText.Text = "Adja meg a belépés típusát!";
                     return;
                 }
-  
+                */
+                signInType = UserType.RestaurantOwner;
                 userName = textBoxUserName.Text;
                 password = textBoxPassword.Password;
                
@@ -98,14 +98,14 @@ namespace RestaurantClient
                         Restaurant rest = ServerConnection.getRestaurant(user.Username);
                         RestaurantMain restMain = new RestaurantMain(ServerConnection, rest, this);
                         restMain.Show();
-                        restaurantSign.IsChecked = false;
+                       // restaurantSign.IsChecked = false;
                         this.Hide();
                     }
                     else if (user.GetUserType == UserType.Customer)
                     {
                         UserMain usrMain = new UserMain(ServerConnection, user, this);
                         usrMain.Show();
-                        clientSign.IsChecked = false;
+                      //  clientSign.IsChecked = false;
                         this.Hide();
                     }
                     else if (user.GetUserType == UserType.DeliveryPerson)
@@ -127,7 +127,12 @@ namespace RestaurantClient
 
         private void registerBtn_Click(object sender, RoutedEventArgs e)
         {
-            if(clientReg.IsChecked == false && runningBoyReg.IsChecked == false && restaurantReg.IsChecked == false)
+            registryType = 0;
+            registerUser regUser = new registerUser(ServerConnection, this);
+            regUser.Show();
+            this.Hide();
+            /*
+            if (clientReg.IsChecked == false && runningBoyReg.IsChecked == false && restaurantReg.IsChecked == false)
             {
                 errorText.Text = "Válassza ki a regisztráció típusát!";
             }
@@ -157,6 +162,7 @@ namespace RestaurantClient
                 }
                 // Server plíz register me
             }
+            */
         }
     }
 }

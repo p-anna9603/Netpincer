@@ -108,14 +108,23 @@
     <Compile Include="AssignDelivery.xaml.cs">
       <DependentUpon>AssignDelivery.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CategDiscount.xaml.cs">
+      <DependentUpon>CategDiscount.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Categories.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="ConnectToServer.cs" />
     <Compile Include="DeliveryBoy.cs" />
     <Compile Include="DeliveryBoyList.cs" />
     <Compile Include="Food.cs" />
+    <Compile Include="FoodDiscount.xaml.cs">
+      <DependentUpon>FoodDiscount.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FoodList.cs" />
     <Compile Include="ListOfRestaurants.cs" />
+    <Compile Include="ManageDiscount.xaml.cs">
+      <DependentUpon>ManageDiscount.xaml</DependentUpon>
+    </Compile>
     <Compile Include="newMenu.xaml.cs">
       <DependentUpon>newMenu.xaml</DependentUpon>
     </Compile>
@@ -143,6 +152,9 @@
     <Compile Include="stateChecker.xaml.cs">
       <DependentUpon>stateChecker.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Summary.xaml.cs">
+      <DependentUpon>Summary.xaml</DependentUpon>
+    </Compile>
     <Compile Include="User.cs" />
     <Compile Include="UserMain.xaml.cs">
       <DependentUpon>UserMain.xaml</DependentUpon>
@@ -158,6 +170,18 @@
     </Compile>
     <Compile Include="workingSchedule.cs" />
     <Page Include="AssignDelivery.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CategDiscount.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FoodDiscount.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ManageDiscount.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -209,6 +233,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="stateChecker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Summary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -321,6 +349,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\exit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\discount.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\summary.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

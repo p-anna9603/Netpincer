@@ -143,15 +143,8 @@
                     <StackPanel>
                         <TextBlock Text="Belépés" TextAlignment="Center" FontFamily="Book Antiqua" FontWeight="Bold"  FontSize="25" Foreground="White"></TextBlock>
                     </StackPanel>
-                    <StackPanel Margin="0,50,0,0" HorizontalAlignment="Left">
-                        <TextBlock Text="Belépés mint:" FontFamily="Helvetica" FontWeight="Light" FontSize="22" Foreground="White"/>
-                    </StackPanel>
-                    <StackPanel Margin="0,30,0,0" HorizontalAlignment="Center" >
-                        <RadioButton Name="clientSign" Content="Vendég" GroupName="Two" FontFamily="Helvetica" FontWeight="Light" FontSize="18" Foreground="White"></RadioButton>
-                        <RadioButton Name="restaurantSign" Content="Étterem" GroupName="Two" FontFamily="Helvetica" FontWeight="Light" FontSize="18" Foreground="White"></RadioButton>
-                        <RadioButton Name="runningBoySign" Content="Futár" GroupName="Two" FontFamily="Helvetica" FontWeight="Light" FontSize="18" Foreground="White"></RadioButton>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,50,0,0">
+                    <StackPanel VerticalAlignment="Center" Height="253" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,60,0,0">
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                         <TextBlock Height="23" FontFamily="Helvetica" FontWeight="Light" FontSize="21" Foreground="White" HorizontalAlignment="Left" Margin="0,0,0,0" Text="Felhasználó név:" VerticalAlignment="Top" Width="158" />
                         <TextBox Text="" Height="27" Margin="0,2" Name="textBoxUserName"   Template="{StaticResource TextBoxBaseControlTemplate}" Foreground="White"
                                  VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="184" TabIndex="1" 
@@ -163,9 +156,9 @@
                                          VerticalAlignment="Center" Width="185" Padding="0,0,0,5" TabIndex="2"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
                                          Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" FontSize="17"/>
                     </StackPanel>
-                    <StackPanel Margin="0,30,0,0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Height="83">
+                    <StackPanel Margin="0,80,0,0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Height="83">
                         <Button Content="Belépés" FontSize="19"  FontStyle="Normal" Height="35" HorizontalAlignment="Left" Margin="0,15,0,0" Name="SignInButton" VerticalAlignment="Bottom" 
-                    Width="227" Click="signInBtn_Click" RenderTransformOrigin="0.535,1.691" Foreground="#FFF9F8F8" Background="Transparent" BorderBrush="#FFFFFDFD"
+                    Width="227" Click="signInBtn_Click" Foreground="#FFF9F8F8" Background="Transparent" BorderBrush="#FFFFFDFD"
                     BorderThickness="2" TabIndex="3" >
                             <Button.Resources>
                                 <Style TargetType="Border">
@@ -175,24 +168,17 @@
                         </Button>
                     </StackPanel>
                 </StackPanel>
+                </StackPanel>
             </Grid>
             <GridSplitter Width="3" IsEnabled="false" Margin="0,0,0,65" Grid.RowSpan="2" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
             <Grid Grid.Row="1" Grid.Column="1" Margin="20,0,24,37">
-                <StackPanel Orientation="Vertical" Height="412" Margin="0,0,0,1">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Height="412" Margin="0,0,0,1">
                     <StackPanel>
                         <TextBlock Text="Regisztráció" TextAlignment="Center" FontFamily="Book Antiqua" FontWeight="Bold"  FontSize="25" Foreground="White"></TextBlock>
                     </StackPanel>
-                    <StackPanel Margin="15,50,0,0" HorizontalAlignment="Left">
-                        <TextBlock Text="Regisztrálás mint:" FontFamily="Helvetica" FontWeight="Light" FontSize="22" Foreground="White"/>
-                    </StackPanel>
-                    <StackPanel Margin="0,20,0,0" HorizontalAlignment="Center" >
-                        <RadioButton Name="clientReg" Content="Vendég" GroupName="One" FontFamily="Helvetica" FontWeight="Light" FontSize="18" Foreground="White"></RadioButton>
-                        <RadioButton Name="restaurantReg" Content="Étterem" GroupName="One" FontFamily="Helvetica" FontWeight="Light" FontSize="18" Foreground="White"></RadioButton>
-                        <RadioButton Name="runningBoyReg" Content="Futár" GroupName="One" FontFamily="Helvetica" FontWeight="Light" FontSize="18" Foreground="White"></RadioButton>
-                    </StackPanel>
-                    <StackPanel Margin="94,178,41,0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Height="66" >
-                        <Button Content="Regisztráció" FontSize="19"  FontStyle="Normal" Height="35" HorizontalAlignment="Left" Margin="0,0,0,0" Name="RegisterButton" VerticalAlignment="Bottom" 
-                    Width="227" Click="registerBtn_Click" RenderTransformOrigin="0.535,1.691" Foreground="#FFF9F8F8" Background="Transparent" BorderBrush="#FFFFFDFD"
+                    <StackPanel  HorizontalAlignment="Center" Margin="0,245,0,0" VerticalAlignment="Bottom" Orientation="Vertical" Height="43" Width="232" >
+                        <Button Content="Regisztráció" FontSize="19"  FontStyle="Normal" Height="35" HorizontalAlignment="Left" Name="RegisterButton" VerticalAlignment="Bottom" 
+                    Width="227" Click="registerBtn_Click" Foreground="#FFF9F8F8" Background="Transparent" BorderBrush="#FFFFFDFD"
                     BorderThickness="2" TabIndex="4">
                             <Button.Resources>
                                 <Style TargetType="Border">

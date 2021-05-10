@@ -98,6 +98,11 @@
                             <TextBlock Height="23" FontFamily="Helvetica" FontWeight="Light" FontSize="20" Foreground="White" HorizontalAlignment="Left" Margin="0,15,0,0" Name="textBlockHoursTo" Text="-ig" VerticalAlignment="Top" Width="40" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Height="40">
+                            <TextBlock Height="23" FontFamily="Helvetica" FontWeight="Light" FontSize="20" Foreground="White" HorizontalAlignment="Left" Margin="67,15,0,0" Text="Szállítási idő:" VerticalAlignment="Top" Width="158" />
+                            <TextBox Height="23" HorizontalAlignment="Left" Margin="50,15,0,0" Padding="1.5" Name="textBoxDeliveryTime" VerticalAlignment="Top" Width="70" PreviewTextInput="deliveryTime_TextInput"/>
+                            <TextBlock Height="23" FontFamily="Helvetica" FontWeight="Light" FontSize="20" Foreground="White" HorizontalAlignment="Left" Margin="0,15,0,0" Text=" perc" VerticalAlignment="Top" Width="40" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Height="40">
                             <TextBlock Height="23" FontFamily="Helvetica" FontWeight="Light" FontSize="20" Foreground="White" HorizontalAlignment="Left" Margin="67,15,0,0"  Text="Vezetéknév: " VerticalAlignment="Top" Width="158"  />
                             <TextBox Height="23" HorizontalAlignment="Left" Margin="50,15,0,0"  Padding="1.5" Name="lastNameText" VerticalAlignment="Top" Width="222" />
                         </StackPanel>

@@ -26,6 +26,7 @@ namespace FoodOrderClient
         int toHour = 0;
         int fromMin = 0;
         int toMin = 0;
+        int deliveryTime = 0;
         Regex regex = new Regex("[^0-9]+");
         Regex regexChar = new Regex("[^a-zA-ZÀ-ÿ-ő-ű]+");
 
@@ -55,7 +56,8 @@ namespace FoodOrderClient
         }
         public void registerRestaurant()
         {
-           retval = ServerConnection.registerRestaurant(new Restaurant(citiName, zipCode, street, streetNum, fromHour, fromMin, toHour, toMin, restName, leiras,
+            // + deliveryTime
+            retval = ServerConnection.registerRestaurant(new Restaurant(citiName, zipCode, street, streetNum, fromHour, fromMin, toHour, toMin,/* deliveryTime,*/ restName, leiras,
                style, userName, phone, -1, lastName, firstName, password, email)); 
            // ServerConnection.StopClient();
         }
@@ -106,6 +108,11 @@ namespace FoodOrderClient
                 e.Handled = true;
             }
             zipKeyDone = 1;
+        }
+        private void deliveryTime_TextInput(object sender, TextCompositionEventArgs e)
+        {
+            TextBox ad = sender as TextBox;
+            e.Handled = regex.IsMatch(e.Text);
         }
         private void phone_KeyDown(object sender, TextCompositionEventArgs e)
         {
@@ -253,9 +260,15 @@ namespace FoodOrderClient
                     errormessage.Text = "A nyitvatartás helytelen!";
                     fromWork.Focus();
                 }
+                else if(textBoxDeliveryTime.Text.Length == 0)
+                {
+                    errormessage.Text = "Adjon meg egy hozzávetőleges szállítási időt";
+                    textBoxDeliveryTime.Focus();
+                }
                 else
                 {
                     errormessage.Text = "";
+                    deliveryTime = Int32.Parse(textBoxDeliveryTime.Text);
                     // string address = textBoxAddress.Text;
                     //SqlConnection con = new SqlConnection("Data Source=TESTPURU;Initial Catalog=Data;User ID=sa;Password=wintellect");
                     //con.Open();

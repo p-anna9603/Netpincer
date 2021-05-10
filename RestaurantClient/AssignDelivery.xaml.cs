@@ -149,9 +149,7 @@ namespace RestaurantClient
         }
         
         public void addOrdersToTable()
-        {
-            // TODO fill the list from the listFromServerConnection
-           
+        {           
             if (orderslistFromServer.ListOrder != null)
             {
                 for (int i = 0; i < orderslistFromServer.ListOrder.Count; ++i)
@@ -161,11 +159,11 @@ namespace RestaurantClient
                         orderslistFromServer.ListOrder[i].RestMain = restaurantMain;
                         orderslistFromServer.ListOrder[i].setFoods();
                         waitingForDeliveryOrders.Add(orderslistFromServer.ListOrder[i]);
+                        Console.WriteLine("szállítási címe: " + orderslistFromServer.ListOrder[i].Address);
                       //  newFoodWindows.Add(listFromServer.ListFood[i].FoodID, listFromServer.ListFood[i]);
                     }
                 }
-            }
-            
+            }            
             table.ItemsSource = waitingForDeliveryOrders;
         }
 
@@ -565,7 +563,7 @@ namespace RestaurantClient
             }
             return null;
         }
-  
+        string approxDeliveryTime;
         private void addOrderToDeliveryBoy(Order order, int boyID)
         {
             Console.WriteLine("update to server\n");
@@ -588,6 +586,13 @@ namespace RestaurantClient
             waitingForDeliveryOrders.Remove(order);
             table.ItemsSource = null;
             table.ItemsSource = waitingForDeliveryOrders;
+
+            dateTime = DateTime.Now;
+            DateTime d2 = dateTime.AddMinutes(10);
+            approxDeliveryTime = d2.ToShortDateString().Trim() + " " + d2.ToShortTimeString();
+            Console.WriteLine(approxDeliveryTime);
+            //  restaurantMain.ServerConnection.setApproximateDeliveryTime(order.OrderID, restaurantMain.CurrUser.restaurantID, approxDeliveryTime);
+
             //  table.Items.Remove(order);
         }
     }
