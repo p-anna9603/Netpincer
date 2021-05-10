@@ -93,6 +93,8 @@ let Kajak = [];
 
 let Kategoriak;
 
+var Bev_lista = [];
+
 var sess = {
     secret: 'secret keyboard cat ',
     resave: false,
@@ -110,11 +112,12 @@ app.get('/', function (req, res) {
         console.log("Session elkezdődött" + session);
         res.redirect('/home'); // ha be van jelentkezve, és még él a süti, akkor abból felállítja a rendszert
     } else {
-        console.log(session);
-        res.render('pages/index');
+        Connect_To_Server(first_JSON); 
     }
-    Connect_To_Server(first_JSON); 
- 
+    res.redirect('/index');
+})
+app.get('/index', function (req, res) {
+    res.render('pages/index');
 })
 
 app.get('/login', function(req, res) {
@@ -249,6 +252,13 @@ app.post('/register_authentication', function(request, response)
 });
 // REGISTER
 
+app.get('/addToList', function(request,response){
+    var got_foodkaja = request.body.id;
+    console.log("Bevásárló listához adom: " + got_foodkaja );
+    Bev_lista.push(got_foodkaja);
+    console.log("Bevásárló lista: " + Bev_lista);
+});
+
 app.listen(8000);
 
 //CONNECT TO SERVE FUNCTION
@@ -263,19 +273,6 @@ function Connect_To_Server (json)
          client.write(jsonStr);
      })
 
-    client.on('data', function(data){
-        var parsed_JSON = jsonParser(data);
-         if (parsed_JSON["type"] == 0) {
-            console.log("Received first data " + data);
-            console.log("Handshake -> Type: 0");
-         }
-         else if (parsed_JSON["type"] == 99) {
-            console.log("Received false login data : " + data);
-            console.log("User not found");
-            login_var = false;
-        }
-     })
-
     };
 //CONNECT TO SERVE FUNCTION
 
@@ -288,7 +285,16 @@ function sendData(json_Object, request, response)
     client.on('data', function(data){
         var parsed_JSON = jsonParser(data);
         //var obj = JSON.parse(data);
-        if (parsed_JSON["type"] == 1) { // get User Data
+        if (parsed_JSON["type"] == 0) {
+            console.log("Received first data " + data);
+            console.log("Handshake -> Type: 0");
+         }
+        else if (parsed_JSON["type"] == 99) {
+            console.log("Received false login data : " + data);
+            console.log("User not found");
+            login_var = false;
+        }
+        else if (parsed_JSON["type"] == 1) { // get User Data
             console.log("Received login data : " + data);
             console.log("Handshake -> Type: 1 <- User Login");
             request.session.loggedIn = userParser(data);
