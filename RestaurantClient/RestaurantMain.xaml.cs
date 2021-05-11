@@ -261,7 +261,7 @@ namespace FoodOrderClient
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            new Thread(refreshData).Start();
+         //   new Thread(refreshData).Start();
         }
         int z = 0;
         public delegate void UpdateTextCallback(string message);

@@ -24,7 +24,9 @@ namespace RestaurantClient
         RestaurantMain restMain;
         string foodsDesc = "";
         string foodDescToAssignment = "";
-        public Order(int oId, int status, string orderTim, string endOrderTime, string cust, double price, string foodsString)
+
+        User user;
+        public Order(int oId, int status, string orderTim, string endOrderTime, string cust, double price, string foodsString, User user_)
         {
             orderID = oId;
             orderStatus = status;
@@ -33,6 +35,7 @@ namespace RestaurantClient
             totalPrice = price;
             foods = foodsString;
             endorderTime = endOrderTime;
+            User = user_;
          //   approxDeliveryTime = approxDeliveryTime_; // TODO
 
             //string foodsDesc = "\tRendelt ételek\n\t\t";
@@ -41,7 +44,7 @@ namespace RestaurantClient
             //    foodsDesc += orderedFoodList[i].Name + "\n\t\t";
             //}
         }
-
+       
         public int OrderID { get => orderID; set => orderID = value; }
         public int OrderStatus 
         { 
@@ -49,20 +52,17 @@ namespace RestaurantClient
             set
             {
                 orderStatus = value;
-                Console.WriteLine("#############test id: " + orderID + ", " + orderStatus);
+             //   Console.WriteLine("#############test id: " + orderID + ", " + orderStatus);
                 if (orderStatus == 0)
                 {
-                    Console.WriteLine("új");
                     statusString = "Új";
                 }
                 else if (orderStatus == 1)
                 {
-                    Console.WriteLine("fogadva");
                     statusString = "Fogadva";
                 }
                 else if (orderStatus == 2)
                 {
-                    Console.WriteLine("kiszállításrakész");
                     statusString = "Kiszállításra kész";
                 }
                 else if (orderStatus == 3)
@@ -126,11 +126,12 @@ namespace RestaurantClient
                 foodsDesc += orderedFoodList[i].Name + "\n\t\t";
             }
             foodDescToAssignment = foodsDesc;
-            foodDescToAssignment += "\r\tSzállítási cím: " + address;
+            foodDescToAssignment += "\r\tSzállítási cím: " + user.getLine1() + user.getLine2();
         }
         public RestaurantMain RestMain { get => restMain; set => restMain = value; }
         public string EndorderTime { get => endorderTime; set => endorderTime = value; }
         public string Foods { get => foods; set => foods = value; }
         public string Address { get => address; set => address = value; }
+        public User User { get => user; set => user = value; }
     }
 }

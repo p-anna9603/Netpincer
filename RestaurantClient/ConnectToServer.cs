@@ -531,6 +531,7 @@ public class ConnectToServer
                 throw new Exception();
             for (int i = 0; i < foodList.ListFood.Count; ++i)
             {
+                /*
                 Console.WriteLine("FoodID: {0}", foodList.ListFood[i].FoodID);
                 Console.WriteLine("Name: {0}", foodList.ListFood[i].Name);
                 Console.WriteLine("Price: {0}", foodList.ListFood[i].Price);
@@ -541,6 +542,7 @@ public class ConnectToServer
                 Console.WriteLine("From: {0}", foodList.ListFood[i].AvailableFrom);
                 Console.WriteLine("To: {0}", foodList.ListFood[i].AvailableTo);
                 Console.WriteLine("Allergens:");
+                */
                 for (int j = 0; j < foodList.ListFood[i].Allergenes.Count; ++j)
                 {
                     Console.WriteLine(foodList.ListFood[i].Allergenes[j]);
@@ -588,7 +590,7 @@ public class ConnectToServer
             Food f = Newtonsoft.Json.JsonConvert.DeserializeObject<Food>(recievedMsg);
             if (f == null)
                 throw new Exception();
-
+/*
             Console.WriteLine("FoodID: {0}", f.FoodID);
             Console.WriteLine("Name: {0}", f.Name);
             Console.WriteLine("Price: {0}", f.Price);
@@ -599,6 +601,7 @@ public class ConnectToServer
             Console.WriteLine("From: {0}", f.AvailableFrom);
             Console.WriteLine("To: {0}", f.AvailableTo);
             Console.WriteLine("Allergens:");
+*/
             for (int j = 0; j < f.Allergenes.Count; ++j)
             {
                 Console.WriteLine(f.Allergenes[j]);
@@ -654,6 +657,7 @@ public class ConnectToServer
             }
             for (int i = 0; i < receivedOrderList.ListOrder.Count; ++i)
             {
+                /*
                 Console.WriteLine("OrderID: {0}", receivedOrderList.ListOrder[i].OrderID);
                 Console.WriteLine("OrderStatus: {0}", receivedOrderList.ListOrder[i].OrderStatus);
                 Console.WriteLine("StatusString: {0}", receivedOrderList.ListOrder[i].StatusString);
@@ -662,6 +666,7 @@ public class ConnectToServer
                 Console.WriteLine("Customer: {0}", receivedOrderList.ListOrder[i].Customer);
                 Console.WriteLine("TotalPrice: {0}", receivedOrderList.ListOrder[i].TotalPrice);
                 Console.WriteLine("Foods: {0}", receivedOrderList.ListOrder[i].Foods);
+                */
                 //for (int j = 0; j < receivedOrderList.ListOrder[i].OrderedFoodList.Count; ++j)
                 //{
                 //    Console.WriteLine(receivedOrderList.ListOrder[i].OrderedFoodList[j]);

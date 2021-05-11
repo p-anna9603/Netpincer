@@ -132,11 +132,20 @@ namespace RestaurantClient
                        ( workTime.ToHour > hour || workTime.ToHour == hour && workTime.ToMinute  >= min))
                     {
                         boys.Add(listFromServer.ListDevliveryboy[i]);
+                        addBoyPanel(boys[i].Name, boys[i].DeliveryBoyID, boys[i].Orders);
+                    }
+                    List<Order> orders = listFromServer.ListDevliveryboy[i].Orders;
+                    for(int z = 0; z < orders.Count; ++z)
+                    {
+                        if(orders[z].OrderStatus == 3) // kiszállítás alatt
+                        {
+                            addOngoingDeliveryToDeliveryBoy(orders[z], listFromServer.ListDevliveryboy[i]);
+                        }
                     }
                 //    newFoodWindows.Add(listFromServer.ListFood[i].FoodID, listFromServer.ListFood[i]);
                 }
             }
-            
+            /*
             if (boys.Count != 0)
             {
                 Console.WriteLine("addpanel 0");
@@ -146,6 +155,7 @@ namespace RestaurantClient
                     addBoyPanel(boys[i].Name, boys[i].DeliveryBoyID, boys[i].Orders); 
                 }
             }
+            */
         }
         
         public void addOrdersToTable()
@@ -161,6 +171,10 @@ namespace RestaurantClient
                         waitingForDeliveryOrders.Add(orderslistFromServer.ListOrder[i]);
                         Console.WriteLine("szállítási címe: " + orderslistFromServer.ListOrder[i].Address);
                       //  newFoodWindows.Add(listFromServer.ListFood[i].FoodID, listFromServer.ListFood[i]);
+                    }
+                    else if(orderslistFromServer.ListOrder[i].OrderStatus == 3) // under delivery for further inspection (in addBoyPanel)
+                    {
+
                     }
                 }
             }            
@@ -237,10 +251,12 @@ namespace RestaurantClient
             TextBlock newText2;
             TextBlock newTextNum;
             int counter = 0;
+            int isRestaurantUs = 0;
             if (orders != null)
             {
                 for (int i = 0; i < orders.Count; ++i)
                 {
+                   // if(orderslistFromServer)
                     if (orders[i].OrderStatus == 3)
                     {
                         counter++;
@@ -591,9 +607,14 @@ namespace RestaurantClient
             DateTime d2 = dateTime.AddMinutes(10);
             approxDeliveryTime = d2.ToShortDateString().Trim() + " " + d2.ToShortTimeString();
             Console.WriteLine(approxDeliveryTime);
-            //  restaurantMain.ServerConnection.setApproximateDeliveryTime(order.OrderID, restaurantMain.CurrUser.restaurantID, approxDeliveryTime);
+            //  restaurantMain.ServerConnection.setApproximateDeliveryTime(order.OrderID, restaurantMain.CurrUser.restaurantID, approxDeliveryTime); // TODO
 
             //  table.Items.Remove(order);
+        }
+
+        private void addOngoingDeliveryToDeliveryBoy(Order order, DeliveryBoy deliveryBoy)
+        {
+
         }
     }
 }
