@@ -44,6 +44,10 @@ namespace RestaurantClient
             listFromServer = restaurantMain.ServerConnection.getOrders(restaurantMain.CurrUser.restaurantID);
             cat = restaurantMain.ServerConnection.getCategories(restaurantMain.CurrUser.restaurantID);
             addExistingCategories();
+            SolidColorBrush color = new SolidColorBrush();
+            color.Color = Color.FromArgb(120, 102, 102, 255);
+            border.Background = color;
+            foodScrollView.Background = color;
         }
         private void addExistingCategories()
         {

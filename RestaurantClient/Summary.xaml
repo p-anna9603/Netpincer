@@ -34,11 +34,11 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Height="130" Width="796">
                 <TextBlock Name="errorText" Text="" Foreground="Red" Margin="5,0,0,0"></TextBlock>
-                <TextBlock Text="Időszakos információk" Foreground="White" HorizontalAlignment="Center" Margin="5,0" FontSize="28"/>
+                <TextBlock Text="Időszakos információk" Foreground="White" HorizontalAlignment="Center" Margin="5,0" FontSize="28" FontWeight="Bold"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="29" Margin="0,20,0,0">
-                    <DatePicker Name="FromDate"></DatePicker>
+                    <DatePicker Name="FromDate" Width="110"></DatePicker>
                     <TextBlock Text="-tól" FontFamily="Helvetica" FontSize="17" Foreground="White" TextAlignment="Center"></TextBlock>
-                    <DatePicker Name="ToDate" Margin="20,0,0,0"></DatePicker>
+                    <DatePicker Name="ToDate" Margin="20,0,0,0" Width="110"></DatePicker>
                     <TextBlock Text="-ig" FontFamily="Helvetica" FontSize="17" Foreground="White"></TextBlock>
                     <Button Name="activeDisc" HorizontalAlignment="Center" VerticalAlignment="Center" Width="56" Foreground="#FFF9F8F8" Background="#FF5A97D4" 
                             BorderBrush="#FFFFFDFD" Margin="20,0,0,3" Height="26" PreviewMouseLeftButtonDown="OK_MouseDown">
@@ -51,7 +51,7 @@
 
             <!--<ScrollViewer Name="scrollView" Grid.Row="1" Background="#FFF1F1F1" VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="2" Margin="22,0,0,0">-->
             <ScrollViewer Grid.Row="1" Grid.Column="0" Margin="16,7,16,18" Opacity="120" Name="categScroll" VerticalScrollBarVisibility="Auto" >
-                <Border BorderBrush="DarkBlue" BorderThickness="1" Padding="4">
+                <Border BorderBrush="DarkBlue" BorderThickness="1" Padding="4" Name="border">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition></RowDefinition>
@@ -62,35 +62,35 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Grid.Column="0" Orientation="Vertical">
-                            <TextBlock Text="Leginkább fogyott" HorizontalAlignment="Center" FontFamily="Helvetica" FontSize="19" Foreground="White"></TextBlock>
+                            <TextBlock Text="Leginkább fogyott" HorizontalAlignment="Center" FontFamily="Bodoni MT Black" FontSize="20" Foreground="White"></TextBlock>
                             <StackPanel Orientation="Horizontal" Margin="3,10,0,0">
-                                <TextBlock Text="Kategória" FontFamily="Helvetica" FontSize="16" Foreground="White" Width="70"></TextBlock>
+                                <TextBlock Text="Kategória" FontFamily="Bodoni MT" FontSize="16" Foreground="White" Width="75" FontWeight="Bold"></TextBlock>
                                 <TextBlock Name="BestCategory" Text="valami kategória" FontFamily="Helvetica" FontSize="15" Foreground="White"></TextBlock>
                                 <TextBlock Name="bestCategCount" Text="" FontFamily="Helvetica" FontSize="15" Foreground="White"></TextBlock>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="3,0,0,0">
-                                <TextBlock Text="Étel" FontFamily="Helvetica" FontSize="16" Foreground="White" Width="70"></TextBlock>
+                                <TextBlock Text="Étel" FontFamily="Bodoni MT" FontSize="16" Foreground="White" Width="75" FontWeight="Bold"></TextBlock>
                                 <TextBlock Name="BestFood" Text="valami kaja" FontFamily="Helvetica" FontSize="15" Foreground="White"></TextBlock>
                                 <TextBlock Name="BestFoodCount" Text="" FontFamily="Helvetica" FontSize="15" Foreground="White"></TextBlock>
                             </StackPanel>
                         </StackPanel>
 
                         <StackPanel Grid.Column="1" Orientation="Vertical">
-                            <TextBlock Text="Legkevesebbett fogyott" HorizontalAlignment="Center" FontFamily="Helvetica" FontSize="19" Foreground="White"></TextBlock>
+                            <TextBlock Text="Legkevesebbett fogyott" HorizontalAlignment="Center" FontFamily="Bodoni MT Black" FontSize="20" Foreground="White"></TextBlock>
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                <TextBlock Text="Kategória" FontFamily="Helvetica" FontSize="16" Foreground="White" Width="70"></TextBlock>
+                                <TextBlock Text="Kategória" FontFamily="Bodoni MT" FontSize="16" Foreground="White" Width="75" FontWeight="Bold"></TextBlock>
                                 <TextBlock Name="WorstCategory"  Text="valami kategória" FontFamily="Helvetica" FontSize="15" Foreground="White" Width="86"></TextBlock>
                                 <TextBlock Name="WorstCategoryCnt" Text="" FontFamily="Helvetica" FontSize="15" Foreground="White"></TextBlock>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Étel" FontFamily="Helvetica" FontSize="16" Foreground="White" Width="70"></TextBlock>
+                                <TextBlock Text="Étel" FontFamily="Bodoni MT" FontSize="16" Foreground="White" Width="75" FontWeight="Bold"></TextBlock>
                                 <TextBlock Name="WorstFood"  Text="valami kaja" FontFamily="Helvetica" FontSize="15" Foreground="White"></TextBlock>
                                 <TextBlock  Name="WorstFoodCnt" Text="" FontFamily="Helvetica" FontSize="15" Foreground="White"></TextBlock>
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Orientation="Horizontal">
                             <TextBlock Text="Összes rendelés: " FontFamily="Helvetica" FontSize="17"></TextBlock>
-                            <TextBlock Name="totalCounter" Text="342" FontFamily="Helvetica" FontSize="17" Margin="10,0,0,0"></TextBlock>
+                            <TextBlock Name="totalCounter" Text="0" FontFamily="Helvetica" FontSize="17" Margin="10,0,0,0"></TextBlock>
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -99,14 +99,14 @@
                 <TextBlock  Text="Bevételek - kiadások" FontFamily="Helvetica" FontSize="19" Foreground="White"></TextBlock>
             </StackPanel>
             <ScrollViewer Name="foodScrollView" Grid.Column="0" Grid.Row="3" VerticalScrollBarVisibility="Auto" Margin="16,5,16,0">
-                <StackPanel>
+                <StackPanel HorizontalAlignment="Center">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Bruttó bevétel:" FontFamily="Helvetica" FontSize="18" Foreground="White" Width="190"></TextBlock>
-                        <TextBlock Name="grossInc" Text="30000 ft" Margin="30,0,0,0" FontSize="17" Foreground="White"></TextBlock>
+                        <TextBlock Name="grossInc" Text="0 ft" Margin="30,0,0,0" FontSize="17" Foreground="White"></TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Futárszolgálat költsége:" FontFamily="Helvetica" FontSize="18" Foreground="White"  Width="190"></TextBlock>
-                        <TextBlock Name="costDelivery" Text="30000 ft" Margin="30,0,0,0" FontSize="17" Foreground="White"></TextBlock>
+                        <TextBlock Name="costDelivery" Text="0 ft" Margin="30,0,0,0" FontSize="17" Foreground="White"></TextBlock>
                     </StackPanel>
                     <Line
                          X1="0" Y1="10"
@@ -115,7 +115,7 @@
                          StrokeThickness="1.5"/>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                         <TextBlock Text="Nettó bevétel: " FontFamily="Helvetica" FontSize="18" Foreground="White"  Width="190"></TextBlock>
-                        <TextBlock Name="netInc" Text="30000 ft" Margin="30,0,0,0" FontSize="17" Foreground="White"></TextBlock>
+                        <TextBlock Name="netInc" Text="0 ft" Margin="30,0,0,0" FontSize="17" Foreground="White"></TextBlock>
                     </StackPanel>
                 </StackPanel>
             </ScrollViewer>

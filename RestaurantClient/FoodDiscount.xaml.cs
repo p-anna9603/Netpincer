@@ -51,6 +51,8 @@ namespace RestaurantClient
             else
             {
                 percent = Int32.Parse(percentage.Text);
+                double percentAsNumber;
+                percentAsNumber = percent / 100;
                 if (percent < 100)
                 {
                     newPrice = (int)food.Price * ((100 - percent) / 100);
@@ -71,6 +73,8 @@ namespace RestaurantClient
                         return;
                     }
                 }
+                //    restaurantMain.ServerConnection.discountFood(foodList[i].FoodID, percentAsNumber); // TODO
+
                 //   status = restaurantMain.ServerConnection.discountFood(food.FoodID, newPrice); // TODO
                 this.Close();
             }

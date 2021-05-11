@@ -30,6 +30,7 @@ namespace RestaurantClient
 
         OrderList orderslistFromServer;
         List<Order> waitingForDeliveryOrders = new List<Order>();
+        List<Order> underDeliveryOrders = new List<Order>();
         List<Order> dummyAssign = new List<Order>();
 
         DateTime dateTime;
@@ -172,10 +173,12 @@ namespace RestaurantClient
                         Console.WriteLine("szállítási címe: " + orderslistFromServer.ListOrder[i].Address);
                       //  newFoodWindows.Add(listFromServer.ListFood[i].FoodID, listFromServer.ListFood[i]);
                     }
+                    /*
                     else if(orderslistFromServer.ListOrder[i].OrderStatus == 3) // under delivery for further inspection (in addBoyPanel)
                     {
-
+                        underDeliveryOrders.Add(orderslistFromServer.ListOrder[i]);
                     }
+                    */
                 }
             }            
             table.ItemsSource = waitingForDeliveryOrders;
@@ -251,12 +254,10 @@ namespace RestaurantClient
             TextBlock newText2;
             TextBlock newTextNum;
             int counter = 0;
-            int isRestaurantUs = 0;
             if (orders != null)
             {
                 for (int i = 0; i < orders.Count; ++i)
                 {
-                   // if(orderslistFromServer)
                     if (orders[i].OrderStatus == 3)
                     {
                         counter++;
@@ -283,26 +284,29 @@ namespace RestaurantClient
 
                         panel3.Children.Add(newTextNum);
                         panel3.Children.Add(newText2);
+                        
+                        if(orders[i].RestMain.CurrUser.restaurantID == restaurantMain.CurrUser.restaurantID) // if it is another reasurants order do not allow to x
+                         {
+                                /* x button */
+                                Button xButton = new Button();
+                                xButton.Margin = new Thickness(10, 2, 0, 0);
+                                xButton.Width = 18;
+                                xButton.Height = 18;
+                                xButton.VerticalContentAlignment = VerticalAlignment.Center;
+                                xButton.Background = System.Windows.Media.Brushes.Transparent;
+                                xButton.BorderBrush = System.Windows.Media.Brushes.Transparent;
+                                xButton.Click += XButton_Click;
 
-                        /* x button */
-                        Button xButton = new Button();
-                        xButton.Margin = new Thickness(10, 2, 0, 0);
-                        xButton.Width = 18;
-                        xButton.Height = 18;
-                        xButton.VerticalContentAlignment = VerticalAlignment.Center;
-                        xButton.Background = System.Windows.Media.Brushes.Transparent;
-                        xButton.BorderBrush = System.Windows.Media.Brushes.Transparent;
-                        xButton.Click += XButton_Click;
+                                /* x image */
+                                Image img = new Image();
+                                img.Source = new BitmapImage(new Uri("Assets/exit.png", UriKind.Relative));
+                                img.Stretch = Stretch.Fill;
+                                xButton.Content = img;
 
-                        /* x image */
-                        Image img = new Image();
-                        img.Source = new BitmapImage(new Uri("Assets/exit.png", UriKind.Relative));
-                        img.Stretch = Stretch.Fill;
-                        xButton.Content = img;
-
-                        panel3.Children.Add(xButton);
+                                panel3.Children.Add(xButton);
+                                xPanels.Add(xButton, orders[i]);
+                            }
                         panel2.Children.Add(panel3);
-                        xPanels.Add(xButton, orders[i]);
                     }
                 }
             }
@@ -376,7 +380,6 @@ namespace RestaurantClient
         }
         private void more_Click(object sender, RoutedEventArgs e)
         {
-
             Console.WriteLine("click on button!!: " + table.RowDetailsVisibilityMode);
             if (table.RowDetailsVisibilityMode == DataGridRowDetailsVisibilityMode.Collapsed)
             {
@@ -608,6 +611,7 @@ namespace RestaurantClient
             approxDeliveryTime = d2.ToShortDateString().Trim() + " " + d2.ToShortTimeString();
             Console.WriteLine(approxDeliveryTime);
             //  restaurantMain.ServerConnection.setApproximateDeliveryTime(order.OrderID, restaurantMain.CurrUser.restaurantID, approxDeliveryTime); // TODO
+            //  restaurantMain.ServerConnection.setApproximateDeliveryTime(order.OrderID, restaurantMain.CurrUser.restaurantID); // TODO (vagy ez)
 
             //  table.Items.Remove(order);
         }

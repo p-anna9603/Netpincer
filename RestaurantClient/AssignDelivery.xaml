@@ -83,7 +83,7 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
                     <DataGridTextColumn Header="Rendelés ideje" Binding="{Binding OrderTime}" Width="*"/>
-                    <DataGridTextColumn Header="Megrendelő" Binding="{Binding Customer}" Width="*"/>
+                    <DataGridTextColumn Header="Megrendelő" Binding="{Binding getFullName}" Width="*"/>
                     <DataGridTextColumn Header="Összeg" Binding="{Binding TotalPrice}" Width="*"/>
                         <DataGridTemplateColumn Header="Több">
                             <DataGridTemplateColumn.CellTemplate>

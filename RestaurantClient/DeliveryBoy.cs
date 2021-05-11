@@ -11,7 +11,7 @@ namespace RestaurantClient
         int deliveryBoyID;
         string name;
         workingSchedule working;
-        List<Order> orders; // ongoing deliveries
+        List<Order> orders;
 
         public DeliveryBoy(int dID, string nam, workingSchedule work, List<Order> ords = null)
         {
