@@ -1177,8 +1177,8 @@ namespace SocketServer
             Console.WriteLine(o["AvailableFrom"].ToString());
             command5.Parameters.AddWithValue("@availableTo", o["AvailableTo"].ToString());
             Console.WriteLine(o["AvailableTo"].ToString());
-            command5.Parameters.AddWithValue("@discount", o["discount"].ToString());
-            Console.WriteLine(o["discount"].ToString());
+            command5.Parameters.AddWithValue("@discount", o["Discount"].ToString());
+            Console.WriteLine(o["Discount"].ToString());
             SqlDataAdapter da = new SqlDataAdapter(command5);
             DataTable dataTable4 = new DataTable();
             da.Fill(dataTable4);

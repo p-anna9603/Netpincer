@@ -25,7 +25,7 @@ namespace RestaurantClient
         Food food;
         RestaurantMain restaurantMain;
         Regex regex = new Regex("[^0-9]+");
-        int percent = 0;
+        double percent = 0;
         int status = 0;
 
         public FoodDiscount(Window restrantMain, Food food_)
@@ -41,7 +41,7 @@ namespace RestaurantClient
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        int newPrice;
+        double newPrice;
         private void addButton_Click(object sender, EventArgs e)
         {
             if (percentage.Text.Length == 0)
@@ -50,12 +50,12 @@ namespace RestaurantClient
             }
             else
             {
-                percent = Int32.Parse(percentage.Text);
+                percent = Double.Parse(percentage.Text);
                 double percentAsNumber;
                 percentAsNumber = percent / 100;
                 if (percent < 100)
                 {
-                    newPrice = (int)food.Price * ((100 - percent) / 100);
+                    newPrice = food.Price * ((100 - percent) / 100);
                 }
                 else if (percent > 100)
                 {
@@ -66,14 +66,16 @@ namespace RestaurantClient
                     result = (DialogResult)System.Windows.MessageBox.Show(message, caption, (MessageBoxButton)button);
                     if (result == System.Windows.Forms.DialogResult.Yes)
                     {
-                        newPrice = (int)food.Price * percent / 100;
+                        newPrice = food.Price * percent / 100;
                     }
                     else
                     {
                         return;
                     }
                 }
-                //    restaurantMain.ServerConnection.discountFood(foodList[i].FoodID, percentAsNumber); // TODO
+                Console.WriteLine("percentage: " + percentAsNumber);
+                Console.WriteLine("new percentage: " + percentAsNumber);
+                restaurantMain.ServerConnection.setDiscount(food.FoodID, percentAsNumber);
 
                 //   status = restaurantMain.ServerConnection.discountFood(food.FoodID, newPrice); // TODO
                 this.Close();

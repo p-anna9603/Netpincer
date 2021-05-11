@@ -18,6 +18,7 @@ namespace SocketServer
         List<string> allergenes;
         string availableFrom;
         string availableTo;
+        double discount;
 
         public Food() { }
         
@@ -25,7 +26,7 @@ namespace SocketServer
            int catID,
             int restID,
            string availableFrom,
-        string availableTo )
+        string availableTo, double discount_ = 1)
         {
             foodID = fID;
             name = nam;
@@ -37,6 +38,7 @@ namespace SocketServer
             restaurantID = restID;
             this.availableFrom= availableFrom;
             this.availableTo= availableTo;
+            discount = discount_;
         }
 
         public int FoodID { get => foodID; set => foodID = value; }
@@ -49,5 +51,6 @@ namespace SocketServer
         public string AvailableTo { get => availableTo; set => availableTo = value; }
         public int RestaurantID { get => restaurantID; set => restaurantID = value; }
         public int CategoryID { get => categoryID; set => categoryID = value; }
+        public double Discount { get => discount; set => discount = value; }
     }
 }

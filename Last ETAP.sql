@@ -7,7 +7,7 @@ ALTER TABLE Restaurant.Orders ADD ETA nvarchar(30)	--- Estimated Time of Arrival
 
 --SELECT * FROM DeliveryPerson.DeliveryPersonOrders
 ALTER TABLE DeliveryPerson.DeliveryPersonOrders DROP COLUMN orderID			----1
-ALTER TABLE DeliveryPerson.DeliveryPersonOrders DROP CONSTRAINT FK__DeliveryP__order__13F1F5EB		---2
+ALTER TABLE DeliveryPerson.DeliveryPersonOrders DROP CONSTRAINT FK__DeliveryP__order__1DB06A4F		---2
 ALTER TABLE DeliveryPerson.DeliveryPersonOrders DROP COLUMN orderID			---3
 
 CREATE TABLE AssignDelivery

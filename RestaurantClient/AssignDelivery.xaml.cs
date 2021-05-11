@@ -610,8 +610,8 @@ namespace RestaurantClient
             DateTime d2 = dateTime.AddMinutes(10);
             approxDeliveryTime = d2.ToShortDateString().Trim() + " " + d2.ToShortTimeString();
             Console.WriteLine(approxDeliveryTime);
-            //  restaurantMain.ServerConnection.setApproximateDeliveryTime(order.OrderID, restaurantMain.CurrUser.restaurantID, approxDeliveryTime); // TODO
-            //  restaurantMain.ServerConnection.setApproximateDeliveryTime(order.OrderID, restaurantMain.CurrUser.restaurantID); // TODO (vagy ez)
+            //restaurantMain.ServerConnection.setApproximateDeliveryTime(order.OrderID, restaurantMain.CurrUser.restaurantID, approxDeliveryTime); // TODO
+            restaurantMain.ServerConnection.setApproximateDeliveryTime(order.OrderID, restaurantMain.CurrUser.restaurantID); // TODO (vagy ez)
 
             //  table.Items.Remove(order);
         }

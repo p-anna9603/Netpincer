@@ -184,6 +184,7 @@ namespace RestaurantClient
             //    categ.CategImg = m.CategoryImg;
             //    EnumVisual(this, p2, categ);
             //}
+            categ_MouseDown(p2, new RoutedEventArgs());
         }
         public void init()
         {
@@ -208,7 +209,7 @@ namespace RestaurantClient
             {
                 foreach (Food i in foods)
                 {
-                    addFoodPanel(i.Name, i.FoodID, i.Price);
+                    addFoodPanel(i.Name, i.FoodID, i.Price, i.Discount);
                 }
             }
 
@@ -226,9 +227,25 @@ namespace RestaurantClient
             getFoodsForCategory(clickedCategID);
         }
 
-        private void addFoodPanel(string foodName, int foodId, double foodPrice)
+        private void addFoodPanel(string foodName, int foodId, double foodPrice, double? discount)
         {
             Console.WriteLine("addfood");
+            int realPrice = 0;
+            if (discount != null)
+            {
+                if (discount >= 1)
+                {
+                    realPrice = (int)(foodPrice * discount);
+                }
+                else if (discount < 1)
+                {
+                    realPrice = (int)(foodPrice * (1 - discount));
+                }
+            }
+            else
+            {
+                realPrice = (int)foodPrice;
+            }
             StackPanel newCategory = new StackPanel();
             newCategory.Orientation = Orientation.Horizontal;
             newCategory.HorizontalAlignment = HorizontalAlignment.Center;
@@ -295,7 +312,7 @@ namespace RestaurantClient
             newText2.TextWrapping = TextWrapping.Wrap;
             newText2.Padding = new Thickness(10, 10, 2, 0);
             newText2.Margin = new Thickness(0, 0, 0, 0);
-            newText2.Text = foodPrice.ToString() + " Ft";
+            newText2.Text = realPrice.ToString() + " Ft";
             newText2.TextWrapping = TextWrapping.Wrap;
 
             panel2.Children.Add(newText);
@@ -375,6 +392,7 @@ namespace RestaurantClient
             //    categ.CategImg = m.CategoryImg;
             //    EnumVisual(this, p2, categ);
             //}
+
         }
 
         private void activeDiscount_MouseDown(object sender, EventArgs e)

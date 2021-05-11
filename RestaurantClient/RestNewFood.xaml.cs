@@ -66,7 +66,25 @@ namespace RestaurantClient
         private void setElementsData()
         {
             textBoxName.Text = food.Name;
-            textBoxPrice.Text = food.Price.ToString();
+            int realPrice = 0;
+            if (food.Discount != null)
+            {
+                if (food.Discount >= 1.0)
+                {
+                    realPrice = (int)(food.Price * food.Discount);
+                }
+                else if (food.Discount < 1.0)
+                {
+                    realPrice = (int)(foodPrice * (1.0 - food.Discount));
+                }
+            }
+            else
+            {
+                realPrice = (int)food.Price;
+            }
+            Console.WriteLine("real price: " + realPrice);
+            textBoxPrice.Text = realPrice.ToString();
+
             /* Add allergens */
             existingAllergenes = food.Allergenes;
             if(existingAllergenes != null)
@@ -75,9 +93,9 @@ namespace RestaurantClient
                 {
                     int index = 0;
                     bool canDelete = false;
+                    Console.WriteLine("allerg: " + existingAllergenes[i]);
                     foreach (ComboBoxItem item in combo.Items)
                     {
-                        Console.WriteLine("asdlfkhj " + item.Content);
                         if (item.Content.Equals(existingAllergenes[i]))
                         {
                             index = combo.Items.IndexOf(item);

@@ -23,7 +23,7 @@ namespace RestaurantClient
         public Food(int fID, string nam, double prc, double rate, int picID, List<String> allergs,
             int categoryID, int restID,     //CATEGORYID, RESTID
            string availableFrom,
-           string availableTo, double discount = 1)
+           string availableTo, double discount_ = 2)
         {
             foodID = fID;
             name = nam;
@@ -35,6 +35,7 @@ namespace RestaurantClient
             this.categoryID = categoryID;
             this.availableFrom = availableFrom;
             this.availableTo = availableTo;
+            discount = discount_;
         }
 
         public int FoodID { get => foodID; set => foodID = value; }

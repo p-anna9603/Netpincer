@@ -133,7 +133,7 @@ namespace RestaurantClient
                 foodsDesc += orderedFoodList[i].Name + "\n\t\t";
             }
             foodDescToAssignment = foodsDesc;
-            foodDescToAssignment += "\r\tSzállítási cím: " + user.getLine1() + " " + user.getLine2();
+           foodDescToAssignment += "\r\tSzállítási cím: " + user.getLine1() + " " + user.getLine2();
             foodDescToAssignment += "\r\tTelefonszám: " + user.getPhoneNumber();
         }
         public RestaurantMain RestMain { get => restMain; set => restMain = value; }

@@ -108,13 +108,32 @@ namespace RestaurantClient
             {
                 foreach (Food i in foods)
                 {
-                    addFoodPanel(i.Name, i.FoodID, i.Price);
+                    addFoodPanel(i.Name, i.FoodID, i.Price, i.Discount);
                 }
             }
         }
-        private void addFoodPanel(string foodName, int foodId, double foodPrice)
+
+        private void addFoodPanel(string foodName, int foodId, double foodPrice, double? discount = 1)
         {
             Console.WriteLine("addfood");
+            int realPrice = 0; // price*discount
+            if (discount != null)
+            {
+                Console.WriteLine("discouuuuuuuuunt#####################: " + discount);
+                if (discount >= 1.0)
+                {
+                    realPrice = (int)(foodPrice * discount);
+                }
+                else if(discount < 1.0)
+                {
+                    realPrice = (int)(foodPrice * (1.0 - discount));
+                }
+            }
+            else
+            {
+                realPrice = (int)foodPrice;
+            }
+            Console.WriteLine("real price: " + realPrice);
             StackPanel newCategory = new StackPanel();
             newCategory.Orientation = Orientation.Horizontal;
             newCategory.HorizontalAlignment = HorizontalAlignment.Center;
@@ -181,7 +200,7 @@ namespace RestaurantClient
             newText2.TextWrapping = TextWrapping.Wrap;
             newText2.Padding = new Thickness(10, 10, 2, 0);
             newText2.Margin = new Thickness(0, 0, 0, 0);
-            newText2.Text = foodPrice.ToString() + " Ft";
+            newText2.Text = realPrice.ToString() + " Ft";
             newText2.TextWrapping = TextWrapping.Wrap;
 
             panel2.Children.Add(newText);
