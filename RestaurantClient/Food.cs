@@ -18,12 +18,12 @@ namespace RestaurantClient
         int restaurantID;
         string availableFrom;
         string availableTo;
-        double discPercentage;
+        double discount;        //átneveztem
         public Food() { }
         public Food(int fID, string nam, double prc, double rate, int picID, List<String> allergs,
             int categoryID, int restID,     //CATEGORYID, RESTID
            string availableFrom,
-           string availableTo, double discPercentage_ = 1)
+           string availableTo, double discount = 1)
         {
             foodID = fID;
             name = nam;
@@ -47,5 +47,6 @@ namespace RestaurantClient
         public string AvailableTo { get => availableTo; set => availableTo = value; }
         public int RestaurantID { get => restaurantID; set => restaurantID = value; }
         public int CategoryID { get => categoryID; set => categoryID = value; }
+        public double Discount { get => discount; set => discount = value; }
     }
 }

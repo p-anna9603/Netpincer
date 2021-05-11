@@ -344,6 +344,60 @@ public class ConnectToServer
         }
     }
 
+    public void setApproximateDeliveryTime(int orderID, int restaurantID)
+    {
+        try
+        {
+            JObject obj = new JObject();
+            obj.Add("type", 16);
+            obj.Add("orderID", orderID);
+            obj.Add("restID", restaurantID);
+            string recievedMsg = sendJSON(obj);
+            Console.WriteLine("recievedMsg: {0}", recievedMsg);
+            JObject receivedJSonObject = new JObject();
+            receivedJSonObject = JObject.Parse(recievedMsg);
+            if (receivedJSonObject["type"].ToString() == "16")
+            {
+                Console.WriteLine("Server: {0}", receivedJSonObject["status"].ToString());
+            }
+            else if (receivedJSonObject["type"].ToString() == "99")
+            {
+                Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+        }
+    }
+
+    public void setDiscount(int foodID, double discount)
+    {
+        try
+        {
+            JObject obj = new JObject();
+            obj.Add("type", 15);
+            obj.Add("foodID", foodID);
+            obj.Add("discount", discount);
+            string recievedMsg = sendJSON(obj);
+            Console.WriteLine("recievedMsg: {0}", recievedMsg);
+            JObject receivedJSonObject = new JObject();
+            receivedJSonObject = JObject.Parse(recievedMsg);
+            if (receivedJSonObject["type"].ToString() == "15")
+            {
+                Console.WriteLine("Server: {0}", receivedJSonObject["status"].ToString());
+            }
+            else if (receivedJSonObject["type"].ToString() == "99")
+            {
+                Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+        }
+    }
+
     public int addFood(Food f)
     {
         try

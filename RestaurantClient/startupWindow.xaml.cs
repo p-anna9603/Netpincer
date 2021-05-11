@@ -32,7 +32,7 @@ namespace RestaurantClient
             ServerConnection = new ConnectToServer();
 
             #region KLAU TESZT 04.25
-            //ServerConnection.getOrders(1);        //OK
+            ServerConnection.getOrders(1);        //OK
             //ServerConnection.updateOrderState(2, 3);    //OK
             //ServerConnection.getFoodByID(1);      //OK
             #endregion
@@ -48,6 +48,9 @@ namespace RestaurantClient
             //   ServerConnection.addFood(new Food(-1, "Kenyer2", 200, 4.7, 0, a, 2, 8, "2020.06.06.", "2020.05.05."));
             //   
             /* For dummy restaurant sign in pls delete before pushing */
+
+            //ServerConnection.setDiscount(1, 0.96);
+            //ServerConnection.setApproximateDeliveryTime(5, 12);
             textBoxUserName.Text = "marica";
             textBoxPassword.Password = "marica";
 

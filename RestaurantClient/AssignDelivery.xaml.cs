@@ -72,22 +72,22 @@ namespace RestaurantClient
             dummyAllergs.Add("glutén");
             food = new Food(1, "Paprikás pizza", 1200, 3, 0, dummyAllergs, 2, 2, "2021.03.11", "2022.01.01");
             oneOrdersFoods.Add(food);
-            dummyOrder = new Order(1, 0, "2021.04.22 12:22", "", "Anna", 2000, "2");
+            //##KLAU## dummyOrder = new Order(1, 0, "2021.04.22 12:22", "", "Anna", 2000, "2");
           //  waitingForDeliveryOrders.Add(dummyOrder);
 
             food2 = new Food(3, "Magyaros pizza", 1200, 3, 0, dummyAllergs, 2, 2, "2021.03.11", "2022.01.01");
             oneOrdersFoods.Add(food2);
-            dummyOrder2 = new Order(2, 1, "2021.04.22 14:22", "", "Pista", 2000, "1");
-         //   waitingForDeliveryOrders.Add(dummyOrder2);
+            //##KLAU## dummyOrder2 = new Order(2, 1, "2021.04.22 14:22", "", "Pista", 2000, "1");
+            //   waitingForDeliveryOrders.Add(dummyOrder2);
             dummyAssign.Add(dummyOrder2);
 
             oneOrdersFoods.Add(food2);
-            dummyOrder3 = new Order(3, 2, "2021.04.22 14:22", "", "Lilla", 2000, "1,2");
-         //   waitingForDeliveryOrders.Add(dummyOrder3);
+            //##KLAU##  dummyOrder3 = new Order(3, 2, "2021.04.22 14:22", "", "Lilla", 2000, "1,2");
+            //   waitingForDeliveryOrders.Add(dummyOrder3);
 
             oneOrdersFoods.Add(food2);
-            dummyOrder4 = new Order(4, 3, "2021.04.22 14:22", "", "Zoli", 2000,  "2");
-         //   waitingForDeliveryOrders.Add(dummyOrder4);
+            //##KLAU## dummyOrder4 = new Order(4, 3, "2021.04.22 14:22", "", "Zoli", 2000,  "2");
+            //   waitingForDeliveryOrders.Add(dummyOrder4);
             dummyAssign.Add(dummyOrder4);
 
             dummyBoy = new DeliveryBoy(1, "David", dummySchedule);
