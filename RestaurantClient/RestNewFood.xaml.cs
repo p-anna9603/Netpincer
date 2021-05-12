@@ -75,7 +75,7 @@ namespace RestaurantClient
                 }
                 else if (food.Discount < 1.0)
                 {
-                    realPrice = (int)(foodPrice * (1.0 - food.Discount));
+                    realPrice = (int)(food.Price * (1.0 - food.Discount));
                 }
             }
             else
