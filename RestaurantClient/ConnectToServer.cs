@@ -437,7 +437,7 @@ public class ConnectToServer
         {
             string restString = JsonConvert.SerializeObject(f);
             JObject header = new JObject();
-            header.Add("type", 18);
+            header.Add("type", 17);
             JObject body = new JObject();
             body = JObject.Parse(restString);
             header.Merge(body);
@@ -446,7 +446,7 @@ public class ConnectToServer
 
             JObject receivedJSonObject = new JObject();
             receivedJSonObject = JObject.Parse(recievedMsg);
-            if (receivedJSonObject["type"].ToString() == "18")
+            if (receivedJSonObject["type"].ToString() == "17")
             {
                 Console.WriteLine("Server: {0}", receivedJSonObject["status"].ToString());
                 

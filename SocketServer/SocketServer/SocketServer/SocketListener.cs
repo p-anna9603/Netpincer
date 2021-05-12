@@ -1182,7 +1182,7 @@ namespace SocketServer
 
         private string updateFood(JObject o)
         {
-            string query = "UPDATE Restaurant.Food SET name =@foodName price=@price, rating = @rating, availableFrom=@availableFrom, availableTo=@availableTo, discount = @discount  WHERE foodID=@foodID";
+            string query = "UPDATE Restaurant.Food SET name =@foodName, price=@price, rating = @rating, availableFrom=@availableFrom, availableTo=@availableTo, discount = @discount  WHERE foodID=@foodID";
             SqlCommand command5 = new SqlCommand(query, DatabaseConnection);
             command5.Parameters.AddWithValue("@foodID", o["FoodID"].ToString());
             Console.WriteLine(o["FoodID"].ToString());
