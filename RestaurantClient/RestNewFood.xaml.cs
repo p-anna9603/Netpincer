@@ -75,7 +75,7 @@ namespace RestaurantClient
                 }
                 else if (food.Discount < 1.0)
                 {
-                    realPrice = (int)(foodPrice * (1.0 - food.Discount));
+                    realPrice = (int)(food.Price * (1.0 - food.Discount));
                 }
             }
             else
@@ -87,6 +87,8 @@ namespace RestaurantClient
 
             /* Add allergens */
             existingAllergenes = food.Allergenes;
+            Console.WriteLine("allergen: " + food.Allergenes.Count);
+            Console.WriteLine("allergen 2: " + existingAllergenes);
             if(existingAllergenes != null)
             {
                 for(int i = 0; i < existingAllergenes.Count; ++i)
@@ -211,6 +213,7 @@ namespace RestaurantClient
                     if (modifyingWindow == 1)
                     {
                         // TODO modify food / picture in database (with just the changed values)
+                       // restaurantMain.ServerConnection.updateFood(Food);
                     }
                     else
                     {

@@ -23,7 +23,7 @@ namespace RestaurantClient
         public Food(int fID, string nam, double prc, double rate, int picID, List<String> allergs,
             int categoryID, int restID,     //CATEGORYID, RESTID
            string availableFrom,
-           string availableTo, double discount_ = 2)
+           string availableTo, double discount_ = 1)
         {
             foodID = fID;
             name = nam;
