@@ -95,6 +95,7 @@ namespace RestaurantClient
                 if (modifyingWindow == 1)
                 {
                     // TODO modify categ / picture in database (with just the changed values)
+                //    restaurantMain.ServerConnection.modifyCategory(category.CategId, categoryName, restaurantMain.CurrUser.restaurantID);
                 }
                 else
                 {
