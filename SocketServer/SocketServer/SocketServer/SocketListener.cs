@@ -106,8 +106,34 @@ namespace SocketServer
                 //bool shutdown = false;
                 #endregion
 
+
+                #region ADD ORDER EXAMPLES
+                //-------------------NOT REGISTERED USER EXAMPLE--------------------
+                //JObject o = new JObject();
+                //o.Add("restID", 1);
+                //o.Add("username", "alma");
+                //o.Add("foods", "1,2");
+                //o.Add("price", 1200);
+                //Console.WriteLine(addOrder(o));
+
+                //---------------------REGISTERED USER EXAMPLE--------------------
+                //JObject o = new JObject();
+                //o.Add("restID", 1);
+                //o.Add("username", "");
+                //o.Add("foods", "1,2");
+                //o.Add("price", 1200);
+                //o.Add("city","Veszprem");
+                //o.Add("zipcode",8200);
+                //o.Add("line1","ast utca 27");
+                //o.Add("line2", "2. emelet 3. ajto");
+                //o.Add("firstName","Elek");
+                //o.Add("lastName","Kelek");
+                //o.Add("phoneNumber","+3620148745");
+                //Console.WriteLine(addOrder(o));
+                #endregion
+
                 #region Marci
-                    Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                     socket.Bind(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000));
                     socket.Listen(10);
                     waitingForConnection_teszt(socket);
@@ -137,6 +163,10 @@ namespace SocketServer
                     //    }
                     //}
                     #endregion
+
+                    
+
+
                     #region Marci
 
                     while (true)
@@ -1328,8 +1358,46 @@ namespace SocketServer
             return ok2.ToString();
         }
 
-        private string addOrder(JObject o)
+        private string addOrder(JObject obj)
         {
+            string username = "";
+            JObject o = obj;
+            
+            //CHECKING REGISTERED USER
+            try
+            {
+                username = o["username"].ToString();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("username = o[username].ToString(); FAILED");
+            }
+            if (checkUsernameAvailable(username, 0) == "1")
+            {
+                string query3 = "SELECT COUNT(username) FROM Users.Users WHERE username LIKE 'guest%'";
+                SqlCommand c = new SqlCommand(query3, DatabaseConnection);
+                SqlDataAdapter da1 = new SqlDataAdapter(c);
+                DataTable dataTable1 = new DataTable();
+                da1.Fill(dataTable1);
+                if (dataTable1.Rows.Count == 0)
+                {
+                    da1.Dispose();
+                    dataTable1.Dispose();
+                    return getErrorMessage(99);
+                }
+                int guestCount = 0;
+                guestCount = Int32.Parse(dataTable1.Rows[0][0].ToString());
+                guestCount++;
+                username = "guest" + guestCount.ToString();
+                o["username"] = username;
+                o.Add("userType",1);
+                o.Add("password", "pass");
+                o.Add("email", "email");
+                registerUser(o);
+            }
+
+
+            
             string query2 = "SELECT approximateTime FROM Restaurant.Restaurant WHERE restaurantID = @restID";
             SqlCommand command = new SqlCommand(query2, DatabaseConnection);
             command.Parameters.AddWithValue("@restID", o["restID"].ToString());
@@ -1356,12 +1424,12 @@ namespace SocketServer
             eta = d2.ToShortDateString().Trim() + " " + d2.ToShortTimeString();
             string startDate = d2.ToShortDateString().Trim() + " " + d2.ToShortTimeString();
 
-            string query = "INSERT INTO Restaurant.Orders(restaurantID, username, foods, [status], startOrderTime, price, ETA) VALUES(@restID, @username, @foods, @startDate,@price,@eta)";
+            string query = "INSERT INTO Restaurant.Orders(restaurantID, username, foods, [status], startOrderTime, price, ETA) VALUES(@restID, @username, @foods, 0, @startDate,@price,@eta)";
             SqlCommand command5 = new SqlCommand(query, DatabaseConnection);
             command5.Parameters.AddWithValue("@restID", o["restID"].ToString());
             Console.WriteLine(o["restID"].ToString());
-            command5.Parameters.AddWithValue("@username", o["username"].ToString());
-            Console.WriteLine(o["username"].ToString());
+            command5.Parameters.AddWithValue("@username", username);
+            Console.WriteLine(username);
             command5.Parameters.AddWithValue("@foods", o["foods"].ToString());
             Console.WriteLine(o["foods"].ToString());
             command5.Parameters.AddWithValue("@price", o["price"].ToString());
