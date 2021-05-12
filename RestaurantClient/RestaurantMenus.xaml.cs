@@ -207,7 +207,7 @@ namespace RestaurantClient
             Console.WriteLine("categID onL " + categID);
             //if (e.Source != settingBtn)
             //{
-                RestaurantCategFoods categFood = new RestaurantCategFoods(restaurantMain, categID, categoryNames[categID]);
+                RestaurantCategFoods categFood = new RestaurantCategFoods(restaurantMain, categID, categoryNames[categID], this);
                 restaurantMain.childWindow.Content = null;
 
                 /* Set the content window to new child */
@@ -216,7 +216,16 @@ namespace RestaurantClient
                 restaurantMain.LV.SelectedIndex = -1;
             //}
         }
+        public void refreshChild(int categoryID)
+        {
+            RestaurantCategFoods categFood = new RestaurantCategFoods(restaurantMain, categoryID, categoryNames[categoryID], this);
+            restaurantMain.childWindow.Content = null;
 
+            /* Set the content window to new child */
+            restaurantMain.childWindow.Content = categFood;
+            restaurantMain.child = categFood;
+            restaurantMain.LV.SelectedIndex = -1;
+        }
         private void menuSetting_Click(object sender, EventArgs e)
         {
             Console.WriteLine("only settiiiings");

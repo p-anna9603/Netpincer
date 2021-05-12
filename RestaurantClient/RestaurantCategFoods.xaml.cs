@@ -34,12 +34,13 @@ namespace RestaurantClient
         Dictionary<int, Image> imgNames = new Dictionary<int, Image>(); //    map[foodId] = Image
         Dictionary<StackPanel, int> foodPanels = new Dictionary<StackPanel, int>(); // stackpanel - foodID
         RestaurantMain restaurantMain;
+        RestaurantMenus restMenu;
 
         public ConnectToServer ServerConnection;
 
         public int CategID { get => categID; set => categID = value; }
 
-        public RestaurantCategFoods(Window restrantMain, int cID, string cName)
+        public RestaurantCategFoods(Window restrantMain, int cID, string cName, RestaurantMenus parent)
         {
             InitializeComponent();
             SolidColorBrush color = new SolidColorBrush();
@@ -47,6 +48,7 @@ namespace RestaurantClient
             scrollView.Background = color;
             categID = cID;
             restaurantMain = (RestaurantMain)restrantMain;
+            restMenu = (RestaurantMenus)parent;
             /* Get the list of foods from server */
             listFromServer = restaurantMain.ServerConnection.getFoods(restaurantMain.CurrUser.restaurantID, categID);
 
@@ -266,11 +268,13 @@ namespace RestaurantClient
             Console.WriteLine("modositas utan");
             if(f.IsSaved)
             {
+                /*
                 food.Name = f.FoodName;
                 food.Price = f.FoodPrice;
-                //food.PictureID = ;
-                // food availability
                 EnumVisual(this, categ, food);
+                */
+                // Refresh the screen
+                restMenu.refreshChild(categID);
             }
         }
         /* Chagne the modified food info */
@@ -293,7 +297,7 @@ namespace RestaurantClient
                     }
                     else if (t.Name == "foodPrice")
                     {
-                        t.Text = f.Price.ToString();
+                        t.Text = f.Price.ToString() + " Ft";
                         Console.WriteLine(" priice: " + f.Price);
                     }
                 }
