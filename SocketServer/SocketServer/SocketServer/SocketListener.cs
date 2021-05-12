@@ -433,7 +433,7 @@ namespace SocketServer
             List<Food> listOfFood = new List<Food>();
             try
             {
-                Console.WriteLine(1);
+                //Console.WriteLine(1);
                 SqlCommand command = new SqlCommand(query, DatabaseConnection);
                 command.Parameters.AddWithValue("@restaurantID", restID);
                 command.Parameters.AddWithValue("@categoryID", categoryID);
@@ -441,41 +441,44 @@ namespace SocketServer
                 da.Fill(dataTable);
                 if (dataTable.Rows.Count == 0)
                     return getErrorMessage(70);
-                Console.WriteLine(2);
+                //Console.WriteLine(2);
                 for (int i = 0; i < dataTable.Rows.Count; i++)
                 {
-                    Console.WriteLine(3);
+                    //Console.WriteLine(3);
                     //GETTING ALLERGENES
                     DataTable dataTable2 = new DataTable();
                     query = "SELECT Restaurant.AllergenNames.name FROM Restaurant.AllergenNames JOIN Restaurant.Allergens ON Restaurant.Allergens.allergenID = Restaurant.AllergenNames.allergenID JOIN Restaurant.Food ON Restaurant.Food.foodID = Restaurant.Allergens.foodID WHERE Restaurant.Allergens.foodID = @foodID";
                     SqlCommand command2 = new SqlCommand(query, DatabaseConnection);
-                    Console.WriteLine(4);
+                    //Console.WriteLine(4);
                     command2.Parameters.AddWithValue("@foodID", dataTable.Rows[i]["foodID"].ToString());
-                    Console.WriteLine(5);
+                    //Console.WriteLine(5);
                     SqlDataAdapter da2 = new SqlDataAdapter(command2);
-                    Console.WriteLine(6);
+                    //Console.WriteLine(6);
                     da2.Fill(dataTable2);
-                    Console.WriteLine(7);
+                    //Console.WriteLine(7);
                     List<string> allergens = new List<string>();
                     if (dataTable2.Rows.Count != 0)
                     {
-                        Console.WriteLine(8);
+                        //Console.WriteLine(8);
                         for (int k=0;k< dataTable2.Rows.Count;++k)
                             allergens.Add(dataTable2.Rows[k]["name"].ToString());
-                        Console.WriteLine(9);
+                        //Console.WriteLine(9);
                     }
 
-                    Console.WriteLine(10);
+                    //Console.WriteLine(10);
                     int picID = 0;
                     Console.WriteLine(dataTable.Rows[i]["pictureID"].ToString());
                     if (dataTable.Rows[i]["pictureID"].ToString() != "")
                     {
-                        Console.WriteLine(11);
+                        //Console.WriteLine(11);
                         picID = Int32.Parse(dataTable.Rows[i]["pictureID"].ToString());
                         
                     }
                         
-                    Console.WriteLine(12);
+                    //Console.WriteLine(12);
+                    double discount = 1;
+                    if (dataTable.Rows[0]["discount"].ToString() == "")
+                        discount = Double.Parse(dataTable.Rows[0]["discount"].ToString());
                     listOfFood.Add(
                         new Food(
                         Int32.Parse(dataTable.Rows[i]["foodID"].ToString()),
@@ -488,7 +491,7 @@ namespace SocketServer
                         Int32.Parse(dataTable.Rows[i]["restaurantID"].ToString()),
                         dataTable.Rows[i]["availableFrom"].ToString(),
                         dataTable.Rows[i]["availableTo"].ToString(),
-                        Double.Parse(dataTable.Rows[i]["discount"].ToString())));
+                        discount));
 
                     da2.Dispose();
                     dataTable2.Clear();
@@ -568,7 +571,10 @@ namespace SocketServer
                     Console.WriteLine(11);
                     picID = Int32.Parse(dataTable.Rows[0]["pictureID"].ToString());
                 }
-                Food f= new Food(
+                double discount = 1;
+                if (dataTable.Rows[0]["discount"].ToString() == "")
+                    discount = Double.Parse(dataTable.Rows[0]["discount"].ToString());
+                Food f = new Food(
                 Int32.Parse(dataTable.Rows[0]["foodID"].ToString()),
                 dataTable.Rows[0]["name"].ToString(),
                 Int32.Parse(dataTable.Rows[0]["price"].ToString()),
@@ -579,7 +585,7 @@ namespace SocketServer
                 Int32.Parse(dataTable.Rows[0]["restaurantID"].ToString()),
                 dataTable.Rows[0]["availableFrom"].ToString(),
                 dataTable.Rows[0]["availableTo"].ToString(),
-                Double.Parse(dataTable.Rows[0]["discount"].ToString()));
+                discount);
 
                 da2.Dispose();
                 dataTable2.Clear();
@@ -593,7 +599,7 @@ namespace SocketServer
                 Console.WriteLine("RestID: {0}", f.RestaurantID);
                 Console.WriteLine("From: {0}", f.AvailableFrom);
                 Console.WriteLine("To: {0}", f.AvailableTo);
-                Console.WriteLine("Discount: {0}", listOfFood[i].Discount);
+                Console.WriteLine("Discount: {0}", f.Discount);
                 Console.WriteLine("Allergens:");
                 for (int j = 0; j < f.Allergenes.Count; ++j)
                 {
