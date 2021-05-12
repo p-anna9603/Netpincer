@@ -71,7 +71,7 @@ namespace RestaurantClient
             Console.WriteLine("új végén");
             if (newFood.IsSaved)
             {               
-                addFoodPanel(newFood.FoodName, newFood.FoodID, newFood.FoodPrice);
+                addFoodPanel(newFood.FoodName, newFood.FoodID, newFood.FoodPrice, 1);
                 foods.Add(newFood.Food);
                 //  newFoodWindows[newFood.FoodID] = newFood;
                 newFoodWindows[newFood.FoodID] = newFood.Food;
@@ -85,7 +85,7 @@ namespace RestaurantClient
             Console.WriteLine("new food closed");
             if (newFood.IsSaved)
             {
-                addFoodPanel(newFood.FoodName, newFood.FoodID, newFood.FoodPrice);
+                addFoodPanel(newFood.FoodName, newFood.FoodID, newFood.FoodPrice, 1);
          //       Food f = new Food(newFood.FoodID, newFood.FoodName, newFood.FoodPrice, 0, picID, newFood.Allergenes);
                 foods.Add(newFood.Food);
                 //  newFoodWindows[newFood.FoodID] = newFood;
@@ -113,7 +113,7 @@ namespace RestaurantClient
             }
         }
 
-        private void addFoodPanel(string foodName, int foodId, double foodPrice, double? discount = 1)
+        private void addFoodPanel(string foodName, int foodId, double foodPrice, double discount)
         {
             Console.WriteLine("addfood");
             int realPrice = 0; // price*discount

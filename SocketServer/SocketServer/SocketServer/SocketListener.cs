@@ -477,7 +477,7 @@ namespace SocketServer
                         
                     //Console.WriteLine(12);
                     double discount = 1;
-                    if (dataTable.Rows[0]["discount"].ToString() == "")
+                    if (dataTable.Rows[0]["discount"].ToString() != "")
                         discount = Double.Parse(dataTable.Rows[0]["discount"].ToString());
                     listOfFood.Add(
                         new Food(
