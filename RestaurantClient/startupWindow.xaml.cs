@@ -32,9 +32,16 @@ namespace RestaurantClient
             ServerConnection = new ConnectToServer();
 
             #region KLAU TESZT 04.25
-            ServerConnection.getOrders(1);        //OK
+            //ServerConnection.getOrders(1);        //OK
             //ServerConnection.updateOrderState(2, 3);    //OK
             //ServerConnection.getFoodByID(1);      //OK
+            #endregion
+
+            #region KLAU TESZT 05.12.
+            /*List<string> list = new List<string>();
+            ServerConnection.updateFood(new Food(13,"Keny",500,3.2,0,list,1,1,"2020.01.01","2020.01.01"));
+           */
+            
             #endregion
 
 

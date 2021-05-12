@@ -76,7 +76,9 @@ SELECT * FROM Restaurant.Food
 --DELETE FROM Restaurant.Allergens WHERE foodID=7
 
 
+INSERT INTO Restaurant.Orders(restaurantID, username, foods, [status], startOrderTime, endOrderTime, price, ETA) VALUES('1','icuska00','1,2,3,5,9',0,'2020.04.25. 15:49','2020.04.25. 16:32',3425,'eta datum')
 
+SELECT approximateTime FROM Restaurant.Restaurant WHERE restaurantID = 1
 
-
+SELECT COUNT(username) FROM Users.Users WHERE username LIKE 'guest%'
 
