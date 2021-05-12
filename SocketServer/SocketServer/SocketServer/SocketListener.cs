@@ -1182,13 +1182,13 @@ namespace SocketServer
 
         private string updateFood(JObject o)
         {
-            string query = "UPDATE Restaurant.Food SET name =@foodName price=@price, rating = @rating, availableFrom=@availableFrom, availableTo=@availableTo, discount = @discount  WHERE foodID=@foodID";
+            string query = "UPDATE Restaurant.Food SET name =@foodName, price=@price, rating = @rating, availableFrom=@availableFrom, availableTo=@availableTo  WHERE foodID=@foodID";
             SqlCommand command5 = new SqlCommand(query, DatabaseConnection);
             command5.Parameters.AddWithValue("@foodID", o["FoodID"].ToString());
             Console.WriteLine(o["FoodID"].ToString());
             command5.Parameters.AddWithValue("@foodName", o["Name"].ToString());
             Console.WriteLine(o["Name"].ToString());
-            command5.Parameters.AddWithValue("@price", o["Price"].ToString());
+            command5.Parameters.AddWithValue("@price", Double.Parse(o["Price"].ToString()));
             Console.WriteLine(o["Price"].ToString());
             command5.Parameters.AddWithValue("@rating", o["Rating"].ToString());
             Console.WriteLine(o["Rating"].ToString());
@@ -1196,8 +1196,6 @@ namespace SocketServer
             Console.WriteLine(o["AvailableFrom"].ToString());
             command5.Parameters.AddWithValue("@availableTo", o["AvailableTo"].ToString());
             Console.WriteLine(o["AvailableTo"].ToString());
-            command5.Parameters.AddWithValue("@discount", o["Discount"].ToString());
-            Console.WriteLine(o["Discount"].ToString());
 
             int affectedRows = command5.ExecuteNonQuery();
             if (affectedRows == 0)
@@ -1247,7 +1245,7 @@ namespace SocketServer
             }
             JObject ok2 = new JObject();
             ok2.Add("type", 17);
-            ok2.Add("status", "Food added succesfully");
+            ok2.Add("status", "Food MODIFIED succesfully");
             ok2.Add("foodID", foodID);
             return ok2.ToString();
         }
@@ -1332,66 +1330,56 @@ namespace SocketServer
 
         private string addOrder(JObject o)
         {
-            string query = "DECLARE @returnID INT EXEC @returnID = addFood @foodName,@price,@rating,@categoryID,@restaurantID,@availableFrom,@availableTo, @discount SELECT  'foodID' = @returnID";
-            SqlCommand command5 = new SqlCommand(query, DatabaseConnection);
-            command5.Parameters.AddWithValue("@foodName", o["Name"].ToString());
-            Console.WriteLine(o["Name"].ToString());
-            command5.Parameters.AddWithValue("@price", o["Price"].ToString());
-            Console.WriteLine(o["Price"].ToString());
-            command5.Parameters.AddWithValue("@rating", o["Rating"].ToString());
-            Console.WriteLine(o["Rating"].ToString());
-            command5.Parameters.AddWithValue("@categoryID", o["CategoryID"].ToString());
-            Console.WriteLine(o["CategoryID"].ToString());
-            command5.Parameters.AddWithValue("@restaurantID", o["RestaurantID"].ToString());
-            Console.WriteLine(o["RestaurantID"].ToString());
-            command5.Parameters.AddWithValue("@availableFrom", o["AvailableFrom"].ToString());
-            Console.WriteLine(o["AvailableFrom"].ToString());
-            command5.Parameters.AddWithValue("@availableTo", o["AvailableTo"].ToString());
-            Console.WriteLine(o["AvailableTo"].ToString());
-            command5.Parameters.AddWithValue("@discount", o["Discount"].ToString());
-            Console.WriteLine(o["Discount"].ToString());
-            SqlDataAdapter da = new SqlDataAdapter(command5);
+            string query2 = "SELECT approximateTime FROM Restaurant.Restaurant WHERE restaurantID = @restID";
+            SqlCommand command = new SqlCommand(query2, DatabaseConnection);
+            command.Parameters.AddWithValue("@restID", o["restID"].ToString());
+            SqlDataAdapter da = new SqlDataAdapter(command);
             DataTable dataTable4 = new DataTable();
             da.Fill(dataTable4);
             if (dataTable4.Rows.Count == 0)
             {
                 da.Dispose();
                 dataTable4.Dispose();
-                return getErrorMessage(98);
+                return getErrorMessage(71);
             }
-            string orderID = dataTable4.Rows[0][0].ToString();   //NOW WE HAVE THE CATEG ID
+            string appTime = "";
+            appTime = dataTable4.Rows[0][0].ToString();
             da.Dispose();
-            dataTable4.Clear();
             dataTable4.Dispose();
-            //FOOD ADDED, NOT LET'S SEE IF ALLERGEN EXISTS OR NOT
-            List<string> allergens = new List<string>();
-            allergens = JsonConvert.DeserializeObject<List<string>>(o["Allergenes"].ToString());
-            for (int i = 0; i < allergens.Count; ++i)
-            {
-                query = "SELECT allergenID FROM Restaurant.AllergenNames WHERE name = @allergenName";
-                SqlCommand command = new SqlCommand(query, DatabaseConnection);
-                command.Parameters.AddWithValue("@allergenName", allergens[i]);
-                SqlDataAdapter da2 = new SqlDataAdapter(command);
-                DataTable dataTable2 = new DataTable();
-                da2.Fill(dataTable2);
-                if (dataTable2.Rows.Count == 0)
-                {
-                    da2.Dispose();
-                    dataTable2.Dispose();
-                    return getErrorMessage(69);
-                }
-                string allergenID = dataTable2.Rows[0][0].ToString();   //NOW WE HAVE THE CATEG ID
-                da2.Dispose();
-                dataTable2.Clear();
-                dataTable2.Dispose();
-                //ADDING ALLERGENS TO FOOD
-            }
+            if (appTime == "")
+                appTime = "10";
 
+            string eta = "";
+            //CALCULATING DATE
+            var dateTime = DateTime.Now;
+            DateTime d2 = dateTime.AddMinutes(Int32.Parse(appTime));
+            eta = d2.ToShortDateString().Trim() + " " + d2.ToShortTimeString();
+            string startDate = d2.ToShortDateString().Trim() + " " + d2.ToShortTimeString();
+
+            string query = "INSERT INTO Restaurant.Orders(restaurantID, username, foods, [status], startOrderTime, price, ETA) VALUES(@restID, @username, @foods, @startDate,@price,@eta)";
+            SqlCommand command5 = new SqlCommand(query, DatabaseConnection);
+            command5.Parameters.AddWithValue("@restID", o["restID"].ToString());
+            Console.WriteLine(o["restID"].ToString());
+            command5.Parameters.AddWithValue("@username", o["username"].ToString());
+            Console.WriteLine(o["username"].ToString());
+            command5.Parameters.AddWithValue("@foods", o["foods"].ToString());
+            Console.WriteLine(o["foods"].ToString());
+            command5.Parameters.AddWithValue("@price", o["price"].ToString());
+            Console.WriteLine(o["price"].ToString());
+            command5.Parameters.AddWithValue("@startDate", startDate);
+            Console.WriteLine(startDate);
+            command5.Parameters.AddWithValue("@eta", eta);
+            Console.WriteLine(eta);
+
+            int affectedRows = command5.ExecuteNonQuery();
+            if (affectedRows == 0)
+            {
+                return getErrorMessage(99);
+            }
 
             JObject ok2 = new JObject();
             ok2.Add("type", 18);
             ok2.Add("status", "Order added succesfully");
-            ok2.Add("orderID", orderID);
             return ok2.ToString();
         }
 
