@@ -212,8 +212,8 @@ namespace RestaurantClient
                     }
                     if (modifyingWindow == 1)
                     {
-                        // TODO modify food / picture in database (with just the changed values)
-                       // restaurantMain.ServerConnection.updateFood(Food);
+                        // TODO modify food / picture in database (with ALL values)
+                       restaurantMain.ServerConnection.updateFood(Food);
                     }
                     else
                     {

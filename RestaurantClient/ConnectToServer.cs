@@ -431,6 +431,38 @@ public class ConnectToServer
         return -1;
     }
 
+    public void updateFood(Food f)
+    {
+        try
+        {
+            string restString = JsonConvert.SerializeObject(f);
+            JObject header = new JObject();
+            header.Add("type", 18);
+            JObject body = new JObject();
+            body = JObject.Parse(restString);
+            header.Merge(body);
+            string recievedMsg = sendJSON(header);
+            Console.WriteLine("recievedMsg: {0}", recievedMsg);
+
+            JObject receivedJSonObject = new JObject();
+            receivedJSonObject = JObject.Parse(recievedMsg);
+            if (receivedJSonObject["type"].ToString() == "18")
+            {
+                Console.WriteLine("Server: {0}", receivedJSonObject["status"].ToString());
+                
+            }
+            else if (receivedJSonObject["type"].ToString() == "99")
+            {
+                Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+        }
+    }
+    
+
 
     public ListOfRestaurants getRestaurantsList()
     {
@@ -566,7 +598,7 @@ public class ConnectToServer
             retval = 0;
         }
         return retval;
- }
+    }
 
     public FoodList getFoods(int restaurantID, int categoryID)
     {

@@ -39,3 +39,44 @@ GO
 --UPDATE Restaurant.Orders SET ETA = '2021.05.15 15.12' WHERE orderID = '5' AND restaurantID = '12'
 --SELECT * FROM Restaurant.Orders
 
+---------------------------05.12-----------------------------------------
+USE Netpincer
+INSERT INTO Restaurant.Orders(restaurantID, username,foods, [status], startOrderTime, endOrderTime, price) VALUES('1','icuska00','1,2,3,5,9',0,'2020.04.25. 15:49','2020.04.25. 16:32',3425)
+INSERT INTO Restaurant.Orders(restaurantID, username,foods, [status], startOrderTime, endOrderTime, price) VALUES('1','alma','15,6,4',0,'2020.04.25. 16:49','2020.04.25. 17:32',6500)
+INSERT INTO Restaurant.Orders(restaurantID, username,foods, [status], startOrderTime, endOrderTime, price) VALUES('1','testUser','1,8,4,11',0,'2020.04.25. 17:49','2020.04.25. 18:32',12500)
+INSERT INTO Restaurant.Orders(restaurantID, username,foods, [status], startOrderTime, endOrderTime, price) VALUES('12','testUser','6,7,9,25',0,'2020.04.25. 18:49','2020.04.25. 19:32',8745)
+INSERT INTO Restaurant.Orders(restaurantID, username,foods, [status], startOrderTime, price) VALUES('1','icuska00','6,7,9,25',0,'2020.04.25. 18:49',6100)
+INSERT INTO Users.Users(username, password, lastName, firstName, phoneNumber, addressID, userType, email) 
+    VALUES('futar01','1234', 'Futar', 'Vilmos', '36-202222221', 2, 2,'futar01@gmail.com')
+INSERT INTO DeliveryPerson.WorkingHours(username ,fromHour,fromMinute,toHour,toMinute ,workingDays) VALUES ('futar01',8,30,20,45,'1,2,3,5')
+
+
+SELECT * FROM Users.Users
+SELECT * FROM Restaurant.Restaurant
+SELECT * FROM Restaurant.Food
+
+---SQL étterem szenvedés
+--ALTER TABLE Restaurant.Restaurant DROP CONSTRAINT FK__Restauran__owner__29221CFB
+--ALTER TABLE Restaurant.Restaurant ADD FOREIGN KEY (owner) REFERENCES Users.Users(username) ON DELETE SET NULL ON UPDATE CASCADE
+--UPDATE Users.Users SET username = 'marica' WHERE username = 'AsztalVokMegint'
+
+--SELECT orderID, [status], startOrderTime, endOrderTime, Orders.[username], price, foods,[password],[lastName],[firstName],Users.[phoneNumber],Users.[addressID] ,[userType], Users.[email],UsersAddress.city,UsersAddress.line1,UsersAddress.line2,UsersAddress.zipcode FROM Restaurant.Orders JOIN Restaurant.Restaurant ON Restaurant.restaurantID = Orders.restaurantID JOIN Users.Users ON Users.username = Restaurant.Orders.username JOIN Users.UsersAddress ON UsersAddress.addressID = Users.addressID WHERE Orders.restaurantID = '1'
+
+--SELECT * FROM Restaurant.Food
+
+--DELETE FROM  Restaurant.Orders WHERE orderID= 12
+--SELECT * FROM Restaurant.Orders
+
+--SELECT * FROM Restaurant.Food
+
+--UPDATE Restaurant.Food SET name ='Kenyer0', price=250, rating =4.8, availableFrom='2020.10.10.', availableTo='2021.12.30.', discount = 0.1  WHERE foodID='13'
+
+--SELECT * FROM Restaurant.Allergens
+
+--DELETE FROM Restaurant.Allergens WHERE foodID=7
+
+
+
+
+
+

@@ -21,5 +21,8 @@ type
 
 15 - setDiscount
 16 -  setApproximateDeliveryTime
+17 - updateFood
+
+18 - addOrder
 
 99 - Error
