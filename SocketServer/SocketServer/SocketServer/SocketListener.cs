@@ -593,7 +593,7 @@ namespace SocketServer
                 Console.WriteLine("RestID: {0}", f.RestaurantID);
                 Console.WriteLine("From: {0}", f.AvailableFrom);
                 Console.WriteLine("To: {0}", f.AvailableTo);
-                Console.WriteLine("Discount: {0}", listOfFood[i].Discount);
+                Console.WriteLine("Discount: {0}", f.Discount);
                 Console.WriteLine("Allergens:");
                 for (int j = 0; j < f.Allergenes.Count; ++j)
                 {
