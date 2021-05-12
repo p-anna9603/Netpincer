@@ -103,7 +103,7 @@ namespace RestaurantClient
             {
                 for (int i = 0; i < listFromServer.ListOrder.Count; ++i)
                 {
-                    Console.WriteLine("summary ord: ########" + listFromServer.ListOrder[i].Customer);
+                    Console.WriteLine("summary ord: ########" + listFromServer.ListOrder[i].User.Username);
                     listFromServer.ListOrder[i].RestMain = restaurantMain;
                     listFromServer.ListOrder[i].setFoods();
                     string[] orderTime = listFromServer.ListOrder[i].OrderTime.Split('.');
@@ -120,7 +120,7 @@ namespace RestaurantClient
                         Order order = listFromServer.ListOrder[i];
                         String[] foodNums = order.Foods.Split(',');
                         orders.Add(order);
-                        Console.WriteLine("kiszállított foglalás: " + order.Customer);
+                        Console.WriteLine("kiszállított foglalás: " + order.User.Username);
                         //restaurantMain.CheckedNewOrders.Add(listFromServer.ListOrder[i]);
                         restaurantMain.CheckedNewOrdersID.Add(order.OrderID);
                         countAllOrders++;

@@ -105,7 +105,7 @@ namespace RestaurantClient
                     if (listFromServer.ListOrder[i].OrderStatus == 0) // Új
                     {
                         newOrders.Add(listFromServer.ListOrder[i]);
-                        Console.WriteLine("új foglalás: " + listFromServer.ListOrder[i].Customer);
+                        Console.WriteLine("új foglalás: " + listFromServer.ListOrder[i].User.Username);
                         //restaurantMain.CheckedNewOrders.Add(listFromServer.ListOrder[i]);
                         restaurantMain.CheckedNewOrdersID.Add(listFromServer.ListOrder[i].OrderID);
                         obs.Add(listFromServer.ListOrder[i]);

@@ -14,7 +14,7 @@ namespace RestaurantClient
         string orderTime;
         string endorderTime;
         string approxDeliveryTime;
-        string customer;
+        //string customer;
         string address = "8200, Veszprém, Egyetem utca 12.";
         double totalPrice;
         int deliveryPersonId;
@@ -26,16 +26,16 @@ namespace RestaurantClient
         string foodDescToAssignment = "";
 
         User user;
-        public Order(int oId, int status, string orderTim, string endOrderTime, string cust, double price, string foodsString, User user_)
+        public Order(int oId, int status, string orderTim, string endOrderTime, double price, string foodsString, User user_)
         {
             orderID = oId;
             orderStatus = status;
             orderTime = orderTim;
-            customer = cust;
+            //customer = cust;
             totalPrice = price;
             foods = foodsString;
             endorderTime = endOrderTime;
-            User = user_;
+            user = user_;
          //   approxDeliveryTime = approxDeliveryTime_; // TODO
 
             //string foodsDesc = "\tRendelt ételek\n\t\t";
@@ -76,7 +76,7 @@ namespace RestaurantClient
             }     
         }
         public string OrderTime { get => orderTime; set => orderTime = value; }
-        public string Customer { get => customer; set => customer = value; }
+        //public string Customer { get => customer; set => customer = value; }
         public double TotalPrice { get => totalPrice; set => totalPrice = value; }
         public List<Food> OrderedFoodList { get => orderedFoodList; set => orderedFoodList = value; }
         public string StatusString { get => statusString; set => statusString = value; }

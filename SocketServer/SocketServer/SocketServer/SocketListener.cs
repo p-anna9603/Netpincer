@@ -477,7 +477,7 @@ namespace SocketServer
                         
                     //Console.WriteLine(12);
                     double discount = 1;
-                    if (dataTable.Rows[0]["discount"].ToString() == "")
+                    if (dataTable.Rows[0]["discount"].ToString() != "")
                         discount = Double.Parse(dataTable.Rows[0]["discount"].ToString());
                     listOfFood.Add(
                         new Food(
@@ -572,7 +572,7 @@ namespace SocketServer
                     picID = Int32.Parse(dataTable.Rows[0]["pictureID"].ToString());
                 }
                 double discount = 1;
-                if (dataTable.Rows[0]["discount"].ToString() == "")
+                if (dataTable.Rows[0]["discount"].ToString() != "")
                     discount = Double.Parse(dataTable.Rows[0]["discount"].ToString());
                 Food f = new Food(
                 Int32.Parse(dataTable.Rows[0]["foodID"].ToString()),
@@ -1248,7 +1248,7 @@ namespace SocketServer
 
         private string getOrders(int restaurantID)
         {
-            string query = "SELECT orderID, [status], startOrderTime, endOrderTime, username, price, foods FROM Restaurant.Orders JOIN Restaurant.Restaurant ON Restaurant.restaurantID = Orders.restaurantID WHERE Orders.restaurantID = @restID";
+            string query = "SELECT orderID, [status], startOrderTime, endOrderTime, Orders.[username], price, foods,[password],[lastName],[firstName],Users.[phoneNumber],Users.[addressID] ,[userType], Users.[email],UsersAddress.city,UsersAddress.line1,UsersAddress.line2,UsersAddress.zipcode FROM Restaurant.Orders JOIN Restaurant.Restaurant ON Restaurant.restaurantID = Orders.restaurantID JOIN Users.Users ON Users.username = Restaurant.Orders.username JOIN Users.UsersAddress ON UsersAddress.addressID = Users.addressID WHERE Orders.restaurantID = @restID";
             List<Order> localOrders = new List<Order>();
             try
             {
@@ -1267,7 +1267,10 @@ namespace SocketServer
                         Int32.Parse(dataTable.Rows[i]["status"].ToString()),
                         dataTable.Rows[i]["startOrderTime"].ToString(),
                         dataTable.Rows[i]["endOrderTime"].ToString(),
-                        dataTable.Rows[i]["username"].ToString(),
+                        new User (dataTable.Rows[i]["username"].ToString(), dataTable.Rows[i]["password"].ToString(), dataTable.Rows[i]["lastName"].ToString(),
+                        dataTable.Rows[i]["firstName"].ToString(), dataTable.Rows[i]["phoneNumber"].ToString(), dataTable.Rows[i]["city"].ToString(),
+                        dataTable.Rows[i]["zipcode"].ToString(), dataTable.Rows[i]["line1"].ToString(), dataTable.Rows[i]["line2"].ToString(),
+                        Int32.Parse(dataTable.Rows[i]["userType"].ToString()), dataTable.Rows[i]["email"].ToString()),
                         Double.Parse(dataTable.Rows[i]["price"].ToString()),
                         dataTable.Rows[i]["foods"].ToString()));
                 }
@@ -1280,12 +1283,12 @@ namespace SocketServer
                     Console.WriteLine("OrderStatus: {0}", localOrders[k].OrderStatus);
                     Console.WriteLine("OrderTime: {0}", localOrders[k].OrderTime);
                     Console.WriteLine("EndorderTime: {0}", localOrders[k].EndorderTime);
-                    Console.WriteLine("Customer: {0}", localOrders[k].Customer);
+                    Console.WriteLine("Customer (User): {0}", localOrders[k].User.toString());
                     Console.WriteLine("TotalPrice: {0}", localOrders[k].TotalPrice);
                     Console.WriteLine("Foods: {0}", localOrders[k].Foods);
                 }
                 OrderList ol = new OrderList(localOrders);
-                Console.WriteLine("Heyyoooo");
+                //Console.WriteLine("Heyyoooo");
                 string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(ol);
                 Console.WriteLine("JSON:\n {0}",jsonString);
                 return jsonString;

@@ -717,7 +717,7 @@ public class ConnectToServer
                 Console.WriteLine("StatusString: {0}", receivedOrderList.ListOrder[i].StatusString);
                 Console.WriteLine("OrderTime: {0}", receivedOrderList.ListOrder[i].OrderTime);
                 Console.WriteLine("EndorderTime: {0}", receivedOrderList.ListOrder[i].EndorderTime);
-                Console.WriteLine("Customer: {0}", receivedOrderList.ListOrder[i].Customer);
+                Console.WriteLine("Customer: {0}", receivedOrderList.ListOrder[i].User.Username);
                 Console.WriteLine("TotalPrice: {0}", receivedOrderList.ListOrder[i].TotalPrice);
                 Console.WriteLine("Foods: {0}", receivedOrderList.ListOrder[i].Foods);
                 */
