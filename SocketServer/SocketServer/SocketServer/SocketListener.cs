@@ -514,6 +514,7 @@ namespace SocketServer
                 Console.WriteLine("RestID: {0}", listOfFood[i].RestaurantID);
                 Console.WriteLine("From: {0}", listOfFood[i].AvailableFrom);
                 Console.WriteLine("To: {0}", listOfFood[i].AvailableTo);
+                Console.WriteLine("Discount: {0}", listOfFood[i].Discount);
                 Console.WriteLine("Allergens:");
                 for (int j = 0; j < listOfFood[i].Allergenes.Count; ++j)
                 {
@@ -527,7 +528,7 @@ namespace SocketServer
 
         private string foodByID(string foodID)
         {
-            string query = "SELECT foodID,name,price,rating,pictureID,Restaurant.Food.categoryID,Restaurant.Food.restaurantID,availableFrom,availableTo FROM Restaurant.Food JOIN Restaurant.CategoryName ON Restaurant.CategoryName.categoryID = Restaurant.Food.categoryID WHERE Restaurant.Food.foodID = @foodID";
+            string query = "SELECT foodID,name,price,rating,pictureID,Restaurant.Food.categoryID,Restaurant.Food.restaurantID,availableFrom,availableTo,discount FROM Restaurant.Food JOIN Restaurant.CategoryName ON Restaurant.CategoryName.categoryID = Restaurant.Food.categoryID WHERE Restaurant.Food.foodID = @foodID";
             DataTable dataTable = new DataTable();
             try
             {
@@ -577,7 +578,8 @@ namespace SocketServer
                 Int32.Parse(dataTable.Rows[0]["categoryID"].ToString()),
                 Int32.Parse(dataTable.Rows[0]["restaurantID"].ToString()),
                 dataTable.Rows[0]["availableFrom"].ToString(),
-                dataTable.Rows[0]["availableTo"].ToString());
+                dataTable.Rows[0]["availableTo"].ToString(),
+                Double.Parse(dataTable.Rows[0]["discount"].ToString()));
 
                 da2.Dispose();
                 dataTable2.Clear();
@@ -591,6 +593,7 @@ namespace SocketServer
                 Console.WriteLine("RestID: {0}", f.RestaurantID);
                 Console.WriteLine("From: {0}", f.AvailableFrom);
                 Console.WriteLine("To: {0}", f.AvailableTo);
+                Console.WriteLine("Discount: {0}", listOfFood[i].Discount);
                 Console.WriteLine("Allergens:");
                 for (int j = 0; j < f.Allergenes.Count; ++j)
                 {
