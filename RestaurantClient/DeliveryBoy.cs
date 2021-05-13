@@ -13,17 +13,21 @@ namespace RestaurantClient
         workingSchedule working;
         List<Order> orders;
 
-        public DeliveryBoy(int dID, string nam, workingSchedule work, List<Order> ords = null)
+        //public DeliveryBoy(int dID, string nam, workingSchedule work, List<Order> ords = null)
+        public DeliveryBoy()
         {
+            /*
             deliveryBoyID = dID;
             name = nam;
             working = work;
+
             orders = ords;
+            */
         }
 
         public int DeliveryBoyID { get => deliveryBoyID; set => deliveryBoyID = value; }
         public string Name { get => name; set => name = value; }
         public List<Order> Orders { get => orders; set => orders = value; }
-        public workingSchedule Working { get => working; set => working = value; }
+        public workingSchedule Working { get => working; set { working = value; Console.WriteLine("working in dboy : " + working.WorkingDays); } }
     }
 }

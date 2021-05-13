@@ -65,9 +65,9 @@ namespace RestaurantClient
 
             addOrdersToTable();
 
-            dummySchedule = new workingSchedule(1, 8, 16, 30, 0, "1,2,3");
-            dummySchedule2 = new workingSchedule(2, 8, 16, 30, 0, "2,4,5");
-            dummySchedule3 = new workingSchedule(3, 8, 22, 30, 0, "5,6,7");
+            //dummySchedule = new workingSchedule(1, 8, 16, 30, 0, "1,2,3");
+            //dummySchedule2 = new workingSchedule(2, 8, 16, 30, 0, "2,4,5");
+            //dummySchedule3 = new workingSchedule(3, 8, 22, 30, 0, "5,6,7");
 
             dummyAllergs.Add("glutén");
             food = new Food(1, "Paprikás pizza", 1200, 3, 0, dummyAllergs, 2, 2, "2021.03.11", "2022.01.01");
@@ -90,11 +90,11 @@ namespace RestaurantClient
             //   waitingForDeliveryOrders.Add(dummyOrder4);
             dummyAssign.Add(dummyOrder4);
 
-            dummyBoy = new DeliveryBoy(1, "David", dummySchedule);
-           // boys.Add(dummyBoy);
-            dummyBoy2 = new DeliveryBoy(2, "Ákos", dummySchedule2, dummyAssign);
-            //   boys.Add(dummyBoy2);
-            dummyBoy3 = new DeliveryBoy(3, "Fruzsi", dummySchedule3, dummyAssign);
+           // dummyBoy = new DeliveryBoy(1, "David", dummySchedule);
+           //// boys.Add(dummyBoy);
+           // dummyBoy2 = new DeliveryBoy(2, "Ákos", dummySchedule2, dummyAssign);
+           // //   boys.Add(dummyBoy2);
+           // dummyBoy3 = new DeliveryBoy(3, "Fruzsi", dummySchedule3, dummyAssign);
 
             ConnectToServer server = new ConnectToServer();
 
@@ -113,6 +113,7 @@ namespace RestaurantClient
             {
                 for (int i = 0; i < listFromServer.ListDevliveryboy.Count; ++i) // loop through the delivery boys
                 {
+                    Console.WriteLine("delivery booooy: " + listFromServer.ListDevliveryboy[i].Name);
                     int isDayOk = 0;
                     dateTime = DateTime.Now;
                     int day = (int)dateTime.DayOfWeek; // current day of the week in number
@@ -127,6 +128,7 @@ namespace RestaurantClient
                     {
                         if(workTime.WorkingDaysInInt[j] == day)
                         {
+                            Console.WriteLine("delivery booooy: 2 ");
                             isDayOk = 1;
                             break;
                         }
@@ -134,6 +136,7 @@ namespace RestaurantClient
                     if(isDayOk == 1 && workTime.FromHour <= hour  && 
                        ( workTime.ToHour > hour || workTime.ToHour == hour && workTime.ToMinute  >= min))
                     {
+                        Console.WriteLine("delivery booooy: 3");
                         boys.Add(listFromServer.ListDevliveryboy[i]);
                         //addBoyPanel(boys[i].Name, boys[i].DeliveryBoyID, boys[i].Orders);
                     }
