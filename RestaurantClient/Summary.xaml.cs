@@ -177,7 +177,7 @@ namespace RestaurantClient
             }
             if(countAllOrders < 2)
             {
-                BestFood.Text = "n/a";
+             //   BestFood.Text = "n/a";
                 WorstFood.Text = "n/a";
             }
             totalCounter.Text = countAllOrders.ToString();

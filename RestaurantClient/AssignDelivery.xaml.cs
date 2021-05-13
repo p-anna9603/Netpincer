@@ -135,6 +135,7 @@ namespace RestaurantClient
                         boys.Add(listFromServer.ListDevliveryboy[i]);
                         addBoyPanel(boys[i].Name, boys[i].DeliveryBoyID, boys[i].Orders);
                     }
+                    /* Don't know if this neccessary
                     List<Order> orders = listFromServer.ListDevliveryboy[i].Orders;
                     for(int z = 0; z < orders.Count; ++z)
                     {
@@ -143,6 +144,8 @@ namespace RestaurantClient
                             addOngoingDeliveryToDeliveryBoy(orders[z], listFromServer.ListDevliveryboy[i]);
                         }
                     }
+                    */
+
                 //    newFoodWindows.Add(listFromServer.ListFood[i].FoodID, listFromServer.ListFood[i]);
                 }
             }
