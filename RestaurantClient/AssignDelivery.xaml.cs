@@ -293,7 +293,7 @@ namespace RestaurantClient
                         panel3.Children.Add(newTextNum);
                         panel3.Children.Add(newText2);
                         
-                        if(orders[i].RestMain.CurrUser.restaurantID == restaurantMain.CurrUser.restaurantID) // if it is another reasurants order do not allow to x
+                        if(orders[i].RestaurantID == restaurantMain.CurrUser.restaurantID) // if it is another reasurants order do not allow to x
                          {
                                 /* x button */
                                 Button xButton = new Button();
@@ -313,13 +313,12 @@ namespace RestaurantClient
 
                                 panel3.Children.Add(xButton);
                                 xPanels.Add(xButton, orders[i]);
-                            }
+                         }
                         panel2.Children.Add(panel3);
                     }
                 }
             }
             scrollArea.Content = panel2;
-
 
             newCategory.Children.Add(border);
             newCategory.Children.Add(scrollArea);
@@ -622,11 +621,6 @@ namespace RestaurantClient
             restaurantMain.ServerConnection.setApproximateDeliveryTime(order.OrderID, restaurantMain.CurrUser.restaurantID); // TODO (vagy ez)
 
             //  table.Items.Remove(order);
-        }
-
-        private void addOngoingDeliveryToDeliveryBoy(Order order, DeliveryBoy deliveryBoy)
-        {
-
         }
     }
 }
