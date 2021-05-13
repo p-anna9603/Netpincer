@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SocketServer
 {
-    class workingSchedule
+    public class workingSchedule
     {
         int workingHoursID;
         int fromHour, fromMinute;
@@ -33,6 +33,6 @@ namespace SocketServer
         public int ToHour { get => toHour; set => toHour = value; }
         public int ToMinute { get => toMinute; set => toMinute = value; }
         public string WorkingDays { get => workingDays; set => workingDays = value; }
-        public List<int> WorkingDaysInInt { get => workingDaysInInt; set => workingDaysInInt = value; }
+        //public List<int> WorkingDaysInInt { get => workingDaysInInt; set => workingDaysInInt = value; }
     }
 }

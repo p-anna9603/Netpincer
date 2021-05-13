@@ -96,11 +96,13 @@ namespace RestaurantClient
             //   boys.Add(dummyBoy2);
             dummyBoy3 = new DeliveryBoy(3, "Fruzsi", dummySchedule3, dummyAssign);
 
-            listFromServer = new DeliveryBoyList();
-            listFromServer.ListDevliveryboy = new List<DeliveryBoy>();
-            listFromServer.ListDevliveryboy.Add(dummyBoy);
-            listFromServer.ListDevliveryboy.Add(dummyBoy2);
-            listFromServer.ListDevliveryboy.Add(dummyBoy3);
+            ConnectToServer server = new ConnectToServer();
+
+            listFromServer = server.getDeliveryBoys();
+            //listFromServer.ListDevliveryboy = new List<DeliveryBoy>();
+            //listFromServer.ListDevliveryboy.Add(dummyBoy);
+            //listFromServer.ListDevliveryboy.Add(dummyBoy2);
+            //listFromServer.ListDevliveryboy.Add(dummyBoy3);
             addExistingDeliveryBoys();
         }
         public void addExistingDeliveryBoys()

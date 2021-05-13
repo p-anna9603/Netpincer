@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SocketServer
 {
-    class DeliveryBoy
+    public class DeliveryBoy
     {
         int deliveryBoyID;
         string name;
@@ -23,6 +23,6 @@ namespace SocketServer
         public string Name { get => name; set => name = value; }
         public List<Order> Orders { get => orders; set => orders = value; }
         //internal List<Order> Orders { get => orders; set => orders = value; }
-        internal workingSchedule Working { get => working; set => working = value; }
+        public workingSchedule Working { get => working; set => working = value; }
     }
 }

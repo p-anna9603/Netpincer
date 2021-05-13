@@ -1642,22 +1642,22 @@ namespace SocketServer
                         command1.Parameters.AddWithValue("@id", bois[i].DeliveryBoyID);
                         SqlDataAdapter da1 = new SqlDataAdapter(command1);
                         da1.Fill(dataTable1);
-                        if (dataTable1.Rows.Count == 0)
-                            return getErrorMessage(99);
+                        //if (dataTable1.Rows.Count == 0)
+                        //    return getErrorMessage(99);
                         for (int j = 0; j < dataTable1.Rows.Count; j++)
                         {
                             localOrders.Add(
                                 new Order(
-                                Int32.Parse(dataTable.Rows[j]["orderID"].ToString()),
-                                Int32.Parse(dataTable.Rows[j]["status"].ToString()),
-                                dataTable.Rows[j]["startOrderTime"].ToString(),
-                                dataTable.Rows[j]["endOrderTime"].ToString(),
-                                new User(dataTable.Rows[j]["username"].ToString(), dataTable.Rows[j]["password"].ToString(), dataTable.Rows[j]["lastName"].ToString(),
-                                dataTable.Rows[j]["firstName"].ToString(), dataTable.Rows[j]["phoneNumber"].ToString(), dataTable.Rows[j]["city"].ToString(),
-                                dataTable.Rows[j]["zipcode"].ToString(), dataTable.Rows[j]["line1"].ToString(), dataTable.Rows[j]["line2"].ToString(),
-                                Int32.Parse(dataTable.Rows[j]["userType"].ToString()), dataTable.Rows[j]["email"].ToString()),
-                                Double.Parse(dataTable.Rows[j]["price"].ToString()),
-                                dataTable.Rows[j]["foods"].ToString()));
+                                Int32.Parse(dataTable1.Rows[j]["orderID"].ToString()),
+                                Int32.Parse(dataTable1.Rows[j]["status"].ToString()),
+                                dataTable1.Rows[j]["startOrderTime"].ToString(),
+                                dataTable1.Rows[j]["endOrderTime"].ToString(),
+                                new User(dataTable1.Rows[j]["username"].ToString(), dataTable1.Rows[j]["password"].ToString(), dataTable1.Rows[j]["lastName"].ToString(),
+                                dataTable1.Rows[j]["firstName"].ToString(), dataTable1.Rows[j]["phoneNumber"].ToString(), dataTable1.Rows[j]["city"].ToString(),
+                                dataTable1.Rows[j]["zipcode"].ToString(), dataTable1.Rows[j]["line1"].ToString(), dataTable1.Rows[j]["line2"].ToString(),
+                                Int32.Parse(dataTable1.Rows[j]["userType"].ToString()), dataTable1.Rows[j]["email"].ToString()),
+                                Double.Parse(dataTable1.Rows[j]["price"].ToString()),
+                                dataTable1.Rows[j]["foods"].ToString()));
                         }
                         da1.Dispose();
                         dataTable1.Clear();
@@ -1689,6 +1689,7 @@ namespace SocketServer
             }
 
             DeliveryBoyList bl = new DeliveryBoyList();
+            bl.ListDevliveryboy = bois;
             string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(bl);
             Console.WriteLine("JSON:\n {0}", jsonString);
             return jsonString;
