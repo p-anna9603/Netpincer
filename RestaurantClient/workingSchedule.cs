@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RestaurantClient
 {
-    class workingSchedule
+    public class workingSchedule
     {
         int workingHoursID;
         int fromHour, fromMinute;

@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace RestaurantClient
 {
-    class DeliveryBoyList
+    public class DeliveryBoyList
     {
         private List<DeliveryBoy> listDevliveryboy;
 
         public DeliveryBoyList() { }
 
-        internal List<DeliveryBoy> ListDevliveryboy { get => listDevliveryboy; set => listDevliveryboy = value; }
+        public List<DeliveryBoy> ListDevliveryboy { get => listDevliveryboy; set => listDevliveryboy = value; }
     }
 }

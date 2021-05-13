@@ -10,7 +10,7 @@ ALTER TABLE DeliveryPerson.DeliveryPersonOrders DROP COLUMN orderID			----1
 ALTER TABLE DeliveryPerson.DeliveryPersonOrders DROP CONSTRAINT FK__DeliveryP__order__1DB06A4F		---2
 ALTER TABLE DeliveryPerson.DeliveryPersonOrders DROP COLUMN orderID			---3
 
-CREATE TABLE AssignDelivery
+CREATE TABLE DeliveryPerson.AssignDelivery
 (
 	id INT PRIMARY KEY,
 	deliveryPersonID INT FOREIGN KEY REFERENCES DeliveryPerson.DeliveryPersonOrders(id) ON DELETE SET NULL,
@@ -46,9 +46,9 @@ INSERT INTO Restaurant.Orders(restaurantID, username,foods, [status], startOrder
 INSERT INTO Restaurant.Orders(restaurantID, username,foods, [status], startOrderTime, endOrderTime, price) VALUES('1','testUser','1,8,4,11',0,'2020.04.25. 17:49','2020.04.25. 18:32',12500)
 INSERT INTO Restaurant.Orders(restaurantID, username,foods, [status], startOrderTime, endOrderTime, price) VALUES('12','testUser','6,7,9,25',0,'2020.04.25. 18:49','2020.04.25. 19:32',8745)
 INSERT INTO Restaurant.Orders(restaurantID, username,foods, [status], startOrderTime, price) VALUES('1','icuska00','6,7,9,25',0,'2020.04.25. 18:49',6100)
-INSERT INTO Users.Users(username, password, lastName, firstName, phoneNumber, addressID, userType, email) 
-    VALUES('futar01','1234', 'Futar', 'Vilmos', '36-202222221', 2, 2,'futar01@gmail.com')
-INSERT INTO DeliveryPerson.WorkingHours(username ,fromHour,fromMinute,toHour,toMinute ,workingDays) VALUES ('futar01',8,30,20,45,'1,2,3,5')
+--INSERT INTO Users.Users(username, password, lastName, firstName, phoneNumber, addressID, userType, email) 
+--    VALUES('futar01','1234', 'Futar', 'Vilmos', '36-202222221', 2, 2,'futar01@gmail.com')
+--INSERT INTO DeliveryPerson.WorkingHours(username ,fromHour,fromMinute,toHour,toMinute ,workingDays) VALUES ('futar01',8,30,20,45,'1,2,3,5')
 
 
 SELECT * FROM Users.Users
@@ -76,9 +76,47 @@ SELECT * FROM Restaurant.Food
 --DELETE FROM Restaurant.Allergens WHERE foodID=7
 
 
-INSERT INTO Restaurant.Orders(restaurantID, username, foods, [status], startOrderTime, endOrderTime, price, ETA) VALUES('1','icuska00','1,2,3,5,9',0,'2020.04.25. 15:49','2020.04.25. 16:32',3425,'eta datum')
+--INSERT INTO Restaurant.Orders(restaurantID, username, foods, [status], startOrderTime, endOrderTime, price, ETA) VALUES('1','icuska00','1,2,3,5,9',0,'2020.04.25. 15:49','2020.04.25. 16:32',3425,'eta datum')
 
-SELECT approximateTime FROM Restaurant.Restaurant WHERE restaurantID = 1
+--SELECT approximateTime FROM Restaurant.Restaurant WHERE restaurantID = 1
 
-SELECT COUNT(username) FROM Users.Users WHERE username LIKE 'guest%'
+--SELECT COUNT(username) FROM Users.Users WHERE username LIKE 'guest%'
+
+---------------------------------------05.13.-------------------------------------------
+USE Netpincer
+
+DROP TABLE IF EXISTS dbo.AssignDelivery
+GO
+DROP TABLE IF EXISTS DeliveryPerson.AssignDelivery
+GO
+CREATE TABLE DeliveryPerson.AssignDelivery
+(
+	id INT IDENTITY PRIMARY KEY,
+	deliveryPersonID INT FOREIGN KEY REFERENCES DeliveryPerson.DeliveryPersonOrders(id) ON DELETE SET NULL,
+	orderID INT FOREIGN KEY REFERENCES Restaurant.Orders(orderID) ON DELETE SET NULL
+)
+
+SELECT Users.username, id FROM Users.Users JOIN DeliveryPerson.DeliveryPersonOrders ON DeliveryPerson.DeliveryPersonOrders.username = Users.username WHERE userType = 2
+
+SELECT * FROM DeliveryPerson.DeliveryPersonOrders JOIN DeliveryPerson.WorkingHours ON DeliveryPerson.WorkingHours.username = DeliveryPerson.DeliveryPersonOrders.username
+--INSERT INTO DeliveryPerson.DeliveryPersonOrders(username) VALUES ('futar01')
+
+SELECT * FROM Restaurant.Orders
+--INSERT INTO DeliveryPerson.AssignDelivery(deliveryPersonID,orderID) VALUES (1,13)
+
+
+SELECT DeliveryPerson.AssignDelivery.orderID, [status], startOrderTime, endOrderTime, Orders.[username], price, foods,[password],[lastName],[firstName],Users.[phoneNumber],Users.[addressID] ,[userType], Users.[email],UsersAddress.city,UsersAddress.line1,UsersAddress.line2,UsersAddress.zipcode
+FROM DeliveryPerson.AssignDelivery 
+JOIN Restaurant.Orders ON Restaurant.Orders.orderID = DeliveryPerson.AssignDelivery.orderID 
+JOIN Users.Users ON Users.username = Restaurant.Orders.username 
+JOIN Users.UsersAddress ON UsersAddress.addressID = Users.addressID 
+WHERE deliveryPersonID=1
+
+                   
+
+
+
+
+
+
 
