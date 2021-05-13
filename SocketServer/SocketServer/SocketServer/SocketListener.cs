@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Data;
+using System.Threading;
 
 /** JSON FORMAT
  *  {type: 0,      -> 0 - Basic Server Info
@@ -23,13 +24,29 @@ namespace SocketServer
         private int clientID;
         private List<int> listOfConnectedClients;
         private Socket listener;
-        Socket handler;
+        //Socket handler;
+
+        public class StateObject
+        {
+            // Client  socket.
+            public Socket workSocket = null;
+            // Size of receive buffer.
+            public const int BufferSize = 4196;
+            // Receive buffer.
+            public byte[] buffer = new byte[BufferSize];
+            // Received data string.
+            public StringBuilder sb = new StringBuilder();
+        }
+
+        // Thread signal.
+        public static ManualResetEvent allDone = new ManualResetEvent(false);
+
         public SocketListener()
         {
             DatabaseConnection = ConnectToDatabase();
             Console.WriteLine("Connection State: {0}", DatabaseConnection.State);
             clientID = 0;
-            listOfConnectedClients = new List<int>();
+            //listOfConnectedClients = new List<int>();
             StartServer();
             DatabaseConnection.Close();
         }
@@ -59,7 +76,346 @@ namespace SocketServer
             return true;
         }
 
+        //private void waitingForConnection_teszt(Socket listener)
+        //{
+        //    Console.WriteLine("Waiting for a connection...");
+        //    handler = listener.Accept();
+        //}
+
+    // State object for reading client data asynchronously
+       
+
         public void StartServer()
+        {
+            // Data buffer for incoming data.
+            byte[] bytes = new Byte[4196];
+
+            // Establish the local endpoint for the socket.
+            // The DNS name of the computer
+            // running the listener is "host.contoso.com".
+            IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
+            IPAddress ipAddress = ipHostInfo.AddressList[0];
+            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);
+
+            // Create a TCP/IP socket.
+            Socket listener = new Socket(AddressFamily.InterNetwork,
+                SocketType.Stream, ProtocolType.Tcp);
+
+            // Bind the socket to the local endpoint and listen for incoming connections.
+            try
+            {
+                //Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                listener.Bind(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000));
+                listener.Listen(100);
+                //listener.Bind(localEndPoint);
+                //listener.Listen(100);
+
+                while (true)
+                {
+                    // Set the event to nonsignaled state.
+                    allDone.Reset();
+
+                    // Start an asynchronous socket to listen for connections.
+                    Console.WriteLine("Waiting for a connection...");
+                    listener.BeginAccept(
+                        new AsyncCallback(AcceptCallback),
+                        listener);
+
+                    // Wait until a connection is made before continuing.
+                    allDone.WaitOne();
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+
+            Console.WriteLine("\nPress ENTER to continue...");
+            Console.Read();
+
+        }
+
+        public void AcceptCallback(IAsyncResult ar)
+        {
+            // Signal the main thread to continue.
+            allDone.Set();
+
+            // Get the socket that handles the client request.
+            Socket listener = (Socket)ar.AsyncState;
+            Socket handler = listener.EndAccept(ar);
+
+            // Create the state object.
+            StateObject state = new StateObject();
+            state.workSocket = handler;
+            handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                new AsyncCallback(ReadCallback), state);
+            Console.WriteLine("AcceptCallback");
+        }
+
+        public void ReadCallback(IAsyncResult ar)
+        {
+            String content = String.Empty;
+
+            // Retrieve the state object and the handler socket
+            // from the asynchronous state object.
+            StateObject state = (StateObject)ar.AsyncState;
+            Socket handler = state.workSocket;
+
+            // Read data from the client socket. 
+            int bytesRead = handler.EndReceive(ar);
+
+            if (bytesRead > 0)
+            {
+                // There  might be more data, so store the data received so far.
+                state.sb.Append(Encoding.ASCII.GetString(
+                    state.buffer, 0, bytesRead));
+
+                // Check for end-of-file tag. If it is not there, read 
+                // more data.
+                content = state.sb.ToString();
+                Send(handler, evaulateData(content.ToString()));
+                //if (content.IndexOf("<EOF>") > -1)
+                //{
+                //    // All the data has been read from the 
+                //    // client. Display it on the console.
+                //    Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",
+                //        content.Length, content);
+                //    // Echo the data back to the client.
+                //    Send(handler, content);
+                //}
+                //else
+                //{
+                //    // Not all data received. Get more.
+                //    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                //    new AsyncCallback(ReadCallback), state);
+                //}
+            }
+        }
+
+   
+
+
+        private void Send(Socket handler, String data)
+        {
+            // Convert the string data to byte data using ASCII encoding.
+
+            byte[] byteData = Encoding.ASCII.GetBytes(data);
+
+            // Begin sending the data to the remote device.
+            handler.BeginSend(byteData, 0, byteData.Length, 0,
+                new AsyncCallback(SendCallback), handler);
+        }
+
+        private void SendCallback(IAsyncResult ar)
+        {
+            try
+            {
+                // Retrieve the socket from the state object.
+                Socket handler = (Socket)ar.AsyncState;
+
+                // Complete sending the data to the remote device.
+                int bytesSent = handler.EndSend(ar);
+                Console.WriteLine("Sent {0} bytes to client.", bytesSent);
+
+                handler.Shutdown(SocketShutdown.Both);
+                handler.Close();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
+
+        private string evaulateData(string data)
+        {
+            //RECEIVED NEW BYTES
+            Console.WriteLine("evaulateData");
+            try
+            {
+                JObject receivedJSONObject = new JObject();
+                receivedJSONObject = JObject.Parse(data);
+                Console.WriteLine("Received JSON: {0}", receivedJSONObject.ToString());
+                if (receivedJSONObject["type"].ToString() == "0")  //First Connection From Client
+                {
+                    //Console.WriteLine("First message");
+                    JObject sendJason = new JObject();
+                    sendJason = sendFirstConnectionInfo();
+                    return sendJason.ToString();
+                    //handler.Send(Encoding.ASCII.GetBytes(sendJason.ToString()));
+                    // handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(sendJason.ToString()));  //Sending Client ID
+                    // listOfConnectedClients.Add(clientID - 1); //Adding client to connected list
+                }
+                else if (receivedJSONObject["type"].ToString() == "1") //Get User Information
+                {
+                    JObject header = getClientHeader(receivedJSONObject);  //1st JObj  --Header
+                    string userInfo = getUserInfo(receivedJSONObject["username"].ToString(), receivedJSONObject["password"].ToString(), receivedJSONObject["userType"].ToString());
+                    userInfo = userInfo.Replace("[", "");
+                    userInfo = userInfo.Replace("]", "");
+                    JObject userJason = JObject.Parse(userInfo);    //2nd JObj  --Body
+                    Console.WriteLine("BODY: {0}", userJason);
+                    //JsonConvert.DeserializeObject(userInfo);
+                    header.Merge(userJason);
+                    Console.WriteLine("MERGED JSON: {0}", header.ToString());
+                    return header.ToString();
+                    //handler.Send(Encoding.ASCII.GetBytes(header.ToString()));
+                    //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(header.ToString()));
+                }
+                else if (receivedJSONObject["type"].ToString() == "2") //Get Restaurant Information
+                {
+                    JObject header = getClientHeader(receivedJSONObject);  //1st JObj  --Header
+                    string userInfo = getRestaurant(receivedJSONObject["username"].ToString());
+                    userInfo = userInfo.Replace("[", "");
+                    userInfo = userInfo.Replace("]", "");
+                    JObject userJason = JObject.Parse(userInfo);    //2nd JObj  --Body
+                    Console.WriteLine("BODY: {0}", userJason);
+                    //JsonConvert.DeserializeObject(userInfo);
+                    header.Merge(userJason);
+                    Console.WriteLine("MERGED JSON: {0}", header.ToString());
+                    return header.ToString();
+                    //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(header.ToString()));
+                    //handler.Send(Encoding.ASCII.GetBytes(header.ToString()));
+                }
+                else if (receivedJSONObject["type"].ToString() == "3") // DP login
+                {
+                    string register = deliveryPersonLogin(receivedJSONObject["username"].ToString(), receivedJSONObject["password"].ToString(), receivedJSONObject["userType"].ToString());
+                    //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                    //register = "5";
+                    //handler.Send(Encoding.ASCII.GetBytes(register));
+                    return register.ToString();
+                }
+                else if (receivedJSONObject["type"].ToString() == "4") // Register User
+                {
+                    string register = registerUser(receivedJSONObject);
+                    //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                    //handler.Send(Encoding.ASCII.GetBytes(register));
+                    return register.ToString();
+                }
+                else if (receivedJSONObject["type"].ToString() == "41") // Register Delivery Person for piece of shirt Java, because it's a useless language and nothing ever works
+                {
+                    string register = registerUser(receivedJSONObject);
+                    register = "5";
+                    //register += "-1";   //trying to send EOF to Java client
+                    //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                    //handler.Send(Encoding.ASCII.GetBytes(register));
+                    return register.ToString();
+                }
+                if (receivedJSONObject["type"].ToString() == "42")  //First Connection From DP Client
+                {
+                    //Console.WriteLine("First message");
+                    /*JObject sendJason = new JObject();
+                     sendJason = sendFirstConnectionInfo();
+                     String response = sendJason.ToString();
+                    */
+                    String rsp = "5";
+                    // response+= "EXIT";   //trying to send EOF to Java client*/
+                    //handler.Send(Encoding.ASCII.GetBytes(rsp));
+                    return rsp.ToString();
+                    // handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(sendJason.ToString()));  //Sending Client ID
+                    // listOfConnectedClients.Add(clientID - 1); //Adding client to connected list
+                }
+                else if (receivedJSONObject["type"].ToString() == "5") //Register Restaurant
+                {
+                    string register = registerRestaurant(receivedJSONObject);
+                    return register.ToString();
+                    //handler.Send(Encoding.ASCII.GetBytes(register));
+                    //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                }
+                else if (receivedJSONObject["type"].ToString() == "6") //Delivery Person Working Hours
+                {
+                    string register = deliveryPersonWorkingHoursRegister(receivedJSONObject);
+                    return register.ToString();
+                    //handler.Send(Encoding.ASCII.GetBytes(register));
+                    //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                }
+                else if (receivedJSONObject["type"].ToString() == "7") //Get list of Categories
+                {
+                    string register = getCategories(receivedJSONObject["restaurantID"].ToString());
+                    return register.ToString();
+                    //handler.Send(Encoding.ASCII.GetBytes(register));
+                    //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                }
+                else if (receivedJSONObject["type"].ToString() == "8") //Add category
+                {
+                    string register = addCategory(receivedJSONObject);
+                    return register.ToString();
+                    //handler.Send(Encoding.ASCII.GetBytes(register));
+                    //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                }
+                else if (receivedJSONObject["type"].ToString() == "9") //9 - Get list of Food
+                {
+                    string register = getFoods(receivedJSONObject["restaurantID"].ToString(), receivedJSONObject["categoryID"].ToString());
+                    //handler.Send(Encoding.ASCII.GetBytes(register));
+                    return register.ToString();
+                    //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                }
+                else if (receivedJSONObject["type"].ToString() == "10") //10 - Add Food
+                {
+                    string register = addFood(receivedJSONObject);
+                    //handler.Send(Encoding.ASCII.GetBytes(register));
+                    return register.ToString();
+                }
+                else if (receivedJSONObject["type"].ToString() == "11") //11 - Get list of Restaurants
+                {
+                    string register = getRestaurantsList();
+                    //handler.Send(Encoding.ASCII.GetBytes(register));
+                    return register.ToString();
+                    //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                }
+                else if (receivedJSONObject["type"].ToString() == "12")
+                {
+                    string register = getOrders(Int32.Parse(receivedJSONObject["restaurantID"].ToString()));
+                    //handler.Send(Encoding.ASCII.GetBytes(register));
+                    return register.ToString();
+                }
+                else if (receivedJSONObject["type"].ToString() == "13")
+                {
+                    string register = updateOrderState(Int32.Parse(receivedJSONObject["OrderID"].ToString()), Int32.Parse(receivedJSONObject["newState"].ToString()));
+                    //handler.Send(Encoding.ASCII.GetBytes(register));
+                    return register.ToString();
+                }
+                else if (receivedJSONObject["type"].ToString() == "14")
+                {
+                    string register = foodByID(receivedJSONObject["foodID"].ToString());
+                    //handler.Send(Encoding.ASCII.GetBytes(register));
+                    return register.ToString();
+                }
+                else if (receivedJSONObject["type"].ToString() == "15")
+                {
+                    string register = updateDiscount(Int32.Parse(receivedJSONObject["foodID"].ToString()), Double.Parse(receivedJSONObject["discount"].ToString()));
+                    //handler.Send(Encoding.ASCII.GetBytes(register));
+                    return register.ToString();
+                }
+                else if (receivedJSONObject["type"].ToString() == "16")
+                {
+                    string register = setApproximateDeliveryTime(Int32.Parse(receivedJSONObject["orderID"].ToString()), Int32.Parse(receivedJSONObject["restID"].ToString()));
+                    //handler.Send(Encoding.ASCII.GetBytes(register));
+                    return register.ToString();
+                }
+                else if (receivedJSONObject["type"].ToString() == "17")
+                {
+                    string register = updateFood(receivedJSONObject);
+                    //handler.Send(Encoding.ASCII.GetBytes(register));
+                    return register.ToString();
+                }
+                else if (receivedJSONObject["type"].ToString() == "18")
+                {
+                    string register = addOrder(receivedJSONObject);
+                    //handler.Send(Encoding.ASCII.GetBytes(register));
+                    return register.ToString();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                //handler.Shutdown(SocketShutdown.Both);
+                //handler.Close();
+            }
+            return "";
+        }
+        public void StartServer2()
         {
             IPHostEntry host = Dns.GetHostEntry("localhost");
             IPAddress ipAddress = host.AddressList[0];
@@ -132,13 +488,27 @@ namespace SocketServer
                 //Console.WriteLine(addOrder(o));
                 #endregion
 
-                #region Marci
+                #region Marci & Klau - 05.13
                 Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                     socket.Bind(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000));
                     socket.Listen(10);
-                    waitingForConnection_teszt(socket);
+                    //waitingForConnection_teszt(socket);
+                //while (true)
+                //{
+                //    // Set the event to nonsignaled state.
+                //    allDone.Reset();
 
-                    string data = null;
+                //    // Start an asynchronous socket to listen for connections.
+                //    Console.WriteLine("Waiting for a connection...");
+                //    listener.BeginAccept(
+                //        new AsyncCallback(AcceptCallback),
+                //        listener);
+
+                //    // Wait until a connection is made before continuing.
+                //    allDone.WaitOne();
+                //}
+
+                string data = null;
                     byte[] bytes = null;
                     bool shutdown = false;
                 #endregion
@@ -169,189 +539,189 @@ namespace SocketServer
 
                     #region Marci
 
-                    while (true)
-                    {
-                        bytes = new byte[4096];
-                        int bytesRec = handler.Receive(bytes);
-                        if (bytesRec != 0)
-                        {
-                            data = Encoding.ASCII.GetString(bytes, 0, bytesRec);
-                            break;
-                        }
-                    }
+                    //while (true)
+                    //{
+                    //    bytes = new byte[4096];
+                    //    int bytesRec = handler.Receive(bytes);
+                    //    if (bytesRec != 0)
+                    //    {
+                    //        data = Encoding.ASCII.GetString(bytes, 0, bytesRec);
+                    //        break;
+                    //    }
+                    //}
 
                     #endregion
 
 
 
                     //RECEIVED NEW BYTES
-                    try
-                    {
-                        JObject receivedJSONObject = new JObject();
-                        receivedJSONObject = JObject.Parse(data);
-                        Console.WriteLine("Received JSON: {0}", receivedJSONObject.ToString());
-                        if (receivedJSONObject["type"].ToString() == "0")  //First Connection From Client
-                        {
-                            //Console.WriteLine("First message");
-                            JObject sendJason = new JObject();
-                            sendJason = sendFirstConnectionInfo();
-                            handler.Send(Encoding.ASCII.GetBytes(sendJason.ToString()));
-                            // handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(sendJason.ToString()));  //Sending Client ID
-                            // listOfConnectedClients.Add(clientID - 1); //Adding client to connected list
-                        }
-                        else if (receivedJSONObject["type"].ToString() == "1") //Get User Information
-                        {
-                            JObject header = getClientHeader(receivedJSONObject);  //1st JObj  --Header
-                            string userInfo = getUserInfo(receivedJSONObject["username"].ToString(), receivedJSONObject["password"].ToString(), receivedJSONObject["userType"].ToString());
-                            userInfo = userInfo.Replace("[", "");
-                            userInfo = userInfo.Replace("]", "");
-                            JObject userJason = JObject.Parse(userInfo);    //2nd JObj  --Body
-                            Console.WriteLine("BODY: {0}", userJason);
-                            //JsonConvert.DeserializeObject(userInfo);
-                            header.Merge(userJason);
-                            Console.WriteLine("MERGED JSON: {0}", header.ToString());
-                            handler.Send(Encoding.ASCII.GetBytes(header.ToString()));
-                            //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(header.ToString()));
-                        }
-                        else if (receivedJSONObject["type"].ToString() == "2") //Get Restaurant Information
-                        {
-                            JObject header = getClientHeader(receivedJSONObject);  //1st JObj  --Header
-                            string userInfo = getRestaurant(receivedJSONObject["username"].ToString());
-                            userInfo = userInfo.Replace("[", "");
-                            userInfo = userInfo.Replace("]", "");
-                            JObject userJason = JObject.Parse(userInfo);    //2nd JObj  --Body
-                            Console.WriteLine("BODY: {0}", userJason);
-                            //JsonConvert.DeserializeObject(userInfo);
-                            header.Merge(userJason);
-                            Console.WriteLine("MERGED JSON: {0}", header.ToString());
-                            //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(header.ToString()));
-                            handler.Send(Encoding.ASCII.GetBytes(header.ToString()));
-                        }
-                        else if (receivedJSONObject["type"].ToString() == "3") // DP login
-                        {
-                            string register = deliveryPersonLogin(receivedJSONObject["username"].ToString(), receivedJSONObject["password"].ToString(), receivedJSONObject["userType"].ToString());
-                            //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
-                            //register = "5";
-                            handler.Send(Encoding.ASCII.GetBytes(register));
-                        }
-                        else if (receivedJSONObject["type"].ToString() == "4") // Register User
-                        {
-                            string register = registerUser(receivedJSONObject);
-                            //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
-                            handler.Send(Encoding.ASCII.GetBytes(register));
-                        }
-                        else if (receivedJSONObject["type"].ToString() == "41") // Register Delivery Person for piece of shirt Java, because it's a useless language and nothing ever works
-                        {
-                            string register = registerUser(receivedJSONObject);
-                            register = "5";
-                            //register += "-1";   //trying to send EOF to Java client
-                            //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
-                            handler.Send(Encoding.ASCII.GetBytes(register));
-                        }
-                        if (receivedJSONObject["type"].ToString() == "42")  //First Connection From DP Client
-                        {
-                            //Console.WriteLine("First message");
-                           /*JObject sendJason = new JObject();
-                            sendJason = sendFirstConnectionInfo();
-                            String response = sendJason.ToString();
-                           */
-                            String rsp="5";
-                           // response+= "EXIT";   //trying to send EOF to Java client*/
-                            handler.Send(Encoding.ASCII.GetBytes(rsp));
-                            // handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(sendJason.ToString()));  //Sending Client ID
-                            // listOfConnectedClients.Add(clientID - 1); //Adding client to connected list
-                        }
-                        else if (receivedJSONObject["type"].ToString() == "5") //Register Restaurant
-                        {
-                            string register = registerRestaurant(receivedJSONObject);
-                            handler.Send(Encoding.ASCII.GetBytes(register));
-                            //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
-                        }
-                        else if (receivedJSONObject["type"].ToString() == "6") //Delivery Person Working Hours
-                        {
-                            string register = deliveryPersonWorkingHoursRegister(receivedJSONObject);
-                            handler.Send(Encoding.ASCII.GetBytes(register));
-                            //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
-                        }
-                        else if (receivedJSONObject["type"].ToString() == "7") //Get list of Categories
-                        {
-                            string register = getCategories(receivedJSONObject["restaurantID"].ToString());
-                            handler.Send(Encoding.ASCII.GetBytes(register));
-                            //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
-                        }
-                        else if (receivedJSONObject["type"].ToString() == "8") //Add category
-                        {
-                            string register = addCategory(receivedJSONObject);
-                            handler.Send(Encoding.ASCII.GetBytes(register));
-                            //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
-                        }
-                        else if (receivedJSONObject["type"].ToString() == "9") //9 - Get list of Food
-                        {
-                            string register = getFoods(receivedJSONObject["restaurantID"].ToString(), receivedJSONObject["categoryID"].ToString());
-                            handler.Send(Encoding.ASCII.GetBytes(register));
-                            //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
-                        }
-                        else if (receivedJSONObject["type"].ToString() == "10") //10 - Add Food
-                        {
-                            string register = addFood(receivedJSONObject);
-                            handler.Send(Encoding.ASCII.GetBytes(register));
-                        }
-                        else if (receivedJSONObject["type"].ToString() == "11") //11 - Get list of Restaurants
-                        {
-                            string register = getRestaurantsList();
-                            handler.Send(Encoding.ASCII.GetBytes(register));
-                            //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
-                        }
-                        else if (receivedJSONObject["type"].ToString() == "12")
-                        {
-                            string register = getOrders(Int32.Parse(receivedJSONObject["restaurantID"].ToString()));
-                            handler.Send(Encoding.ASCII.GetBytes(register));
+                    //try
+                    //{
+                    //    JObject receivedJSONObject = new JObject();
+                    //    receivedJSONObject = JObject.Parse(data);
+                    //    Console.WriteLine("Received JSON: {0}", receivedJSONObject.ToString());
+                    //    if (receivedJSONObject["type"].ToString() == "0")  //First Connection From Client
+                    //    {
+                    //        //Console.WriteLine("First message");
+                    //        JObject sendJason = new JObject();
+                    //        sendJason = sendFirstConnectionInfo();
+                    //        handler.Send(Encoding.ASCII.GetBytes(sendJason.ToString()));
+                    //        // handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(sendJason.ToString()));  //Sending Client ID
+                    //        // listOfConnectedClients.Add(clientID - 1); //Adding client to connected list
+                    //    }
+                    //    else if (receivedJSONObject["type"].ToString() == "1") //Get User Information
+                    //    {
+                    //        JObject header = getClientHeader(receivedJSONObject);  //1st JObj  --Header
+                    //        string userInfo = getUserInfo(receivedJSONObject["username"].ToString(), receivedJSONObject["password"].ToString(), receivedJSONObject["userType"].ToString());
+                    //        userInfo = userInfo.Replace("[", "");
+                    //        userInfo = userInfo.Replace("]", "");
+                    //        JObject userJason = JObject.Parse(userInfo);    //2nd JObj  --Body
+                    //        Console.WriteLine("BODY: {0}", userJason);
+                    //        //JsonConvert.DeserializeObject(userInfo);
+                    //        header.Merge(userJason);
+                    //        Console.WriteLine("MERGED JSON: {0}", header.ToString());
+                    //        handler.Send(Encoding.ASCII.GetBytes(header.ToString()));
+                    //        //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(header.ToString()));
+                    //    }
+                    //    else if (receivedJSONObject["type"].ToString() == "2") //Get Restaurant Information
+                    //    {
+                    //        JObject header = getClientHeader(receivedJSONObject);  //1st JObj  --Header
+                    //        string userInfo = getRestaurant(receivedJSONObject["username"].ToString());
+                    //        userInfo = userInfo.Replace("[", "");
+                    //        userInfo = userInfo.Replace("]", "");
+                    //        JObject userJason = JObject.Parse(userInfo);    //2nd JObj  --Body
+                    //        Console.WriteLine("BODY: {0}", userJason);
+                    //        //JsonConvert.DeserializeObject(userInfo);
+                    //        header.Merge(userJason);
+                    //        Console.WriteLine("MERGED JSON: {0}", header.ToString());
+                    //        //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(header.ToString()));
+                    //        handler.Send(Encoding.ASCII.GetBytes(header.ToString()));
+                    //    }
+                    //    else if (receivedJSONObject["type"].ToString() == "3") // DP login
+                    //    {
+                    //        string register = deliveryPersonLogin(receivedJSONObject["username"].ToString(), receivedJSONObject["password"].ToString(), receivedJSONObject["userType"].ToString());
+                    //        //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                    //        //register = "5";
+                    //        handler.Send(Encoding.ASCII.GetBytes(register));
+                    //    }
+                    //    else if (receivedJSONObject["type"].ToString() == "4") // Register User
+                    //    {
+                    //        string register = registerUser(receivedJSONObject);
+                    //        //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                    //        handler.Send(Encoding.ASCII.GetBytes(register));
+                    //    }
+                    //    else if (receivedJSONObject["type"].ToString() == "41") // Register Delivery Person for piece of shirt Java, because it's a useless language and nothing ever works
+                    //    {
+                    //        string register = registerUser(receivedJSONObject);
+                    //        register = "5";
+                    //        //register += "-1";   //trying to send EOF to Java client
+                    //        //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                    //        handler.Send(Encoding.ASCII.GetBytes(register));
+                    //    }
+                    //    if (receivedJSONObject["type"].ToString() == "42")  //First Connection From DP Client
+                    //    {
+                    //        //Console.WriteLine("First message");
+                    //       /*JObject sendJason = new JObject();
+                    //        sendJason = sendFirstConnectionInfo();
+                    //        String response = sendJason.ToString();
+                    //       */
+                    //        String rsp="5";
+                    //       // response+= "EXIT";   //trying to send EOF to Java client*/
+                    //        handler.Send(Encoding.ASCII.GetBytes(rsp));
+                    //        // handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(sendJason.ToString()));  //Sending Client ID
+                    //        // listOfConnectedClients.Add(clientID - 1); //Adding client to connected list
+                    //    }
+                    //    else if (receivedJSONObject["type"].ToString() == "5") //Register Restaurant
+                    //    {
+                    //        string register = registerRestaurant(receivedJSONObject);
+                    //        handler.Send(Encoding.ASCII.GetBytes(register));
+                    //        //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                    //    }
+                    //    else if (receivedJSONObject["type"].ToString() == "6") //Delivery Person Working Hours
+                    //    {
+                    //        string register = deliveryPersonWorkingHoursRegister(receivedJSONObject);
+                    //        handler.Send(Encoding.ASCII.GetBytes(register));
+                    //        //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                    //    }
+                    //    else if (receivedJSONObject["type"].ToString() == "7") //Get list of Categories
+                    //    {
+                    //        string register = getCategories(receivedJSONObject["restaurantID"].ToString());
+                    //        handler.Send(Encoding.ASCII.GetBytes(register));
+                    //        //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                    //    }
+                    //    else if (receivedJSONObject["type"].ToString() == "8") //Add category
+                    //    {
+                    //        string register = addCategory(receivedJSONObject);
+                    //        handler.Send(Encoding.ASCII.GetBytes(register));
+                    //        //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                    //    }
+                    //    else if (receivedJSONObject["type"].ToString() == "9") //9 - Get list of Food
+                    //    {
+                    //        string register = getFoods(receivedJSONObject["restaurantID"].ToString(), receivedJSONObject["categoryID"].ToString());
+                    //        handler.Send(Encoding.ASCII.GetBytes(register));
+                    //        //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                    //    }
+                    //    else if (receivedJSONObject["type"].ToString() == "10") //10 - Add Food
+                    //    {
+                    //        string register = addFood(receivedJSONObject);
+                    //        handler.Send(Encoding.ASCII.GetBytes(register));
+                    //    }
+                    //    else if (receivedJSONObject["type"].ToString() == "11") //11 - Get list of Restaurants
+                    //    {
+                    //        string register = getRestaurantsList();
+                    //        handler.Send(Encoding.ASCII.GetBytes(register));
+                    //        //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
+                    //    }
+                    //    else if (receivedJSONObject["type"].ToString() == "12")
+                    //    {
+                    //        string register = getOrders(Int32.Parse(receivedJSONObject["restaurantID"].ToString()));
+                    //        handler.Send(Encoding.ASCII.GetBytes(register));
                             
-                        }
-                        else if (receivedJSONObject["type"].ToString() == "13")
-                        {
-                            string register = updateOrderState(Int32.Parse(receivedJSONObject["OrderID"].ToString()), Int32.Parse(receivedJSONObject["newState"].ToString()));
-                            handler.Send(Encoding.ASCII.GetBytes(register));
+                    //    }
+                    //    else if (receivedJSONObject["type"].ToString() == "13")
+                    //    {
+                    //        string register = updateOrderState(Int32.Parse(receivedJSONObject["OrderID"].ToString()), Int32.Parse(receivedJSONObject["newState"].ToString()));
+                    //        handler.Send(Encoding.ASCII.GetBytes(register));
 
-                        }
-                        else if (receivedJSONObject["type"].ToString() == "14")
-                        {
-                            string register = foodByID(receivedJSONObject["foodID"].ToString());
-                            handler.Send(Encoding.ASCII.GetBytes(register));
-                        }
-                        else if (receivedJSONObject["type"].ToString() == "15")
-                        {
-                            string register = updateDiscount(Int32.Parse(receivedJSONObject["foodID"].ToString()), Double.Parse(receivedJSONObject["discount"].ToString()));
-                            handler.Send(Encoding.ASCII.GetBytes(register));
-                        }
-                        else if (receivedJSONObject["type"].ToString() == "16")
-                        {
-                            string register = setApproximateDeliveryTime(Int32.Parse(receivedJSONObject["orderID"].ToString()), Int32.Parse(receivedJSONObject["restID"].ToString()));
-                            handler.Send(Encoding.ASCII.GetBytes(register));
-                        }
-                        else if (receivedJSONObject["type"].ToString() == "17")
-                        {
-                            string register = updateFood(receivedJSONObject);
-                            handler.Send(Encoding.ASCII.GetBytes(register));
-                        }
-                        else if (receivedJSONObject["type"].ToString() == "18")
-                        {
-                            string register = addOrder(receivedJSONObject);
-                            handler.Send(Encoding.ASCII.GetBytes(register));
-                        }
-
-
+                    //    }
+                    //    else if (receivedJSONObject["type"].ToString() == "14")
+                    //    {
+                    //        string register = foodByID(receivedJSONObject["foodID"].ToString());
+                    //        handler.Send(Encoding.ASCII.GetBytes(register));
+                    //    }
+                    //    else if (receivedJSONObject["type"].ToString() == "15")
+                    //    {
+                    //        string register = updateDiscount(Int32.Parse(receivedJSONObject["foodID"].ToString()), Double.Parse(receivedJSONObject["discount"].ToString()));
+                    //        handler.Send(Encoding.ASCII.GetBytes(register));
+                    //    }
+                    //    else if (receivedJSONObject["type"].ToString() == "16")
+                    //    {
+                    //        string register = setApproximateDeliveryTime(Int32.Parse(receivedJSONObject["orderID"].ToString()), Int32.Parse(receivedJSONObject["restID"].ToString()));
+                    //        handler.Send(Encoding.ASCII.GetBytes(register));
+                    //    }
+                    //    else if (receivedJSONObject["type"].ToString() == "17")
+                    //    {
+                    //        string register = updateFood(receivedJSONObject);
+                    //        handler.Send(Encoding.ASCII.GetBytes(register));
+                    //    }
+                    //    else if (receivedJSONObject["type"].ToString() == "18")
+                    //    {
+                    //        string register = addOrder(receivedJSONObject);
+                    //        handler.Send(Encoding.ASCII.GetBytes(register));
+                    //    }
 
 
 
 
 
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.ToString());
 
-                    }
+
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    Console.WriteLine(e.ToString());
+
+                    //}
 
 
                     //Console.WriteLine("Text received : {0}", data);
@@ -414,11 +784,7 @@ namespace SocketServer
                     //Console.ReadKey();
         }
 
-        private void waitingForConnection_teszt(Socket listener)
-        {
-            Console.WriteLine("Waiting for a connection...");
-            handler = listener.Accept();
-        }
+      
 
         private string getRestaurantsList()
         {
@@ -1600,10 +1966,10 @@ namespace SocketServer
         }
 
 
-        private void waitingForConnection()
-        {
-            Console.WriteLine("Waiting for a connection...");
-            handler = listener.Accept();
-        }
+        //private void waitingForConnection()
+        //{
+        //    Console.WriteLine("Waiting for a connection...");
+        //    handler = listener.Accept();
+        //}
     }
 }

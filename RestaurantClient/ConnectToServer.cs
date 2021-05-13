@@ -41,73 +41,91 @@ public class ConnectToServer
 
     public void StartClient()
     {
-        
+
+
+        //try
+        //{
+        //    // Connect to a Remote server  
+        //    // Get Host IP Address that is used to establish a connection  
+        //    // In this case, we get one IP address of localhost that is IP : 127.0.0.1  
+        //    // If a host has multiple addresses, you will get a list of addresses  
+        //    host = Dns.GetHostEntry("localhost");
+        //    ipAddress = host.AddressList[1];
+        //    remoteEP = new IPEndPoint(ipAddress, 11000);
+
+        //    // Create a TCP/IP  socket.    
+        //    sender = new Socket(AddressFamily.InterNetwork,
+        //        SocketType.Stream, ProtocolType.Tcp);
+
+        //    // Connect the socket to the remote endpoint. Catch any errors.    
+        //    try
+        //    {
+        //        // Connect to Remote EndPoint  
+        //        sender.Connect(remoteEP);
+
+        //        Console.WriteLine("Socket connected to {0}", sender.RemoteEndPoint.ToString());               
+
+        //            if (clientID == -1)
+        //            {
+        //                //Sending "Hello" to Server
+        //                string receivedMsg =sendJSON(sendFirstConnectionInfo());
+
+        //                try
+        //                {
+        //                    JObject receivedJSonObject = new JObject();
+        //                    receivedJSonObject = JObject.Parse(receivedMsg);
+        //                    if (receivedJSonObject["type"].ToString() == "0")
+        //                    {
+        //                        clientID = Int32.Parse(receivedJSonObject["clientID"].ToString());
+        //                        Console.WriteLine("ClientID : {0}", clientID);
+        //                }
+        //                }
+        //                catch (Exception e)
+        //                {
+        //                    Console.WriteLine(e.ToString());
+        //                }
+        //            }
+
+
+
+        //            //String recievedMsg = Encoding.ASCII.GetString(bytes, 0, bytesRec);
+        //    }
+        //    catch (ArgumentNullException ane)
+        //    {
+        //        Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
+        //    }
+        //    catch (SocketException se)
+        //    {
+        //        Console.WriteLine("SocketException : {0}", se.ToString());
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine("Unexpected exception : {0}", e.ToString());
+        //    }
+
+        //}
+        //catch (Exception e)
+        //{
+        //    Console.WriteLine(e.ToString());
+        //}
+
+        string receivedMsg = sendJSON(sendFirstConnectionInfo());
 
         try
         {
-            // Connect to a Remote server  
-            // Get Host IP Address that is used to establish a connection  
-            // In this case, we get one IP address of localhost that is IP : 127.0.0.1  
-            // If a host has multiple addresses, you will get a list of addresses  
-            host = Dns.GetHostEntry("localhost");
-            ipAddress = host.AddressList[1];
-            remoteEP = new IPEndPoint(ipAddress, 11000);
-
-            // Create a TCP/IP  socket.    
-            sender = new Socket(AddressFamily.InterNetwork,
-                SocketType.Stream, ProtocolType.Tcp);
-
-            // Connect the socket to the remote endpoint. Catch any errors.    
-            try
+            JObject receivedJSonObject = new JObject();
+            receivedJSonObject = JObject.Parse(receivedMsg);
+            if (receivedJSonObject["type"].ToString() == "0")
             {
-                // Connect to Remote EndPoint  
-                sender.Connect(remoteEP);
-
-                Console.WriteLine("Socket connected to {0}", sender.RemoteEndPoint.ToString());               
-
-                    if (clientID == -1)
-                    {
-                        //Sending "Hello" to Server
-                        string receivedMsg =sendJSON(sendFirstConnectionInfo());
-                    
-                        try
-                        {
-                            JObject receivedJSonObject = new JObject();
-                            receivedJSonObject = JObject.Parse(receivedMsg);
-                            if (receivedJSonObject["type"].ToString() == "0")
-                            {
-                                clientID = Int32.Parse(receivedJSonObject["clientID"].ToString());
-                                Console.WriteLine("ClientID : {0}", clientID);
-                        }
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e.ToString());
-                        }
-                }
-
-                    
-
-                    //String recievedMsg = Encoding.ASCII.GetString(bytes, 0, bytesRec);
+                clientID = Int32.Parse(receivedJSonObject["clientID"].ToString());
+                Console.WriteLine("ClientID : {0}", clientID);
             }
-            catch (ArgumentNullException ane)
-            {
-                Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
-            }
-            catch (SocketException se)
-            {
-                Console.WriteLine("SocketException : {0}", se.ToString());
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Unexpected exception : {0}", e.ToString());
-            }
-
         }
         catch (Exception e)
         {
             Console.WriteLine(e.ToString());
         }
+        //StopClient();
     }
 
     public Restaurant getRestaurant(string username) 
@@ -189,25 +207,91 @@ public class ConnectToServer
     {
         try
         {
-            //Console.WriteLine("JSONOBJECT:\n {0}", JsonSendObject);
-            //string msgJSON = JsonConvert.SerializeObject(JsonSendObject.ToString());
-           byte[] msg = Encoding.ASCII.GetBytes(JsonSendObject.ToString());
-           //byte [] msg = Encoding.GetEncoding("windows-1250").GetBytes(JsonSendObject.ToString());
-            // Send the data through the socket.    
-            int bytesSent = sender.Send(msg);
-            Console.WriteLine("Bytes sent {0}", bytesSent);
-            Console.WriteLine("Sent:\n {0}", JsonSendObject.ToString());
+            // Connect to a Remote server  
+            // Get Host IP Address that is used to establish a connection  
+            // In this case, we get one IP address of localhost that is IP : 127.0.0.1  
+            // If a host has multiple addresses, you will get a list of addresses  
+            host = Dns.GetHostEntry("localhost");
+            ipAddress = host.AddressList[1];
+            remoteEP = new IPEndPoint(ipAddress, 11000);
+
+            // Create a TCP/IP  socket.    
+            sender = new Socket(AddressFamily.InterNetwork,
+                SocketType.Stream, ProtocolType.Tcp);
+
+            // Connect the socket to the remote endpoint. Catch any errors.    
+            try
+            {
+                // Connect to Remote EndPoint  
+                sender.Connect(remoteEP);
+
+                Console.WriteLine("Socket connected to {0}", sender.RemoteEndPoint.ToString());
+
+                try
+                {
+                    //Console.WriteLine("JSONOBJECT:\n {0}", JsonSendObject);
+                    //string msgJSON = JsonConvert.SerializeObject(JsonSendObject.ToString());
+                    byte[] msg = Encoding.ASCII.GetBytes(JsonSendObject.ToString());
+                    //byte [] msg = Encoding.GetEncoding("windows-1250").GetBytes(JsonSendObject.ToString());
+                    // Send the data through the socket.    
+                    int bytesSent = sender.Send(msg);
+                    Console.WriteLine("Bytes sent {0}", bytesSent);
+                    Console.WriteLine("Sent:\n {0}", JsonSendObject.ToString());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+                Console.WriteLine("Waiting...");
+                // Receive the response from the remote device.    
+                int bytesRec = sender.Receive(bytes);
+                Console.WriteLine("Recieved bytes {0}", bytesRec);
+                //return Encoding.GetEncoding("windows-1250").GetString(bytes);
+                var ret= Encoding.ASCII.GetString(bytes, 0, bytesRec);
+                StopClient();
+                return ret;
+            }
+            catch (ArgumentNullException ane)
+            {
+                Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
+            }
+            catch (SocketException se)
+            {
+                Console.WriteLine("SocketException : {0}", se.ToString());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Unexpected exception : {0}", e.ToString());
+            }
+
         }
         catch (Exception e)
         {
             Console.WriteLine(e.ToString());
         }
-        Console.WriteLine("Waiting...");
-        // Receive the response from the remote device.    
-        int bytesRec = sender.Receive(bytes);
-        Console.WriteLine("Recieved bytes {0}", bytesRec);
-        //return Encoding.GetEncoding("windows-1250").GetString(bytes);
-        return Encoding.ASCII.GetString(bytes, 0, bytesRec);
+        return "";
+
+        //try
+        //{
+        //    //Console.WriteLine("JSONOBJECT:\n {0}", JsonSendObject);
+        //    //string msgJSON = JsonConvert.SerializeObject(JsonSendObject.ToString());
+        //   byte[] msg = Encoding.ASCII.GetBytes(JsonSendObject.ToString());
+        //   //byte [] msg = Encoding.GetEncoding("windows-1250").GetBytes(JsonSendObject.ToString());
+        //    // Send the data through the socket.    
+        //    int bytesSent = sender.Send(msg);
+        //    Console.WriteLine("Bytes sent {0}", bytesSent);
+        //    Console.WriteLine("Sent:\n {0}", JsonSendObject.ToString());
+        //}
+        //catch (Exception e)
+        //{
+        //    Console.WriteLine(e.ToString());
+        //}
+        //Console.WriteLine("Waiting...");
+        //// Receive the response from the remote device.    
+        //int bytesRec = sender.Receive(bytes);
+        //Console.WriteLine("Recieved bytes {0}", bytesRec);
+        ////return Encoding.GetEncoding("windows-1250").GetString(bytes);
+        //return Encoding.ASCII.GetString(bytes, 0, bytesRec);
 
     }
     int userSignIn;
