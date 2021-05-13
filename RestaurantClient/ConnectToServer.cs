@@ -213,8 +213,10 @@ public class ConnectToServer
             recievedMsg = sendJSON(jobc);
             Console.WriteLine("recievedMsg: {0}", recievedMsg);
             DeliveryBoyList db = Newtonsoft.Json.JsonConvert.DeserializeObject<DeliveryBoyList>(recievedMsg);
+            Console.WriteLine("AAA");
             if (db.ListDevliveryboy == null)
                 throw new Exception();
+            Console.WriteLine("OK");
             return db;
         }
         catch (NullReferenceException e)
@@ -225,6 +227,7 @@ public class ConnectToServer
             if (receivedJSonObject["type"].ToString() == "99")
             {
                 Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+                Console.WriteLine("NOT OK");
                 return new DeliveryBoyList();  //Sends empty class
             }
         }
@@ -236,9 +239,11 @@ public class ConnectToServer
             if (receivedJSonObject["type"].ToString() == "99")
             {
                 Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+                Console.WriteLine("NOT OK EMPTY");
                 return new DeliveryBoyList(); //Sends empty class
             }
         }
+        Console.WriteLine("SENDING EMPTY LIST");
         return new DeliveryBoyList();
     }
 

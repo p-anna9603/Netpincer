@@ -24,9 +24,10 @@ namespace RestaurantClient
         RestaurantMain restMain;
         string foodsDesc = "";
         string foodDescToAssignment = "";
+        int restaurantID;
 
         User user;
-        public Order(int oId, int status, string orderTim, string endOrderTime, double price, string foodsString, User user_)
+        public Order(int oId, int status, string orderTim, string endOrderTime, double price, string foodsString, User user_, int restID)
         {
             orderID = oId;
             orderStatus = status;
@@ -36,7 +37,8 @@ namespace RestaurantClient
             foods = foodsString;
             endorderTime = endOrderTime;
             user = user_;
-         //   approxDeliveryTime = approxDeliveryTime_; // TODO
+            restaurantID = restID;
+            //   approxDeliveryTime = approxDeliveryTime_; // TODO
 
             //string foodsDesc = "\tRendelt ételek\n\t\t";
             //for(int i = 0; i < orderedFoodList.Count; ++i)
@@ -141,5 +143,6 @@ namespace RestaurantClient
         public string Foods { get => foods; set => foods = value; }
         public string Address { get => address; set => address = value; }
         public User User { get => user; set => user = value; }
+        public int RestaurantID { get => restaurantID; set => restaurantID = value; }
     }
 }

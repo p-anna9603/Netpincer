@@ -60,7 +60,7 @@ SELECT * FROM Restaurant.Food
 --ALTER TABLE Restaurant.Restaurant ADD FOREIGN KEY (owner) REFERENCES Users.Users(username) ON DELETE SET NULL ON UPDATE CASCADE
 --UPDATE Users.Users SET username = 'marica' WHERE username = 'AsztalVokMegint'
 
---SELECT orderID, [status], startOrderTime, endOrderTime, Orders.[username], price, foods,[password],[lastName],[firstName],Users.[phoneNumber],Users.[addressID] ,[userType], Users.[email],UsersAddress.city,UsersAddress.line1,UsersAddress.line2,UsersAddress.zipcode FROM Restaurant.Orders JOIN Restaurant.Restaurant ON Restaurant.restaurantID = Orders.restaurantID JOIN Users.Users ON Users.username = Restaurant.Orders.username JOIN Users.UsersAddress ON UsersAddress.addressID = Users.addressID WHERE Orders.restaurantID = '1'
+SELECT restaurantID,orderID, [status], startOrderTime, endOrderTime, Orders.[username], price, foods,[password],[lastName],[firstName],Users.[phoneNumber],Users.[addressID] ,[userType], Users.[email],UsersAddress.city,UsersAddress.line1,UsersAddress.line2,UsersAddress.zipcode FROM Restaurant.Orders JOIN Restaurant.Restaurant ON Restaurant.restaurantID = Orders.restaurantID JOIN Users.Users ON Users.username = Restaurant.Orders.username JOIN Users.UsersAddress ON UsersAddress.addressID = Users.addressID WHERE Orders.restaurantID = '1'
 
 --SELECT * FROM Restaurant.Food
 
@@ -105,7 +105,7 @@ SELECT * FROM Restaurant.Orders
 --INSERT INTO DeliveryPerson.AssignDelivery(deliveryPersonID,orderID) VALUES (1,13)
 
 
-SELECT DeliveryPerson.AssignDelivery.orderID, [status], startOrderTime, endOrderTime, Orders.[username], price, foods,[password],[lastName],[firstName],Users.[phoneNumber],Users.[addressID] ,[userType], Users.[email],UsersAddress.city,UsersAddress.line1,UsersAddress.line2,UsersAddress.zipcode
+SELECT Restaurant.Orders.restaurantID,DeliveryPerson.AssignDelivery.orderID, [status], startOrderTime, endOrderTime, Orders.[username], price, foods,[password],[lastName],[firstName],Users.[phoneNumber],Users.[addressID] ,[userType], Users.[email],UsersAddress.city,UsersAddress.line1,UsersAddress.line2,UsersAddress.zipcode
 FROM DeliveryPerson.AssignDelivery 
 JOIN Restaurant.Orders ON Restaurant.Orders.orderID = DeliveryPerson.AssignDelivery.orderID 
 JOIN Users.Users ON Users.username = Restaurant.Orders.username 

@@ -10,7 +10,9 @@ namespace RestaurantClient
     {
         private List<DeliveryBoy> listDevliveryboy;
 
-        public DeliveryBoyList() { }
+        public DeliveryBoyList(List<DeliveryBoy> list) { listDevliveryboy = list; }
+
+        public DeliveryBoyList() {  }
 
         public List<DeliveryBoy> ListDevliveryboy { get => listDevliveryboy; set => listDevliveryboy = value; }
     }

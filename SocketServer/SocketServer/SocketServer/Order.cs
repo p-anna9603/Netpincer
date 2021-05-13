@@ -15,7 +15,8 @@ namespace SocketServer
         List<Food> orderedFoodList = new List<Food>();
         //string statusString;
         string foods;
-        public Order(int oId, int status, string orderTim, string endOrderTime, User _user, double price, string foodsString)
+        int restaurantID;
+        public Order(int oId, int status, string orderTim, string endOrderTime, User _user, double price, string foodsString, int restID)
         {
             orderID = oId;
             orderStatus = status;
@@ -24,6 +25,7 @@ namespace SocketServer
             totalPrice = price;
             this.endorderTime = endOrderTime;
             foods = foodsString;
+            restaurantID = restID;
             
         }
 
@@ -35,5 +37,6 @@ namespace SocketServer
         public string EndorderTime { get => endorderTime; set => endorderTime = value; }
         public string Foods { get => foods; set => foods = value; }
         public User User { get => user; set => user = value; }
+        public int RestaurantID { get => restaurantID; set => restaurantID = value; }
     }
 }

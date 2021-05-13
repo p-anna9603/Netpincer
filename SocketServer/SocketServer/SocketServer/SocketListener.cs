@@ -1633,7 +1633,7 @@ namespace SocketServer
 
 
                     //GETTING ORDERS FOR DELIVERY PERSON
-                    string query1 = "SELECT DeliveryPerson.AssignDelivery.orderID, [status], startOrderTime, endOrderTime, Orders.[username], price, foods,[password],[lastName],[firstName],Users.[phoneNumber],Users.[addressID] ,[userType], Users.[email],UsersAddress.city,UsersAddress.line1,UsersAddress.line2,UsersAddress.zipcode FROM DeliveryPerson.AssignDelivery JOIN Restaurant.Orders ON Restaurant.Orders.orderID = DeliveryPerson.AssignDelivery.orderID JOIN Users.Users ON Users.username = Restaurant.Orders.username JOIN Users.UsersAddress ON UsersAddress.addressID = Users.addressID WHERE deliveryPersonID = @id";
+                    string query1 = "SELECT Restaurant.Orders.restaurantID, DeliveryPerson.AssignDelivery.orderID, [status], startOrderTime, endOrderTime, Orders.[username], price, foods,[password],[lastName],[firstName],Users.[phoneNumber],Users.[addressID] ,[userType], Users.[email],UsersAddress.city,UsersAddress.line1,UsersAddress.line2,UsersAddress.zipcode FROM DeliveryPerson.AssignDelivery JOIN Restaurant.Orders ON Restaurant.Orders.orderID = DeliveryPerson.AssignDelivery.orderID JOIN Users.Users ON Users.username = Restaurant.Orders.username JOIN Users.UsersAddress ON UsersAddress.addressID = Users.addressID WHERE deliveryPersonID = @id";
                     List<Order> localOrders = new List<Order>();
                     try
                     {
@@ -1657,7 +1657,8 @@ namespace SocketServer
                                 dataTable1.Rows[j]["zipcode"].ToString(), dataTable1.Rows[j]["line1"].ToString(), dataTable1.Rows[j]["line2"].ToString(),
                                 Int32.Parse(dataTable1.Rows[j]["userType"].ToString()), dataTable1.Rows[j]["email"].ToString()),
                                 Double.Parse(dataTable1.Rows[j]["price"].ToString()),
-                                dataTable1.Rows[j]["foods"].ToString()));
+                                dataTable1.Rows[j]["foods"].ToString(),
+                                Int32.Parse(dataTable1.Rows[j]["restaurantID"].ToString())));
                         }
                         da1.Dispose();
                         dataTable1.Clear();
@@ -2033,7 +2034,7 @@ namespace SocketServer
 
         private string getOrders(int restaurantID)
         {
-            string query = "SELECT orderID, [status], startOrderTime, endOrderTime, Orders.[username], price, foods,[password],[lastName],[firstName],Users.[phoneNumber],Users.[addressID] ,[userType], Users.[email],UsersAddress.city,UsersAddress.line1,UsersAddress.line2,UsersAddress.zipcode FROM Restaurant.Orders JOIN Restaurant.Restaurant ON Restaurant.restaurantID = Orders.restaurantID JOIN Users.Users ON Users.username = Restaurant.Orders.username JOIN Users.UsersAddress ON UsersAddress.addressID = Users.addressID WHERE Orders.restaurantID = @restID";
+            string query = "SELECT Restaurant.restaurantID, orderID, [status], startOrderTime, endOrderTime, Orders.[username], price, foods,[password],[lastName],[firstName],Users.[phoneNumber],Users.[addressID] ,[userType], Users.[email],UsersAddress.city,UsersAddress.line1,UsersAddress.line2,UsersAddress.zipcode FROM Restaurant.Orders JOIN Restaurant.Restaurant ON Restaurant.restaurantID = Orders.restaurantID JOIN Users.Users ON Users.username = Restaurant.Orders.username JOIN Users.UsersAddress ON UsersAddress.addressID = Users.addressID WHERE Orders.restaurantID = @restID";
             List<Order> localOrders = new List<Order>();
             try
             {
@@ -2057,7 +2058,8 @@ namespace SocketServer
                         dataTable.Rows[i]["zipcode"].ToString(), dataTable.Rows[i]["line1"].ToString(), dataTable.Rows[i]["line2"].ToString(),
                         Int32.Parse(dataTable.Rows[i]["userType"].ToString()), dataTable.Rows[i]["email"].ToString()),
                         Double.Parse(dataTable.Rows[i]["price"].ToString()),
-                        dataTable.Rows[i]["foods"].ToString()));
+                        dataTable.Rows[i]["foods"].ToString(),
+                        Int32.Parse(dataTable.Rows[i]["restaurantID"].ToString())));
                 }
                 da.Dispose();
                 dataTable.Clear();
