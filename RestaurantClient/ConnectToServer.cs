@@ -203,6 +203,47 @@ public class ConnectToServer
         }
     }
 
+    public DeliveryBoyList getDeliveryBoys()
+    {
+        string recievedMsg = "";
+        try
+        {
+            JObject jobc = new JObject();
+            jobc.Add("type", 19);        
+            recievedMsg = sendJSON(jobc);
+            Console.WriteLine("recievedMsg: {0}", recievedMsg);
+            DeliveryBoyList db = Newtonsoft.Json.JsonConvert.DeserializeObject<DeliveryBoyList>(recievedMsg);
+            if (db.ListDevliveryboy == null)
+                throw new Exception();
+            return db;
+        }
+        catch (NullReferenceException e)
+        {
+            Console.WriteLine(e.ToString());
+            JObject receivedJSonObject = new JObject();
+            receivedJSonObject = JObject.Parse(recievedMsg);
+            if (receivedJSonObject["type"].ToString() == "99")
+            {
+                Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+                return new DeliveryBoyList();  //Sends empty class
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+            JObject receivedJSonObject = new JObject();
+            receivedJSonObject = JObject.Parse(recievedMsg);
+            if (receivedJSonObject["type"].ToString() == "99")
+            {
+                Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+                return new DeliveryBoyList(); //Sends empty class
+            }
+        }
+        return new DeliveryBoyList();
+    }
+
+
+
     private string sendJSON(JObject JsonSendObject)     //Returns received string
     {
         try

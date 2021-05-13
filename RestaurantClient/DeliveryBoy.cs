@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RestaurantClient
 {
-    class DeliveryBoy
+    public class DeliveryBoy
     {
         int deliveryBoyID;
         string name;
@@ -23,7 +23,7 @@ namespace RestaurantClient
 
         public int DeliveryBoyID { get => deliveryBoyID; set => deliveryBoyID = value; }
         public string Name { get => name; set => name = value; }
-        internal List<Order> Orders { get => orders; set => orders = value; }
-        internal workingSchedule Working { get => working; set => working = value; }
+        public List<Order> Orders { get => orders; set => orders = value; }
+        public workingSchedule Working { get => working; set => working = value; }
     }
 }
