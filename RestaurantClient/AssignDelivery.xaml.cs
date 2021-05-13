@@ -133,7 +133,7 @@ namespace RestaurantClient
                        ( workTime.ToHour > hour || workTime.ToHour == hour && workTime.ToMinute  >= min))
                     {
                         boys.Add(listFromServer.ListDevliveryboy[i]);
-                        addBoyPanel(boys[i].Name, boys[i].DeliveryBoyID, boys[i].Orders);
+                        //addBoyPanel(boys[i].Name, boys[i].DeliveryBoyID, boys[i].Orders);
                     }
                     /* Don't know if this neccessary
                     List<Order> orders = listFromServer.ListDevliveryboy[i].Orders;
@@ -149,7 +149,7 @@ namespace RestaurantClient
                 //    newFoodWindows.Add(listFromServer.ListFood[i].FoodID, listFromServer.ListFood[i]);
                 }
             }
-            /*
+            
             if (boys.Count != 0)
             {
                 Console.WriteLine("addpanel 0");
@@ -159,7 +159,7 @@ namespace RestaurantClient
                     addBoyPanel(boys[i].Name, boys[i].DeliveryBoyID, boys[i].Orders); 
                 }
             }
-            */
+            
         }
         
         public void addOrdersToTable()
