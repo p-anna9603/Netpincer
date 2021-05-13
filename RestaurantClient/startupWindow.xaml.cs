@@ -41,9 +41,15 @@ namespace RestaurantClient
             /*List<string> list = new List<string>();
             ServerConnection.updateFood(new Food(13,"Keny",500,3.2,0,list,1,1,"2020.01.01","2020.01.01"));
            */
-            
+
             #endregion
 
+
+            #region KLAU TESZT 05.13.
+            //ServerConnection.addOrderToDeliveryBoy(1,2);
+            ServerConnection.removeOrderFromDeliveryBoy(1,2);
+
+            #endregion
 
             //ServerConnection.getFoods(7, 1);
             //ServerConnection.getRestaurantsList();

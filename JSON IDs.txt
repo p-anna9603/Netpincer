@@ -24,6 +24,9 @@ type
 17 - updateFood
 
 18 - addOrder
-19- getDeliveryPersonList
+19 - getDeliveryPersonList
+
+20 - addOrderToDeliveryPerson
+21 - deleteOrderFromDeliveryPerson
 
 99 - Error

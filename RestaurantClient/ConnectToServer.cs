@@ -853,6 +853,62 @@ public class ConnectToServer
         return jobc;
     }
 
+    public void addOrderToDeliveryBoy(int boiID, int orderID)
+    {
+
+        try
+        {
+            JObject obj = new JObject();
+            obj.Add("type", 20);
+            obj.Add("boiID", boiID);
+            obj.Add("orderID", orderID);
+            string recievedMsg = sendJSON(obj);
+            Console.WriteLine("recievedMsg: {0}", recievedMsg);
+            JObject receivedJSonObject = new JObject();
+            receivedJSonObject = JObject.Parse(recievedMsg);
+            if (receivedJSonObject["type"].ToString() == "20")
+            {
+                Console.WriteLine("Server: {0}", receivedJSonObject["status"].ToString());
+            }
+            else if (receivedJSonObject["type"].ToString() == "99")
+            {
+                Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+        }
+    }
+
+    public void removeOrderFromDeliveryBoy(int boiID, int orderID)
+    {
+
+        try
+        {
+            JObject obj = new JObject();
+            obj.Add("type", 21);
+            obj.Add("boiID", boiID);
+            obj.Add("orderID", orderID);
+            string recievedMsg = sendJSON(obj);
+            Console.WriteLine("recievedMsg: {0}", recievedMsg);
+            JObject receivedJSonObject = new JObject();
+            receivedJSonObject = JObject.Parse(recievedMsg);
+            if (receivedJSonObject["type"].ToString() == "21")
+            {
+                Console.WriteLine("Server: {0}", receivedJSonObject["status"].ToString());
+            }
+            else if (receivedJSonObject["type"].ToString() == "99")
+            {
+                Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+        }
+    }
+
 
     public OrderList getOrders(int restaurantID)
     {

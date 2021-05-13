@@ -347,7 +347,7 @@ namespace RestaurantClient
 
             Console.WriteLine("boy: " + boyID + ", o:  " + order.OrderID);
             restaurantMain.ServerConnection.updateOrderState(order.OrderID, 2);
-            //   restaurantMain.ServerConnection.removeOrderFromDeliveryBoy(boyID, order.OrderID); // TODO
+            restaurantMain.ServerConnection.removeOrderFromDeliveryBoy(boyID, order.OrderID); // TODO
 
             /* Újra számozás */
             //    List<StackPanel> children = panel2.Children;
@@ -593,7 +593,7 @@ namespace RestaurantClient
         private void addOrderToDeliveryBoy(Order order, int boyID)
         {
             Console.WriteLine("update to server\n");
-            //  restaurantMain.ServerConnection.addOrderToDeliveryBoy(boyID, order.OrderID); //TODO
+            restaurantMain.ServerConnection.addOrderToDeliveryBoy(boyID, order.OrderID); //TODO
             restaurantMain.ServerConnection.updateOrderState(order.OrderID, 3);
             Console.WriteLine("update to server 2\n");
             for (int i = 0; i < boys.Count; ++i)
