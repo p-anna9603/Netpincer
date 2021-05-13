@@ -412,7 +412,22 @@ namespace SocketServer
                     //handler.Send(Encoding.ASCII.GetBytes(register));
                     return register.ToString();
                 }
-                
+                else if (receivedJSONObject["type"].ToString() == "20")
+                {
+                    string register = addOrderToDeliveryPerson(Int32.Parse(receivedJSONObject["boiID"].ToString()), Int32.Parse(receivedJSONObject["orderID"].ToString()));
+                    //handler.Send(Encoding.ASCII.GetBytes(register));
+                    return register.ToString();
+                }
+                else if (receivedJSONObject["type"].ToString() == "21")
+                {
+                    string register = deleteOrderFromDeliveryPerson(Int32.Parse(receivedJSONObject["boiID"].ToString()), Int32.Parse(receivedJSONObject["orderID"].ToString()));
+                    //handler.Send(Encoding.ASCII.GetBytes(register));
+                    return register.ToString();
+                }
+
+
+
+
             }
             catch (Exception e)
             {
@@ -2030,6 +2045,66 @@ namespace SocketServer
             return ok2.ToString();
         }
 
+        private string addOrderToDeliveryPerson(int boiID, int orderID)
+        {
+            string query = "INSERT INTO DeliveryPerson.AssignDelivery(deliveryPersonID,orderID) VALUES (@boiID,@orderID)";
+            try
+            {
+                SqlCommand command = new SqlCommand(query, DatabaseConnection);
+                command.Parameters.AddWithValue("@boiID", boiID);
+                Console.WriteLine("boiID: {0}", boiID);
+                command.Parameters.AddWithValue("@orderID", orderID);
+                Console.WriteLine("orderID: {0}", orderID);
+
+                int affectedRows = command.ExecuteNonQuery();
+                if (affectedRows == 0)
+                {
+                    return getErrorMessage(50);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return getErrorMessage(99);
+            }
+            JObject ok = new JObject();
+            ok.Add("type", 20);
+            ok.Add("status", "Order added to Delivery Person");
+            return ok.ToString();
+
+        }
+
+        private string deleteOrderFromDeliveryPerson(int boiID, int orderID)
+        {
+            string query = "DELETE FROM DeliveryPerson.AssignDelivery WHERE deliveryPersonID=@boiID AND orderID=@orderID";
+            try
+            {
+                SqlCommand command = new SqlCommand(query, DatabaseConnection);
+                command.Parameters.AddWithValue("@boiID", boiID);
+                Console.WriteLine("boiID: {0}", boiID);
+                command.Parameters.AddWithValue("@orderID", orderID);
+                Console.WriteLine("orderID: {0}", orderID);
+
+                int affectedRows = command.ExecuteNonQuery();
+                if (affectedRows == 0)
+                {
+                    return getErrorMessage(50);
+                }
+
+                updateOrderState(orderID,2);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return getErrorMessage(99);
+            }
+            JObject ok = new JObject();
+            ok.Add("type", 21);
+            ok.Add("status", "Order removed from Delivery Person");
+            return ok.ToString();
+
+        }
+
 
 
         private string getOrders(int restaurantID)
@@ -2126,6 +2201,9 @@ namespace SocketServer
             errorObject.Add("type", 99);
             switch (errorNumber) 
             {
+                case 50:
+                    errorObject.Add("error", "Delivery Person ID or Order ID not found");
+                    break;
                 case 66:
                     errorObject.Add("error", "FoodID not found");
                     break;
