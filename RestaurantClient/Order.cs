@@ -105,10 +105,11 @@ namespace RestaurantClient
                 return user.getLastName() + " " + user.getFirstName();
             }
         }
-        public void setFoods()
+        public void setFoods(RestaurantMain restMain_)
         {
             Console.WriteLine("kaják: " + foods);
             Console.WriteLine("statusString: " + statusString);
+            restMain = restMain_;
             String[] foodNums = foods.Split(',');
             for (int i = 0; i < foodNums.Length; ++i)
             {
@@ -136,6 +137,18 @@ namespace RestaurantClient
             }
             foodDescToAssignment = foodsDesc;
            foodDescToAssignment += "\r\tSzállítási cím: " + user.getLine1() + " " + user.getLine2();
+            foodDescToAssignment += "\r\tTelefonszám: " + user.getPhoneNumber();
+        }
+
+        public void setDescriptions()
+        {
+            foodsDesc = "\tRendelt ételek\n\t\t";
+            for (int i = 0; i < orderedFoodList.Count; ++i)
+            {
+                foodsDesc += orderedFoodList[i].Name + "\n\t\t";
+            }
+            foodDescToAssignment = foodsDesc;
+            foodDescToAssignment += "\r\tSzállítási cím: " + user.getLine1() + " " + user.getLine2();
             foodDescToAssignment += "\r\tTelefonszám: " + user.getPhoneNumber();
         }
         public RestaurantMain RestMain { get => restMain; set => restMain = value; }

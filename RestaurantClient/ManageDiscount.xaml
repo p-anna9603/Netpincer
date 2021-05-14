@@ -41,7 +41,7 @@
             </StackPanel>
             <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Button Name="activeDisc" HorizontalAlignment="Center" VerticalAlignment="Center" Width="70" Foreground="#FFF9F8F8" Background="#FF5A97D4" BorderBrush="#FFFFFDFD" Margin="0,5,0,0">
-                    <TextBlock Text="Jelenlegi akciók" TextWrapping="Wrap" TextAlignment="Center" MouseDown="activeDiscount_MouseDown"></TextBlock>
+                    <TextBlock Text="Jelenlegi akciók" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
                 </Button>
             </StackPanel>
 

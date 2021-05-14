@@ -105,7 +105,7 @@ namespace RestaurantClient
                 {
                     Console.WriteLine("summary ord: ########" + listFromServer.ListOrder[i].User.Username);
                     listFromServer.ListOrder[i].RestMain = restaurantMain;
-                    listFromServer.ListOrder[i].setFoods();
+                    listFromServer.ListOrder[i].setFoods(restaurantMain);
                     string[] orderTime = listFromServer.ListOrder[i].OrderTime.Split('.');
                     year = Int32.Parse(orderTime[0]);
                     month = Int32.Parse(orderTime[1]);
@@ -129,7 +129,7 @@ namespace RestaurantClient
                         {
                             int foodID;
                             string categName;
-                            foodID = Int32.Parse(foodNums[i]);
+                            foodID = Int32.Parse(foodNums[z]);
                             Food food = restaurantMain.ServerConnection.getFoodByID(foodID);
                             categName = categoryNames[food.CategoryID];
                             categoryCounter[categName]++;

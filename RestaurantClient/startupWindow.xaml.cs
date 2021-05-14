@@ -47,7 +47,7 @@ namespace RestaurantClient
 
             #region KLAU TESZT 05.13.
             //ServerConnection.addOrderToDeliveryBoy(1,2);
-            ServerConnection.removeOrderFromDeliveryBoy(1,2);
+            //ServerConnection.removeOrderFromDeliveryBoy(1,2);
 
             #endregion
 
@@ -143,9 +143,9 @@ namespace RestaurantClient
 
         private void registerBtn_Click(object sender, RoutedEventArgs e)
         {
-            registryType = 0;
-            registerUser regUser = new registerUser(ServerConnection, this);
-            regUser.Show();
+            registryType = 1;
+            RestaurantRegister restMain = new RestaurantRegister(ServerConnection, this);
+            restMain.Show();
             this.Hide();
             /*
             if (clientReg.IsChecked == false && runningBoyReg.IsChecked == false && restaurantReg.IsChecked == false)
