@@ -283,7 +283,7 @@ namespace FoodOrderClient
         {
             while(z == 0)
             {
-                Thread.Sleep(10000);
+                Thread.Sleep(3000);
                 ordersList = serverConnection.getOrders(currUser.restaurantID);
                 if(ordersList.ListOrder == null)
                 {

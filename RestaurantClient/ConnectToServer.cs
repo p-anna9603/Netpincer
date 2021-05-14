@@ -157,6 +157,7 @@ public class ConnectToServer
                     receivedJSonObject["style"].ToString(),
                     receivedJSonObject["owner"].ToString(),
                     receivedJSonObject["phoneNumber"].ToString(),
+                    Int32.Parse(receivedJSonObject["approximateTime"].ToString()),
                     Int32.Parse(receivedJSonObject["restaurantID"].ToString())
                     );
             }
