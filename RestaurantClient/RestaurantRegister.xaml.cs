@@ -58,7 +58,7 @@ namespace FoodOrderClient
         {
             // + deliveryTime
             retval = ServerConnection.registerRestaurant(new Restaurant(citiName, zipCode, street, streetNum, fromHour, fromMin, toHour, toMin, restName, leiras,
-               style, userName, phone, 60/*DELIVERY TIME*/, -1, lastName, firstName, password, email)); 
+               style, userName, phone, deliveryTime /*DELIVERY TIME*/, -1, lastName, firstName, password, email)); 
            // ServerConnection.StopClient();
         }
 

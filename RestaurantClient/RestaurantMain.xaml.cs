@@ -285,6 +285,10 @@ namespace FoodOrderClient
             {
                 Thread.Sleep(10000);
                 ordersList = serverConnection.getOrders(currUser.restaurantID);
+                if(ordersList.ListOrder == null)
+                {
+                    return;
+                }
                 for (int i = 0; i < ordersList.ListOrder.Count; ++i)
                 {
                     if(ordersList.ListOrder[i].OrderStatus == 0 && !(checkedNewOrdersID.Contains(ordersList.ListOrder[i].OrderID)))

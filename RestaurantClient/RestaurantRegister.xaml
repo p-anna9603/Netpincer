@@ -6,15 +6,16 @@
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         xmlns:local="clr-namespace:FoodOrderClient" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Étterem regisztráció" Height="688" Width="843.037">
-    <Grid Margin="0,0,0,0" Height="660">
-        <Grid Margin="0,0,0,-44">
+        Title="Étterem regisztráció" Height="735" Width="842.037">
+    <Grid Margin="0,0,0,0" Height="735">
+        <Grid Margin="0,0,0,0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="252*" />
+                <RowDefinition Height="670*" />
+                <RowDefinition Height="90*"/>
                 <!--   <RowDefinition Height="12*" />-->
             </Grid.RowDefinitions>
             <!--Background="#FF576ED4" Margin="47,10,27.6,13.4">-->
-            <Border CornerRadius="10" Height="747" VerticalAlignment="Top" Margin="0,-43,0,0">
+            <Border CornerRadius="10" Height="735" VerticalAlignment="Top" Margin="0,0,0,0" Grid.RowSpan="2">
                 <Border.Background>
                     <LinearGradientBrush>
                         <GradientStop Color="#7be9f6" Offset="0.0"></GradientStop>
@@ -30,27 +31,28 @@
             <!--   <RowDefinition Height="12*" />-->
             <!--
             </Grid.RowDefinitions>-->
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="31,0,103,0" Width="751" Height="643">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="42,0" Width="752" Height="706" Grid.RowSpan="2">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40">
-                    <TextBlock Height="30" HorizontalAlignment="Center" Margin="350,10,328.4,0" 
-                   Name="textBlockHeading" Text="Regisztráció" VerticalAlignment="Top"
+                    <TextBlock Height="30" HorizontalAlignment="Center"
+                   Name="textBlockHeading" Text="Regisztráció" VerticalAlignment="Center"
                    Width="145"  FontSize="20" FontStretch="ExtraCondensed" Foreground="#FFFBF8F8" FontWeight="Bold"/>
                 </StackPanel>
                 <TextBlock Height="20" Text="" FontSize="15" HorizontalAlignment="Left" Margin="67,0,0,5" x:Name ="errormessage" VerticalAlignment="Top" Width="247"  OpacityMask="Crimson" Foreground="#FFE5572C" />
-                <Grid HorizontalAlignment="Center" Height="535" Width="646" Margin="52,0,53,0">
-                    <Grid.ColumnDefinitions>
+                <Grid HorizontalAlignment="Center" Height="580" Width="644" Margin="54,0,53,0" Grid.Row="0">
+                    <!--<Grid.ColumnDefinitions>
                         <ColumnDefinition Width="325*"/>
                         <ColumnDefinition Width="321*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="440*"/>
-                    </Grid.RowDefinitions>
-                    <Border BorderBrush="#FF250A5F"  BorderThickness="1" CornerRadius="10" Margin="0,0,0,19" Width="646" Grid.ColumnSpan="2">
+                    </Grid.RowDefinitions>-->
+
+                    <Border BorderBrush="#FF250A5F"  BorderThickness="1" CornerRadius="10" Margin="0,0,0,0" Width="646" >
                         <Border.Effect>
                             <BlurEffect/>
                         </Border.Effect>
                     </Border>
-                    <StackPanel Width="654" HorizontalAlignment="Center" Margin="-4,-17,-4,-92" Grid.ColumnSpan="2">
+                    <StackPanel Width="654" HorizontalAlignment="Center" Margin="0,0,0,0" Grid.ColumnSpan="2">
                         <StackPanel Orientation="Horizontal" Height="40" Margin="0,15,0,0">
                             <TextBlock Height ="23" FontFamily="Helvetica" FontWeight="Light" FontSize="20" Foreground="White" HorizontalAlignment="Left" Margin="67,15,0,0" Name="textBlockFirstname" Text="Étterem neve" VerticalAlignment="Top" Width="158" />
                             <TextBox Height="23" HorizontalAlignment="Left" Margin="50,15,0,0" Padding="1.5" x:Name="textBoxRestName" VerticalAlignment="Top" Width="222" />
@@ -124,11 +126,11 @@
                         </StackPanel>
                     </StackPanel>
                 </Grid>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Content="FIÓK LÉTREHOZÁSA" FontSize="17"  FontStyle="Normal" Height="35" HorizontalAlignment="Left" Margin="50,0,0,0" Name="Submit" VerticalAlignment="Top" 
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,10" Grid.Row="1">
+                    <Button Content="FIÓK LÉTREHOZÁSA" FontSize="17"  FontStyle="Normal" Height="35" HorizontalAlignment="Left" Margin="50,0,0,0" x:Name="Submit" VerticalAlignment="Top" 
                     Width="227" Click="Submit_Click" RenderTransformOrigin="0.535,1.691" Foreground="#FFF9F8F8" Background="Transparent" BorderBrush="#FFFFFDFD"
                     BorderThickness="2"/>
-                        <Button Content="KILÉPÉS" FontSize="17"  FontStyle="Normal" Height="35" HorizontalAlignment="Right" Margin="50,0,0,0" Name="ExitButton" VerticalAlignment="Top" 
+                    <Button Content="KILÉPÉS" FontSize="17"  FontStyle="Normal" Height="35" HorizontalAlignment="Right" Margin="50,0,0,0" x:Name="ExitButton" VerticalAlignment="Top" 
                     Width="227" Click="ExitBtn_Click" RenderTransformOrigin="0.535,1.691" Foreground="#FFF9F8F8" Background="Transparent" BorderBrush="#FFFFFDFD"
                     BorderThickness="2"/>
                 </StackPanel>

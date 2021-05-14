@@ -48,16 +48,13 @@ namespace RestaurantClient
             #region KLAU TESZT 05.13.
             //ServerConnection.addOrderToDeliveryBoy(1,2);
             //ServerConnection.removeOrderFromDeliveryBoy(1,2);
-<<<<<<< HEAD
-=======
+
 
             #endregion
 
             #region KLAU TESZT 05.14.
-            ServerConnection.registerRestaurant(new Restaurant("Veszprem","8200","asd utca","ketto",8,30,22,15,"Szep etterem esku","minden jo es szep", "stilusos","etteremvezetoVokTscoo","+3620156165",60,-1,"Pilisi","pista","wgeee","asdn@asnds.com"));
+     //       ServerConnection.registerRestaurant(new Restaurant("Veszprem","8200","asd utca","ketto",8,30,22,15,"Szep etterem esku","minden jo es szep", "stilusos","etteremvezetoVokTscoo","+3620156165",60,-1,"Pilisi","pista","wgeee","asdn@asnds.com"));
             //ServerConnection.removeOrderFromDeliveryBoy(1,2);
->>>>>>> main
-
             #endregion
 
             //ServerConnection.getFoods(7, 1);
