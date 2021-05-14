@@ -280,7 +280,7 @@ namespace SocketServer
                 }
                 else if (receivedJSONObject["type"].ToString() == "3") // DP login
                 {
-                    string register = deliveryPersonLogin(receivedJSONObject["username"].ToString(), receivedJSONObject["password"].ToString(), receivedJSONObject["userType"].ToString());
+                    string register = deliveryPersonLogin(receivedJSONObject["username"].ToString(), receivedJSONObject["password"].ToString(), 2);
                     //handler.Send(Encoding.GetEncoding("windows-1250").GetBytes(register.ToString()));
                     //register = "5";
                     //handler.Send(Encoding.ASCII.GetBytes(register));
@@ -1363,7 +1363,7 @@ namespace SocketServer
             if (response[0] != '1')
                 return response;
            
-            string query = "EXEC registerRestaurant @username, @pass, @lastName, @firstName, @phone, @email, @name, @restaurantDescription, @style, @city, @zipcode, @line1, @line2, @fromHour ,@fromMinute, @toHour, @toMinute";
+            string query = "EXEC registerRestaurant @username, @pass, @lastName, @firstName, @phone, @email, @name, @restaurantDescription, @style, @city, @zipcode, @line1, @line2, @fromHour ,@fromMinute, @toHour, @toMinute, @approx";
             try
             {
                 SqlCommand command = new SqlCommand(query, DatabaseConnection);
@@ -1401,6 +1401,9 @@ namespace SocketServer
                 Console.WriteLine(o["toHour"].ToString());
                 command.Parameters.AddWithValue("@toMinute", Int32.Parse(o["toMinute"].ToString()));
                 Console.WriteLine(o["toMinute"].ToString());
+                command.Parameters.AddWithValue("@approx", Int32.Parse(o["approximateTime"].ToString()));
+                Console.WriteLine(o["approximateTime"].ToString());
+                
                 //SqlDataAdapter da = new SqlDataAdapter(command);
                 // Console.WriteLine("SQL COMMAND: {0}", command.Parameters.ToString());
                 int affectedRows = command.ExecuteNonQuery();
@@ -1744,7 +1747,7 @@ namespace SocketServer
             }   
         }
 
-        private string deliveryPersonLogin(string username, string pass, string userType)
+        private string deliveryPersonLogin(string username, string pass, int userType)
         {
             string query = "SELECT* FROM getUser(@username, @pass, @userType)";
             DataTable dataTable = new DataTable();
