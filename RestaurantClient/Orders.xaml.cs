@@ -101,7 +101,7 @@ namespace RestaurantClient
                 for (int i = 0; i < listFromServer.ListOrder.Count; ++i)
                 {
                     listFromServer.ListOrder[i].RestMain = restaurantMain;
-                    listFromServer.ListOrder[i].setFoods();
+                    listFromServer.ListOrder[i].setFoods(restaurantMain);
                     if (listFromServer.ListOrder[i].OrderStatus == 0) // Új
                     {
                         newOrders.Add(listFromServer.ListOrder[i]);

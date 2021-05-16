@@ -176,7 +176,7 @@ namespace RestaurantClient
                     if(orderslistFromServer.ListOrder[i].OrderStatus == 2) // only those orders which are ready for delivery
                     {
                         orderslistFromServer.ListOrder[i].RestMain = restaurantMain;
-                        orderslistFromServer.ListOrder[i].setFoods();
+                        orderslistFromServer.ListOrder[i].setFoods(restaurantMain);
                         waitingForDeliveryOrders.Add(orderslistFromServer.ListOrder[i]);
                         Console.WriteLine("szállítási címe: " + orderslistFromServer.ListOrder[i].Address);
                       //  newFoodWindows.Add(listFromServer.ListFood[i].FoodID, listFromServer.ListFood[i]);
@@ -348,7 +348,7 @@ namespace RestaurantClient
             Console.WriteLine("boy: " + boyID + ", o:  " + order.OrderID);
             restaurantMain.ServerConnection.updateOrderState(order.OrderID, 2);
             restaurantMain.ServerConnection.removeOrderFromDeliveryBoy(boyID, order.OrderID); // TODO
-
+            order.setDescriptions();
             /* Újra számozás */
             //    List<StackPanel> children = panel2.Children;
             int counter = 0;
@@ -513,7 +513,7 @@ namespace RestaurantClient
             /* Counter */
             TextBlock newTextNum = new TextBlock();
             newTextNum = new TextBlock();
-            newTextNum.Margin = new Thickness(0, 3, 0, 0);
+            newTextNum.Margin = new Thickness(2, 3, 0, 0);
             newTextNum.VerticalAlignment = VerticalAlignment.Top;
             newTextNum.Name = "counter";
             newTextNum.Text = ++count + ". ";

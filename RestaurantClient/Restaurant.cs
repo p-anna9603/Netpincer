@@ -37,7 +37,7 @@ namespace RestaurantClient
 		public Restaurant(string city_, string zipcode_, string line1_, string line2_,
 			int fromHour_, int fromMinute_, int toHour_, int toMinute_,
 			string name_, string restaurantDescription_, string style_,
-			string username_, string phoneNumber_, int approxTime /*DELIVERY TIME*/ , int restID = 0,
+			string username_, string phoneNumber_, int approxTime /*DELIVERY TIME*/ , int restID,
 			string lastName="", string firstName="", string pass_="", string email_="")
 		{
             this.restaurantID = restID;

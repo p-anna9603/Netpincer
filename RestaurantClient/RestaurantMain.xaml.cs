@@ -251,12 +251,26 @@ namespace FoodOrderClient
         public void refreshRequested(UserControl child)
         {
             childWindow.Content = null;
-            orders = new Orders(this);
-            orders.Width = childWindow.Width;
-            orders.Height = childWindow.Height;
+            if(child.GetType() == typeof(Orders))
+            {
+                Console.WriteLine("equaaaal");
+                orders = new Orders(this);
+                orders.Width = childWindow.Width;
+                orders.Height = childWindow.Height;
 
-            childWindow.Content = orders;
-            child = orders;
+                childWindow.Content = orders;
+                child = orders;
+            }
+            else if (child.GetType() == typeof(ManageDiscount))
+            {
+                Console.WriteLine("equaaaal 2");
+                manageDiscount = new ManageDiscount(this);
+                manageDiscount.Width = childWindow.Width;
+                manageDiscount.Height = childWindow.Height;
+
+                childWindow.Content = manageDiscount;
+                child = manageDiscount;
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -269,8 +283,12 @@ namespace FoodOrderClient
         {
             while(z == 0)
             {
-                Thread.Sleep(10000);
+                Thread.Sleep(3000);
                 ordersList = serverConnection.getOrders(currUser.restaurantID);
+                if(ordersList.ListOrder == null)
+                {
+                    return;
+                }
                 for (int i = 0; i < ordersList.ListOrder.Count; ++i)
                 {
                     if(ordersList.ListOrder[i].OrderStatus == 0 && !(checkedNewOrdersID.Contains(ordersList.ListOrder[i].OrderID)))

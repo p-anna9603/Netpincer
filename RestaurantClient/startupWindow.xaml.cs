@@ -49,12 +49,12 @@ namespace RestaurantClient
             //ServerConnection.addOrderToDeliveryBoy(1,2);
             //ServerConnection.removeOrderFromDeliveryBoy(1,2);
 
+
             #endregion
 
             #region KLAU TESZT 05.14.
-            ServerConnection.registerRestaurant(new Restaurant("Veszprem","8200","asd utca","ketto",8,30,22,15,"Szep etterem esku","minden jo es szep", "stilusos","etteremvezetoVokTscoo","+3620156165",60,-1,"Pilisi","pista","wgeee","asdn@asnds.com"));
+     //       ServerConnection.registerRestaurant(new Restaurant("Veszprem","8200","asd utca","ketto",8,30,22,15,"Szep etterem esku","minden jo es szep", "stilusos","etteremvezetoVokTscoo","+3620156165",60,-1,"Pilisi","pista","wgeee","asdn@asnds.com"));
             //ServerConnection.removeOrderFromDeliveryBoy(1,2);
-
             #endregion
 
             //ServerConnection.getFoods(7, 1);
@@ -149,9 +149,9 @@ namespace RestaurantClient
 
         private void registerBtn_Click(object sender, RoutedEventArgs e)
         {
-            registryType = 0;
-            registerUser regUser = new registerUser(ServerConnection, this);
-            regUser.Show();
+            registryType = 1;
+            RestaurantRegister restMain = new RestaurantRegister(ServerConnection, this);
+            restMain.Show();
             this.Hide();
             /*
             if (clientReg.IsChecked == false && runningBoyReg.IsChecked == false && restaurantReg.IsChecked == false)

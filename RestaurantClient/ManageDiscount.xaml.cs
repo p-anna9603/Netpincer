@@ -178,6 +178,7 @@ namespace RestaurantClient
             Category categ = categoryWindows[clickedCategID];
             CategDiscount m = new CategDiscount(restaurantMain, categ, foods);
             m.ShowDialog();
+            restaurantMain.refreshRequested(this);
             //if (m.IsSaved)
             //{
             //    categ.CategName = m.CategoryName;
@@ -386,17 +387,13 @@ namespace RestaurantClient
 
             FoodDiscount m = new FoodDiscount(restaurantMain, food);
             m.ShowDialog();
+            restaurantMain.refreshRequested(this);
             //if (m.IsSaved)
             //{
             //    categ.CategName = m.CategoryName;
             //    categ.CategImg = m.CategoryImg;
             //    EnumVisual(this, p2, categ);
             //}
-
-        }
-
-        private void activeDiscount_MouseDown(object sender, EventArgs e)
-        {
 
         }
     }

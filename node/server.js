@@ -217,7 +217,7 @@ app.post('/authentication', function(request, response)
 	var got_password = request.body.auth_pass;
     const login_JSON = { type:1, clientID: 0, username: got_username, password: got_password, userType: 0 }
     const jsonStr = JSON.stringify(login_JSON);
-    console.log("kOGIN INITIATED -> JSON to send: "  + jsonStr);
+    console.log("LOGIN INITIATED -> JSON to send: "  + jsonStr);
     login_var = sendData(login_JSON, request, response);
     sleep(3000);
 });
@@ -273,12 +273,17 @@ function Connect_To_Server (json)
          client.write(jsonStr);
      })
 
+     client.on('close', function() {
+        console.log('Connection closed');
+    });
+
     };
 //CONNECT TO SERVE FUNCTION
 
 //SEND_DATA FUNCTION   
 function sendData(json_Object, request, response)
 {
+    Connect_To_Server(first);
     const jsonStr = JSON.stringify(json_Object);
     client.write(jsonStr);
 
@@ -447,7 +452,7 @@ async function slep(number) {
 //GET RESTAURANTS - 11-ES KÓD
   function getRestaurants(request, response)
   {
-    const Get_Restaurant_JSON = { type:11, clientID: 0}
+    const Get_Restaurant_JSON = { type:11, clientID: cl}
     const jsonStr = JSON.stringify(Get_Restaurant_JSON);
     console.log("Sent Restaurant JSON -> " + jsonStr)
     sendData(Get_Restaurant_JSON,request,response);
