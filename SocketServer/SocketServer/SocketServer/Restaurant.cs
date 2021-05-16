@@ -8,6 +8,7 @@ namespace SocketServer
 {
 	public class Restaurant
 	{
+		public int Type;
 		public int restaurantID { get; set; }
 		public string city { get; set; }
 		public string zipcode { get; set; }
@@ -56,6 +57,7 @@ namespace SocketServer
 			this.lastName = lastName;
 			this.firstName = firstName;
 			approximateTime = approxTime;
+			Type = 11;
 		}
 
 		public string toString()

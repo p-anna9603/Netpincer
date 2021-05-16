@@ -108,7 +108,7 @@ namespace SocketServer
                 listener.Bind(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000));
                 listener.Listen(100);
                 //listener.Bind(localEndPoint);
-                //listener.Listen(100);
+                //listener.Listen(100);11
 
                 while (true)
                 {
