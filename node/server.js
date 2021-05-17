@@ -471,7 +471,7 @@ function getCategory(restaurant_ID, request, response)
 
 function getFoods(ID, macska, request, response)
 {
-    const Get_Foods_JSON = { type: 9, clientID: 0, restaurantID: ID, categoryID: macska};
+    const Get_Foods_JSON = { type: 9, clientID: client_ID, restaurantID: ID, categoryID: macska};
     const jsonStr = JSON.stringify(Get_Foods_JSON);
     console.log("Sent Food JSON -> " + jsonStr);
     sendData(Get_Foods_JSON,request,response);

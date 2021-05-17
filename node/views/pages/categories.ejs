@@ -24,7 +24,7 @@
             <form class="p-5 border rounded-3 bg-light" method="GET" action="/addToList">
               <% var i = 0; %>
               <% JSON.parse(kajak).forEach(function(kaja) {%>
-              <div class="col-md-6">
+              <div class="col-md-12">
                   <div class="h-100 p-5 text-white bg-dark rounded-3">
                     <h2><%=kaja["FoodID"]%>. <%= kaja["Name"] %></h2>
                     <p>Ár: <%= kaja["Price"] %> Ft.</p>
@@ -34,10 +34,11 @@
                       <% } else {  %>
                         <% kaja["Allergenes"]%>
                       <% } %> </p>
-                      <input type="hidden" id="kajabox" name="kajabox" readonly="true" value='<%= kaja["FoodID"]%>' > 
-                      <a href='/addToList?id=<%= kaja["FoodID"]%>'' class="stretched-link">  Megnézem</a>
+                      <!-- <input type="hidden" id="kajabox" name="kajabox" readonly="true" value='<%= kaja["FoodID"]%>' >  -->
+                      <a href='/addToList?id=<%=kaja["FoodID"]%>' class="stretched-link"> <%=kaja["FoodID"]%>  Megnézem</a>
                     <button class="btn btn-outline-light" type="submit">Kosárhoz adom</button>
                   </div>
+                  <hr>
                 </div>
                 <%  }); %>
               </form>

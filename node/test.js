@@ -74,6 +74,8 @@ var bodyParser = require('body-parser');
     app.use(bodyParser.urlencoded({extended : true}));
     app.use(express.json());
 var path = require('path');
+
+const url = require('url');
 // MUST-HAVE ééééés DEPENDENCIES
 
 var session = require('express-session');
@@ -88,7 +90,7 @@ let Étterem_JSON; // Étterem JSON amit átad a session-ben
 let Kajak = []; //kaják amit átad a session-ben
 
 let Kategoriak; // kategóriák
-var Bev_lista = []; // bevásárló lista <- ebbe mennek majd a kaják.
+
 
 var sess = { // session változó
     secret: 'secret keyboard cat ', // titkos kulcs - nem tudom mire kell, de kell
@@ -173,14 +175,14 @@ function sendData(json_Object,request, response)
         {
             Kajak = [];
             let kaja;
-            console.log("Received Food data : " + data);
+            console.log("># Received Food data : ");
             parsed_JSON["listFood"].forEach(element => {
                console.log(element);
                kaja = FoodParser(element);
                Kajak.push(kaja);
             });
-            console.log("> FoodParser() kész!");
-            console.log(Kajak);
+            //console.log("> FoodParser() kész!");
+            //console.log(Kajak);
            /* {"Type":9,"listFood":[{"Type":9,"FoodID":3,"Name":"Sajtkrem leves","Price":800.0,"Rating":0.0,"PictureID":0,"Allergenes":["Laktoz"],"AvailableFrom":"","AvailableTo":"","RestaurantID":1,"CategoryID":2},{"Type":9,"FoodID":4,"Name":"Gulyas leves","Price":1000.0,"Rating":0.0,"PictureID":0,"Allergenes":[],"AvailableFrom":"","AvailableTo":"","RestaurantID":1,"CategoryID":2}]}*/
        }
        else if(parsed_JSON["restaurantList"][0]["Type"] == 11)
@@ -373,12 +375,40 @@ function getFoods(ID, macska, request, response)
     console.log("Sent Food JSON -> " + jsonStr);
     sendData(Get_Foods_JSON,request,response);
 }
+var Bev_lista = []; // bevásárló lista <- ebbe mennek majd a kaják.
 
+app.get('/addToList', async function(request,response){ // hozzáadja a bevásárló listához
+    if (request.session.loggedIn) 
+    {
+        let id = request.query.id; //macska id
+        console.log("Hozzáadom a bevásárló listához: " + id);
+        Kajak.forEach(element => {
+            if (element["FoodID"] == id) {
+                Bev_lista.push(element);
+            }
+         });
+         response.render('pages/list', {'lista' : JSON.stringify(Bev_lista)});
+         //response.render('pages/categories', { 'kajak' : JSON.stringify(Kajak) });
+        //console.log(Bev_lista);
+        //response.render('pages/list', {'lista' : JSON.stringify(Bev_lista)});
+    }
+    else
+    {
+        response.send('Please login to view this page!');
+    }
+});
 
+app.get('/list', function (req, res) { // le rendereli a views/pages/index.ejs fájlt
+    if (request.session.loggedIn) 
+    {
+        res.render('pages/list', {'lista' : JSON.stringify(Bev_lista)});
+    }
+    else 
+    {
 
-
-
-
+    }
+    
+});
 
 
 
