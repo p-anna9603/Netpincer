@@ -810,7 +810,7 @@ namespace SocketServer
 
         private string getRestaurantsList()
         {
-            string query = "SELECT restaurantID,name,restaurantDescription,style,owner,phoneNumber, city,zipcode,line1,line2, fromHour,fromMinute,toHour,toMinute FROM Restaurant.Restaurant JOIN Restaurant.RestaurantAddress ON Restaurant.RestaurantAddress.addressID = Restaurant.addressID JOIN Restaurant.OpeningHours ON Restaurant.OpeningHours.openingHoursID = Restaurant.openingHoursID";
+            string query = "SELECT restaurantID,name,restaurantDescription,style,owner,phoneNumber, city,zipcode,line1,line2, fromHour,fromMinute,toHour,toMinute,approximateTime FROM Restaurant.Restaurant JOIN Restaurant.RestaurantAddress ON Restaurant.RestaurantAddress.addressID = Restaurant.addressID JOIN Restaurant.OpeningHours ON Restaurant.OpeningHours.openingHoursID = Restaurant.openingHoursID";
             List<Restaurant> restListLocalVariable= new List<Restaurant>();
             try
             {
@@ -837,6 +837,7 @@ namespace SocketServer
                         dataTable.Rows[i]["style"].ToString(),
                         dataTable.Rows[i]["owner"].ToString(),
                         dataTable.Rows[i]["phoneNumber"].ToString(),
+                        Int32.Parse(dataTable.Rows[i]["approximateTime"].ToString()),
                         Int32.Parse(dataTable.Rows[i]["restaurantID"].ToString()))); 
                 }
                 da.Dispose();
