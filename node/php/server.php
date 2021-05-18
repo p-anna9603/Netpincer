@@ -24,48 +24,44 @@
                 // echo "Read $bytes bytes from socket_recv(). Closing socket...";
             }
             socket_close($socket);
-            echo $buf . "\n";
+            //echo $buf . "\n";
             $jsonobj = $buf;
             $obj = json_decode($jsonobj);
-            
-            if ($obj->type == "1") {
-                
-                $_SESSION["log"] = true;
-                $_SESSION["user"] = $obj;
-            }
-            else if ($obj->type == "2") 
-            {
+            //var_dump($obj);
 
+            if (isset( $obj->restaurantList[0]->Type)) {
+                
+                if ($obj->restaurantList[0]->Type == "11") 
+                {
+                    $_SESSION["ettermek"] = $obj;
+                    $_SESSION["etterem_db"] = count($obj->restaurantList);
+                }
             }
-            else if ($obj->type == "3") 
+            else if(isset($obj->type) )
             {
+                if ($obj->type == "1") 
+                {
+                    $_SESSION["log"] = true;
+                    $_SESSION["user"] = $obj;
+                }
+                
                 
             }
-            else if ($obj->type == "4") 
+            else if(isset($obj->Type))
             {
-                
+                if($obj->Type == "7")
+                {
+                    $_SESSION["category_names"] = $obj->listOfCategoryNames;
+                    $_SESSION["category_ids"] = $obj->listOfCategoryIDs;
+                    //var_dump($obj);
+                }
+                else if ($obj->Type == "9") 
+                {
+                    //var_dump($obj);
+                    $_SESSION["kaja"] = $obj;
+                }
             }
-            else if ($obj->type == "5") 
-            {
-                
-            }
-            else if ($obj->type == "6") 
-            {
-                
-            }
-            else if ($obj->type == "7") 
-            {
-                
-            }
-            else if ($obj->type == "9") 
-            {
-                
-            }
-            else if ($obj->type == "11") 
-            {
 
-                
-            }
     }
           
 ?>
