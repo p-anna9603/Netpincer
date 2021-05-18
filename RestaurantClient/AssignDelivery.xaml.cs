@@ -266,8 +266,8 @@ namespace RestaurantClient
             {
                 for (int i = 0; i < orders.Count; ++i)
                 {
-                    if (orders[i].OrderStatus == 3)
-                    {
+                    //if (orders[i].OrderStatus == 3)
+                    //{
                         counter++;
                         newTextNum = new TextBlock();
                         newTextNum.Margin = new Thickness(0, 3, 0, 0);
@@ -315,7 +315,7 @@ namespace RestaurantClient
                                 xPanels.Add(xButton, orders[i]);
                          }
                         panel2.Children.Add(panel3);
-                    }
+                    //}
                 }
             }
             scrollArea.Content = panel2;

@@ -55,7 +55,7 @@ namespace delivery_
             if (rendelista.empty)
                 return;
             int orderID = 0;
-            orderID = Int32.Parse(orderlista.SelectedIndex.ToString());
+            orderID = rendelista.ListOrder[Int32.Parse(orderlista.SelectedIndex.ToString())].OrderID;
             Console.WriteLine("KISZÁLLÍTÁS ALATT ORDER #{0}", orderID);
             ServerConnection server = new ServerConnection();
             server.updateOrderState(orderID, 3);
@@ -66,7 +66,7 @@ namespace delivery_
             if (rendelista.empty)
                 return;
             int orderID = 0;
-            orderID = Int32.Parse(orderlista.SelectedIndex.ToString());
+            orderID = rendelista.ListOrder[Int32.Parse(orderlista.SelectedIndex.ToString())].OrderID;
             Console.WriteLine("KISZÁLLÍTVA ORDER #{0}", orderID);
             ServerConnection server = new ServerConnection();
             server.updateOrderState(orderID, 4);
@@ -77,7 +77,7 @@ namespace delivery_
             if (rendelista.empty)
                 return;
             int orderID = 0;
-            orderID = Int32.Parse(orderlista.SelectedIndex.ToString());
+            orderID = rendelista.ListOrder[Int32.Parse(orderlista.SelectedIndex.ToString())].OrderID;
             Console.WriteLine("DELETE ORDER #{0}", orderID);
             ServerConnection server = new ServerConnection();
             server.removeOrderFromDeliveryBoy(deliveryUser.DeliveryPersonID,orderID);

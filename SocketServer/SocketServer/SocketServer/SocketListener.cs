@@ -2123,32 +2123,34 @@ namespace SocketServer
                 da.Fill(dataTable);
                 if (dataTable.Rows.Count == 0)
                     return getErrorMessage(49);
+                Console.WriteLine("datatb count: " + dataTable.Rows.Count);
                 for (int i = 0; i < dataTable.Rows.Count; i++)
                 {
+                    Console.WriteLine("orderid: " + dataTable.Rows[i]["orderID"].ToString());
                     string query2 = "SELECT Restaurant.restaurantID, Restaurant.name, orderID, [status], startOrderTime, endOrderTime, Orders.[username], price, foods,[password],[lastName],[firstName],Users.[phoneNumber],Users.[addressID] ,[userType], Users.[email],UsersAddress.city,UsersAddress.line1,UsersAddress.line2,UsersAddress.zipcode FROM Restaurant.Orders JOIN Restaurant.Restaurant ON Restaurant.restaurantID = Orders.restaurantID JOIN Users.Users ON Users.username = Restaurant.Orders.username JOIN Users.UsersAddress ON UsersAddress.addressID = Users.addressID WHERE Orders.orderID = @orderID";
                     SqlCommand command2 = new SqlCommand(query2, DatabaseConnection);
-                    command.Parameters.AddWithValue("@orderID", Int32.Parse(dataTable.Rows[i][0].ToString()));
+                    command2.Parameters.AddWithValue("@orderID", Int32.Parse(dataTable.Rows[i]["orderID"].ToString()));
                     DataTable dataTable2 = new DataTable();
-                    SqlDataAdapter da2 = new SqlDataAdapter(command);
+                    SqlDataAdapter da2 = new SqlDataAdapter(command2);
                     da2.Fill(dataTable2);
                         orders.Add(
                             new Order(
-                            Int32.Parse(dataTable2.Rows[i]["orderID"].ToString()),
-                            Int32.Parse(dataTable2.Rows[i]["status"].ToString()),
-                            dataTable2.Rows[i]["startOrderTime"].ToString(),
-                            dataTable2.Rows[i]["endOrderTime"].ToString(),
-                            new User(dataTable2.Rows[i]["username"].ToString(), 
-                            dataTable2.Rows[i]["password"].ToString(), 
-                            dataTable2.Rows[i]["lastName"].ToString(),
-                            dataTable2.Rows[i]["firstName"].ToString(), dataTable2.Rows[i]["phoneNumber"].ToString(),
-                            dataTable2.Rows[i]["city"].ToString(),
-                            dataTable2.Rows[i]["zipcode"].ToString(), dataTable2.Rows[i]["line1"].ToString(), 
-                            dataTable2.Rows[i]["line2"].ToString(),
-                            Int32.Parse(dataTable2.Rows[i]["userType"].ToString()), dataTable2.Rows[i]["email"].ToString()),
-                            Double.Parse(dataTable2.Rows[i]["price"].ToString()),
-                            dataTable2.Rows[i]["foods"].ToString(),
-                            Int32.Parse(dataTable2.Rows[i]["restaurantID"].ToString()),
-                            dataTable2.Rows[i]["name"].ToString()));
+                            Int32.Parse(dataTable2.Rows[0]["orderID"].ToString()),
+                            Int32.Parse(dataTable2.Rows[0]["status"].ToString()),
+                            dataTable2.Rows[0]["startOrderTime"].ToString(),
+                            dataTable2.Rows[0]["endOrderTime"].ToString(),
+                            new User(dataTable2.Rows[0]["username"].ToString(), 
+                            dataTable2.Rows[0]["password"].ToString(), 
+                            dataTable2.Rows[0]["lastName"].ToString(),
+                            dataTable2.Rows[0]["firstName"].ToString(), dataTable2.Rows[0]["phoneNumber"].ToString(),
+                            dataTable2.Rows[0]["city"].ToString(),
+                            dataTable2.Rows[0]["zipcode"].ToString(), dataTable2.Rows[0]["line1"].ToString(), 
+                            dataTable2.Rows[0]["line2"].ToString(),
+                            Int32.Parse(dataTable2.Rows[0]["userType"].ToString()), dataTable2.Rows[0]["email"].ToString()),
+                            Double.Parse(dataTable2.Rows[0]["price"].ToString()),
+                            dataTable2.Rows[0]["foods"].ToString(),
+                            Int32.Parse(dataTable2.Rows[0]["restaurantID"].ToString()),
+                            dataTable2.Rows[0]["name"].ToString()));
                     da2.Dispose();
                     dataTable2.Clear();
                     dataTable2.Dispose();
@@ -2260,7 +2262,20 @@ namespace SocketServer
 
         private string updateOrderState(int orderID, int status)
         {
-            
+            if (status == 4)
+            {
+                string query1 = "SELECT deliveryPersonID FROM DeliveryPerson.AssignDeliver WHERE orderID = @orderID";
+                SqlCommand command1 = new SqlCommand(query1, DatabaseConnection);
+                command1.Parameters.AddWithValue("@orderID", orderID);
+                //Console.WriteLine("orderID: {0}", orderID);
+                DataTable dataTable1 = new DataTable();
+                SqlDataAdapter da1 = new SqlDataAdapter(command1);
+                da1.Fill(dataTable1);
+                if (dataTable1.Rows.Count == 0)
+                    return getErrorMessage(92);
+                int boiID = Int32.Parse(dataTable1.Rows[0][0].ToString());
+                deleteOrderFromDeliveryPerson(boiID, orderID);
+            }
             string query = "UPDATE Restaurant.Orders SET [status] = @status WHERE orderID = @orderID";
             try
             {
