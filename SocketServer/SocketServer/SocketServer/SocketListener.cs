@@ -1394,7 +1394,7 @@ namespace SocketServer
                 command.Parameters.AddWithValue("@orderID", orderID);
                 SqlDataAdapter da = new SqlDataAdapter(command);
                 da.Fill(dataTable);
-                if (dataTable.Rows.Count != 0)
+                if (dataTable.Rows.Count == 0)
                 {
                     da.Dispose();
                     return getErrorMessage(48);

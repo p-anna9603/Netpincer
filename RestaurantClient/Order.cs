@@ -26,6 +26,7 @@ namespace RestaurantClient
         string foodDescToAssignment = "";
         int restaurantID;
         string restaurantName;
+        string eta;
 
         User user;
         public Order(int oId, int status, string orderTim, string endOrderTime, double price, string foodsString, User user_, int restID, string restName = "")
@@ -160,5 +161,6 @@ namespace RestaurantClient
         public User User { get => user; set => user = value; }
         public int RestaurantID { get => restaurantID; set => restaurantID = value; }
         public string RestaurantName { get => restaurantName; set => restaurantName = value; }
+        public string Eta { get => eta; set => eta = value; }
     }
 }
