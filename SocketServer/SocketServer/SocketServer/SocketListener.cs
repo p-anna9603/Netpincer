@@ -109,7 +109,7 @@ namespace SocketServer
                 listener.Listen(100);
                 //listener.Bind(localEndPoint);
                 //listener.Listen(100);11
-
+               
                 while (true)
                 {
                     // Set the event to nonsignaled state.
@@ -252,8 +252,8 @@ namespace SocketServer
                 {
                     JObject header = getClientHeader(receivedJSONObject);  //1st JObj  --Header
                     string userInfo = getUserInfo(receivedJSONObject["username"].ToString(), receivedJSONObject["password"].ToString(), receivedJSONObject["userType"].ToString());
-                    userInfo = userInfo.Replace("[", "");
-                    userInfo = userInfo.Replace("]", "");
+                    //userInfo = userInfo.Replace("[", "");
+                    //userInfo = userInfo.Replace("]", "");
                     JObject userJason = JObject.Parse(userInfo);    //2nd JObj  --Body
                     Console.WriteLine("BODY: {0}", userJason);
                     //JsonConvert.DeserializeObject(userInfo);
@@ -421,6 +421,12 @@ namespace SocketServer
                 else if (receivedJSONObject["type"].ToString() == "21")
                 {
                     string register = deleteOrderFromDeliveryPerson(Int32.Parse(receivedJSONObject["boiID"].ToString()), Int32.Parse(receivedJSONObject["orderID"].ToString()));
+                    //handler.Send(Encoding.ASCII.GetBytes(register));
+                    return register.ToString();
+                }
+                else if (receivedJSONObject["type"].ToString() == "22")
+                {
+                    string register = getDeliveryPersonOrders(Int32.Parse(receivedJSONObject["boiID"].ToString()));
                     //handler.Send(Encoding.ASCII.GetBytes(register));
                     return register.ToString();
                 }
@@ -1430,35 +1436,34 @@ namespace SocketServer
             try
             {
                 SqlCommand command = new SqlCommand(query, DatabaseConnection);
-                command.Parameters.AddWithValue("@username", o["username"].ToString());
-                Console.WriteLine(o["username"].ToString());
-                command.Parameters.AddWithValue("@fromHour", Int32.Parse(o["fromHour"].ToString()));
-                Console.WriteLine(o["fromHour"].ToString());
-                command.Parameters.AddWithValue("@fromMinute", Int32.Parse(o["fromMinute"].ToString()));
-                Console.WriteLine(o["fromMinute"].ToString());
-                command.Parameters.AddWithValue("@toHour", Int32.Parse(o["toHour"].ToString()));
-                Console.WriteLine(o["toHour"].ToString());
-                command.Parameters.AddWithValue("@toMinute", Int32.Parse(o["toMinute"].ToString()));
-                Console.WriteLine(o["toMinute"].ToString());
-                command.Parameters.AddWithValue("@days", o["workingDays"].ToString()); //workingDays
-                Console.WriteLine(o["workingDays"].ToString());
+                command.Parameters.AddWithValue("@username", o["Username"].ToString());
+                Console.WriteLine(o["Username"].ToString());
+                command.Parameters.AddWithValue("@fromHour", Int32.Parse(o["FromHour"].ToString()));
+                Console.WriteLine(o["FromHour"].ToString());
+                command.Parameters.AddWithValue("@fromMinute", Int32.Parse(o["FromMinute"].ToString()));
+                Console.WriteLine(o["FromMinute"].ToString());
+                command.Parameters.AddWithValue("@toHour", Int32.Parse(o["ToHour"].ToString()));
+                Console.WriteLine(o["ToHour"].ToString());
+                command.Parameters.AddWithValue("@toMinute", Int32.Parse(o["ToMinute"].ToString()));
+                Console.WriteLine(o["ToMinute"].ToString());
+                command.Parameters.AddWithValue("@days", o["WorkingDays"].ToString()); //workingDays
+                Console.WriteLine(o["WorkingDays"].ToString());
 
                 int affectedRows = command.ExecuteNonQuery();
                 if (affectedRows == 0)
                 {
-                    return "1";
+                    return getErrorMessage(99);
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
-                return "1";
+                return getErrorMessage(99);
             }
-            /*JObject ok = new JObject();
-            ok.Add("type", 5);
+            JObject ok = new JObject();
+            ok.Add("type", 6);
             ok.Add("status", "Successful");
-            return ok.ToString();*/
-            return "5";
+            return ok.ToString(); 
         }
 
         private string updateDiscount(int foodID, double discount)
@@ -1738,8 +1743,33 @@ namespace SocketServer
                 }
                 //Console.WriteLine("rows: {0}", dataTable.ToString());
                 da.Dispose();
-                Console.WriteLine("TABLE: {0}", JsonConvert.SerializeObject(dataTable));
-                return JsonConvert.SerializeObject(dataTable);
+                string ret = "";
+                ret = JsonConvert.SerializeObject(dataTable);
+                ret = ret.Replace("[", "");
+                ret = ret.Replace("]", "");
+                Console.WriteLine("TABLE: {0}", ret);
+                if (userType == "2")
+                {
+                    DataTable dataTable2 = new DataTable();
+                    string query2 = "SELECT id FROM DeliveryPerson.DeliveryPersonOrders WHERE username=@username";
+                    SqlCommand command2 = new SqlCommand(query2, DatabaseConnection);
+                    command2.Parameters.AddWithValue("@username", username);
+                    SqlDataAdapter da2 = new SqlDataAdapter(command2);
+                    da2.Fill(dataTable2);
+                    if (dataTable2.Rows.Count == 0)
+                    {
+                        da2.Dispose();
+                        return getErrorMessage(91);
+                    }
+                    int id = Int32.Parse(dataTable2.Rows[0][0].ToString());
+                    da2.Dispose();
+                    JObject obj = new JObject();
+                    obj = JObject.Parse(ret);
+                    Console.WriteLine(ret);
+                    obj.Add("deliveryPersonID", id);
+                    return obj.ToString();
+                }
+                return ret;
             }
             catch (Exception e)
             {
@@ -1956,98 +1986,98 @@ namespace SocketServer
             return ok2.ToString();
         }
 
-        private string getDeliveryPersonList(JObject obj)
-        {
-            string username = "";
-            JObject o = obj;
+        //private string addOrder(JObject obj)  MIÉRT VAN EZ ITT MÉG EGYSZER??
+        //{
+        //    string username = "";
+        //    JObject o = obj;
             
-            //CHECKING REGISTERED USER
-            try
-            {
-                username = o["username"].ToString();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("username = o[username].ToString(); FAILED");
-            }
-            if (checkUsernameAvailable(username, 0) == "1")
-            {
-                string query3 = "SELECT COUNT(username) FROM Users.Users WHERE username LIKE 'guest%'";
-                SqlCommand c = new SqlCommand(query3, DatabaseConnection);
-                SqlDataAdapter da1 = new SqlDataAdapter(c);
-                DataTable dataTable1 = new DataTable();
-                da1.Fill(dataTable1);
-                if (dataTable1.Rows.Count == 0)
-                {
-                    da1.Dispose();
-                    dataTable1.Dispose();
-                    return getErrorMessage(99);
-                }
-                int guestCount = 0;
-                guestCount = Int32.Parse(dataTable1.Rows[0][0].ToString());
-                guestCount++;
-                username = "guest" + guestCount.ToString();
-                o["username"] = username;
-                o.Add("userType",1);
-                o.Add("password", "pass");
-                o.Add("email", "email");
-                registerUser(o);
-            }
+        //    //CHECKING REGISTERED USER
+        //    try
+        //    {
+        //        username = o["username"].ToString();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine("username = o[username].ToString(); FAILED");
+        //    }
+        //    if (checkUsernameAvailable(username, 0) == "1")
+        //    {
+        //        string query3 = "SELECT COUNT(username) FROM Users.Users WHERE username LIKE 'guest%'";
+        //        SqlCommand c = new SqlCommand(query3, DatabaseConnection);
+        //        SqlDataAdapter da1 = new SqlDataAdapter(c);
+        //        DataTable dataTable1 = new DataTable();
+        //        da1.Fill(dataTable1);
+        //        if (dataTable1.Rows.Count == 0)
+        //        {
+        //            da1.Dispose();
+        //            dataTable1.Dispose();
+        //            return getErrorMessage(99);
+        //        }
+        //        int guestCount = 0;
+        //        guestCount = Int32.Parse(dataTable1.Rows[0][0].ToString());
+        //        guestCount++;
+        //        username = "guest" + guestCount.ToString();
+        //        o["username"] = username;
+        //        o.Add("userType",1);
+        //        o.Add("password", "pass");
+        //        o.Add("email", "email");
+        //        registerUser(o);
+        //    }
 
 
             
-            string query2 = "SELECT approximateTime FROM Restaurant.Restaurant WHERE restaurantID = @restID";
-            SqlCommand command = new SqlCommand(query2, DatabaseConnection);
-            command.Parameters.AddWithValue("@restID", o["restID"].ToString());
-            SqlDataAdapter da = new SqlDataAdapter(command);
-            DataTable dataTable4 = new DataTable();
-            da.Fill(dataTable4);
-            if (dataTable4.Rows.Count == 0)
-            {
-                da.Dispose();
-                dataTable4.Dispose();
-                return getErrorMessage(71);
-            }
-            string appTime = "";
-            appTime = dataTable4.Rows[0][0].ToString();
-            da.Dispose();
-            dataTable4.Dispose();
-            if (appTime == "")
-                appTime = "10";
+        //    string query2 = "SELECT approximateTime FROM Restaurant.Restaurant WHERE restaurantID = @restID";
+        //    SqlCommand command = new SqlCommand(query2, DatabaseConnection);
+        //    command.Parameters.AddWithValue("@restID", o["restID"].ToString());
+        //    SqlDataAdapter da = new SqlDataAdapter(command);
+        //    DataTable dataTable4 = new DataTable();
+        //    da.Fill(dataTable4);
+        //    if (dataTable4.Rows.Count == 0)
+        //    {
+        //        da.Dispose();
+        //        dataTable4.Dispose();
+        //        return getErrorMessage(71);
+        //    }
+        //    string appTime = "";
+        //    appTime = dataTable4.Rows[0][0].ToString();
+        //    da.Dispose();
+        //    dataTable4.Dispose();
+        //    if (appTime == "")
+        //        appTime = "10";
 
-            string eta = "";
-            //CALCULATING DATE
-            var dateTime = DateTime.Now;
-            DateTime d2 = dateTime.AddMinutes(Int32.Parse(appTime));
-            eta = d2.ToShortDateString().Trim() + " " + d2.ToShortTimeString();
-            string startDate = d2.ToShortDateString().Trim() + " " + d2.ToShortTimeString();
+        //    string eta = "";
+        //    //CALCULATING DATE
+        //    var dateTime = DateTime.Now;
+        //    DateTime d2 = dateTime.AddMinutes(Int32.Parse(appTime));
+        //    eta = d2.ToShortDateString().Trim() + " " + d2.ToShortTimeString();
+        //    string startDate = d2.ToShortDateString().Trim() + " " + d2.ToShortTimeString();
 
-            string query = "INSERT INTO Restaurant.Orders(restaurantID, username, foods, [status], startOrderTime, price, ETA) VALUES(@restID, @username, @foods, 0, @startDate,@price,@eta)";
-            SqlCommand command5 = new SqlCommand(query, DatabaseConnection);
-            command5.Parameters.AddWithValue("@restID", o["restID"].ToString());
-            Console.WriteLine(o["restID"].ToString());
-            command5.Parameters.AddWithValue("@username", username);
-            Console.WriteLine(username);
-            command5.Parameters.AddWithValue("@foods", o["foods"].ToString());
-            Console.WriteLine(o["foods"].ToString());
-            command5.Parameters.AddWithValue("@price", o["price"].ToString());
-            Console.WriteLine(o["price"].ToString());
-            command5.Parameters.AddWithValue("@startDate", startDate);
-            Console.WriteLine(startDate);
-            command5.Parameters.AddWithValue("@eta", eta);
-            Console.WriteLine(eta);
+        //    string query = "INSERT INTO Restaurant.Orders(restaurantID, username, foods, [status], startOrderTime, price, ETA) VALUES(@restID, @username, @foods, 0, @startDate,@price,@eta)";
+        //    SqlCommand command5 = new SqlCommand(query, DatabaseConnection);
+        //    command5.Parameters.AddWithValue("@restID", o["restID"].ToString());
+        //    Console.WriteLine(o["restID"].ToString());
+        //    command5.Parameters.AddWithValue("@username", username);
+        //    Console.WriteLine(username);
+        //    command5.Parameters.AddWithValue("@foods", o["foods"].ToString());
+        //    Console.WriteLine(o["foods"].ToString());
+        //    command5.Parameters.AddWithValue("@price", o["price"].ToString());
+        //    Console.WriteLine(o["price"].ToString());
+        //    command5.Parameters.AddWithValue("@startDate", startDate);
+        //    Console.WriteLine(startDate);
+        //    command5.Parameters.AddWithValue("@eta", eta);
+        //    Console.WriteLine(eta);
 
-            int affectedRows = command5.ExecuteNonQuery();
-            if (affectedRows == 0)
-            {
-                return getErrorMessage(99);
-            }
+        //    int affectedRows = command5.ExecuteNonQuery();
+        //    if (affectedRows == 0)
+        //    {
+        //        return getErrorMessage(99);
+        //    }
 
-            JObject ok2 = new JObject();
-            ok2.Add("type", 18);
-            ok2.Add("status", "Order added succesfully");
-            return ok2.ToString();
-        }
+        //    JObject ok2 = new JObject();
+        //    ok2.Add("type", 18);
+        //    ok2.Add("status", "Order added succesfully");
+        //    return ok2.ToString();
+        //}
 
         private string addOrderToDeliveryPerson(int boiID, int orderID)
         {
@@ -2077,6 +2107,67 @@ namespace SocketServer
             return ok.ToString();
 
         }
+
+        private string getDeliveryPersonOrders(int boiID)
+        {
+            string query = "SELECT orderID FROM DeliveryPerson.AssignDelivery WHERE deliveryPersonID=@boiID";
+            
+            List<Order> orders = new List<Order>();
+            try
+            {
+                SqlCommand command = new SqlCommand(query, DatabaseConnection);
+                command.Parameters.AddWithValue("@boiID", boiID);
+                Console.WriteLine("boiID: {0}", boiID);
+                DataTable dataTable = new DataTable();
+                SqlDataAdapter da = new SqlDataAdapter(command);
+                da.Fill(dataTable);
+                if (dataTable.Rows.Count == 0)
+                    return getErrorMessage(49);
+                for (int i = 0; i < dataTable.Rows.Count; i++)
+                {
+                    string query2 = "SELECT Restaurant.restaurantID, Restaurant.name, orderID, [status], startOrderTime, endOrderTime, Orders.[username], price, foods,[password],[lastName],[firstName],Users.[phoneNumber],Users.[addressID] ,[userType], Users.[email],UsersAddress.city,UsersAddress.line1,UsersAddress.line2,UsersAddress.zipcode FROM Restaurant.Orders JOIN Restaurant.Restaurant ON Restaurant.restaurantID = Orders.restaurantID JOIN Users.Users ON Users.username = Restaurant.Orders.username JOIN Users.UsersAddress ON UsersAddress.addressID = Users.addressID WHERE Orders.orderID = @orderID";
+                    SqlCommand command2 = new SqlCommand(query2, DatabaseConnection);
+                    command.Parameters.AddWithValue("@orderID", Int32.Parse(dataTable.Rows[i][0].ToString()));
+                    DataTable dataTable2 = new DataTable();
+                    SqlDataAdapter da2 = new SqlDataAdapter(command);
+                    da2.Fill(dataTable2);
+                        orders.Add(
+                            new Order(
+                            Int32.Parse(dataTable2.Rows[i]["orderID"].ToString()),
+                            Int32.Parse(dataTable2.Rows[i]["status"].ToString()),
+                            dataTable2.Rows[i]["startOrderTime"].ToString(),
+                            dataTable2.Rows[i]["endOrderTime"].ToString(),
+                            new User(dataTable2.Rows[i]["username"].ToString(), 
+                            dataTable2.Rows[i]["password"].ToString(), 
+                            dataTable2.Rows[i]["lastName"].ToString(),
+                            dataTable2.Rows[i]["firstName"].ToString(), dataTable2.Rows[i]["phoneNumber"].ToString(),
+                            dataTable2.Rows[i]["city"].ToString(),
+                            dataTable2.Rows[i]["zipcode"].ToString(), dataTable2.Rows[i]["line1"].ToString(), 
+                            dataTable2.Rows[i]["line2"].ToString(),
+                            Int32.Parse(dataTable2.Rows[i]["userType"].ToString()), dataTable2.Rows[i]["email"].ToString()),
+                            Double.Parse(dataTable2.Rows[i]["price"].ToString()),
+                            dataTable2.Rows[i]["foods"].ToString(),
+                            Int32.Parse(dataTable2.Rows[i]["restaurantID"].ToString()),
+                            dataTable2.Rows[i]["name"].ToString()));
+                    da2.Dispose();
+                    dataTable2.Clear();
+                    dataTable2.Dispose();
+                }
+                da.Dispose();
+                dataTable.Clear();
+                dataTable.Dispose();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return getErrorMessage(99);
+            }
+            OrderList ol = new OrderList(orders);
+            string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(ol);
+            Console.WriteLine("JSON:\n {0}", jsonString);
+            return jsonString;
+        }
+
 
         private string deleteOrderFromDeliveryPerson(int boiID, int orderID)
         {
@@ -2205,6 +2296,9 @@ namespace SocketServer
             errorObject.Add("type", 99);
             switch (errorNumber) 
             {
+                case 49:
+                    errorObject.Add("error", "Delivery Person ID not found");
+                    break;
                 case 50:
                     errorObject.Add("error", "Delivery Person ID or Order ID not found");
                     break;
