@@ -30,6 +30,7 @@ namespace RestaurantClient
         Dictionary<string, int> categoryCounter = new Dictionary<string, int>(); // map[categoryName] = counter
         Dictionary<string, int> foodCounter = new Dictionary<string, int>(); // map[foodName] = counter;
         Dictionary<int, String> categoryNames = new Dictionary<int, string>(); // map[categoryid] = category name
+        List<string> allCategoryNames = new List<string>();
         List<string> categories = new List<string>();
         Categories cat;
         double totalGrossIncome = 0, totalNetIncome = 0, costOfDelivery = 0;
@@ -58,6 +59,7 @@ namespace RestaurantClient
                 if(!categoryCounter.ContainsKey(cat.ListOfCategoryNames[i]))
                 {
                     categoryCounter[cat.ListOfCategoryNames[i]] = 0;
+                 
                 }
               //  Category categ = new Category(Int32.Parse(cat.ListOfCategoryIDs[i]), cat.ListOfCategoryNames[i], "");
             }

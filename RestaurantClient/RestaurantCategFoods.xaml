@@ -10,11 +10,11 @@
         <Style x:Key="bckgStyle" TargetType="StackPanel">
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Opacity" Value="0.8">                        
+                    <Setter Property="Opacity" Value="0.8">
                     </Setter>
                 </Trigger>
             </Style.Triggers>
-                 
+
         </Style>
     </UserControl.Resources>
     <Grid>
@@ -36,28 +36,35 @@
         </Grid>
         <ScrollViewer Name="scrollView" Grid.Column="1" Grid.Row="1" Background="#FFF1F1F1" VerticalScrollBarVisibility="Auto" >
             <WrapPanel Name="FoodList"  Opacity="120" OpacityMask="Aqua">
-                
+
                 <!--<Border BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <StackPanel Name="food" Orientation="Horizontal" HorizontalAlignment="Center"
-                                        Width="330" Height="102" Margin="5,5,0,0" Style="{StaticResource bckgStyle}">                                       
-                    <StackPanel Orientation="Vertical" Width="260">
-                        <TextBlock VerticalAlignment="Top" FontSize="16" FontFamily="Century" HorizontalAlignment="Left"  TextAlignment="Left"
-                                     Margin="0,0,0,0" Width="272" Height="56" Text="1. étel neve" TextWrapping="Wrap" Padding="10,10,2,0"/>
+                    <StackPanel Name="food" Orientation="Horizontal" HorizontalAlignment="Center"
+                                        Width="330" Height="130" Margin="5,5,0,0" Style="{StaticResource bckgStyle}">
+                        <StackPanel Orientation="Vertical" Width="260">
                             <TextBlock VerticalAlignment="Top" FontSize="16" FontFamily="Century" HorizontalAlignment="Left"  TextAlignment="Left"
-                                     Margin="0,0,0,0" Width="272" Height="56" Text="1. étel ára" TextWrapping="Wrap" Padding="10,10,2,0"/>
+                                     Margin="0,0,0,0" Width="272" Height="40" Text="1. étel neve" TextWrapping="Wrap" Padding="10,10,2,0"/>
+                            <TextBlock VerticalAlignment="Top" FontSize="15" FontFamily="Century" HorizontalAlignment="Left"  TextAlignment="Left" 
+                                     Margin="0,0,0,0" Width="260" Height="40" Text="Allergének:" TextWrapping="Wrap" Padding="10,10,2,0"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Top" FontSize="16" FontFamily="Century" HorizontalAlignment="Left"  TextAlignment="Left"
+                                         Margin="0,0,0,0" Width="100" Height="49" TextWrapping="Wrap" Padding="10,10,2,0" Text="1600 Ft"/>
+                                <TextBlock VerticalAlignment="Top" FontSize="16" FontFamily="Century" HorizontalAlignment="Left"  TextAlignment="Left"
+                                         Margin="0,0,0,0" Width="162" Height="46" Text="Új ár: 1600 Ft" TextWrapping="Wrap" Padding="10,10,2,0"/>
+                            </StackPanel>
                         </StackPanel>
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Right" Width="65">
-                        <Image Source="Assets/meal.png" HorizontalAlignment="Center" VerticalAlignment="Center"
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Width="65" VerticalAlignment="Center">
+                            <Image Source="Assets/meal.png" HorizontalAlignment="Center" VerticalAlignment="Center"
                                        Stretch="Fill"
                                        Margin="0,8,0,0" Height="66" Width="64"/>
-                        <Button BorderBrush="DarkBlue" x:Name="settingButton" Height="20" Width="20" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
-                                    Background="Transparent" Click="menuSetting_Click" Margin="0,4,5,0">
-                            <Button.ToolTip>
-                                <ToolTip Content="Módosítás"/>
-                            </Button.ToolTip>
-                            <Image x:Name="settingImg" Source="Assets/img_setting.png" Stretch="Fill"/>
-                        </Button>
-                     </StackPanel>
+                            <Button BorderBrush="#FFFFFDFD"  BorderThickness="2" x:Name="settingButton" Height="20" Width="60" HorizontalAlignment="Left" VerticalAlignment="Bottom" 
+                                    Background="Transparent" Foreground="DarkBlue" Click="menuSetting_Click" Margin="0,4,5,0" Content="Kosárba">
+
+                                --><!--<Button.ToolTip>
+                                    <ToolTip Content="Módosítás"/>
+                                </Button.ToolTip>
+                                <Image x:Name="settingImg" Source="Assets/img_setting.png" Stretch="Fill"/>--><!--
+                            </Button>
+                        </StackPanel>
                         <StackPanel.Background>
                             <SolidColorBrush>
                                 <SolidColorBrush.Color>
@@ -66,7 +73,7 @@
                             </SolidColorBrush>
                         </StackPanel.Background>
                     </StackPanel>
-                    
+
                     <Border.Style>
                         <Style TargetType="Border">
                             <Style.Triggers>
@@ -75,9 +82,9 @@
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </Border.Style>                    
+                    </Border.Style>
                 </Border>-->
-                
+
             </WrapPanel>
         </ScrollViewer>
     </Grid>
