@@ -22,7 +22,7 @@ public class ConnectToServer
     private IPAddress ipAddress;
     private IPEndPoint remoteEP;
     private Socket sender;
-    byte[] bytes = new byte[4096];
+    byte[] bytes = new byte[8000];
 
     public ConnectToServer()
     {

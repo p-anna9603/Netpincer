@@ -1721,13 +1721,14 @@ namespace SocketServer
                 da.Dispose();
                 for (int i = 0; i < dataTable.Rows.Count; i++)
                 {
+                    //         public workingSchedule(int ID, int fromH, int toH, int fromM, int toM, string workinDays)
                     bois.Add(new DeliveryBoy(Int32.Parse(dataTable.Rows[i]["id"].ToString()),
                                         dataTable.Rows[i]["username"].ToString(),
                                     new workingSchedule(
                                     Int32.Parse(dataTable.Rows[i]["workingHoursID"].ToString()),
                                     Int32.Parse(dataTable.Rows[i]["fromHour"].ToString()),
-                                    Int32.Parse(dataTable.Rows[i]["fromMinute"].ToString()),
                                     Int32.Parse(dataTable.Rows[i]["toHour"].ToString()),
+                                    Int32.Parse(dataTable.Rows[i]["fromMinute"].ToString()),
                                     Int32.Parse(dataTable.Rows[i]["toMinute"].ToString()),
                                     dataTable.Rows[i]["workingDays"].ToString())));
 
@@ -2340,7 +2341,7 @@ namespace SocketServer
         {
             if (status == 4)
             {
-                string query1 = "SELECT deliveryPersonID FROM DeliveryPerson.AssignDeliver WHERE orderID = @orderID";
+                string query1 = "SELECT deliveryPersonID FROM DeliveryPerson.AssignDelivery WHERE orderID = @orderID";
                 SqlCommand command1 = new SqlCommand(query1, DatabaseConnection);
                 command1.Parameters.AddWithValue("@orderID", orderID);
                 //Console.WriteLine("orderID: {0}", orderID);

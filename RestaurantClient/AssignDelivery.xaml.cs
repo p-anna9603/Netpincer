@@ -130,9 +130,14 @@ namespace RestaurantClient
                         {
                             Console.WriteLine("delivery booooy: 2 ");
                             isDayOk = 1;
-                            break;
+                            //break;
                         }
                     }
+                    Console.WriteLine("Isdayok: " + isDayOk);
+                    Console.WriteLine("workTime.FromHour: " + workTime.FromHour);
+                    Console.WriteLine("hour: " + hour);
+                    Console.WriteLine("workTime.ToHour : " + workTime.ToHour);
+                    Console.WriteLine(" workTime.ToMinute" + workTime.ToMinute);
                     if(isDayOk == 1 && workTime.FromHour <= hour  && 
                        ( workTime.ToHour > hour || workTime.ToHour == hour && workTime.ToMinute  >= min))
                     {
