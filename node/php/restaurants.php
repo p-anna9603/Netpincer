@@ -1,16 +1,37 @@
+<?php 
+    session_start();
+
+
+    if (!isset($_SESSION['log'])) {
+        $_SESSION['msg'] = "You must log in first";
+        header('location: index.php');
+    }
+    if (isset($_GET['logout'])) {
+        session_destroy();
+        unset($_SESSION['log']);
+        header("location: index.php");
+    }
+
+    if ($_SESSION["log"] != true) {
+        echo "You must log in first";
+        header('location: index.php');
+    }
+    else
+    {
+        //{ type:11 , clientID: client_ID}
+    }
+?>
 <!doctype html>
 <html lang="en">
   <head>
-    <%- include('../partials/auth_head'); %>
-  </%- include('../../src/class.js'); %>
+   <?php  include("src/auth_head.php")?>
   </head>
 
+  <body>
+
+  <?php  include("src/auth_nav.php")?>
+          
   
-  <body> 
-       <!-- Navbar -->
-        <%- include('../partials/auth_navbar'); %>
-       <!-- Navbar--> 
-   
     <!-- Main-->
     <div class="container">
       <div class="jumbotron">
@@ -22,7 +43,10 @@
     <div class="container" >
 
       <div class="row mb-2">
-        <% JSON.parse(Éttermek).forEach(function(Étterem) { %>
+        <?php 
+        include("server.php");   
+        Connect_To_Server("{ 'type':11, 'clientID': " . $_SESSION["user"]->clientID . "}"); 
+        ?>
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
           <div class="col p-4 d-flex flex-column position-static">
             <h2 class="mb-0"><%= Étterem["Name"] %></h2>
@@ -39,18 +63,17 @@
   
           </div>
         </div>
-        <% }); %>
         <!-- GetRestauranList() -->
     </div>
    
     </div>
     <!-- Main-->
-
-    <!-- Footer -->
-    <%- include('../partials/footer'); %>
-    <!-- Footer --> 
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
-
-  </body>
+    <!-- Main-->
+    <!-- Navbar -->
+    <?php  
+    include("src/footer.php");
+    ?>
+    <!-- Main-->
+    
+</body>
 </html>

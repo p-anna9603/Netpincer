@@ -68,6 +68,10 @@ var client = new net.Socket();
 var express = require('express');
 var  app = express();
 
+
+
+  
+
 // MUST-HAVE ééééés DEPENDENCIES
 var bodyParser = require('body-parser');
     app.use(bodyParser.json());
@@ -220,6 +224,33 @@ app.use(session(sess)); // az app a session változót fogja használni
 app.set('view engine', 'ejs'); // beállítja a view engine-nek az ejs-t
 
 app.get('/', function (req, res) { // a főoldalt nézi
+
+    var sql = require("mssql");
+
+    // config for your database
+    var config = {
+        user: 'admin',
+        password: 'root',
+        server: 'localhost', 
+        database: 'Netpincer' 
+    };
+      // connect to your database
+      sql.connect(config, function (err) {
+    
+        if (err) console.log(err);
+
+        // create Request object
+        var request = new sql.Request();
+        console.log("BAASBASF");
+        // query to the database and get the records
+        request.query('SELECT TOP (1000) FROM Restaurant.Restaurant', function (err, recordset) {
+            console.log("AAAAAAAAAAA");
+            if (err) console.log(err)
+            res.send(recordset);
+            
+        });
+    });
+
     if (req.session.loggedIn) { // megnézi. hogy van e jelenlegi session, ergo be vagyunk e jelentkezve
         console.log("Session elkezdődött" + session);
         res.redirect('/home'); // ha be van jelentkezve, és még él a süti, akkor abból felállítja a rendszert és a /home-ba navigál
@@ -230,6 +261,8 @@ app.get('/', function (req, res) { // a főoldalt nézi
 })
 
 app.get('/index', function (req, res) { // le rendereli a views/pages/index.ejs fájlt
+
+    
     res.render('pages/index');
 })
 
@@ -314,10 +347,10 @@ app.get('/restaurant', async function(req, res) { // le rendereli a views/pages/
 //GET RESTAURANTS - 11-ES KÓD
 const getRestaurants  = async(request, response) => 
 {
-  const Get_Restaurant_JSON = { type:11, clientID: client_ID}
+  const Get_Restaurant_JSON = { type:11 , clientID: client_ID}
   const jsonStr = JSON.stringify(Get_Restaurant_JSON);
   console.log("Sent Restaurant JSON -> " + jsonStr)
-  sendData(Get_Restaurant_JSON,request,response);
+  sendData(Get_Restaurant_JSON ,request,response);
 }
 //GET RESTAURANTS - 11-ES KÓD
 
@@ -326,7 +359,7 @@ app.get('/auth_restaurants', function(request,response){
     if (request.session.loggedIn) 
     {
         if (Ettermek.length == 0) {
-            await(getRestaurants(request,response)); // Bekéri az összes éttermet -> frissíteni kell az odalt, ha újat kap az adatbázis
+            getRestaurants(request,response); // Bekéri az összes éttermet -> frissíteni kell az odalt, ha újat kap az adatbázis
             Kategoriak = null;
             response.render('pages/auth_restaurants', {'Éttermek' : JSON.stringify(Ettermek), 'session_var': request.session, 'Étterem_JSON': Étterem_JSON }); // session-ben átadja madj az éttermeket egy objektum array-ként TODO#######
         }
@@ -387,7 +420,8 @@ app.get('/addToList', async function(request,response){ // hozzáadja a bevásá
                 Bev_lista.push(element);
             }
          });
-         response.render('pages/list', {'lista' : JSON.stringify(Bev_lista)});
+        // response.redirect('/home');
+         response.redirect('pages/list', {'lista' : JSON.stringify(Bev_lista)});
          //response.render('pages/categories', { 'kajak' : JSON.stringify(Kajak) });
         //console.log(Bev_lista);
         //response.render('pages/list', {'lista' : JSON.stringify(Bev_lista)});
