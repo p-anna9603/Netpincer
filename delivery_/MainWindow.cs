@@ -14,12 +14,25 @@ namespace delivery_
     {
         string uname;
         OrderList rendelista;
-
-        public MainWindow(string username)
+        LoginWindow login;
+        User deliveryUser;
+        public MainWindow(LoginWindow login, User deliveryUser)
         {
-            uname = username;
+            //uname = username;
+            this.login = login;
+            this.deliveryUser = deliveryUser;
             InitializeComponent();
-            //ListaElem
+
+            string vnevKnev= deliveryUser.getFirstName() + " " + deliveryUser.getLastName();
+            labelVnevKnev.Text = vnevKnev;
+
+            //LSTA FELTÖLTÉSE
+            ServerConnection server = new ServerConnection();
+            rendelista = server.getOrders(deliveryUser.DeliveryPersonID);
+            if (!rendelista.empty)
+                ListaElem();
+            else
+                orderlista.Items.Clear();
         }
 
         private void ListaElem()
@@ -39,28 +52,47 @@ namespace delivery_
 
         private void felBt_Click(object sender, EventArgs e)
         {
-
+            if (rendelista.empty)
+                return;
+            int orderID = 0;
+            orderID = Int32.Parse(orderlista.SelectedIndex.ToString());
+            Console.WriteLine("KISZÁLLÍTÁS ALATT ORDER #{0}", orderID);
+            ServerConnection server = new ServerConnection();
+            server.updateOrderState(orderID, 3);
         }
 
         private void kiBt_Click(object sender, EventArgs e)
         {
-
+            if (rendelista.empty)
+                return;
+            int orderID = 0;
+            orderID = Int32.Parse(orderlista.SelectedIndex.ToString());
+            Console.WriteLine("KISZÁLLÍTVA ORDER #{0}", orderID);
+            ServerConnection server = new ServerConnection();
+            server.updateOrderState(orderID, 4);
         }
 
         private void noBt_Click(object sender, EventArgs e)
         {
-
+            if (rendelista.empty)
+                return;
+            int orderID = 0;
+            orderID = Int32.Parse(orderlista.SelectedIndex.ToString());
+            Console.WriteLine("DELETE ORDER #{0}", orderID);
+            ServerConnection server = new ServerConnection();
+            server.removeOrderFromDeliveryBoy(deliveryUser.DeliveryPersonID,orderID);
         }
 
         private void munkaBt_Click(object sender, EventArgs e)
         {
-            WorkWindow work = new WorkWindow(uname);
+            WorkWindow work = new WorkWindow(deliveryUser.Username, this);
             work.Show();
             this.Hide();
         }
 
         private void rausBt_Click(object sender, EventArgs e)
         {
+            login.Show();
             this.Close();
         }
     }

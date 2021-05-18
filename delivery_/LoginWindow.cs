@@ -15,6 +15,7 @@ namespace delivery_
     {
         string username;
         string password;
+        User deliveryUser;
 
         public LoginWindow()
         {
@@ -27,16 +28,24 @@ namespace delivery_
         {
             username = uname.Text;
             password = pword.Text;
+            ServerConnection server = new ServerConnection();
+            deliveryUser = server.getUser(username,password, UserType.DeliveryPerson);
 
-           // if(/*login ok*/)
+            if (deliveryUser.empty)
             {
-                    
+                System.Windows.Forms.MessageBox.Show("Felhasználónév vagy jelszó hibás!");
+            }
+            else
+            {
+                MainWindow mainWindow = new MainWindow(this, deliveryUser);
+                mainWindow.Show();
+                this.Hide();
             }
         }
 
         private void registBt_Click(object sender, EventArgs e)
         {
-            RegisterWindow register = new RegisterWindow();
+            RegisterWindow register = new RegisterWindow(this);
             register.Show();
             this.Hide();
         }

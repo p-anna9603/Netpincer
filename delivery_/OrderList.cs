@@ -8,6 +8,7 @@ namespace delivery_
 {
     public class OrderList
     {
+        public bool empty =false;
         private List<Order> listOrder;
 
         public List<Order> ListOrder { get => listOrder; set => listOrder = value; }
@@ -17,5 +18,7 @@ namespace delivery_
             listOrder = lo;
         }
         public OrderList() { }
+
+        public OrderList(bool empty) { this.empty = empty; }
     }
 }

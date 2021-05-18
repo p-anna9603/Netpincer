@@ -139,23 +139,8 @@ namespace delivery_
                 jobc.Add("clientID", clientID);
                 jobc.Add("username", username);
                 jobc.Add("password", password);
-                int userTypeNumber = 4;
-                switch (userType)
-                {
-                    case UserType.Customer:
-                        userTypeNumber = 0;
-                        break;
-                    case UserType.RestaurantOwner:
-                        userTypeNumber = 1;
-                        break;
-                    case UserType.DeliveryPerson:
-                        userTypeNumber = 2;
-                        break;
-                    default:
-                        Console.WriteLine("Undefined User type");
-                        break;
-                }
-                jobc.Add("userType", userTypeNumber);
+                //int userTypeNumber = 4;
+                jobc.Add("userType", 2);
                 string recievedMsg = sendJSON(jobc);
                 Console.WriteLine("recievedMsg: {0}", recievedMsg);
 
@@ -176,7 +161,8 @@ namespace delivery_
                         receivedJSonObject["line1"].ToString(),
                         receivedJSonObject["line2"].ToString(),
                         Int32.Parse(receivedJSonObject["userType"].ToString()),
-                        receivedJSonObject["email"].ToString()
+                        receivedJSonObject["email"].ToString(),
+                        Int32.Parse(receivedJSonObject["deliveryPersonID"].ToString())
                         );
                 }
                 else if (receivedJSonObject["type"].ToString() == "99")
@@ -188,7 +174,9 @@ namespace delivery_
             {
                 Console.WriteLine(e.ToString());
             }
-            return new User();
+            User a = new User();
+            a.empty = true;
+            return a;
 
         }
 
@@ -247,6 +235,46 @@ namespace delivery_
                 else if (receivedJSonObject["type"].ToString() == "99")
                 {
                     Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+                    retval = 0;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                retval = 0;
+            }
+            return retval;
+        }
+
+        public int setWorkingHours(WorkingHours wh)
+        {
+            int retval = 1;
+            //THIS WORKS:
+            try
+            {
+                //Console.WriteLine("Basic workingString: {0}", wh.toString());
+                string workingString = JsonConvert.SerializeObject(wh);
+                Console.WriteLine("String workingString: {0}", workingString);
+                JObject header = new JObject();
+                header.Add("type", 6);
+                //header.Add("username", wh.username);
+                JObject body = new JObject();
+                body = JObject.Parse(workingString);
+                header.Merge(body);
+                string recievedMsg = sendJSON(header);
+                Console.WriteLine("recievedMsg: {0}", recievedMsg);
+
+                JObject receivedJSonObject = new JObject();
+                receivedJSonObject = JObject.Parse(recievedMsg);
+                if (receivedJSonObject["type"].ToString() == "6")
+                {
+                    Console.WriteLine("Server: {0}", receivedJSonObject["status"].ToString());
+                    System.Windows.Forms.MessageBox.Show("Sikeres munkarend állítás!");
+                }
+                else if (receivedJSonObject["type"].ToString() == "99")
+                {
+                    Console.WriteLine("Error: {0}", receivedJSonObject["error"].ToString());
+                    System.Windows.Forms.MessageBox.Show("Sikertelen munkarend állítás!");
                     retval = 0;
                 }
             }
@@ -349,7 +377,33 @@ namespace delivery_
             }
         }
 
+        public OrderList getOrders(int boiID)
+        {
 
+            try
+            {
+                JObject obj = new JObject();
+                obj.Add("type", 22);
+                obj.Add("boiID", boiID);
+                string recievedMsg = sendJSON(obj);
+                Console.WriteLine("recievedMsg: {0}", recievedMsg);
+
+                OrderList receivedOrderList = Newtonsoft.Json.JsonConvert.DeserializeObject<OrderList>(recievedMsg);
+                if (receivedOrderList.ListOrder == null)
+                {
+                    Console.WriteLine("ListOrder == null");
+                    throw new Exception();
+                }
+                return receivedOrderList;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            return new OrderList(true);
+        }
+
+        
 
 
 
