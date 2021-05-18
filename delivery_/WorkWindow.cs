@@ -13,9 +13,11 @@ namespace delivery_
     public partial class WorkWindow : Form
     {
 		string uname;
-        public WorkWindow(string username)
+		MainWindow mainWindow;
+        public WorkWindow(string username,MainWindow mw)
         {
 			uname = username;
+			mainWindow = mw;
             InitializeComponent();
         }
 
@@ -50,15 +52,20 @@ namespace delivery_
 			{
 				napok += "7";
 			}
-		//	if (napok.ElementAt(napok.Length) = ',')
+			if (napok.Last()==',')
+			{
+				napok= napok.Remove(napok.Length - 1, 1);
+			}
 
-			WorkingHours whours = new WorkingHours(fromH.Text, fromM.Text, ToH.Text, ToM.Text, napok, "6", uname);
-
+			//WorkingHours whours = 
+			ServerConnection server = new ServerConnection();
+			server.setWorkingHours(new WorkingHours(fromH.Text, fromM.Text, ToH.Text, ToM.Text, napok, "6", uname));
 
 		}
 
 		private void BackBt_Click(object sender, EventArgs e)
         {
+			mainWindow.Show();
             this.Hide();
         }
     }

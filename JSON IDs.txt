@@ -29,4 +29,6 @@ type
 20 - addOrderToDeliveryPerson
 21 - deleteOrderFromDeliveryPerson
 
+22 - getDPOrders
+
 99 - Error

@@ -32,13 +32,17 @@ namespace delivery_
         [Newtonsoft.Json.JsonProperty]
         private string email;
 
+        private int deliveryPersonID;
+        public bool empty = false;
+
         public UserType GetUserType { get => userType; set => userType = value; }
         public string Username { get => username; set => username = value; }
+        public int DeliveryPersonID { get => deliveryPersonID; set => deliveryPersonID = value; }
 
         public User() { }
 
         public User(string _username, string _password, string _lastName, string _firstName, string _phoneNumber,
-             string _city, string _zipcode, string _line1, string _line2, int _userTypeId, string email_)
+             string _city, string _zipcode, string _line1, string _line2, int _userTypeId, string email_, int dpID = 0)
         {
             username = _username;
             password = _password;
@@ -49,6 +53,7 @@ namespace delivery_
             zipcode = _zipcode;
             line1 = _line1;
             email = email_;
+            deliveryPersonID = dpID;
             if (_line2 == "null")
                 line2 = "";
             else
@@ -87,10 +92,6 @@ namespace delivery_
         public string getZipcode() { return zipcode; }
         public string getLine1() { return line1; }
         public string getLine2() { return line2; }
-        //"I'm not gonna code in C++" they said.
-        //"C# is way better" they said.
-        //"I Don't understand C++" I said
-        //"Orosz Ákos laughed" 
 
     }
 }
