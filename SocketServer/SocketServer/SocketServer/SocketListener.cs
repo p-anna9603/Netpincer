@@ -1300,13 +1300,17 @@ namespace SocketServer
             dataTable4.Dispose();
             if (appTime == "")
                 appTime = "10";
+            Console.WriteLine("apptime ##### " + appTime);
 
             string eta = "";
             //CALCULATING DATE
             var dateTime = DateTime.Now;
             DateTime d2 = dateTime.AddMinutes(Int32.Parse(appTime));
+            Console.WriteLine("jelenlegi + apptime: " + d2);
             eta = d2.ToShortDateString().Trim() + " " + d2.ToShortTimeString();
-            string startDate = d2.ToShortDateString().Trim() + " " + d2.ToShortTimeString();
+            Console.WriteLine("eta: " + eta);
+            string startDate = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString();
+            Console.WriteLine("startDate: " + startDate);
 
             string query = "INSERT INTO Restaurant.Orders(restaurantID, username, foods, [status], startOrderTime, price, ETA) VALUES(@restID, @username, @foods, 0, @startDate,@price,@eta)";
             SqlCommand command5 = new SqlCommand(query, DatabaseConnection);
@@ -2264,7 +2268,7 @@ namespace SocketServer
         {
             if (status == 4)
             {
-                string query1 = "SELECT deliveryPersonID FROM DeliveryPerson.AssignDeliver WHERE orderID = @orderID";
+                string query1 = "SELECT deliveryPersonID FROM DeliveryPerson.AssignDelivery WHERE orderID = @orderID";
                 SqlCommand command1 = new SqlCommand(query1, DatabaseConnection);
                 command1.Parameters.AddWithValue("@orderID", orderID);
                 //Console.WriteLine("orderID: {0}", orderID);

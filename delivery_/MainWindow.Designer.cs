@@ -43,8 +43,8 @@ namespace delivery_
             // 
             this.felBt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.felBt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.felBt.Location = new System.Drawing.Point(141, 331);
-            this.felBt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.felBt.Location = new System.Drawing.Point(198, 368);
+            this.felBt.Margin = new System.Windows.Forms.Padding(4);
             this.felBt.Name = "felBt";
             this.felBt.Size = new System.Drawing.Size(196, 44);
             this.felBt.TabIndex = 0;
@@ -56,8 +56,8 @@ namespace delivery_
             // 
             this.kiBt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.kiBt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.kiBt.Location = new System.Drawing.Point(345, 331);
-            this.kiBt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.kiBt.Location = new System.Drawing.Point(402, 368);
+            this.kiBt.Margin = new System.Windows.Forms.Padding(4);
             this.kiBt.Name = "kiBt";
             this.kiBt.Size = new System.Drawing.Size(196, 44);
             this.kiBt.TabIndex = 1;
@@ -69,8 +69,8 @@ namespace delivery_
             // 
             this.noBt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.noBt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.noBt.Location = new System.Drawing.Point(249, 398);
-            this.noBt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.noBt.Location = new System.Drawing.Point(306, 435);
+            this.noBt.Margin = new System.Windows.Forms.Padding(4);
             this.noBt.Name = "noBt";
             this.noBt.Size = new System.Drawing.Size(196, 46);
             this.noBt.TabIndex = 2;
@@ -83,7 +83,7 @@ namespace delivery_
             this.munkaBt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.munkaBt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.munkaBt.Location = new System.Drawing.Point(684, 197);
-            this.munkaBt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.munkaBt.Margin = new System.Windows.Forms.Padding(4);
             this.munkaBt.Name = "munkaBt";
             this.munkaBt.Size = new System.Drawing.Size(313, 64);
             this.munkaBt.TabIndex = 3;
@@ -96,7 +96,7 @@ namespace delivery_
             this.rausBt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.rausBt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.rausBt.Location = new System.Drawing.Point(716, 289);
-            this.rausBt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rausBt.Margin = new System.Windows.Forms.Padding(4);
             this.rausBt.Name = "rausBt";
             this.rausBt.Size = new System.Drawing.Size(255, 62);
             this.rausBt.TabIndex = 4;
@@ -110,9 +110,9 @@ namespace delivery_
             this.orderlista.FormattingEnabled = true;
             this.orderlista.ItemHeight = 16;
             this.orderlista.Location = new System.Drawing.Point(141, 122);
-            this.orderlista.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.orderlista.Margin = new System.Windows.Forms.Padding(4);
             this.orderlista.Name = "orderlista";
-            this.orderlista.Size = new System.Drawing.Size(399, 180);
+            this.orderlista.Size = new System.Drawing.Size(517, 228);
             this.orderlista.TabIndex = 5;
             // 
             // label1
@@ -147,9 +147,10 @@ namespace delivery_
             this.Controls.Add(this.noBt);
             this.Controls.Add(this.kiBt);
             this.Controls.Add(this.felBt);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainWindow";
             this.Text = "MainWindow";
+            this.Load += new System.EventHandler(this.MainWindow_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
