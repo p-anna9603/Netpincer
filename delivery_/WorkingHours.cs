@@ -27,5 +27,12 @@ namespace delivery_
 			username = username_;
 		}
 
-	}
+        public string FromHour { get => fromHour; set => fromHour = value; }
+        public string FromMinute { get => fromMinute; set => fromMinute = value; }
+        public string ToHour { get => toHour; set => toHour = value; }
+        public string ToMinute { get => toMinute; set => toMinute = value; }
+        public string WorkingDays { get => workingDays; set => workingDays = value; }
+        public string Type { get => type; set => type = value; }
+        public string Username { get => username; set => username = value; }
+    }
 }
