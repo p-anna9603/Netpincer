@@ -27,7 +27,7 @@
             //echo $buf . "\n";
             $jsonobj = $buf;
             $obj = json_decode($jsonobj);
-            //var_dump($obj);
+            var_dump($obj);
 
             if (isset( $obj->restaurantList[0]->Type)) {
                 
@@ -49,6 +49,14 @@
                     var_dump($obj);
                     $_SESSION["lista"] = $obj;
                 }
+                else if ($obj->type == "18") 
+                {
+                    var_dump($obj);
+                }
+                else if ($obj->type == "99") 
+                {
+                    var_dump($obj);
+                }
                 
                 
             }
@@ -69,6 +77,10 @@
                 {
                     var_dump($obj);
                     $_SESSION["lista"] = $obj;
+                }
+                else if ($obj->Type == "18") 
+                {
+                    var_dump($obj);
                 }
             }
             else if(isset($obj->FoodID))

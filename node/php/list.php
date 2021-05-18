@@ -79,8 +79,9 @@
             for ($i=0; $i < count($kosar); $i++) { 
                $string= $string . "," . $kosar[$i]; # code...
             }
-            echo $string;
-            Connect_To_Server("{ 'restID':" . $_SESSION["cur_Rest"]. ", 'username':" . $_SESSION["user"]->username . ",'foods': " . $string .  ",'price': " . $osszeg ."}"); 
+            echo $_SESSION["cur_Rest"]+1;
+            Connect_To_Server("{ 'type':18, 'clientID': " . $_SESSION["user"]->clientID . ",'restID':" . $_SESSION["cur_Rest"]+1 . ", 'username':'"
+                 . $_SESSION["user"]->username . "','foods': '" . $string .  "','price': " . $osszeg ."}"); 
         }
     ?>
 
