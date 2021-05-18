@@ -430,6 +430,12 @@ namespace SocketServer
                     //handler.Send(Encoding.ASCII.GetBytes(register));
                     return register.ToString();
                 }
+                else if (receivedJSONObject["type"].ToString() == "23")
+                {
+                    string register = getStatusAndETAForUser(Int32.Parse(receivedJSONObject["orderID"].ToString()));
+                    //handler.Send(Encoding.ASCII.GetBytes(register));
+                    return register.ToString();
+                }
 
 
 
@@ -1378,7 +1384,34 @@ namespace SocketServer
             //return ok2.ToString();
         }
 
-
+        private string getStatusAndETAForUser(int orderID)
+        {
+            string query = "SELECT [status], ETA FROM Restaurant.Orders WHERE orderID = @orderID";
+            DataTable dataTable = new DataTable();
+            try
+            {
+                SqlCommand command = new SqlCommand(query, DatabaseConnection);
+                command.Parameters.AddWithValue("@orderID", orderID);
+                SqlDataAdapter da = new SqlDataAdapter(command);
+                da.Fill(dataTable);
+                if (dataTable.Rows.Count != 0)
+                {
+                    da.Dispose();
+                    return getErrorMessage(48);
+                }
+                da.Dispose();
+                JObject ok = new JObject();
+                ok.Add("type", 23);
+                ok.Add("status", dataTable.Rows[0]["status"].ToString());
+                ok.Add("ETA", dataTable.Rows[0]["ETA"].ToString());
+                return ok.ToString();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return getErrorMessage(99);
+            }
+        }
         private string checkUsernameAvailable(string username, int userType)
         {
             //CHECK TO SEE IF USERNAME IS AVAILABLE
