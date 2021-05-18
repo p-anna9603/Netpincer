@@ -44,6 +44,11 @@
                     $_SESSION["log"] = true;
                     $_SESSION["user"] = $obj;
                 }
+                else if ($obj->type == "14") 
+                {
+                    var_dump($obj);
+                    $_SESSION["lista"] = $obj;
+                }
                 
                 
             }
@@ -53,13 +58,23 @@
                 {
                     $_SESSION["category_names"] = $obj->listOfCategoryNames;
                     $_SESSION["category_ids"] = $obj->listOfCategoryIDs;
-                    //var_dump($obj);
+                    var_dump($obj);
                 }
                 else if ($obj->Type == "9") 
                 {
-                    //var_dump($obj);
+                    var_dump($obj);
                     $_SESSION["kaja"] = $obj;
                 }
+                else if ($obj->Type == "14") 
+                {
+                    var_dump($obj);
+                    $_SESSION["lista"] = $obj;
+                }
+            }
+            else if(isset($obj->FoodID))
+            {
+                $_SESSION["kaja"] = $obj;
+                //var_dump($obj);
             }
 
     }

@@ -47,6 +47,7 @@
       <div class="row mb-2">
         <?php 
         include("server.php");   
+        $_SESSION["kosar"] = array();
         Connect_To_Server("{ 'type':11, 'clientID': " . $_SESSION["user"]->clientID . "}"); 
         //var_dump($_SESSION["ettermek"]->restaurantList );
         for ($i=0; $i < $_SESSION["etterem_db"]; $i++) { 
