@@ -1258,8 +1258,8 @@ namespace SocketServer
             }
             if (checkUsernameAvailable(username, 0) == "1")
             {
-                string query3 = "SELECT COUNT(username) FROM Users.Users WHERE username LIKE 'guest%'";
-                SqlCommand c = new SqlCommand(query3, DatabaseConnection);
+                string query1 = "SELECT COUNT(username) FROM Users.Users WHERE username LIKE 'guest%'";
+                SqlCommand c = new SqlCommand(query1, DatabaseConnection);
                 SqlDataAdapter da1 = new SqlDataAdapter(c);
                 DataTable dataTable1 = new DataTable();
                 da1.Fill(dataTable1);
@@ -1283,21 +1283,21 @@ namespace SocketServer
 
 
             string query2 = "SELECT approximateTime FROM Restaurant.Restaurant WHERE restaurantID = @restID";
-            SqlCommand command = new SqlCommand(query2, DatabaseConnection);
-            command.Parameters.AddWithValue("@restID", o["restID"].ToString());
-            SqlDataAdapter da = new SqlDataAdapter(command);
-            DataTable dataTable4 = new DataTable();
-            da.Fill(dataTable4);
-            if (dataTable4.Rows.Count == 0)
+            SqlCommand command2 = new SqlCommand(query2, DatabaseConnection);
+            command2.Parameters.AddWithValue("@restID", o["restID"].ToString());
+            SqlDataAdapter da2 = new SqlDataAdapter(command2);
+            DataTable dataTable2 = new DataTable();
+            da2.Fill(dataTable2);
+            if (dataTable2.Rows.Count == 0)
             {
-                da.Dispose();
-                dataTable4.Dispose();
+                da2.Dispose();
+                dataTable2.Dispose();
                 return getErrorMessage(71);
             }
             string appTime = "";
-            appTime = dataTable4.Rows[0][0].ToString();
-            da.Dispose();
-            dataTable4.Dispose();
+            appTime = dataTable2.Rows[0][0].ToString();
+            da2.Dispose();
+            dataTable2.Dispose();
             if (appTime == "")
                 appTime = "10";
             Console.WriteLine("apptime ##### " + appTime);
@@ -1312,31 +1312,70 @@ namespace SocketServer
             string startDate = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString();
             Console.WriteLine("startDate: " + startDate);
 
-            string query = "INSERT INTO Restaurant.Orders(restaurantID, username, foods, [status], startOrderTime, price, ETA) VALUES(@restID, @username, @foods, 0, @startDate,@price,@eta)";
-            SqlCommand command5 = new SqlCommand(query, DatabaseConnection);
-            command5.Parameters.AddWithValue("@restID", o["restID"].ToString());
+            string query3 = "INSERT INTO Restaurant.Orders(restaurantID, username, foods, [status], startOrderTime, price, ETA) VALUES(@restID, @username, @foods, 0, @startDate,@price,@eta)";
+            SqlCommand command3 = new SqlCommand(query3, DatabaseConnection);
+            command3.Parameters.AddWithValue("@restID", o["restID"].ToString());
             Console.WriteLine(o["restID"].ToString());
-            command5.Parameters.AddWithValue("@username", username);
+            command3.Parameters.AddWithValue("@username", username);
             Console.WriteLine(username);
-            command5.Parameters.AddWithValue("@foods", o["foods"].ToString());
+            command3.Parameters.AddWithValue("@foods", o["foods"].ToString());
             Console.WriteLine(o["foods"].ToString());
-            command5.Parameters.AddWithValue("@price", o["price"].ToString());
+            command3.Parameters.AddWithValue("@price", o["price"].ToString());
             Console.WriteLine(o["price"].ToString());
-            command5.Parameters.AddWithValue("@startDate", startDate);
+            command3.Parameters.AddWithValue("@startDate", startDate);
             Console.WriteLine(startDate);
-            command5.Parameters.AddWithValue("@eta", eta);
+            command3.Parameters.AddWithValue("@eta", eta);
             Console.WriteLine(eta);
 
-            int affectedRows = command5.ExecuteNonQuery();
+            int affectedRows = command3.ExecuteNonQuery();
             if (affectedRows == 0)
             {
                 return getErrorMessage(99);
             }
 
-            JObject ok2 = new JObject();
-            ok2.Add("type", 18);
-            ok2.Add("status", "Order added succesfully");
-            return ok2.ToString();
+
+            //RETURNING ORDER FOR USER
+            string query4 = "SELECT * FROM Restaurant.Orders WHERE restaurantID = @restID AND username = @username AND foods = @foods AND startOrderTime=@startDate AND price = @price";
+            SqlCommand command4 = new SqlCommand(query4, DatabaseConnection);
+            command4.Parameters.AddWithValue("@restID", o["restID"].ToString());
+            Console.WriteLine(o["restID"].ToString());
+            command4.Parameters.AddWithValue("@username", username);
+            Console.WriteLine(username);
+            command4.Parameters.AddWithValue("@foods", o["foods"].ToString());
+            Console.WriteLine(o["foods"].ToString());
+            command4.Parameters.AddWithValue("@price", o["price"].ToString());
+            Console.WriteLine(o["price"].ToString());
+            command4.Parameters.AddWithValue("@startDate", startDate);
+            Console.WriteLine(startDate);
+
+            SqlDataAdapter da4 = new SqlDataAdapter(command4);
+            DataTable dataTable4 = new DataTable();
+            da4.Fill(dataTable4);
+            if (dataTable4.Rows.Count == 0)
+            {
+                da4.Dispose();
+                dataTable4.Dispose();
+                return getErrorMessage(48);
+            }
+            Order localOrder = new Order(
+                                Int32.Parse(dataTable4.Rows[0]["orderID"].ToString()),
+                                Int32.Parse(dataTable4.Rows[0]["status"].ToString()),
+                                dataTable4.Rows[0]["startOrderTime"].ToString(),
+                                dataTable4.Rows[0]["endOrderTime"].ToString(),
+                                new User(),
+                                Double.Parse(dataTable4.Rows[0]["price"].ToString()),
+                                dataTable4.Rows[0]["foods"].ToString(),
+                                Int32.Parse(dataTable4.Rows[0]["restaurantID"].ToString()));
+            localOrder.Eta = dataTable4.Rows[0]["ETA"].ToString();
+            da4.Dispose();
+            dataTable4.Dispose();
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(localOrder);
+
+            //JObject ok2 = new JObject();
+            //ok2.Add("type", 18);
+            //ok2.Add("status", "Order added succesfully");
+            //return ok2.ToString();
         }
 
 
@@ -2268,7 +2307,7 @@ namespace SocketServer
         {
             if (status == 4)
             {
-                string query1 = "SELECT deliveryPersonID FROM DeliveryPerson.AssignDelivery WHERE orderID = @orderID";
+                string query1 = "SELECT deliveryPersonID FROM DeliveryPerson.AssignDeliver WHERE orderID = @orderID";
                 SqlCommand command1 = new SqlCommand(query1, DatabaseConnection);
                 command1.Parameters.AddWithValue("@orderID", orderID);
                 //Console.WriteLine("orderID: {0}", orderID);
@@ -2315,6 +2354,9 @@ namespace SocketServer
             errorObject.Add("type", 99);
             switch (errorNumber) 
             {
+                case 48:
+                    errorObject.Add("error", "Order not found");
+                    break;
                 case 49:
                     errorObject.Add("error", "Delivery Person ID not found");
                     break;

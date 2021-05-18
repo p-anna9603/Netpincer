@@ -17,6 +17,7 @@ namespace SocketServer
         string foods;
         int restaurantID;
         string restaurantName;
+        string eta;
         public Order(int oId, int status, string orderTim, string endOrderTime, User _user, double price, string foodsString, int restID, string restName="")
         {
             orderID = oId;
@@ -40,5 +41,6 @@ namespace SocketServer
         public User User { get => user; set => user = value; }
         public int RestaurantID { get => restaurantID; set => restaurantID = value; }
         public string RestaurantName { get => restaurantName; set => restaurantName = value; }
+        public string Eta { get => eta; set => eta = value; }
     }
 }
