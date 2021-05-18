@@ -8,20 +8,18 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link"  href="/home">Főoldal</a>
+            <a class="nav-link"  href="index.php">Főoldal</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/auth_restaurants">Ételrendelés</a>
+            <a class="nav-link" href="restaurants.php">Éttermek</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/list">Bevásárló lista</a>
+            <a class="nav-link" href="lista.php">Bevásárló lista</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/auth_logout">Kijelentkezés</a>
+            <a class="nav-link" href="logout.php">Kijelentkezés</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Étterem</a>
-          </li>
+
         </ul>
       </div>
     </div>

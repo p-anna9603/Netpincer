@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <%- include('../partials/auth_head'); %>
+  </%- include('../../src/class.js'); %>
+  </head>
+
+  
+  <body> 
+       <!-- Navbar -->
+        <%- include('../partials/auth_navbar'); %>
+       <!-- Navbar--> 
+
+     
+    <!-- Main-->
+       
+    <!-- Main-->
+    <% var lista; %>
+    
+    <div class="container">
+
+            <div class="p-5 mb-4 bg-light rounded-3">
+                <div class="container-fluid py-5">
+                  <h1 class="display-5 fw-bold">Kosár: </h1>
+                  <p class="col-md-8 fs-4">
+                      
+                    <% if(lista == undefined){ %> 
+                        <% } else { var ar = 0;%>
+                        <% JSON.parse(lista).forEach(function(kaja) {%>
+                            <h2>  <%= kaja["Name"] %> - <%= kaja["Price"] %> </h2>
+                            <% ar = ar + kaja["Price"] %>
+                            <%  }); } %>
+                        Összesen: <%= ar %> Ft 
+                  </p>
+                  <button class="btn btn-primary btn-lg" type="button"> Megrendelem</button>
+
+                  <a href='/order?id=<%=kaja["FoodID"]%>' class="stretched-link"> <%=kaja["FoodID"]%>  Megnézem</a>
+                    
+
+                </div>
+              </div>
+        <div class="card">
+                <p class="lead mb-4">Tesztelődoboz</p>
+             
+        </div>
+    </div>
+    <!-- Footer -->
+    <%- include('../partials/footer'); %>
+    <!-- Footer --> 
+  </body>
+</html>
+

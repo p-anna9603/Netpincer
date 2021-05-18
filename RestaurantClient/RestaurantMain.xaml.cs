@@ -275,7 +275,7 @@ namespace FoodOrderClient
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            new Thread(refreshData).Start();
+       //     new Thread(refreshData).Start();
         }
         int z = 0;
         public delegate void UpdateTextCallback(string message);
@@ -283,7 +283,7 @@ namespace FoodOrderClient
         {
             while(z == 0)
             {
-                Thread.Sleep(3000);
+                Thread.Sleep(10000);
                 ordersList = serverConnection.getOrders(currUser.restaurantID);
                 if(ordersList.ListOrder == null)
                 {

@@ -8,6 +8,7 @@ namespace SocketServer
 {
     public class Food
     {
+        static int type;
         int foodID;
         string name;
         double price;
@@ -28,6 +29,7 @@ namespace SocketServer
            string availableFrom,
         string availableTo, double discount_ = 1)
         {
+            type = 14;
             foodID = fID;
             name = nam;
             price = prc;
