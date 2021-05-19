@@ -46,8 +46,8 @@
                                                 <small class="text-muted">
                                                     <?php 
                                                         if (isset($_POST['BTN_login'])) 
-                                                        {  include("server.php");   
-                                                            Connect_To_Server("{ type:1, clientID: 0, username:'" . $_POST["auth_name"]  ."', password: '". $_POST["auth_pass"] . "', userType: 0 }"); 
+                                                        {  include("server.php");  Connect_To_Server("{ type:0, msgId:0}"); 
+                                                            Connect_To_Server("{ type:1, clientID: ".$_SESSION["clientID"] .", username:'" . $_POST["auth_name"]  ."', password: '". $_POST["auth_pass"] . "', userType: 0 }"); 
                                                             if (isset($_SESSION["user"]->type) && $_SESSION["user"]->type == 1) 
                                                             {
                                                                 if (isset($_SESSION["user"]->username)  && $_SESSION["user"]->username == $_POST["auth_name"]  ) 

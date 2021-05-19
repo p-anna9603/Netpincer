@@ -39,6 +39,10 @@
             }
             else if(isset($obj->type) )
             {
+                if($obj->type == "1")
+                {
+                    $_SESSION["clientID"] = $obj->clientID;
+                }
                 if ($obj->type == "1") 
                 {
                     $_SESSION["log"] = true;
@@ -62,6 +66,11 @@
             }
             else if(isset($obj->Type))
             {
+                
+                if($obj->Type == "1")
+                {
+                    $_SESSION["clientID"] = $obj->clientID;
+                }
                 if($obj->Type == "7")
                 {
                     $_SESSION["category_names"] = $obj->listOfCategoryNames;
