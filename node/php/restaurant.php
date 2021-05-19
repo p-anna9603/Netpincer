@@ -93,7 +93,11 @@
                                 echo '<div class="p-4 d-flex flex-column position-static "> ';
                                     Connect_To_Server(" { type: 9, clientID: " . $_SESSION["user"]->clientID . ", restaurantID: " . $var. ", categoryID: ".$_SESSION["category_ids"][$i] ." } "); 
                                     for ($j=0; $j <count($_SESSION["kaja"]->listFood)  ; $j++) { 
+                                        
+                                        
                                         echo "<form method='POST' action='addToList.php'>";
+
+
                                         echo '<div class="p-4 d-flex flex-column position-static g-0 border rounded overflow-hidden"> <b>';
                                             echo $_SESSION["kaja"]->listFood[$j]->Name . ' - ';    echo $_SESSION["kaja"]->listFood[$j]->Price; echo "Ft";
                                              echo '<input type="hidden" id="foodID" name="foodID" value=" '.  $_SESSION["kaja"]->listFood[$j]->FoodID. ' ">';
