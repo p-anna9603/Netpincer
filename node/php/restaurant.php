@@ -73,9 +73,9 @@
         
         <div class="col col-lg-4 col-lg-8"> 
             <?php 
-            ob_start();
+           
             var_dump($var); echo $var;
-            var_dump($_SESSION["curID"]);  var_dump($_SESSION["kaja"]->listFood); 
+            var_dump($_SESSION["curID"]);  //var_dump($_SESSION["kaja"]->listFood); 
             var_dump(  $_SESSION["category_ids"]); 
             $_SESSION["cur_Rest"] = $var;
             include("server.php");   
@@ -95,7 +95,7 @@
                                     for ($j=0; $j <count($_SESSION["kaja"]->listFood)  ; $j++) { 
                                         
                                         
-                                        echo "<form method='POST' action='addToList.php'>";
+                                        echo "<form method='POST' action=''>";
 
 
                                         echo '<div class="p-4 d-flex flex-column position-static g-0 border rounded overflow-hidden"> <b>';
@@ -134,16 +134,18 @@
                 <?php 
 
                     if ($_SERVER["REQUEST_METHOD"] == "POST") 
-                    { 
+                    {  echo "b";
                         if(isset($_POST["BTN_addFood"]))
                         { 
-
-                            array_push($_SESSION["kosar"], $_POST["foodID"]);
-                            var_dump($_SESSION["kosar"]);
-                            //$_SESSION["kosár"] = $kosar;
-                            //header("location: ./restaurant.php/ ". $_SESSION["curID"] ."");
+                            echo "c";
+                            
+                            array_push( $_SESSION["kosar"] , $_POST["foodID"]);
+                            var_dump( $_SESSION["kosar"] );
+                            
+                          
+                            header("location: restaurant.php/ ". $_SESSION["curID"] ."");
                         }
-                    }
+}
                 ?>
 
         </div>
@@ -154,7 +156,7 @@
 
        
     <?php  
-    include("src/footer.php");  ob_end_flush();
+    include("src/footer.php");  
     ?>
     <!-- Main-->
     

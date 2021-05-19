@@ -14,7 +14,7 @@
             <a class="nav-link" href="./restaurants.php">Éttermek</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./list.php">Bevásárló lista</a>
+            <a class="nav-link" href="../list.php">Bevásárló lista</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="./logout.php">Kijelentkezés</a>

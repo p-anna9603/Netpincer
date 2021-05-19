@@ -29,7 +29,7 @@
 
   <body>
 
-  <?php  include("src/auth_nav.php")?>
+  <?php  include("src/sec_nav.php")?>
           
   
     <!-- Main-->

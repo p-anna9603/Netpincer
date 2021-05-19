@@ -1,5 +1,5 @@
 <?php 
-
+    
     function Connect_To_Server($data_to_send)
     {
         $service_port = 11000;
@@ -46,11 +46,13 @@
                 if ($obj->type == "1") 
                 {
                     $_SESSION["log"] = true;
+                    unset($_SESSION["user"]);
                     $_SESSION["user"] = $obj;
                 }
                 else if ($obj->type == "14") 
                 {
                     var_dump($obj);
+                    unset($_SESSION["lista"]);
                     $_SESSION["lista"] = $obj;
                 }
                 else if ($obj->type == "18") 
@@ -73,6 +75,8 @@
                 }
                 if($obj->Type == "7")
                 {
+                    unset($_SESSION["category_names"]);
+                    unset($_SESSION["category_ids"]);
                     $_SESSION["category_names"] = $obj->listOfCategoryNames;
                     $_SESSION["category_ids"] = $obj->listOfCategoryIDs;
                     var_dump($obj);
@@ -80,11 +84,13 @@
                 else if ($obj->Type == "9") 
                 {
                     var_dump($obj);
+                    unset($_SESSION["kaja"]);
                     $_SESSION["kaja"] = $obj;
                 }
                 else if ($obj->Type == "14") 
                 {
                     var_dump($obj);
+                    unset($_SESSION["lista"]);
                     $_SESSION["lista"] = $obj;
                 }
                 else if ($obj->Type == "18") 
@@ -94,6 +100,7 @@
             }
             else if(isset($obj->FoodID))
             {
+                unset($_SESSION["kaja"]);
                 $_SESSION["kaja"] = $obj;
                 //var_dump($obj);
             }
