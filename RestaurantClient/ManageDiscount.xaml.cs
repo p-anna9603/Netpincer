@@ -210,6 +210,9 @@ namespace RestaurantClient
             {
                 foreach (Food i in foods)
                 {
+                    Console.WriteLine("food&x###: " + i.Name);
+                    Console.WriteLine("dicso&x###: " + i.Discount);
+                    Console.WriteLine("Price&x###: " + i.Price);
                     addFoodPanel(i.Name, i.FoodID, i.Price, i.Discount);
                 }
             }
@@ -230,7 +233,8 @@ namespace RestaurantClient
 
         private void addFoodPanel(string foodName, int foodId, double foodPrice, double? discount)
         {
-            Console.WriteLine("addfood");
+            Console.WriteLine("addfood: " + foodName);
+            Console.WriteLine("discount: " + discount);
             int realPrice = 0;
             if (discount != null)
             {
@@ -247,6 +251,7 @@ namespace RestaurantClient
             {
                 realPrice = (int)foodPrice;
             }
+            Console.WriteLine("realPrice: " + realPrice);
             StackPanel newCategory = new StackPanel();
             newCategory.Orientation = Orientation.Horizontal;
             newCategory.HorizontalAlignment = HorizontalAlignment.Center;
